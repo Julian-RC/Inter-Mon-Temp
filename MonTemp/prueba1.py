@@ -268,12 +268,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.pushButton.setEnabled(True)
             self.Todos.setEnabled(True)
             self.radioButton.setEnabled(True)
-            DataTemp.Change_root(filename,str(patch))
-            DataTemp2.Change_root(filename2,str(patch))
-            textDict = ConfigModule(filename)
-            textDict2 = ConfigModule(filename2,0)
-            DataTemp = TempClass(textDict.ConfigDict)
-            DataTemp2 = TempClass(textDict2.ConfigDict,DataTemp.InitTime)
+            #DataTemp.Change_root(filename,str(patch))
+            #DataTemp2.Change_root(filename2,str(patch))
+            #textDict = ConfigModule(filename)
+            #textDict2 = ConfigModule(filename2,0)
+            #DataTemp = TempClass(textDict.ConfigDict)
+            #DataTemp2 = TempClass(textDict2.ConfigDict,DataTemp.InitTime)
         pg.QtGui.QApplication.processEvents()
             
             
