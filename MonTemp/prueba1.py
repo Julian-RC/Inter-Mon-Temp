@@ -1,9 +1,9 @@
 import os
 os.system('which python3')
 
-from prueba1_ui import *
-from info_ui import *
-from segunda_ui import *
+from MonTemp.prueba1_ui import *
+from MonTemp.info_ui import *
+from MonTemp.segunda_ui import *
 from pyqtgraph import QtGui, QtCore
 from PyQt5.QtWidgets import QDialog,QMessageBox,QLabel
 import pyqtgraph as pg
