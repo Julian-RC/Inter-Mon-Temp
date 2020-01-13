@@ -15,7 +15,7 @@ setup(name='Interfaz Monitor Temperatura',
             #"random",
             "serial",
             #"sys",
-            "time",
+            #"time",
             #"collections",
             "matplotlib",
             "datetime"
