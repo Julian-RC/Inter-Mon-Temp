@@ -18,7 +18,7 @@ setup(name='Interfaz Monitor Temperatura',
             #"time",
             #"collections",
             "matplotlib",
-            "datetime",
+            "datetime"
            # "serial",
             #"subprocess",
             #"pickle"
