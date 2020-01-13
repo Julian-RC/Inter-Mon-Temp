@@ -9,7 +9,7 @@ setup(name='Interfaz Monitor Temperatura',
       packages=find_packages(),
       install_requires=[
             #"os",
-            "PyQt5",
+            #"PyQt5",
             "pyqtgraph",
             "numpy",
             #"random",
