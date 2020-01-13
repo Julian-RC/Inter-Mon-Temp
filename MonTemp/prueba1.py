@@ -1251,7 +1251,8 @@ filename2 = "config_file2.txt"
 #Menu = CommandLine()
 global label_scroll
 label_scroll=''
-if __name__ == "__main__":
+
+def launch():
     try:
         app = QtWidgets.QApplication([])
         window = MainWindow()
@@ -1259,5 +1260,8 @@ if __name__ == "__main__":
         app.exec_()
     except KeyboardInterrupt as KBI:
         pass
+
+if __name__ == "__main__":
+      launch()
         
 
