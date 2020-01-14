@@ -1,13 +1,7 @@
-#os
 PyQt5==5.12.3
 pyqtgraph
 numpy
-#random
+pyqtwebengine==5.12.1
 serial
-#sys
-#time==1.0.0
-#collections
 matplotlib
 datetime
-#subprocess
-#pickle
