@@ -1247,8 +1247,8 @@ class ConfigModule:
 global filename, filename2, label_scroll   
 
          
-filename = "config_file.txt"
-filename2 = "config_file2.txt"
+filename = "MonTemp/config_file.txt"
+filename2 = "MonTemp/config_file2.txt"
 #Menu = CommandLine()
 label_scroll=''
 
