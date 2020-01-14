@@ -9,7 +9,7 @@ try:
   print(path)
   print(type(path))
   os.system('pwd')
-  os.system("echo '" + patch + "'+>> run")
+  os.system("echo '" + path + "'+>> run")
   
 except:
   print('Error de instalación')
