@@ -8,19 +8,13 @@ setup(name='Interfaz Monitor Temperatura',
       author='Laboratorio-Criogenia',
       packages=find_packages(),
       install_requires=[
-            #"os",
+            "pyqtwebengine",
             "PyQt5",
             "pyqtgraph",
             "numpy",
-            #"random",
             "serial",
-            #"sys",
-            #"time",
-            #"collections",
             "matplotlib",
             "datetime"
-            #"subprocess",
-            #"pickle"
           ],
       entry_points={
             'console_scripts': [
