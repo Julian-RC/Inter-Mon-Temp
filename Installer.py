@@ -5,9 +5,9 @@ try:
   os.system('pip3 install setuptools')
   os.system('pip3 install -r requeriments.txt')
   os.system('python3 setup.py install')
-  path="  return "+subprocess.getoutput("pwd")
+  path="pyhon3 "+subprocess.getoutput("pwd")+"/MonTemp/prueba1.py"
   os.system('pwd')
-  os.system("echo " + patch + ">> MonTemp/prueba1.py")
+  os.system("echo " + patch + ">> run")
   
 except:
   print('Error de instalación')
