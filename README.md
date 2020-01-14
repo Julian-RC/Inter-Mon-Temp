@@ -16,7 +16,7 @@ It's necesary python>=3.6:
        
 -----------------------------------------------------------------------------------------------
 
-For run Interfaz-MonitorTemperature run:
+For open Interfaz-MonitorTemperature run:
 
     MonTemp
 
