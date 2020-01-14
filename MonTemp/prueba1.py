@@ -1,6 +1,4 @@
 import os
-os.system('which python3')
-
 from MonTemp.prueba1_ui import *
 from MonTemp.info_ui import *
 from MonTemp.segunda_ui import *
@@ -258,6 +256,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
        
         
     def buscarDirectorio(self):
+        global DataTemp,DataTemp2
         patch = QtWidgets.QFileDialog.getExistingDirectory(self, 'Buscar Carpeta', QtCore.QDir.homePath())
         if patch:
             self.linePatch.setText(patch) 
@@ -268,12 +267,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.pushButton.setEnabled(True)
             self.Todos.setEnabled(True)
             self.radioButton.setEnabled(True)
-            #DataTemp.Change_root(filename,str(patch))
-            #DataTemp2.Change_root(filename2,str(patch))
-            #textDict = ConfigModule(filename)
-            #textDict2 = ConfigModule(filename2,0)
-            #DataTemp = TempClass(textDict.ConfigDict)
-            #DataTemp2 = TempClass(textDict2.ConfigDict,DataTemp.InitTime)
+
+            DataTemp.Change_root(filename,str(patch))
+            DataTemp2.Change_root(filename2,str(patch))
+            Update_Config()
         pg.QtGui.QApplication.processEvents()
             
             
@@ -1143,7 +1140,7 @@ class TempClass:
                 print(Vect)
             print('------------------------------------------------------------')
     
-    def Root_change(self,file,new):
+    def Change_root(self,file,new):
         with open(file, "r") as f:
             lines = (line.rstrip() for line in f)
             altered_lines = ['Root: '+new+'/' if line== 'Root: '+self.root else line for line in lines]
@@ -1246,14 +1243,24 @@ class ConfigModule:
 
 #filename = sys.argv[1]
 #filename = sys.argv[2]
+global filename, filename2, label_scroll   
+
+         
 filename = "config_file.txt"
 filename2 = "config_file2.txt"
 #Menu = CommandLine()
-global label_scroll
 label_scroll=''
 
+def Update_Config():
+    global textDict,textDict2,DataTemp,DataTemp2
+    textDict = ConfigModule(filename)
+    textDict2 = ConfigModule(filename2,0)
+    DataTemp = TempClass(textDict.ConfigDict)
+    DataTemp2 = TempClass(textDict2.ConfigDict,DataTemp.InitTime)
+    
 def launch():
     try:
+        Update_Config()
         app = QtWidgets.QApplication([])
         window = MainWindow()
         window.show()

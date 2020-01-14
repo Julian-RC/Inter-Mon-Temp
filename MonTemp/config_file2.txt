@@ -16,7 +16,7 @@ Sensors:Sensor 1,Sensor 2
 #Channels:1,2
 
 #File name and address
-Root:/home/detectores/Experiments/Prueba3Acetatos/
+Root:/home/rakshasa/Documentos/
 Name:Sensores_M335.txt
 NameAverage:Sensores_Average_M335.txt
 SaveData:100
@@ -26,10 +26,10 @@ Port:/dev/ttyUSB0
 BaudRate:57600
 TimeOut:.1
 
-#Sensor parameters. 0 = 2.5v diode,  1 = 7.5v diode,  2 = 250ohm Plat, 
+#Sensor parameters. 0 = 2.5v diode,  1 = 7.5v diode,  2 = 250ohm Plat,
 #                   3 = 500ohm Plat, 4 = 5Kohm Plat,  5 = Cernox
 Sensor Type Group A: 0
-Sensor Type Group B: 0  
+Sensor Type Group B: 0
 
 #Sensors Status.  0=Off,1=On.
 Sensor Status 1:1
