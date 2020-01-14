@@ -8,7 +8,7 @@ try:
   path=subprocess.getoutput("pwd")
   os.system('cd MonTemp')
   f = open ("prueba1.py", "a")
-  f.write(path)
+  f.write("   return "+path)
   f.close()
   
 except:
