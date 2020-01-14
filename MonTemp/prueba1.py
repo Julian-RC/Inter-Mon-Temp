@@ -1,6 +1,4 @@
 import os
-os.system('cd')
-os.system('cd '+Patch())
 from MonTemp.prueba1_ui import *
 from MonTemp.info_ui import *
 from MonTemp.segunda_ui import *
@@ -1273,6 +1271,3 @@ def launch():
 if __name__ == "__main__":
       launch()
         
-def Path():
-	
-	
