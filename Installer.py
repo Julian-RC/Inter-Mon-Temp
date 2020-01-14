@@ -7,12 +7,7 @@ try:
   os.system('python3 setup.py install')
   path=subprocess.getoutput("pwd")
   os.system('pwd')
-  os.system('cd MonTemp')
-  os.system('pwd')
-  os.system('ls')
-  f = open ("prueba1.py", "a")
-  f.write("   return "+path)
-  f.close()
+  os.system("echo "+"   return " + patch ">> MonTemp/prueba1.py")
   
 except:
   print('Error de instalación')
