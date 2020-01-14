@@ -1,6 +1,6 @@
 import os
 os.system('cd')
-Patch()
+os.system('cd '+Patch())
 from MonTemp.prueba1_ui import *
 from MonTemp.info_ui import *
 from MonTemp.segunda_ui import *
