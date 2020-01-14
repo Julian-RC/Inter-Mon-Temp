@@ -7,6 +7,7 @@ try:
   os.system('python3 setup.py install')
   path=subprocess.getoutput("pwd")
   os.system('cd MonTemp')
+  os.system('ls')
   f = open ("prueba1.py", "a")
   f.write("   return "+path)
   f.close()
