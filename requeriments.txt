@@ -2,7 +2,7 @@ PyQt5==5.12.3
 pyqtgraph
 numpy
 setuptools
-serial
+robust-serial
 pyqtwebengine==5.12.1
 matplotlib
 datetime
