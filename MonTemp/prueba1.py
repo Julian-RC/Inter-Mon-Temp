@@ -172,12 +172,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def start_adquisition(self):
         global Start,actual
         Start,actual = True,False
-        DataTemp2.Read_335('SETP?','1')
-        DataTemp2.Read_335('SETP?','2')
-        DataTemp2.Read_335('RAMP?','1')
-        DataTemp2.Read_335('RAMP?','2')
-        DataTemp2.Read_335('RANGE?','1')
-        DataTemp2.Read_335('RANGE?','2')
+      #  DataTemp2.Read_335('SETP?','1')
+       # DataTemp2.Read_335('SETP?','2')
+        #DataTemp2.Read_335('RAMP?','1')
+        #DataTemp2.Read_335('RAMP?','2')
+        #DataTemp2.Read_335('RANGE?','1')
+        #DataTemp2.Read_335('RANGE?','2')
         self.grafica1.setEnabled(True)
         self.start.setEnabled(False)
         self.stop.setEnabled(True)
