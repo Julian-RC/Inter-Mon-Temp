@@ -14,9 +14,10 @@ It's necesary python>=3.6:
 
        python3 Installer.py
       
-      an:
+      and:
       
-       python3 Installer_no_sudo.py 
+       python3 setup.py install
+       
        
        
 -----------------------------------------------------------------------------------------------
