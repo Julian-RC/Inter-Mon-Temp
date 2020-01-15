@@ -16,10 +16,6 @@ setup(name='Interfaz Monitor Temperatura',
             "matplotlib",
             "datetime"
           ],
-      entry_points={
-            'console_scripts': [
-            'MonTemp=run',
-          ],
         },
       include_package_data=True,
       zip_safe=False)
