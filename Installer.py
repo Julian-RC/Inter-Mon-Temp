@@ -15,6 +15,6 @@ try:
   print(1)
   os.system("cd ~/.myPrograms && ln -s "+ path + " InterMonTemp")
   print(2)
-  os.system("echo 'export PATH=$PATH:~/.myPrograms' >> ~/.bashrc")
+  os.system("exit && echo 'export PATH=$PATH:~/.myPrograms' >> ~/.bashrc")
 except:
   print('Error de instalación')
