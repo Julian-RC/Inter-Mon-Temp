@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import os
 from prueba1_ui import *
 from info_ui import *
