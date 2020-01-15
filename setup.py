@@ -18,7 +18,7 @@ setup(name='Interfaz Monitor Temperatura',
           ],
       entry_points={
             'console_scripts': [
-            'MonTemp=MonTemp.prueba1:launch',
+            'Temperature=MonTemp.prueba1:launch',
           ],
         },
       include_package_data=True,
