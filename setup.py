@@ -16,6 +16,5 @@ setup(name='Interfaz Monitor Temperatura',
             "matplotlib",
             "datetime"
           ],
-        },
       include_package_data=True,
       zip_safe=False)
