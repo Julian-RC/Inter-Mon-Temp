@@ -13,7 +13,7 @@ try:
   #os.system("echo '" + path + "'+>> run.py")
   os.system("mkdir -p ~/.myPrograms")
   print(1)
-  os.system("cd ~/.myPrograms && ln -s "+ path + " MonTemp")
+  os.system("cd ~/.myPrograms && ln -s "+ path + " InterMonTemp")
   print(2)
   os.system("echo 'export PATH=$PATH:~/.myPrograms' >> ~/.bashrc")
 except:
