@@ -12,6 +12,6 @@ try:
   #os.system("echo '" + path + "'+>> run.py")
   os.system("mkdir -p ~/.myPrograms")
   os.system("cd ~/.myPrograms && ln -s "+ patch + "MonTemp")
-  os.system("exit && echo 'export PATH=$PATH:~/.myPrograms' >> ~/.myPrograms")
+  os.system("echo 'export PATH=$PATH:~/.myPrograms' >> ~/.bashrc")
 except:
   print('Error de instalación')
