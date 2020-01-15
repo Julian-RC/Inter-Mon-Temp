@@ -11,9 +11,9 @@ try:
   #print(type(path))
   #os.system('pwd')
   #os.system("echo '" + path + "'+>> run.py")
-  os.system("mkdir -p ~/.myPrograms")
+  os.system("exit && mkdir -p ~/.myPrograms")
   print(1)
-  os.system("cd ~/.myPrograms && ln -s "+ path + " InterMonTemp")
+  os.system("exit && cd ~/.myPrograms && ln -s "+ path + " InterMonTemp")
   print(2)
   os.system("exit && echo 'export PATH=$PATH:~/.myPrograms' >> ~/.bashrc")
 except:
