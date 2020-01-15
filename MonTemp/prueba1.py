@@ -1,5 +1,4 @@
 import os
-print('yeha')
 from MonTemp.prueba1_ui import *
 from MonTemp.info_ui import *
 from MonTemp.segunda_ui import *
