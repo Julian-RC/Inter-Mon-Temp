@@ -1260,7 +1260,7 @@ def Update_Config():
     
 def launch():
     try:
-        Update_Config()
+        #Update_Config()
         app = QtWidgets.QApplication([])
         window = MainWindow()
         window.show()
