@@ -3,7 +3,7 @@ import subprocess
   
 path = subprocess.getoutput("pwd")+"/MonTemp/prueba1.py"
 os.system("mkdir -p ~/.myPrograms")
-a = "cd ~/.myPrograms && ln -s "+ path + "   MonTemp"
+a = "cd ~/.myPrograms && ln -s "+ path + "   Mon_1"
 os.system(a)
 print(2)
 os.system("echo 'export PATH=$PATH:~/.myPrograms' >> ~/.bashrc")
