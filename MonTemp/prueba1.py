@@ -1,5 +1,4 @@
 import os
-os.system('ls')
 from MonTemp.prueba1_ui import *
 from MonTemp.info_ui import *
 from MonTemp.segunda_ui import *
@@ -191,13 +190,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 #       #     try:
                 #print('ok')  
                            
-                    DataTemp.GetData()
-                    QtGui.QApplication.processEvents() 
+                   # DataTemp.GetData()
+                    #QtGui.QApplication.processEvents() 
                     if actual:
                           self.actualizar()
                     QtGui.QApplication.processEvents()
-                    if DataTemp.InitTime != 0: DataTemp2.InitTime = DataTemp.InitTime
-                    DataTemp2.GetData()    
+                    #if DataTemp.InitTime != 0: DataTemp2.InitTime = DataTemp.InitTime
+                    #DataTemp2.GetData()    
                     QtGui.QApplication.processEvents()
         
         
@@ -269,9 +268,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.Todos.setEnabled(True)
             self.radioButton.setEnabled(True)
 
-            DataTemp.Change_root(filename,str(patch))
-            DataTemp2.Change_root(filename2,str(patch))
-            Update_Config()
+           # DataTemp.Change_root(filename,str(patch))
+           # DataTemp2.Change_root(filename2,str(patch))
+           # Update_Config()
         pg.QtGui.QApplication.processEvents()
             
             
