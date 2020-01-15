@@ -12,7 +12,7 @@ setup(name='Interfaz MonitorTemperature',
             "PyQt5",
             "pyqtgraph",
             "numpy",
-            #"robust-serial",
+            "pyserial",
             "matplotlib",
             "datetime"
           ],
