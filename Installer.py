@@ -13,7 +13,7 @@ try:
   #os.system("echo '" + path + "'+>> run.py")
   os.system("mkdir -p ~/.myPrograms")
   print(1)
-  a = "cd ~/.myPrograms && ln -s "+ path + "   InterMonTemp"
+  a = "cd ~/.myPrograms && ln -s "+ path + "   InterMonTemp_2"
   print(a)
   os.system(a)
   print(2)
