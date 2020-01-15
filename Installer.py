@@ -11,12 +11,14 @@ try:
   #print(type(path))
   #os.system('pwd')
   #os.system("echo '" + path + "'+>> run.py")
-  os.system("exit && mkdir -p ~/.myPrograms")
+  os.system("mkdir -p ~/.myPrograms")
   print(1)
-  a = "exit && cd ~/.myPrograms && ln -s "+ path + "   InterMonTemp_2"
+  a = "cd ~/.myPrograms && ln -s "+ path + "   InterMonTemp_2"
   print(a)
   os.system(a)
   print(2)
-  os.system("exit && echo 'export PATH=$PATH:~/.myPrograms' >> ~/.bashrc")
+  os.system("echo 'export PATH=$PATH:~/.myPrograms' >> ~/.bashrc")
+  print(3)
+  os.system("cd MonTemp && chmod u+x prueba1.py")
 except:
   print('Error de instalación')
