@@ -6,7 +6,7 @@ try:
   os.system('pip3 install -r requeriments.txt')
   os.system('python3 setup.py install')
   path = subprocess.getoutput("pwd")+"/MonTemp/prueba1.py"
-  #print(path)
+  print(path)
   #print(type(path))
   #os.system('pwd')
   #os.system("echo '" + path + "'+>> run.py")
