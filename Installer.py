@@ -1,5 +1,6 @@
-  import os
-  import subprocess
+import os
+import subprocess
+if 1==1:
 #try:
   os.system('apt-get install python3-pip')
   os.system('pip3 install setuptools')
