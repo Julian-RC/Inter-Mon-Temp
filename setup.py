@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 from MonTemp import __version__
 
-setup(name='Interfaz Monitor Temperatura',
+setup(name='Interfaz MonitorTemperature',
       version=__version__,
       description='A simple interfaz',
       url='https://github.com/Julian-RC/Inter-Mon-Temp.git',
