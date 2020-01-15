@@ -1,7 +1,7 @@
 import os
 import subprocess
-if 1==1:
-#try:
+
+try:
   os.system('apt-get install python3-pip')
   os.system('pip3 install setuptools')
   os.system('pip3 install -r requeriments.txt')
@@ -13,8 +13,8 @@ if 1==1:
   #os.system("echo '" + path + "'+>> run.py")
   os.system("mkdir -p ~/.myPrograms")
   print(1)
-  os.system("cd ~/.myPrograms && ln -s "+ patch + " MonTemp")
+  os.system("cd ~/.myPrograms && ln -s "+ path + " MonTemp")
   print(2)
   os.system("echo 'export PATH=$PATH:~/.myPrograms' >> ~/.bashrc")
-#except:
- # print('Error de instalación')
+except:
+  print('Error de instalación')
