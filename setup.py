@@ -8,7 +8,7 @@ setup(name='Interfaz MonitorTemperature',
       author='Laboratorio-Criogenia',
       packages=find_packages(),
       install_requires=[
-            "pyqtwebengine",
+            #"pyqtwebengine",
             "PyQt5",
             "pyqtgraph",
             "numpy",

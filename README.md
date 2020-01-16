@@ -5,6 +5,8 @@ It's necesary python>=3.6:
 1. Run: 
 
        git clone https://github.com/Julian-RC/Inter-Mon-Temp.git
+	
+       cd Inter-MonTemp
 
 2. Run:
 
