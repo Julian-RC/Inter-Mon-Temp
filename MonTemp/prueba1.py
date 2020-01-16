@@ -97,7 +97,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 Obj.PrintValue()
 
     def see_data(self):
-        global label_scroll
         try:
             for Obj in [DataTemp,DataTemp2]:
                 Obj.__str__()
