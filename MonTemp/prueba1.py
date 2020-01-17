@@ -1244,7 +1244,7 @@ class ConfigModule:
 #filename = sys.argv[2]
 global filename, filename2, label_scroll   
 path_file = os.path.realpath(__file__).strip('prueba1.py')
-filename =  "config_file.txt"
+filename = path_file + "config_file.txt"
 filename2 = path_file + "config_file2.txt"
 #Menu = CommandLine()
 #label_scroll = QtGui.QTextEdit()
