@@ -4,35 +4,44 @@ It's necesary python>=3.6:
 
 1. Run: 
 
-       git clone https://github.com/Julian-RC/Inter-Mon-Temp.git
-	
-       cd Inter-MonTemp
+        git clone https://github.com/Julian-RC/Inter-Mon-Temp.git && cd Inter-MonTemp
 
 2. Run:
 
-       sudo python3 Installer.py && python3 setup.py install
+        sudo python3 Installer.py 
 
-      or how 'su' run:
+      or as 'su' run:
 
-       python3 Installer.py
-      
-      and:
-      
-       python3 setup.py install
-       
+        python3 Installer.py
        
        
 -----------------------------------------------------------------------------------------------
 
 For open Interfaz-MonitorTemperature run:
 
-    Temperature
+        Temperature
 
 -----------------------------------------------------------------------------------------------
 
-For update run:
+For update run (sudo):
 
-    git pull
+        python3 Update_sudo.py
 
-After return at step 2 of Install
+Or run:
 
+        git pull
+
+and as 'su' run:
+
+        pip3 install -r requeriments.txt	
+	
+-----------------------------------------------------------------------------------------------
+
+For uninstall run:
+
+        sudo python3 Uninstall.py
+
+Or as 'su' run:
+
+        python3 Uninstall.py
+ 

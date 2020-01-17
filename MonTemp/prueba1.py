@@ -101,9 +101,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             for Obj in [DataTemp,DataTemp2]:
                 Obj.__str__()
         except:
-            label_scroll.append('ERROR: Text file cannot be shown.\n')
-        self.scrollArea.setWidget(label_scroll)
-    
+           #label_scroll.append('ERROR: Text file cannot be shown.\n')
+   #     self.scrollArea.setWidget(label_scroll)
+            pass
     def off_heater_1(self):
         
         self.On_335_1()
@@ -1248,7 +1248,7 @@ global filename, filename2, label_scroll
 filename = "config_file.txt"
 filename2 = "config_file2.txt"
 #Menu = CommandLine()
-label_scroll = QtGui.QTextEdit()
+#label_scroll = QtGui.QTextEdit()
 
 def Update_Config():
     global textDict,textDict2,DataTemp,DataTemp2
