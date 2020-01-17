@@ -171,12 +171,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def start_adquisition(self):
         global Start,actual
         Start,actual = True,False
-      #  DataTemp2.Read_335('SETP?','1')
-       # DataTemp2.Read_335('SETP?','2')
-        #DataTemp2.Read_335('RAMP?','1')
-        #DataTemp2.Read_335('RAMP?','2')
-        #DataTemp2.Read_335('RANGE?','1')
-        #DataTemp2.Read_335('RANGE?','2')
+        DataTemp2.Read_335('SETP?','1')
+        DataTemp2.Read_335('SETP?','2')
+        DataTemp2.Read_335('RAMP?','1')
+        DataTemp2.Read_335('RAMP?','2')
+        DataTemp2.Read_335('RANGE?','1')
+        DataTemp2.Read_335('RANGE?','2')
         self.grafica1.setEnabled(True)
         self.start.setEnabled(False)
         self.stop.setEnabled(True)
@@ -186,16 +186,16 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.heater_2.setEnabled(True)
         self.lastdata.setEnabled(True)
         while Start:
-#       #     try:
+           # try:
                 #print('ok')  
                            
-                   # DataTemp.GetData()
-                    #QtGui.QApplication.processEvents() 
+                    DataTemp.GetData()
+                    QtGui.QApplication.processEvents() 
                     if actual:
                           self.actualizar()
                     QtGui.QApplication.processEvents()
-                    #if DataTemp.InitTime != 0: DataTemp2.InitTime = DataTemp.InitTime
-                    #DataTemp2.GetData()    
+                    if DataTemp.InitTime != 0: DataTemp2.InitTime = DataTemp.InitTime
+                    DataTemp2.GetData()    
                     QtGui.QApplication.processEvents()
         
         
