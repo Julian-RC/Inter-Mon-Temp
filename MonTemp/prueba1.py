@@ -1243,10 +1243,9 @@ class ConfigModule:
 #filename = sys.argv[1]
 #filename = sys.argv[2]
 global filename, filename2, label_scroll   
-
-         
-filename = "config_file.txt"
-filename2 = "config_file2.txt"
+path_file = os.path.realpath(__file__).strip('prueba1.py')
+filename =  "config_file.txt"
+filename2 = path_file + "config_file2.txt"
 #Menu = CommandLine()
 #label_scroll = QtGui.QTextEdit()
 
@@ -1259,8 +1258,8 @@ def Update_Config():
     
 def launch():
     try:
+        open(filename)
         #Update_Config()
-	print(os.path.realpath(__file__))
         app = QtWidgets.QApplication([])
         window = MainWindow()
         window.show()
