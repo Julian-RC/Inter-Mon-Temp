@@ -1260,6 +1260,7 @@ def Update_Config():
 def launch():
     try:
         #Update_Config()
+	print(os.path.realpath(__file__))
         app = QtWidgets.QApplication([])
         window = MainWindow()
         window.show()
