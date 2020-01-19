@@ -1,7 +1,7 @@
 import os
-from MonTemp.prueba1_ui import *
-from MonTemp.info_ui import *
-from MonTemp.segunda_ui import *
+from prueba1_ui import *
+from info_ui import *
+from segunda_ui import *
 from pyqtgraph import QtGui, QtCore
 from PyQt5.QtWidgets import QDialog,QMessageBox,QLabel
 import pyqtgraph as pg
@@ -28,7 +28,6 @@ import pickle
 #import os
 import matplotlib.pyplot as plt
 
-i=0
 
 class Dialog(QDialog,Ui_Dialog):
     def __init__(self, *args, **kwargs):
@@ -53,6 +52,7 @@ class Segunda(QDialog,Ui_Segunda):
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self, *args, **kwargs):
         QtWidgets.QMainWindow.__init__(self, *args, **kwargs)
+        global label_scroll
 
         #self.sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
         self.setupUi(self)
@@ -102,22 +102,16 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 Obj.PrintValue()
 
     def see_data(self):
-        #elf.verticalScrollBar.setValue(99)
-        global label_scroll,i
+        
+        global label_scroll
         try:
             for Obj in [DataTemp,DataTemp2]:
                 Obj.__str__()
         except:
            label_scroll += 'ERROR: Text file cannot be shown.\n'
-           i += 1
-           label_scroll += str(i)+'\n'
         self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
         self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
-        #self.scrollArea.ensureVisible(50,700000000)
-       # time.sleep(1)
-        
-        #except:
-         #   pass
+     
     def off_heater_1(self):
         
         self.On_335_1()
@@ -246,7 +240,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         
     def closeEvent(self, event):
-        global actual
+        global actual,Start
         reply = QMessageBox.question(self,
                                  'Exit',
                                  "Realmente desea cerrar la aplicacion",
@@ -254,6 +248,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         QtGui.QApplication.processEvents()
         if reply == QMessageBox.Yes:
                 actual = False
+                Start = False
                 event.accept()
         else:
                 event.ignore()
@@ -269,7 +264,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
        
         
     def buscarDirectorio(self):
-        global DataTemp,DataTemp2, label_scroll
+        global DataTemp,DataTemp2, label_scroll,filename,filename2
         patch = QtWidgets.QFileDialog.getExistingDirectory(self, 'Buscar Carpeta', QtCore.QDir.homePath())
         if patch:
             self.linePatch.setText(patch) 
@@ -288,6 +283,15 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
            # DataTemp.Change_root(filename,str(patch))
            # DataTemp2.Change_root(filename2,str(patch))
            # Update_Config()
+            path = os.path.realpath(__file__).strip('prueba1.py') 
+            config_filename = path + "cfg/file_218.cfg"
+            config_filename2 = path + "cfg/file_335.cfg"
+            os.system('cp '+ config_filename +' '+ patch)
+            os.system('cp '+ config_filename2 +' '+ patch)
+            os.system('cd && cd '+patch+' && chmod 777 file_218.cfg')
+            os.system('cd && cd '+patch+' && chmod 777 file_335.cfg')
+            filename = patch + '/file_218.cfg'
+            filename2 = patch + '/file_335.cfg'
         pg.QtGui.QApplication.processEvents()
             
             
@@ -1007,10 +1011,10 @@ class CommandLine:
 #----------------------------------------------------------
 
 class TempClass:
-    
+    global patch
     def __init__(self,textDict,TimeStamp=0):
         self.textDict = textDict #Diccionario que incluye información sobre la medición que se realizará
-        self.root = textDict['Root'] #Raiz del archivo en el que se guardarán los datos
+        self.root = Patch #Raiz del archivo en el que se guardarán los datos
         self.name = textDict['Name'] #Nombre del archivo en el que se guardarán los datos
         self.nameAvg = textDict['NameAverage']
         self.Sensors = textDict['Sensors'].split(',') #Esta variable guarda el nombre de los sensores que se usan
@@ -1260,10 +1264,8 @@ class ConfigModule:
 
 #filename = sys.argv[1]
 #filename = sys.argv[2]
-global filename, filename2, label_scroll  
-path = os.path.realpath(__file__).strip('prueba1.py') 
-filename = path + "cfg/file_218.cfg"
-filename2 = path + "cfg/file_335.cfg"
+global  label_scroll  
+
 #Menu = CommandLine()
 label_scroll = ''
 
@@ -1276,7 +1278,6 @@ def Update_Config():
     
 def launch():
     try:
-        #Update_Config()
         app = QtWidgets.QApplication([])
         window = MainWindow()
         window.show()
