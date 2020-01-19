@@ -28,7 +28,7 @@ import pickle
 #import os
 import matplotlib.pyplot as plt
 
-
+i=0
 
 class Dialog(QDialog,Ui_Dialog):
     def __init__(self, *args, **kwargs):
@@ -91,19 +91,33 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.Off_2.clicked.connect(self.off_heater_2)
         self.SeeData.clicked.connect(self.see_data)
         self.lastdata.clicked.connect(self.last)
-    
+        
+        
+        
+        label_scroll='Welcome\n Interfaz TemperatureModule has begun\n'
+        label_scroll+='select a folder to start\n'
+        self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
     def last(self):
         for Obj in [DataTemp,DataTemp2]:
                 Obj.PrintValue()
 
     def see_data(self):
+        #elf.verticalScrollBar.setValue(99)
+        global label_scroll,i
         try:
             for Obj in [DataTemp,DataTemp2]:
                 Obj.__str__()
         except:
-           #label_scroll.append('ERROR: Text file cannot be shown.\n')
-   #     self.scrollArea.setWidget(label_scroll)
-            pass
+           label_scroll += 'ERROR: Text file cannot be shown.\n'
+           i += 1
+           label_scroll += str(i)+'\n'
+        self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
+        self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
+        #self.scrollArea.ensureVisible(50,700000000)
+       # time.sleep(1)
+        
+        #except:
+         #   pass
     def off_heater_1(self):
         
         self.On_335_1()
@@ -171,12 +185,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def start_adquisition(self):
         global Start,actual
         Start,actual = True,False
-        DataTemp2.Read_335('SETP?','1')
-        DataTemp2.Read_335('SETP?','2')
-        DataTemp2.Read_335('RAMP?','1')
-        DataTemp2.Read_335('RAMP?','2')
-        DataTemp2.Read_335('RANGE?','1')
-        DataTemp2.Read_335('RANGE?','2')
+       # DataTemp2.Read_335('SETP?','1')
+       # DataTemp2.Read_335('SETP?','2')
+       # DataTemp2.Read_335('RAMP?','1')
+       # DataTemp2.Read_335('RAMP?','2')
+       # DataTemp2.Read_335('RANGE?','1')
+       # DataTemp2.Read_335('RANGE?','2')
         self.grafica1.setEnabled(True)
         self.start.setEnabled(False)
         self.stop.setEnabled(True)
@@ -189,13 +203,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
            # try:
                 #print('ok')  
                            
-                    DataTemp.GetData()
+       #             DataTemp.GetData()
                     QtGui.QApplication.processEvents() 
                     if actual:
                           self.actualizar()
                     QtGui.QApplication.processEvents()
-                    if DataTemp.InitTime != 0: DataTemp2.InitTime = DataTemp.InitTime
-                    DataTemp2.GetData()    
+        #            if DataTemp.InitTime != 0: DataTemp2.InitTime = DataTemp.InitTime
+         #           DataTemp2.GetData()    
                     QtGui.QApplication.processEvents()
         
         
@@ -255,7 +269,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
        
         
     def buscarDirectorio(self):
-        global DataTemp,DataTemp2
+        global DataTemp,DataTemp2, label_scroll
         patch = QtWidgets.QFileDialog.getExistingDirectory(self, 'Buscar Carpeta', QtCore.QDir.homePath())
         if patch:
             self.linePatch.setText(patch) 
@@ -266,7 +280,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.pushButton.setEnabled(True)
             self.Todos.setEnabled(True)
             self.radioButton.setEnabled(True)
-
+            label_scroll+='Selected folder\n'
+            label_scroll+='No data\n'
+            label_scroll+='Check Config_file\n'
+            label_scroll+='Push "start" for begin adquisition\n'
+            self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
            # DataTemp.Change_root(filename,str(patch))
            # DataTemp2.Change_root(filename2,str(patch))
            # Update_Config()
@@ -323,7 +341,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.D4.setEnabled(True)
     def desbloquear_heater_1(self):
         if self.heater_1.isChecked():
-            self.On_335_1()
+          #  self.On_335_1()
             self.setPoint_num_1.setEnabled(True)
             self.ramp_1.setEnabled(True)
             self.range_automatic_1.setEnabled(True)
@@ -1242,11 +1260,12 @@ class ConfigModule:
 
 #filename = sys.argv[1]
 #filename = sys.argv[2]
-global filename, filename2, label_scroll   
-filename = "cfg/file_218.cfg"
-filename2 = "cfg/file_335.cfg"
+global filename, filename2, label_scroll  
+path = os.path.realpath(__file__).strip('prueba1.py') 
+filename = path + "cfg/file_218.cfg"
+filename2 = path + "cfg/file_335.cfg"
 #Menu = CommandLine()
-#label_scroll = QtGui.QTextEdit()
+label_scroll = ''
 
 def Update_Config():
     global textDict,textDict2,DataTemp,DataTemp2
@@ -1257,7 +1276,6 @@ def Update_Config():
     
 def launch():
     try:
-        open(filename)
         #Update_Config()
         app = QtWidgets.QApplication([])
         window = MainWindow()

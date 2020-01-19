@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1171</width>
-    <height>518</height>
+    <width>1178</width>
+    <height>511</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,7 +23,7 @@
       <x>740</x>
       <y>50</y>
       <width>421</width>
-      <height>441</height>
+      <height>421</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -483,7 +483,7 @@ background-color: rgb(85, 85, 127);</string>
       <x>10</x>
       <y>50</y>
       <width>721</width>
-      <height>181</height>
+      <height>183</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -517,6 +517,9 @@ background-color: rgb(85, 85, 127);</string>
        <height>91</height>
       </rect>
      </property>
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ik&lt;/p&gt;&lt;p&gt;nkmkl&lt;/p&gt;&lt;p&gt;mklm&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
      <property name="styleSheet">
       <string notr="true">background-color: rgb(255, 255, 255);</string>
      </property>
@@ -546,6 +549,9 @@ background-color: rgb(85, 85, 127);</string>
        </property>
        <property name="styleSheet">
         <string notr="true">background-color: rgb(71, 95, 255);</string>
+       </property>
+       <property name="sliderPosition">
+        <number>99</number>
        </property>
        <property name="orientation">
         <enum>Qt::Vertical</enum>
@@ -1311,7 +1317,7 @@ background-color: rgb(255, 59, 25);</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1171</width>
+     <width>1178</width>
      <height>20</height>
     </rect>
    </property>
