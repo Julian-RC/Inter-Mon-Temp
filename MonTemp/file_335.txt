@@ -1,0 +1,68 @@
+###############################################################################
+#                                                                             #
+#               Configuration File for LakeShore Monitoring Model218          #
+#               LabDet-Criogenia                                              #
+#               ICN-UNAM                                                      #
+#                   Mauricio Martinez                                         #
+#                   Jaime Guerra                                              #
+###############################################################################
+
+#Equipment description
+Brand:Lakeshore
+Device:Temperature Control 335
+Model:Cernox
+Sensor Type:Cernox,Cernox
+Sensors:Sensor 1,Sensor 2
+#Channels:1,2
+
+#File name and address
+Root:/home/rakshasa/Documentos/
+Name:Sensores_M335.txt
+NameAverage:Sensores_Average_M335.txt
+SaveData:100
+
+#Communication parameters
+Port:/dev/ttyUSB0
+BaudRate:57600
+TimeOut:.1
+
+#Sensor parameters. 0 = 2.5v diode,  1 = 7.5v diode,  2 = 250ohm Plat,
+#                   3 = 500ohm Plat, 4 = 5Kohm Plat,  5 = Cernox
+Sensor Type Group A: 0
+Sensor Type Group B: 0
+
+#Sensors Status.  0=Off,1=On.
+Sensor Status 1:1
+Sensor Status 2:1
+Sensor Status 3:0
+Sensor Status 4:0
+Sensor Status 5:0
+Sensor Status 6:0
+Sensor Status 7:0
+Sensor Status 8:0
+
+
+#Curve Parameters. 0 = none, 1-5 = Standard Diode, 6-9 Standard Platinum
+#                  21-28 = User Curves, NOTE: 10-20 not used
+CP1:4
+CP2:4
+CP3:4
+CP4:4
+CP5:2
+CP6:2
+CP7:2
+CP8:2
+
+#Acquisition parameters. Channels to display 1-8, 0=all channels
+Sample Rate: none
+Channels:A,B
+#Channels:1,2
+#Channels:0
+SamplingPeriod:0.5
+
+#Storage
+File Name: 9
+Extension: 10
+Average:10
+
+
