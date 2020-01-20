@@ -252,7 +252,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         
     def closeEvent(self, event):
-        global actual,Start
+        global actual,Start,plt_mgr
         reply = QMessageBox.question(self,
                                  'Exit',
                                  "¿Realmente desea cerrar la aplicacion?",
@@ -266,7 +266,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                                   QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
                     if reply == QMessageBox.Yes:
                             Start = False
-                            actual = False
+                            if actual:
+                                        plt_mgr.close()
+                                        actual = False
                             self.off_heater_1()
                             self.off_heater_2()
                     else:
