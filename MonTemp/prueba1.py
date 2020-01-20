@@ -177,7 +177,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             RANGE_2 = True
         
     def start_adquisition(self):
-        global Start,actual
+        global Start,actual, filename, label_scroll
         Start,actual = True,False
        # DataTemp2.Read_335('SETP?','1')
        # DataTemp2.Read_335('SETP?','2')
@@ -197,14 +197,20 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
            # try:
                 #print('ok')  
                            
+                    label_scroll+=str(time.time())+'\n'
+                    self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
+                    time.sleep(10)
+                    self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
        #             DataTemp.GetData()
                     QtGui.QApplication.processEvents() 
-                    if actual:
-                          self.actualizar()
                     QtGui.QApplication.processEvents()
         #            if DataTemp.InitTime != 0: DataTemp2.InitTime = DataTemp.InitTime
          #           DataTemp2.GetData()    
                     QtGui.QApplication.processEvents()
+                    if actual:
+                          self.actualizar()
+                          QtGui.QApplication.processEvents()
+                    
         
         
     def stop_adquisition(self):
@@ -213,29 +219,39 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         global actual
         reply = QMessageBox.question(self,
                                  'Stop',
-                                 "Realmente desea detener la adquision",
+                                 "¿Realmente desea detener la adquision?",
                                   QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if reply == QMessageBox.Yes:
-                actual = False
-                self.grafica2.setChecked(True)
-                self.grafica1.setChecked(False)
-                self.grafica1.setEnabled(False)
-                self.start.setEnabled(True)
-                self.stop.setEnabled(False)
-                self.linePatch.setEnabled(True)
-                self.directorio.setEnabled(True)
-                self.heater_1.setEnabled(False)
-                self.heater_2.setEnabled(False)
-                self.range_automatic_1.setChecked(True)
-                self.range_manual_1.setChecked(False)
-                self.seeStatus_1.setChecked(False)
-                self.range_automatic_2.setChecked(True)
-                self.range_manual_2.setChecked(False)
-                self.seeStatus_2.setChecked(False)
-                self.heater_1.setChecked(False)
-                self.heater_2.setChecked(False)
-                self.off_heater_1()
-                self.off_heater_2()
+            reply = QMessageBox.question(self,
+                                 'Stop',
+                                 "Deje ver si entendí, ¿usted desea detener la adquisición?",
+                                  QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+            if reply == QMessageBox.Yes:
+                reply = QMessageBox.question(self,
+                                 'Stop',
+                                 "¿Está seguro?",
+                                  QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+                if reply == QMessageBox.Yes:
+                                    actual = False
+                                    self.grafica2.setChecked(True)
+                                    self.grafica1.setChecked(False)
+                                    self.grafica1.setEnabled(False)
+                                    self.start.setEnabled(True)
+                                    self.stop.setEnabled(False)
+                                    self.linePatch.setEnabled(True)
+                                    self.directorio.setEnabled(True)
+                                    self.heater_1.setEnabled(False)
+                                    self.heater_2.setEnabled(False)
+                                    self.range_automatic_1.setChecked(True)
+                                    self.range_manual_1.setChecked(False)
+                                    self.seeStatus_1.setChecked(False)
+                                    self.range_automatic_2.setChecked(True)
+                                    self.range_manual_2.setChecked(False)
+                                    self.seeStatus_2.setChecked(False)
+                                    self.heater_1.setChecked(False)
+                                    self.heater_2.setChecked(False)
+                                    self.off_heater_1()
+                                    self.off_heater_2()
 
 
         
@@ -247,9 +263,27 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                                   QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         QtGui.QApplication.processEvents()
         if reply == QMessageBox.Yes:
-                actual = False
-                Start = False
-                event.accept()
+                if Start == True:
+                    reply = QMessageBox.question(self,
+                                 'Stop',
+                                 "Hay una adquisición en proceso, ¿Desea detenerla?",
+                                  QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+                    if reply == QMessageBox.Yes:
+                        reply = QMessageBox.question(self,
+                                 'Stop and exit',
+                                 "¿Está completamente seguro que desea hacerlo y aceptará las consecuencias de sus actos?",
+                                  QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+                        if reply == QMessageBox.Yes:
+                            Start = False
+                            actual = False
+                            self.off_heater_1()
+                            self.off_heater_2()
+                        else:
+                            event.ignore()
+                    else:
+                        event.ignore()
+                else:
+                    event.accept()
         else:
                 event.ignore()
         
@@ -419,7 +453,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             plt_mgr.add("time", time.time())
             plt_mgr.update()
         
-        plt_mgr.close()
+       # plt_mgr.close()
         
     def matplotlib6(self):
     # Se crea el widget para matplotlib    

@@ -23,18 +23,12 @@ For open Interfaz-MonitorTemperature run:
 
 -----------------------------------------------------------------------------------------------
 
-For update run (sudo):
-
-        python3 Update_sudo.py
-
-Or run:
+For update run:
 
         git pull
 
-and as 'su' run:
+and repeat instalation.	
 
-        pip3 install -r requeriments.txt	
-	
 -----------------------------------------------------------------------------------------------
 
 For uninstall run:
