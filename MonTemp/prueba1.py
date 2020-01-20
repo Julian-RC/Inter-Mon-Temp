@@ -201,7 +201,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     DataTemp2.GetData()    
                     QtGui.QApplication.processEvents()
                     if actual:
-                          self.plot_refresh()
+                          plt_mgr.add("Sensores", random())
+                          plt_mgr.update()
                           QtGui.QApplication.processEvents()
                     
         
@@ -215,11 +216,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                                  "¿Realmente desea detener la adquision?",
                                   QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if reply == QMessageBox.Yes:
-            reply = QMessageBox.question(self,
-                                 'Stop',
-                                 "Deje ver si entendí, ¿usted desea detener la adquisición?",
-                                  QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-            if reply == QMessageBox.Yes:
                 reply = QMessageBox.question(self,
                                  'Stop',
                                  "¿Está seguro?",
@@ -252,7 +248,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         global actual,Start
         reply = QMessageBox.question(self,
                                  'Exit',
-                                 "Realmente desea cerrar la aplicacion",
+                                 "¿Realmente desea cerrar la aplicacion?",
                                   QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         QtGui.QApplication.processEvents()
         if reply == QMessageBox.Yes:
@@ -262,19 +258,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                                  "Hay una adquisición en proceso, ¿Desea detenerla?",
                                   QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
                     if reply == QMessageBox.Yes:
-                        reply = QMessageBox.question(self,
-                                 'Stop and exit',
-                                 "¿Está completamente seguro que desea hacerlo y aceptará las consecuencias de sus actos?",
-                                  QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-                        if reply == QMessageBox.Yes:
                             Start = False
                             actual = False
                             self.off_heater_1()
                             self.off_heater_2()
-                        else:
-                            event.ignore()
                     else:
-                        event.ignore()
+                            event.ignore()
                 else:
                     event.accept()
         else:
@@ -429,17 +418,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
              #   Obj.Plot(Obj.DataSerie)
         if self.grafica1.isChecked():
             actual = True
+            plt_mgr = PlotManager(title="Plots", nline=1)
         #print(self.timeEdit.setTime(QtCore.QTime('')))
-        
-    def plot_refresh(self):
-        global actual
-        plt_mgr = PlotManager(
-	    title="Plots", 
-	    nline=1)
-        while actual:
-            plt_mgr.add("Sensores", random())
-            plt_mgr.update()
-            QtGui.QApplication.processEvents()
+
         
        # plt_mgr.close()
         
@@ -1042,7 +1023,7 @@ class TempClass:
     global patch
     def __init__(self,textDict,TimeStamp=0):
         self.textDict = textDict #Diccionario que incluye información sobre la medición que se realizará
-        self.root = patch #Raiz del archivo en el que se guardarán los datos
+        self.root = patch + '/'#Raiz del archivo en el que se guardarán los datos
         self.name = textDict['Name'] #Nombre del archivo en el que se guardarán los datos
         self.nameAvg = textDict['NameAverage']
         self.Sensors = textDict['Sensors'].split(',') #Esta variable guarda el nombre de los sensores que se usan
