@@ -201,7 +201,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     DataTemp2.GetData()    
                     QtGui.QApplication.processEvents()
                     if actual:
-                          self.actualizar()
+                          self.plot_refresh()
                           QtGui.QApplication.processEvents()
                     
         
@@ -429,20 +429,17 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
              #   Obj.Plot(Obj.DataSerie)
         if self.grafica1.isChecked():
             actual = True
-            self.actualizar()
         #print(self.timeEdit.setTime(QtCore.QTime('')))
         
-    def actualizar(self):
+    def plot_refresh(self):
         global actual
-        length = 1090
-        costs  = np.arange(length)
         plt_mgr = PlotManager(
 	    title="Plots", 
-	    nline=2)
+	    nline=1)
         while actual:
-            plt_mgr.add("cost", random())
-            plt_mgr.add("time", time.time())
+            plt_mgr.add("Sensores", random())
             plt_mgr.update()
+            QtGui.QApplication.processEvents()
         
        # plt_mgr.close()
         
@@ -466,15 +463,23 @@ class LivePlotter(object):
 		update(): update the plot
 	"""
 	def __init__(self, **kwargs):
-
+		#global curva1, curva2,curva3, curva4,curva5, curva6,curva7, curva8
 		self.name = kwargs.get("name", "live_plotter")
-
 		self.x, self.y = [], []
 
 		try:
 			self.win = kwargs.get("win", pg.GraphicsWindow())
 			self.p = self.win.addPlot(title=self.name)
-			
+			self.p.addLegend()
+			self.curva1=self.p.plot(pen=(150,0,0),name='CernoxA')
+			self.curva2=self.p.plot(pen=(0,150,0),name='CernoxB')
+			self.curva3=self.p.plot(pen=(0,0,150),name='Diodo1')
+			self.curva4=self.p.plot(pen=(150,0,150),name='Diodo2')
+			self.curva5=self.p.plot(pen=(150,150,0),name='Diodo3')
+			self.curva6=self.p.plot(pen=(0,150,150),name='Diodo4')
+			self.curva7=self.p.plot(pen=(150,0,75),name='Cernox5')
+			self.curva8=self.p.plot(pen=(150,0,150),name='Cernox6')
+			self.p.setRange(yRange=[50, 300])
 			self.plot = self.p.plot(self.x, self.y)
 		
 		except Exception as e:
@@ -486,13 +491,11 @@ class LivePlotter(object):
 		Adds data to the plot
 		If x is None, will take time for x axis
 		"""
-		if x is None:
-			x = time.time()
 		self.x += [x]
 		self.y += [y]
 
 
-	def update(self):
+	def update(self,time,data):
 		"""
 		After having added data to the graph data, calling update updates the plot
 		"""
