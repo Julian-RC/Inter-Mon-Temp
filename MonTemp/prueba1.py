@@ -426,7 +426,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         global actual,close_plot,DataTemp, DataTemp2
         for Obj in [DataTemp,DataTemp2]:
             a=Obj.Last_data()
-            print(type(a))
+            for b in a:
+                print(type(b))
+                print(b)
         if self.grafica2.isChecked():
             actual = False
             #for Obj in [DataTemp,DataTemp2]:
