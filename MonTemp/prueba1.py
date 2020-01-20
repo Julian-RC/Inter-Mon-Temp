@@ -370,7 +370,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.D4.setEnabled(True)
     def desbloquear_heater_1(self):
         if self.heater_1.isChecked():
-          #  self.On_335_1()
+            self.On_335_1()
             self.setPoint_num_1.setEnabled(True)
             self.ramp_1.setEnabled(True)
             self.range_automatic_1.setEnabled(True)
