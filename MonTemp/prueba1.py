@@ -202,8 +202,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     QtGui.QApplication.processEvents()
                     if actual:
                           global plt_mgr, close_plot
-                  #        plt_mgr.add("Sensores", random())
-                   #       plt_mgr.update()
+                          plt_mgr.add("Sensores", random())
+                          plt_mgr.update()
                           QtGui.QApplication.processEvents()
                           close_plot = True
                     elif close_plot:
