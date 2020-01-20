@@ -425,9 +425,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def graficar(self):
         global actual,close_plot,DataTemp, DataTemp2
         for Obj in [DataTemp,DataTemp2]:
+            #primero van 1-6, despues 1-2
             a=Obj.Last_data()
             for b in a:
-                print(type(b))
+                b.pop(0)
                 print(b)
         if self.grafica2.isChecked():
             actual = False
