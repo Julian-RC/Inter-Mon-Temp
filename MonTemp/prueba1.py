@@ -201,13 +201,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     DataTemp2.GetData()    
                     QtGui.QApplication.processEvents()
                     if actual:
-                          global plt_mgr
+                          global plt_mgr, close_plot
                   #        plt_mgr.add("Sensores", random())
                    #       plt_mgr.update()
                           QtGui.QApplication.processEvents()
-                    else:
-                          global plt_mgr
-                          plt_mgr.close()
+                          close_plot = True
+                    elif close_plot:
+                              plt_mgr.close()
+                              close_plot = False
                     
         
         
@@ -415,14 +416,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if self.seeStatus_2.isChecked():
             self.status_2.setEnabled(True)
     def graficar(self):
-        global actual
+        global actual,close_plot
         if self.grafica2.isChecked():
             actual = False
             #for Obj in [DataTemp,DataTemp2]:
              #   Obj.Plot(Obj.DataSerie)
         if self.grafica1.isChecked():
             global plt_mgr
-            actual = True
+            actual, close_plot = True, False
             plt_mgr = PlotManager(title="Plots", nline=1)
         #print(self.timeEdit.setTime(QtCore.QTime('')))
 
@@ -1278,10 +1279,10 @@ class ConfigModule:
 
 #filename = sys.argv[1]
 #filename = sys.argv[2]
-global  label_scrol,Start
+global  label_scrol,Start,close_plot
 
 #Menu = CommandLine()
-label_scroll,Start = '', False
+label_scroll,Start,close_plot= '', False, False
 
 def Update_Config():
     global textDict,textDict2,DataTemp,DataTemp2
