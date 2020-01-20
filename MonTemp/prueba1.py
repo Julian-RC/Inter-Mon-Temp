@@ -215,7 +215,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def stop_adquisition(self):
         global Start
         Start = False
-        global actual
+        global actual,plt_mgr
         reply = QMessageBox.question(self,
                                  'Stop',
                                  "¿Realmente desea detener la adquision?",
@@ -226,7 +226,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                                  "¿Está seguro?",
                                   QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
                 if reply == QMessageBox.Yes:
-                                    actual = False
+                                    if actual:
+                                        plt_mgr.close()
+                                        actual = False
                                     self.grafica2.setChecked(True)
                                     self.grafica1.setChecked(False)
                                     self.grafica1.setEnabled(False)
