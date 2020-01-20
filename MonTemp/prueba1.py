@@ -201,6 +201,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     DataTemp2.GetData()    
                     QtGui.QApplication.processEvents()
                     if actual:
+                          global plt_mgr
                           plt_mgr.add("Sensores", random())
                           plt_mgr.update()
                           QtGui.QApplication.processEvents()
@@ -417,6 +418,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             #for Obj in [DataTemp,DataTemp2]:
              #   Obj.Plot(Obj.DataSerie)
         if self.grafica1.isChecked():
+            global plt_mgr
             actual = True
             plt_mgr = PlotManager(title="Plots", nline=1)
         #print(self.timeEdit.setTime(QtCore.QTime('')))
