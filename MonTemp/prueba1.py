@@ -423,7 +423,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if self.seeStatus_2.isChecked():
             self.status_2.setEnabled(True)
     def graficar(self):
-        global actual,close_plot
+        global actual,close_plot,DataTemp, DataTemp2
         for Obj in [DataTemp,DataTemp2]:
             a=Obj.Last_data()
             print(type(a))
