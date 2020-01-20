@@ -177,7 +177,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             RANGE_2 = True
         
     def start_adquisition(self):
-        global Start,actual, filename, label_scroll,plt_mgr
+        global Start,actual, filename, label_scroll
         Start,actual = True,False
         DataTemp2.Read_335('SETP?','1')
         DataTemp2.Read_335('SETP?','2')
@@ -201,10 +201,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     DataTemp2.GetData()    
                     QtGui.QApplication.processEvents()
                     if actual:
-#                          plt_mgr.add("Sensores", random())
- #                         plt_mgr.update()
+                          global plt_mgr
+                  #        plt_mgr.add("Sensores", random())
+                   #       plt_mgr.update()
                           QtGui.QApplication.processEvents()
                     else:
+                          global plt_mgr
                           plt_mgr.close()
                     
         
