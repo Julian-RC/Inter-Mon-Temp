@@ -1039,7 +1039,7 @@ class TempClass:
     global patch
     def __init__(self,textDict,TimeStamp=0):
         self.textDict = textDict #Diccionario que incluye información sobre la medición que se realizará
-        self.root = Patch #Raiz del archivo en el que se guardarán los datos
+        self.root = patch #Raiz del archivo en el que se guardarán los datos
         self.name = textDict['Name'] #Nombre del archivo en el que se guardarán los datos
         self.nameAvg = textDict['NameAverage']
         self.Sensors = textDict['Sensors'].split(',') #Esta variable guarda el nombre de los sensores que se usan
