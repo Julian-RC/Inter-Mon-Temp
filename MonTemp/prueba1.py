@@ -179,12 +179,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def start_adquisition(self):
         global Start,actual, filename, label_scroll
         Start,actual = True,False
-       # DataTemp2.Read_335('SETP?','1')
-       # DataTemp2.Read_335('SETP?','2')
-       # DataTemp2.Read_335('RAMP?','1')
-       # DataTemp2.Read_335('RAMP?','2')
-       # DataTemp2.Read_335('RANGE?','1')
-       # DataTemp2.Read_335('RANGE?','2')
+        DataTemp2.Read_335('SETP?','1')
+        DataTemp2.Read_335('SETP?','2')
+        DataTemp2.Read_335('RAMP?','1')
+        DataTemp2.Read_335('RAMP?','2')
+        DataTemp2.Read_335('RANGE?','1')
+        DataTemp2.Read_335('RANGE?','2')
         self.grafica1.setEnabled(True)
         self.start.setEnabled(False)
         self.stop.setEnabled(True)
@@ -194,11 +194,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.heater_2.setEnabled(True)
         self.lastdata.setEnabled(True)
         while Start:
-       #             DataTemp.GetData()
+                    DataTemp.GetData()
                     QtGui.QApplication.processEvents() 
                     QtGui.QApplication.processEvents()
-        #            if DataTemp.InitTime != 0: DataTemp2.InitTime = DataTemp.InitTime
-         #           DataTemp2.GetData()    
+                    if DataTemp.InitTime != 0: DataTemp2.InitTime = DataTemp.InitTime
+                    DataTemp2.GetData()    
                     QtGui.QApplication.processEvents()
                     if actual:
                           self.actualizar()
@@ -307,9 +307,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             label_scroll+='Check Config_file\n'
             label_scroll+='Push "start" for begin adquisition\n'
             self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
-           # DataTemp.Change_root(filename,str(patch))
-           # DataTemp2.Change_root(filename2,str(patch))
-           # Update_Config()
             path = os.path.realpath(__file__).strip('prueba1.py') 
             config_filename = path + "cfg/file_218.cfg"
             config_filename2 = path + "cfg/file_335.cfg"
@@ -319,6 +316,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             os.system('cd && cd '+patch+' && chmod 777 file_335.cfg')
             filename = patch + '/file_218.cfg'
             filename2 = patch + '/file_335.cfg'
+            Update_Config()
         pg.QtGui.QApplication.processEvents()
             
             
@@ -1291,10 +1289,10 @@ class ConfigModule:
 
 #filename = sys.argv[1]
 #filename = sys.argv[2]
-global  label_scroll  
+global  label_scrol,Start
 
 #Menu = CommandLine()
-label_scroll = ''
+label_scroll,Start = '', False
 
 def Update_Config():
     global textDict,textDict2,DataTemp,DataTemp2
