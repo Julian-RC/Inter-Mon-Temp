@@ -194,13 +194,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.heater_2.setEnabled(True)
         self.lastdata.setEnabled(True)
         while Start:
-           # try:
-                #print('ok')  
-                           
-                    label_scroll+=str(time.time())+'\n'
-                    self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
-                    time.sleep(10)
-                    self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
        #             DataTemp.GetData()
                     QtGui.QApplication.processEvents() 
                     QtGui.QApplication.processEvents()
