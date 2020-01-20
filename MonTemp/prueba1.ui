@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1178</width>
-    <height>511</height>
+    <height>575</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,7 +23,7 @@
       <x>740</x>
       <y>50</y>
       <width>421</width>
-      <height>421</height>
+      <height>471</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -110,7 +110,7 @@ background-color: rgb(85, 85, 127);</string>
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>230</y>
+       <y>180</y>
        <width>231</width>
        <height>111</height>
       </rect>
@@ -196,8 +196,8 @@ background-color: rgb(85, 85, 127);</string>
      </property>
      <property name="geometry">
       <rect>
-       <x>190</x>
-       <y>370</y>
+       <x>180</x>
+       <y>420</y>
        <width>80</width>
        <height>23</height>
       </rect>
@@ -212,8 +212,8 @@ background-color: rgb(85, 85, 127);</string>
     <widget class="QFrame" name="frame_3">
      <property name="geometry">
       <rect>
-       <x>280</x>
-       <y>50</y>
+       <x>270</x>
+       <y>60</y>
        <width>131</width>
        <height>291</height>
       </rect>
@@ -481,9 +481,9 @@ background-color: rgb(85, 85, 127);</string>
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>50</y>
+      <y>40</y>
       <width>721</width>
-      <height>183</height>
+      <height>241</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -514,7 +514,7 @@ background-color: rgb(85, 85, 127);</string>
        <x>10</x>
        <y>50</y>
        <width>701</width>
-       <height>91</height>
+       <height>141</height>
       </rect>
      </property>
      <property name="toolTip">
@@ -532,7 +532,7 @@ background-color: rgb(85, 85, 127);</string>
         <x>0</x>
         <y>0</y>
         <width>699</width>
-        <height>89</height>
+        <height>139</height>
        </rect>
       </property>
       <widget class="QScrollBar" name="verticalScrollBar">
@@ -544,7 +544,7 @@ background-color: rgb(85, 85, 127);</string>
          <x>680</x>
          <y>0</y>
          <width>21</width>
-         <height>91</height>
+         <height>141</height>
         </rect>
        </property>
        <property name="styleSheet">
@@ -565,8 +565,8 @@ background-color: rgb(85, 85, 127);</string>
      </property>
      <property name="geometry">
       <rect>
-       <x>520</x>
-       <y>150</y>
+       <x>550</x>
+       <y>200</y>
        <width>80</width>
        <height>23</height>
       </rect>
@@ -584,8 +584,8 @@ background-color: rgb(85, 85, 127);</string>
      </property>
      <property name="geometry">
       <rect>
-       <x>100</x>
-       <y>150</y>
+       <x>90</x>
+       <y>200</y>
        <width>80</width>
        <height>23</height>
       </rect>
@@ -604,7 +604,7 @@ background-color: rgb(85, 85, 127);</string>
      <property name="geometry">
       <rect>
        <x>270</x>
-       <y>150</y>
+       <y>200</y>
        <width>181</width>
        <height>23</height>
       </rect>
@@ -618,7 +618,7 @@ background-color: rgb(85, 85, 127);</string>
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>240</y>
+      <y>290</y>
       <width>721</width>
       <height>231</height>
      </rect>
