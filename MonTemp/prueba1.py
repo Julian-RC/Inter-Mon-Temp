@@ -98,8 +98,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         label_scroll+='select a folder to start\n'
         self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
     def last(self):
+        global label_scroll
         for Obj in [DataTemp,DataTemp2]:
-                Obj.PrintValue()
+               label_scroll += Obj.PrintValue()
+        self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
+        self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
 
     def see_data(self):
         
@@ -1170,15 +1173,23 @@ class TempClass:
             self.ConfigPlot == 0
 
     def PrintValue(self):
+        a = ' '
         if self.Data==[]:
-            print('------------------------------------------------------------')
-            print('Currently, buffer is empty of temperature data. Please try again in a moment.')
-            print('------------------------------------------------------------')
+            a += '------------------------------------------------------------\n'
+            a += 'Currently, buffer is empty of temperature data. Please try again in a moment.\n'
+            a += '------------------------------------------------------------\n'
         else:
-            print('------------------------------------------------------------')
-            for Vect in self.Data[-1]:    
-                print(Vect)
-            print('------------------------------------------------------------')
+            a += '------------------------------------------------------------\n'
+            for Vect in self.Data[-1]:
+                a += str(Vect)+'\n'
+            a += '------------------------------------------------------------\n'
+        return a
+            
+    def Last_data(self):
+        Return = []
+        for Vect in self.Data[-1]:
+            Return.append(Vect)
+        return Return
     
     def Change_root(self,file,new):
         with open(file, "r") as f:
