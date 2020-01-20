@@ -291,7 +291,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
        
         
     def buscarDirectorio(self):
-        global DataTemp,DataTemp2, label_scroll,filename,filename2
+        global DataTemp,DataTemp2, label_scroll,filename,filename2,patch
         patch = QtWidgets.QFileDialog.getExistingDirectory(self, 'Buscar Carpeta', QtCore.QDir.homePath())
         if patch:
             self.linePatch.setText(patch) 
