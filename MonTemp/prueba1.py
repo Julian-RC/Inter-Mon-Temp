@@ -219,7 +219,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                           Data_2 = []
                           for Obj in [DataTemp2,DataTemp]:
                               a=Obj.Last_data()
-                              print('ok-2')
                               if a==[]:
                                   pass
                               else:
@@ -541,7 +540,7 @@ class LivePlotter(object):
 		i=0
 		curvas=[self.curva1,self.curva2,self.curva3,self.curva4,self.curva5,self.curva6,self.curva7,self.curva8]
 		for i in range(8):
-				curvas[i].setData(x[i])
+				curvas[i].setData(x[i][1],x[i][2])
 				pg.QtGui.QApplication.processEvents()
 
 
