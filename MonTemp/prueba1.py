@@ -214,15 +214,18 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     label_scroll += '                             Error en la adquisición'
                     self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
                     self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
+            print('ok-1')
             if actual:
                           global plt_mgr, close_plot
                           Data = []
                           for Obj in [DataTemp2,DataTemp]:
                               a=Obj.Last_data()
+                              print('ok-2')
                               if a==[]:
                                   pass
                               else:
                                   for b in a:
+                                      print('ok-3')
                                       Data.append(b.pop(0))
                                       QtGui.QApplication.processEvents()
                               QtGui.QApplication.processEvents()
