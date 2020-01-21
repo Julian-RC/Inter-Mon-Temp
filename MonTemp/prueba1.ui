@@ -225,7 +225,8 @@ font: 11pt &quot;Sans Serif&quot;;</string>
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Heater 1&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(121, 150, 255);</string>
+      <string notr="true">background-color: rgb(121, 150, 255);
+font: 12pt &quot;Sans Serif&quot;;</string>
      </property>
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
@@ -283,7 +284,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
        <rect>
         <x>250</x>
         <y>30</y>
-        <width>51</width>
+        <width>71</width>
         <height>24</height>
        </rect>
       </property>
@@ -297,9 +298,9 @@ font: 11pt &quot;Sans Serif&quot;;</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>230</x>
+        <x>260</x>
         <y>60</y>
-        <width>101</width>
+        <width>71</width>
         <height>23</height>
        </rect>
       </property>
@@ -339,8 +340,8 @@ font: 11pt &quot;Sans Serif&quot;;</string>
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>90</y>
-        <width>99</width>
+        <y>100</y>
+        <width>121</width>
         <height>21</height>
        </rect>
       </property>
@@ -354,7 +355,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>110</x>
+        <x>120</x>
         <y>90</y>
         <width>221</width>
         <height>51</height>
@@ -423,7 +424,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
        <rect>
         <x>70</x>
         <y>60</y>
-        <width>161</width>
+        <width>191</width>
         <height>21</height>
        </rect>
       </property>
@@ -433,6 +434,22 @@ font: 11pt &quot;Sans Serif&quot;;</string>
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
+      <widget class="QRadioButton" name="range_manual_1">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>110</x>
+         <y>0</y>
+         <width>91</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Manual </string>
+       </property>
+      </widget>
       <widget class="QRadioButton" name="range_automatic_1">
        <property name="enabled">
         <bool>false</bool>
@@ -441,7 +458,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>91</width>
+         <width>111</width>
          <height>21</height>
         </rect>
        </property>
@@ -452,46 +469,8 @@ font: 11pt &quot;Sans Serif&quot;;</string>
         <bool>true</bool>
        </property>
       </widget>
-      <widget class="QRadioButton" name="range_manual_1">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>90</x>
-         <y>0</y>
-         <width>71</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Manual </string>
-       </property>
-      </widget>
-     </widget>
-     <widget class="QRadioButton" name="heater_1">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>120</x>
-        <y>10</y>
-        <width>141</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>13</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-        <kerning>true</kerning>
-       </font>
-      </property>
-      <property name="text">
-       <string>Heater 1</string>
-      </property>
+      <zorder>range_automatic_1</zorder>
+      <zorder>range_manual_1</zorder>
      </widget>
      <widget class="QPushButton" name="Off_1">
       <property name="enabled">
@@ -525,7 +504,6 @@ font: 11pt &quot;Sans Serif&quot;;</string>
      <zorder>seeStatus_1</zorder>
      <zorder>status_1</zorder>
      <zorder>update_1</zorder>
-     <zorder>heater_1</zorder>
      <zorder>Off_1</zorder>
     </widget>
     <widget class="QFrame" name="frame_8">
@@ -544,7 +522,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="styleSheet">
-      <string notr="true">
+      <string notr="true">font: 11pt &quot;Sans Serif&quot;;
 background-color: rgb(255, 59, 25);</string>
      </property>
      <property name="frameShape">
@@ -611,34 +589,6 @@ background-color: rgb(255, 59, 25);</string>
        <string notr="true">background-color: rgb(255, 255, 255);</string>
       </property>
      </widget>
-     <widget class="QComboBox" name="range_2">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>230</x>
-        <y>60</y>
-        <width>101</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <item>
-       <property name="text">
-        <string>Low</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Med</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>High</string>
-       </property>
-      </item>
-     </widget>
      <widget class="QLabel" name="label_12">
       <property name="geometry">
        <rect>
@@ -658,8 +608,8 @@ background-color: rgb(255, 59, 25);</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>90</y>
+        <x>0</x>
+        <y>100</y>
         <width>99</width>
         <height>21</height>
        </rect>
@@ -674,7 +624,7 @@ background-color: rgb(255, 59, 25);</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>100</x>
+        <x>110</x>
         <y>90</y>
         <width>231</width>
         <height>51</height>
@@ -738,36 +688,12 @@ background-color: rgb(255, 59, 25);</string>
        <string>Update</string>
       </property>
      </widget>
-     <widget class="QRadioButton" name="heater_2">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>110</x>
-        <y>10</y>
-        <width>141</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>13</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-        <kerning>true</kerning>
-       </font>
-      </property>
-      <property name="text">
-       <string>Heater 2</string>
-      </property>
-     </widget>
      <widget class="QFrame" name="frame_10">
       <property name="geometry">
        <rect>
         <x>70</x>
         <y>60</y>
-        <width>161</width>
+        <width>181</width>
         <height>21</height>
        </rect>
       </property>
@@ -777,6 +703,22 @@ background-color: rgb(255, 59, 25);</string>
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
+      <widget class="QRadioButton" name="range_manual_2">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>100</x>
+         <y>0</y>
+         <width>81</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Manual </string>
+       </property>
+      </widget>
       <widget class="QRadioButton" name="range_automatic_2">
        <property name="enabled">
         <bool>false</bool>
@@ -785,7 +727,7 @@ background-color: rgb(255, 59, 25);</string>
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>91</width>
+         <width>101</width>
          <height>21</height>
         </rect>
        </property>
@@ -794,22 +736,6 @@ background-color: rgb(255, 59, 25);</string>
        </property>
        <property name="checked">
         <bool>true</bool>
-       </property>
-      </widget>
-      <widget class="QRadioButton" name="range_manual_2">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>90</x>
-         <y>0</y>
-         <width>71</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Manual </string>
        </property>
       </widget>
      </widget>
@@ -835,6 +761,34 @@ background-color: rgb(255, 59, 25);</string>
        <string>Off</string>
       </property>
      </widget>
+     <widget class="QComboBox" name="range_2">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>250</x>
+        <y>60</y>
+        <width>71</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <item>
+       <property name="text">
+        <string>Low</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Med</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>High</string>
+       </property>
+      </item>
+     </widget>
      <zorder>label_12</zorder>
      <zorder>frame_10</zorder>
      <zorder>seeStatus_2</zorder>
@@ -842,11 +796,58 @@ background-color: rgb(255, 59, 25);</string>
      <zorder>label_8</zorder>
      <zorder>label_11</zorder>
      <zorder>ramp_2</zorder>
-     <zorder>range_2</zorder>
      <zorder>status_2</zorder>
      <zorder>update_2</zorder>
-     <zorder>heater_2</zorder>
      <zorder>Off_2</zorder>
+     <zorder>range_2</zorder>
+    </widget>
+    <widget class="QRadioButton" name="heater_2">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>490</x>
+       <y>10</y>
+       <width>141</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>13</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+       <kerning>true</kerning>
+      </font>
+     </property>
+     <property name="text">
+      <string>Heater 2</string>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="heater_1">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>10</y>
+       <width>141</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>13</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+       <kerning>true</kerning>
+      </font>
+     </property>
+     <property name="text">
+      <string>Heater 1</string>
+     </property>
     </widget>
    </widget>
    <widget class="QWidget" name="layoutWidget">
@@ -890,6 +891,9 @@ background-color: rgb(255, 59, 25);</string>
       <widget class="QPushButton" name="SeeData">
        <property name="enabled">
         <bool>false</bool>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;See data&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="styleSheet">
         <string notr="true">background-color: rgb(85, 170, 255);
