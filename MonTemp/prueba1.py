@@ -219,10 +219,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                           Data = []
                           for Obj in [DataTemp2,DataTemp]:
                               a=Obj.Last_data()
+                              if a=[]:
+                                  pass
+                              else:
+                                  for b in a:
+                                      Data.append(b.pop(0))
+                                      QtGui.QApplication.processEvents()
                               QtGui.QApplication.processEvents()
-                              for b in a:
-                                  Data.append(b.pop(0))
-                                  QtGui.QApplication.processEvents()
                          # plt_mgr.add("Sensores", Data)
                           QtGui.QApplication.processEvents()
                           close_plot = True
@@ -1242,8 +1245,11 @@ class TempClass:
             
     def Last_data(self):
         Return = []
-        for Vect in self.Data[-1]:
-            Return.append(Vect)
+        if self.Data==[]:
+            pass
+        else:
+            for Vect in self.Data[-1]:
+                Return.append(Vect)
         return Return
     
     def Change_root(self,file,new): 
