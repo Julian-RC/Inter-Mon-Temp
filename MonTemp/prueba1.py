@@ -526,22 +526,44 @@ class LivePlotter(object):
 			self.curva7=self.p.plot(pen=(150,0,75),name='Cernox5')
 			self.curva8=self.p.plot(pen=(150,0,150),name='Cernox6')
 			self.p.setRange(yRange=[50, 300])
-		
+			self.Data_curva1=[]
+			self.Data_curva2=[]
+			self.Data_curva3=[]
+			self.Data_curva4=[]
+			self.Data_curva5=[]
+			self.Data_curva6=[]
+			self.Data_curva7=[]
+			self.Data_curva8=[]
+			self.Time_curva1=[]
+			self.Time_curva2=[]
+			self.Time_curva3=[]
+			self.Time_curva4=[]
+			self.Time_curva5=[]
+			self.Time_curva6=[]
+			self.Time_curva7=[]
+			self.Time_curva8=[]
 		#except Exception as e:
 		#	print ("Unable to initialize Live Plotter")
 
 
 	def add(self, x):
-				print(type(x[0][2]))
-				print((x[0][2]))
-				self.curva1.setData(x[0][1],float(x[0][2]))
-				self.curva2.setData(x[1][1],float(x[1][2]))
-				self.curva3.setData(x[2][1],float(x[2][2]))
-				self.curva4.setData(x[3][1],float(x[3][2]))
-				self.curva5.setData(x[4][1],float(x[4][2]))
-				self.curva6.setData(x[5][1],float(x[5][2]))
-				self.curva7.setData(x[6][1],float(x[6][2]))
-				self.curva8.setData(x[7][1],float(x[7][2]))
+			self.Data_curva1.append(float(x[0][2]))
+				self.Data_curva2.append(float(x[1][2]))
+				self.Data_curva3.append(float(x[2][2]))
+				self.Data_curva4.append(float(x[3][2]))
+				self.Data_curva5.append(float(x[4][2]))
+				self.Data_curva6.append(float(x[5][2]))
+				self.Data_curva7.append(float(x[6][2]))
+				self.Data_curva8.append(float(x[7][2]))
+				self.Time_curva1.append(x[0][1])
+				self.Time_curva2.append(x[1][1])
+				self.Time_curva3.append(x[2][1])
+				self.Time_curva4.append(x[3][1])
+				self.Time_curva5.append(x[4][1])
+				self.Time_curva6.append(x[5][1])
+				self.Time_curva7.append(x[6][1])
+				self.Time_curva8.append(x[7][1])
+
 				pg.QtGui.QApplication.processEvents()
 
 
@@ -551,11 +573,14 @@ class LivePlotter(object):
 		After having added data to the graph data, calling update updates the plot
 		"""
 		try:
-
-			self.plot.setData(self.x, self.y)
-			pg.QtGui.QApplication.processEvents()
-			
-
+				self.curva1.setData(Time_curva1,Data_curva1)
+				self.curva2.setData(Time_curva2,Data_curva2)
+				self.curva3.setData(Time_curva3,Data_curva3)
+				self.curva4.setData(Time_curva4,Data_curva4)
+				self.curva5.setData(Time_curva5,Data_curva5)
+				self.curva6.setData(Time_curva6,Data_curva6)
+				self.curva7.setData(Time_curva7,Data_curva7)
+				self.curva8.setData(Time_curva8,Data_curva8)
 		except Exception as e:
 			pass
 
