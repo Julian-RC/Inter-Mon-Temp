@@ -226,7 +226,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                                       Data_2.append(algo)
                                       QtGui.QApplication.processEvents()
                               QtGui.QApplication.processEvents()
-                          plt_mgr.add("Sensores", Data_2)
+                          plt_mgr.add( Data_2)
                           QtGui.QApplication.processEvents()
                           close_plot = True
             elif close_plot:
@@ -487,7 +487,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if self.grafica1.isChecked():
             global plt_mgr
             actual, close_plot = True, False
-            plt_mgr = PlotManager(title="Plots", nline=1)
+            plt_mgr = LivePlotter()
         #print(self.timeEdit.setTime(QtCore.QTime('')))
 
         
@@ -512,14 +512,12 @@ class LivePlotter(object):
 		add(x,y): adds data to plot data
 		update(): update the plot
 	"""
-	def __init__(self, **kwargs):
-		global curva1, curva2,curva3, curva4,curva5, curva6,curva7, curva8
-		self.name = kwargs.get("name", "live_plotter")
-		self.x, self.y = [], []
+	def __init__(self):
+		self.win = pg.GraphicsWindow(title='Data')
 
 		try:
 			self.win = kwargs.get("win", pg.GraphicsWindow())
-			self.p = self.win.addPlot(title=self.name)
+			self.p = self.win.addPlot(title=Sensores_data)
 			self.p.addLegend()
 			self.curva1=self.p.plot(pen=(150,0,0),name='CernoxA')
 			self.curva2=self.p.plot(pen=(0,150,0),name='CernoxB')
