@@ -221,13 +221,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                           for Obj in [DataTemp2,DataTemp]:
                               a=Obj.Last_data()
                               print('ok-2')
-                              if a==[]:
-                                  pass
-                              else:
-                                  for b in a:
-                                      print('ok-3')
-                                      Data.append(b.pop(0))
-                                      QtGui.QApplication.processEvents()
+                              #if a==[]:
+                               #   pass
+                              #else:
+                               #   for b in a:
+                                #      print('ok-3')
+                                 #     Data.append(b.pop(0))
+                                   #   QtGui.QApplication.processEvents()
                               QtGui.QApplication.processEvents()
                          # plt_mgr.add("Sensores", Data)
                           QtGui.QApplication.processEvents()
