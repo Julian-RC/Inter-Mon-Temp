@@ -240,8 +240,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                             label_heater_1 = '-------------------------\n'
                             label_heater_1 += '     Print      \n'
                             label_heater_1 = '-------------------------\n'
-                            self.status_1.setWidget(QtWidgets.QLabel(label_scroll))
-                            self.status_1.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
+                            self.status_1.setWidget(QtWidgets.QLabel(label_heater_1))
+                            self.status_1.verticalScrollBar_2().setValue(self.status_1.verticalScrollBar_2().maximum())
 
     def stop_adquisition(self):
         global Start,label_scroll
