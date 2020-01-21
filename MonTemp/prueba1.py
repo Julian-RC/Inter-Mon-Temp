@@ -550,8 +550,8 @@ class LivePlotter(object):
 
 
 	def add(self, x):
-			for i in range(Time_curva1):
-					if Time_curva1[0][1]-Time_curva1[0][-1]>100:
+			for i in range(self.Time_curva1):
+					if self.Time_curva1[0][1]-self.Time_curva1[0][-1]>100:
 						np.delete(self.Data_curva1, 0)
 						np.delete(self.Data_curva2, 0)
 						np.delete(self.Data_curva3, 0)
