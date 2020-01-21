@@ -232,8 +232,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                           QtGui.QApplication.processEvents()
                           close_plot = True
             elif close_plot:
-                              global plt_mgr
-                            #  plt_mgr.close()
+                              plt_mgr.close()
                               close_plot = False
                     
         
