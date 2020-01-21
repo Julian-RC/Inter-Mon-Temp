@@ -532,6 +532,8 @@ class LivePlotter(object):
 
 
 	def add(self, x):
+				print(type(x[0][1]))
+				print((x[0][1]))
 				self.curva1.setData(x[0][1],float(x[0][2]))
 				self.curva2.setData(x[1][1],float(x[1][2]))
 				self.curva3.setData(x[2][1],float(x[2][2]))
