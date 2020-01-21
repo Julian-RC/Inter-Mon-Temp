@@ -96,8 +96,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         
         
         label_scroll='  Welcome, Interfaz TemperatureModule has begun\n'
-        label_scroll+='                     Please select a folder to start\n'
-        label_scroll+='--------------------------------------------------------------------------\n'
+        label_scroll+='                   Please select a folder to start\n'
+        label_scroll+='-------------------------------------------------------------------------\n'
         self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
     def last(self):
         global label_scroll
@@ -198,6 +198,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.heater_1.setEnabled(True)
         self.heater_2.setEnabled(True)
         self.lastdata.setEnabled(True)
+        label_scroll+='                              Acquisition has begun\n'
+        label_scroll+='-------------------------------------------------------------------------\n'
         while Start:
             try:
                     DataTemp.GetData()
@@ -207,7 +209,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     DataTemp2.GetData()    
                     QtGui.QApplication.processEvents()
             except:
-                    label_scroll += 'Error en la adquisición'
+                    label_scroll += '                             Error en la adquisición'
                     self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
                     self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
             if actual:
@@ -303,10 +305,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         global label_scroll,filename,filename2,patch
         patch = QtWidgets.QFileDialog.getExistingDirectory(self, 'Buscar Carpeta', QtCore.QDir.homePath())
         if patch:
-            label_scroll+='Selected folder\n'
-            label_scroll+='No data\n'
-            label_scroll+='Check Config_file\n'
-            label_scroll+='Push "start" for begin adquisition\n'
+            label_scroll+='                                  Selected folder\n'
+            label_scroll+='-------------------------------------------------------------------------\n'
             self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
             self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
             path = os.path.realpath(__file__).strip('prueba1.py') 
@@ -320,6 +320,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             filename2 = patch + '/file_335.cfg'
             try:
                 Update_Config()
+                label_scroll+='                               Config File Ok\n'
                 self.linePatch.setText(patch) 
                 self.start.setEnabled(True)
                 self.SeeData.setEnabled(True)
@@ -329,10 +330,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.Todos.setEnabled(True)
                 self.radioButton.setEnabled(True)
                 label_scroll+='Push "start" for begin adquisition\n'
+                label_scroll+='-------------------------------------------------------------------------\n'
                 self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
                 self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
             except:
-                label_scroll += 'Error al cargar la configuración de los modulos'
+                label_scroll += 'Error al cargar la configuración de los modulos\n'
+                label_scroll+='-------------------------------------------------------------------------\n'
                 self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
                 self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
         pg.QtGui.QApplication.processEvents()
@@ -392,7 +395,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             try:
                 self.On_335_1()
             except:
-                label_scroll += 'Error al cargar Heater 1'
+                label_scroll += '                     Error al cargar Heater 1'
                 self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
                 self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
             self.setPoint_num_1.setEnabled(True)
@@ -416,7 +419,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             try:
                 self.On_335_2()
             except:
-                label_scroll += 'Error al cargar Heater 2'
+                label_scroll += '                                   Error al cargar Heater 2'
                 self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
                 self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
             self.setPoint_num_2.setEnabled(True)
