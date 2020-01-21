@@ -225,8 +225,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                                   pass
                               else:
                                   for algo in a:
-                                      print(algo)
-                                      Data_2.append(b.pop(0))
+                                      Data_2.append(algo.pop(0))
                                       QtGui.QApplication.processEvents()
                               QtGui.QApplication.processEvents()
                           plt_mgr.add("Sensores", Data_2)
