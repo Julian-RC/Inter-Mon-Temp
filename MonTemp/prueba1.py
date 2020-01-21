@@ -95,7 +95,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         
         
         label_scroll='Welcome\n Interfaz TemperatureModule has begun\n'
-        label_scroll+='select a folder to start\n'
+        label_scroll+='Please select a folder to start\n'
         self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
     def last(self):
         global label_scroll
@@ -301,15 +301,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         global label_scroll,filename,filename2,patch
         patch = QtWidgets.QFileDialog.getExistingDirectory(self, 'Buscar Carpeta', QtCore.QDir.homePath())
         if patch:
-            self.linePatch.setText(patch) 
-            self.start.setEnabled(True)
-            self.SeeData.setEnabled(True)
-            self.grafica2.setEnabled(True)
-            self.radioButton_2.setEnabled(True)
-            self.pushButton.setEnabled(True)
-            self.Todos.setEnabled(True)
-            self.radioButton.setEnabled(True)
-            label_scroll+='Please selected folder\n'
+            label_scroll+='Selected folder\n'
             label_scroll+='No data\n'
             label_scroll+='Check Config_file\n'
             label_scroll+='Push "start" for begin adquisition\n'
@@ -326,6 +318,17 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             filename2 = patch + '/file_335.cfg'
             try:
                 Update_Config()
+                self.linePatch.setText(patch) 
+                self.start.setEnabled(True)
+                self.SeeData.setEnabled(True)
+                self.grafica2.setEnabled(True)
+                self.radioButton_2.setEnabled(True)
+                self.pushButton.setEnabled(True)
+                self.Todos.setEnabled(True)
+                self.radioButton.setEnabled(True)
+                label_scroll+='Push "start" for begin adquisition\n'
+                self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
+                self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
             except:
                 label_scroll += 'Error al cargar la configuración de los modulos'
                 self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
