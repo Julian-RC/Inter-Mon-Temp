@@ -180,7 +180,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             RANGE_2 = True
         
     def start_adquisition(self):
-        global Start,actual, filename, label_scroll,status_heater_1
+        global Start,actual, filename, label_scroll,status_heater_1,label_heater_1
         Start,actual = True,False
         DataTemp2.Read_335('SETP?','1')
         DataTemp2.Read_335('SETP?','2')
@@ -487,8 +487,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             label_heater_1 = '-------------------------\n'
             label_heater_1 += '     Status Heater 1      \n'
             label_heater_1 = '-------------------------\n'
-            self.status_1.setWidget(QtWidgets.QLabel(label_scroll))
-            self.status_1.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
+            self.status_1.setWidget(QtWidgets.QLabel(label_heater_1))
+            self.status_1.verticalScrollBar_2().setValue(self.status_1.verticalScrollBar_2().maximum())
     def desbloquear_seeStatus_2(self):
         if self.seeStatus_2.isChecked():
             self.status_2.setEnabled(True)
@@ -1421,10 +1421,10 @@ class ConfigModule:
 
 #filename = sys.argv[1]
 #filename = sys.argv[2]
-global  label_scroll,Start,close_plot
+global  label_scroll,Start,close_plot,status_heater_1,label_heater_1
 
 #Menu = CommandLine()
-label_scroll,Start,close_plot= '', False, False
+label_scroll,Start,close_plot,status_heater_1,label_heater_1= '', False, False,False,''
 
 def Update_Config():
     global textDict,textDict2,DataTemp,DataTemp2
