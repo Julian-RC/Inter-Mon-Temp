@@ -959,16 +959,16 @@ def GetDataFunction(port,Channels,InitialTime):
 
 def AverageFunction(Data,AverageStr,Sensors):
     
-    AvgDataStr = ''
-    LenSens = len(Sensors)
-    AvgData = ['Average']
-    TProm = 0
-    AverageInt = int(AverageStr)
-    DataLen = len(Data)
-    for Num in range(LenSens):
-        AvgData.append([0] * LenSens) 
-        QtGui.QApplication.processEvents() 
-    try:
+        AvgDataStr = ''
+        LenSens = len(Sensors)
+        AvgData = ['Average']
+        TProm = 0
+        AverageInt = int(AverageStr)
+        DataLen = len(Data)
+        for Num in range(LenSens):
+            AvgData.append([0] * LenSens) 
+            QtGui.QApplication.processEvents() 
+    #try:
         
         for Num2 in range(LenSens):
             for Num in range(DataLen-AverageInt,DataLen):
@@ -988,9 +988,9 @@ def AverageFunction(Data,AverageStr,Sensors):
         AvgDataStr += '\n'
         QtGui.QApplication.processEvents() 
 
-    except:
-        print('ERROR: "Average" of the configuration file must be an integer.')
-        QtGui.QApplication.processEvents() 
+   # except:
+    #    print('ERROR: "Average" of the configuration file must be an integer.')
+     #   QtGui.QApplication.processEvents() 
     
     return AvgData, AvgDataStr
 
@@ -1243,7 +1243,7 @@ class TempClass:
             Return.append(Vect)
         return Return
     
-    def Change_root(self,file,new):
+    def Change_root(self,file,new): 
         with open(file, "r") as f:
             lines = (line.rstrip() for line in f)
             altered_lines = ['Root: '+new+'/' if line== 'Root: '+self.root else line for line in lines]
