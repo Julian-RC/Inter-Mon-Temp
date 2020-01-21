@@ -94,8 +94,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.lastdata.clicked.connect(self.last)
         
         
-        
-        label_scroll='  Welcome, Interfaz TemperatureModule has begun\n'
+        label_scroll='-------------------------------------------------------------------------\n'
+        label_scroll+='  Welcome, Interfaz TemperatureModule has begun\n'
         label_scroll+='                   Please select a folder to start\n'
         label_scroll+='-------------------------------------------------------------------------\n'
         self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
@@ -227,6 +227,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                                       QtGui.QApplication.processEvents()
                               QtGui.QApplication.processEvents()
                           plt_mgr.add( Data_2)
+                          plt_mgr.update()
                           QtGui.QApplication.processEvents()
                           close_plot = True
             elif close_plot:
@@ -568,7 +569,7 @@ class LivePlotter(object):
 
 
 
-	def update(self,time,data):
+	def update(self):
 		"""
 		After having added data to the graph data, calling update updates the plot
 		"""
