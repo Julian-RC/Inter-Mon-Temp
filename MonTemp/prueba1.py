@@ -513,9 +513,9 @@ class LivePlotter(object):
 		update(): update the plot
 	"""
 	def __init__(self):
-		self.win = pg.GraphicsWindow(title='Data')
+			self.win = pg.GraphicsWindow(title='Data')
 
-		try:
+		#try:
 			self.win = kwargs.get("win", pg.GraphicsWindow())
 			self.p = self.win.addPlot(title=Sensores_data)
 			self.p.addLegend()
@@ -529,8 +529,8 @@ class LivePlotter(object):
 			self.curva8=self.p.plot(pen=(150,0,150),name='Cernox6')
 			self.p.setRange(yRange=[50, 300])
 		
-		except Exception as e:
-			print ("Unable to initialize Live Plotter")
+		#except Exception as e:
+		#	print ("Unable to initialize Live Plotter")
 
 
 	def add(self, x):
