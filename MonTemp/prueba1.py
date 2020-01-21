@@ -31,21 +31,22 @@ import matplotlib.pyplot as plt
 
 class Dialog(QDialog,Ui_Dialog):
     def __init__(self, *args, **kwargs):
-        QDialog.__init__(self, *args, **kwargs)
-        self.setupUi(self)
-        self.setWindowTitle("About Temperature Module")
-        #app.exec_()
+        try:
+            QDialog.__init__(self, *args, **kwargs)
+            self.setupUi(self)
+            self.setWindowTitle("About Temperature Module")
+        except KeyboardInterrupt as KBI:
+            pass
         
 class Segunda(QDialog,Ui_Segunda):
     def __init__(self, *args, **kwargs):
         global Start
-        QDialog.__init__(self, *args, **kwargs)
-        self.setupUi(self)
-        self.setWindowTitle("218")
-        #self.sensor1.toggled.connect(self.datos)
-
-        #app.exec_()
- 
+        try:
+            QDialog.__init__(self, *args, **kwargs)
+            self.setupUi(self)
+            self.setWindowTitle("218")
+        except KeyboardInterrupt as KBI:
+            pass
             
         
 

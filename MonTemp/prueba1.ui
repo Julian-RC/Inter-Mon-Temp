@@ -20,10 +20,10 @@
    <widget class="QFrame" name="frame_5">
     <property name="geometry">
      <rect>
-      <x>760</x>
+      <x>740</x>
       <y>40</y>
-      <width>411</width>
-      <height>521</height>
+      <width>431</width>
+      <height>513</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -53,7 +53,7 @@
       <rect>
        <x>20</x>
        <y>50</y>
-       <width>371</width>
+       <width>401</width>
        <height>411</height>
       </rect>
      </property>
@@ -75,7 +75,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>369</width>
+        <width>399</width>
         <height>409</height>
        </rect>
       </property>
@@ -85,7 +85,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
        </property>
        <property name="geometry">
         <rect>
-         <x>350</x>
+         <x>380</x>
          <y>0</y>
          <width>21</width>
          <height>411</height>
@@ -109,14 +109,14 @@ font: 11pt &quot;Sans Serif&quot;;</string>
      </property>
      <property name="geometry">
       <rect>
-       <x>320</x>
+       <x>340</x>
        <y>480</y>
        <width>71</width>
        <height>23</height>
       </rect>
      </property>
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Stop acquisition&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#ffffff;&quot;&gt;Stop acquisition&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="styleSheet">
       <string notr="true">background-color: rgb(255, 0, 0);
@@ -132,7 +132,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
      </property>
      <property name="geometry">
       <rect>
-       <x>30</x>
+       <x>40</x>
        <y>480</y>
        <width>80</width>
        <height>23</height>
@@ -155,7 +155,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
      </property>
      <property name="geometry">
       <rect>
-       <x>140</x>
+       <x>160</x>
        <y>480</y>
        <width>161</width>
        <height>23</height>
@@ -608,7 +608,7 @@ background-color: rgb(255, 59, 25);</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>0</x>
+        <x>10</x>
         <y>100</y>
         <width>99</width>
         <height>21</height>
@@ -807,10 +807,10 @@ background-color: rgb(255, 59, 25);</string>
      </property>
      <property name="geometry">
       <rect>
-       <x>490</x>
-       <y>10</y>
-       <width>141</width>
-       <height>21</height>
+       <x>500</x>
+       <y>0</y>
+       <width>108</width>
+       <height>27</height>
       </rect>
      </property>
      <property name="font">
@@ -831,10 +831,10 @@ background-color: rgb(255, 59, 25);</string>
      </property>
      <property name="geometry">
       <rect>
-       <x>120</x>
-       <y>10</y>
-       <width>141</width>
-       <height>21</height>
+       <x>130</x>
+       <y>0</y>
+       <width>108</width>
+       <height>27</height>
       </rect>
      </property>
      <property name="font">
@@ -844,6 +844,9 @@ background-color: rgb(255, 59, 25);</string>
        <bold>true</bold>
        <kerning>true</kerning>
       </font>
+     </property>
+     <property name="toolTip">
+      <string/>
      </property>
      <property name="text">
       <string>Heater 1</string>
@@ -863,7 +866,7 @@ background-color: rgb(255, 59, 25);</string>
      <item>
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;Address:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;Address:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
       </widget>
      </item>
@@ -912,7 +915,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
       <x>10</x>
       <y>40</y>
       <width>721</width>
-      <height>281</height>
+      <height>271</height>
      </rect>
     </property>
     <property name="toolTip">
