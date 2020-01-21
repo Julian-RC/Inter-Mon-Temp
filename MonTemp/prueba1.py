@@ -221,9 +221,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                           for Obj in [DataTemp2,DataTemp]:
                               a=Obj.Last_data()
                               print('ok-2')
-                              #if a==[]:
-                               #   pass
-                              #else:
+                              if a==[]:
+                                  pass
+                              else:
                                   for algo in a:
                                       print(algo)
                                  #     Data.append(b.pop(0))
