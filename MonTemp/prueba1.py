@@ -224,8 +224,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                               #if a==[]:
                                #   pass
                               #else:
-                               #   for b in a:
-                                #      print('ok-3')
+                                  for algo in a:
+                                      print(algo)
                                  #     Data.append(b.pop(0))
                                    #   QtGui.QApplication.processEvents()
                               QtGui.QApplication.processEvents()
