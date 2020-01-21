@@ -553,22 +553,22 @@ class LivePlotter(object):
 			Status_graph = True
 			for i in range(len(self.Time_curva1)):
 					if self.Time_curva1[-1]-self.Time_curva1[0]>100:
-						np.delete(self.Data_curva1, 0)
-						np.delete(self.Data_curva2, 0)
-						np.delete(self.Data_curva3, 0)
-						np.delete(self.Data_curva4, 0)
-						np.delete(self.Data_curva5, 0)
-						np.delete(self.Data_curva6, 0)
-						np.delete(self.Data_curva7, 0)
-						np.delete(self.Data_curva8, 0)
-						np.delete(self.Time_curva1, 0)
-						np.delete(self.Time_curva2, 0)
-						np.delete(self.Time_curva3, 0)
-						np.delete(self.Time_curva4, 0)
-						np.delete(self.Time_curva5, 0)
-						np.delete(self.Time_curva6, 0)
-						np.delete(self.Time_curva7, 0)
-						np.delete(self.Time_curva8, 0)
+						self.Data_curva1 = np.delete(self.Data_curva1, 0)
+						self.Data_curva2 = np.delete(self.Data_curva2, 0)
+						self.Data_curva3 = np.delete(self.Data_curva3, 0)
+						self.Data_curva4 = np.delete(self.Data_curva4, 0)
+						self.Data_curva5 = np.delete(self.Data_curva5, 0)
+						self.Data_curva6 = np.delete(self.Data_curva6, 0)
+						self.Data_curva7 = np.delete(self.Data_curva7, 0)
+						self.Data_curva8 = np.delete(self.Data_curva8, 0)
+						self.Time_curva1 = np.delete(self.Time_curva1, 0)
+						self.Time_curva2 = np.delete(self.Time_curva2, 0)
+						self.Time_curva3 = np.delete(self.Time_curva3, 0)
+						self.Time_curva4 = np.delete(self.Time_curva4, 0)
+						self.Time_curva5 = np.delete(self.Time_curva5, 0)
+						self.Time_curva6 = np.delete(self.Time_curva6, 0)
+						self.Time_curva7 = np.delete(self.Time_curva7, 0)
+						self.Time_curva8 = np.delete(self.Time_curva8, 0)
 						Status_graph = False
 					else:
 						Status_graph = True
