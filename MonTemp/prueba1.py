@@ -226,7 +226,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                                       Data_2.append(algo)
                                       QtGui.QApplication.processEvents()
                               QtGui.QApplication.processEvents()
-                          plt_mgr.add( Data_2)
+                          plt_mgr.add(Data_2)
                           plt_mgr.update()
                           QtGui.QApplication.processEvents()
                           close_plot = True
@@ -574,14 +574,14 @@ class LivePlotter(object):
 		After having added data to the graph data, calling update updates the plot
 		"""
 		try:
-				self.curva1.setData(Time_curva1,Data_curva1)
-				self.curva2.setData(Time_curva2,Data_curva2)
-				self.curva3.setData(Time_curva3,Data_curva3)
-				self.curva4.setData(Time_curva4,Data_curva4)
-				self.curva5.setData(Time_curva5,Data_curva5)
-				self.curva6.setData(Time_curva6,Data_curva6)
-				self.curva7.setData(Time_curva7,Data_curva7)
-				self.curva8.setData(Time_curva8,Data_curva8)
+				self.curva1.setData(self.Time_curva1,self.Data_curva1)
+				self.curva2.setData(self.Time_curva2,self.Data_curva2)
+				self.curva3.setData(self.Time_curva3,self.Data_curva3)
+				self.curva4.setData(self.Time_curva4,self.Data_curva4)
+				self.curva5.setData(self.Time_curva5,self.Data_curva5)
+				self.curva6.setData(self.Time_curva6,self.Data_curva6)
+				self.curva7.setData(self.Time_curva7,self.Data_curva7)
+				self.curva8.setData(self.Time_curva8,self.Data_curva8)
 		except Exception as e:
 			pass
 
