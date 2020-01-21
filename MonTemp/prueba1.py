@@ -228,7 +228,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         
         
     def stop_adquisition(self):
-        global Start
+        global Start,label_scroll
         Start = False
         global actual,plt_mgr
         reply = QMessageBox.question(self,
@@ -339,7 +339,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.pushButton.setEnabled(True)
                 self.Todos.setEnabled(True)
                 self.radioButton.setEnabled(True)
-                label_scroll+='               Push "start" for begin adquisition\n'
+                label_scroll+='               Push "Start" for begin adquisition\n'
                 label_scroll+='-------------------------------------------------------------------------\n'
                 self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
                 self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
