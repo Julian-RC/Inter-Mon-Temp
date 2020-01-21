@@ -96,8 +96,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         
         
         label_scroll='   Welcome, Interfaz TemperatureModule has begun\n'
-        label_scroll+='       Please select a folder to start\n'
-        label_scroll+='--------------------------------------------------------\n'
+        label_scroll+='                Please select a folder to start\n'
+        label_scroll+='----------------------------------------------------------------------\n'
         self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
     def last(self):
         global label_scroll
