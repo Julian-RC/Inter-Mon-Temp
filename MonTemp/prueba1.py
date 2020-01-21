@@ -532,14 +532,14 @@ class LivePlotter(object):
 
 
 	def add(self, x):
-				self.curva1.setData(x[0][1],x[0][2])
-				self.curva2.setData(x[1][1],x[1][2])
-				self.curva3.setData(x[2][1],x[2][2])
-				self.curva4.setData(x[3][1],x[3][2])
-				self.curva5.setData(x[4][1],x[4][2])
-				self.curva6.setData(x[5][1],x[5][2])
-				self.curva7.setData(x[6][1],x[6][2])
-				self.curva8.setData(x[7][1],x[7][2])
+				self.curva1.setData(x[0][1],float(x[0][2]))
+				self.curva2.setData(x[1][1],float(x[1][2]))
+				self.curva3.setData(x[2][1],float(x[2][2]))
+				self.curva4.setData(x[3][1],float(x[3][2]))
+				self.curva5.setData(x[4][1],float(x[4][2]))
+				self.curva6.setData(x[5][1],float(x[5][2]))
+				self.curva7.setData(x[6][1],float(x[6][2]))
+				self.curva8.setData(x[7][1],float(x[7][2]))
 				pg.QtGui.QApplication.processEvents()
 
 
