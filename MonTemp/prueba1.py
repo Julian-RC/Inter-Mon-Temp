@@ -198,7 +198,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.heater_1.setEnabled(True)
         self.heater_2.setEnabled(True)
         self.lastdata.setEnabled(True)
-        label_scroll+='                              Acquisition has begun\n'
+        label_scroll+='                          Acquisition has begun\n'
         label_scroll+='-------------------------------------------------------------------------\n'
         self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
         self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
@@ -304,15 +304,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
        
         
     def buscarDirectorio(self):
+        label_scroll+='                           Wait a moment Please\n'
+        label_scroll+='-------------------------------------------------------------------------\n'
+        self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
+        self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
         global label_scroll,filename,filename2,patch
         patch = QtWidgets.QFileDialog.getExistingDirectory(self, 'Buscar Carpeta', QtCore.QDir.homePath())
         if patch:
-            label_scroll+='                               Wait a moment Please\n'
-            label_scroll+='-------------------------------------------------------------------------\n'
-            self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
-            self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
-        if patch:
-            label_scroll+='                                  Selected folder\n'
+            label_scroll+='                               Selected folder\n'
             label_scroll+='-------------------------------------------------------------------------\n'
             self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
             self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
@@ -336,7 +335,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.pushButton.setEnabled(True)
                 self.Todos.setEnabled(True)
                 self.radioButton.setEnabled(True)
-                label_scroll+='                      Push "start" for begin adquisition\n'
+                label_scroll+='               Push "start" for begin adquisition\n'
                 label_scroll+='-------------------------------------------------------------------------\n'
                 self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
                 self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
@@ -345,6 +344,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 label_scroll+='-------------------------------------------------------------------------\n'
                 self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
                 self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
+        else:
+            label_scroll+='                               Selected folder\n'
+            label_scroll+='-------------------------------------------------------------------------\n'
+            self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
+            self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
         pg.QtGui.QApplication.processEvents()
             
             
