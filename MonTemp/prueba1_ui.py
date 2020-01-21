@@ -70,6 +70,7 @@ class Ui_MainWindow(object):
         self.label_6.setObjectName("label_6")
         self.frame_7 = QtWidgets.QFrame(self.frame_6)
         self.frame_7.setGeometry(QtCore.QRect(10, 30, 341, 181))
+        self.frame_7.setToolTip("")
         self.frame_7.setStyleSheet("background-color: rgb(121, 150, 255);\n"
 "font: 12pt \"Sans Serif\";")
         self.frame_7.setFrameShape(QtWidgets.QFrame.StyledPanel)
@@ -159,6 +160,7 @@ class Ui_MainWindow(object):
         self.Off_1.raise_()
         self.frame_8 = QtWidgets.QFrame(self.frame_6)
         self.frame_8.setGeometry(QtCore.QRect(370, 30, 341, 181))
+        self.frame_8.setToolTip("")
         self.frame_8.setStyleSheet("font: 11pt \"Sans Serif\";\n"
 "background-color: rgb(255, 59, 25);")
         self.frame_8.setFrameShape(QtWidgets.QFrame.StyledPanel)
@@ -289,6 +291,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addWidget(self.SeeData)
         self.frame_4 = QtWidgets.QFrame(self.centralwidget)
         self.frame_4.setGeometry(QtCore.QRect(10, 40, 721, 281))
+        self.frame_4.setToolTip("")
         self.frame_4.setStyleSheet("\n"
 "background-color: rgb(85, 85, 127);")
         self.frame_4.setFrameShape(QtWidgets.QFrame.StyledPanel)
@@ -475,7 +478,6 @@ class Ui_MainWindow(object):
         self.lastdata.setText(_translate("MainWindow", "See last data"))
         self.frame_6.setToolTip(_translate("MainWindow", "<html><head/><body><p><br/></p></body></html>"))
         self.label_6.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt; color:#00ffff;\">Control</span></p></body></html>"))
-        self.frame_7.setToolTip(_translate("MainWindow", "<html><head/><body><p><br/></p></body></html>"))
         self.frame_7.setWhatsThis(_translate("MainWindow", "<html><head/><body><p>Heater 1</p></body></html>"))
         self.label_7.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:12pt;\">Set Point:</span></p></body></html>"))
         self.label_9.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:12pt;\">Ramp:</span></p><p><br/></p></body></html>"))
@@ -491,7 +493,6 @@ class Ui_MainWindow(object):
         self.range_automatic_1.setText(_translate("MainWindow", "Automatic "))
         self.Off_1.setToolTip(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:12pt;\">Off Heater 1</span></p></body></html>"))
         self.Off_1.setText(_translate("MainWindow", "Off"))
-        self.frame_8.setToolTip(_translate("MainWindow", "<html><head/><body><p><br/></p></body></html>"))
         self.frame_8.setWhatsThis(_translate("MainWindow", "<html><head/><body><p><br/></p></body></html>"))
         self.label_8.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:12pt;\">Set Point:</span></p></body></html>"))
         self.label_11.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:12pt;\">Ramp:</span></p><p><br/></p></body></html>"))
@@ -514,7 +515,6 @@ class Ui_MainWindow(object):
         self.directorio.setText(_translate("MainWindow", "..."))
         self.SeeData.setToolTip(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:12pt;\">See data</span></p></body></html>"))
         self.SeeData.setText(_translate("MainWindow", "See Data"))
-        self.frame_4.setToolTip(_translate("MainWindow", "<html><head/><body><p><br/></p></body></html>"))
         self.label.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:14pt;\">Type</span></p></body></html>"))
         self.grafica1.setText(_translate("MainWindow", "Plot with refresh"))
         self.grafica2.setText(_translate("MainWindow", "Plot without refresh"))
