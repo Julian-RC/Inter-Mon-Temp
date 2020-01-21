@@ -6,13 +6,11 @@ from pyqtgraph import QtGui, QtCore
 from PyQt5.QtWidgets import QDialog,QMessageBox,QLabel
 import pyqtgraph as pg
 from numpy import roll,append
-from random import *
 import serial
 import sys
 import time
 import collections
 import numpy as np
-from random import *
 # Se importa el objeto Figure de Matplotlib 
 from matplotlib.figure import Figure
 #Se importa QT4Agg como Canvas.
@@ -552,6 +550,29 @@ class LivePlotter(object):
 
 
 	def add(self, x):
+			for i in range(Time_curva1)
+					if Time_curva1[0][1]-Time_curva1[0][-1]>100:
+						np.delete(self.Data_curva1, 0)
+						np.delete(self.Data_curva2, 0)
+						np.delete(self.Data_curva3, 0)
+						np.delete(self.Data_curva4, 0)
+						np.delete(self.Data_curva5, 0)
+						np.delete(self.Data_curva6, 0)
+						np.delete(self.Data_curva7, 0)
+						np.delete(self.Data_curva8, 0)
+						np.delete(self.Time_curva1, 0)
+						np.delete(self.Time_curva2, 0)
+						np.delete(self.Time_curva3, 0)
+						np.delete(self.Time_curva4, 0)
+						np.delete(self.Time_curva5, 0)
+						np.delete(self.Time_curva6, 0)
+						np.delete(self.Time_curva7, 0)
+						np.delete(self.Time_curva8, 0)
+						Status_graph = False
+					else:
+						Status_graph = True
+					pg.QtGui.QApplication.processEvents()
+			if Status_graph:
 				self.Data_curva1.append(float(x[0][2]))
 				self.Data_curva2.append(float(x[1][2]))
 				self.Data_curva3.append(float(x[2][2]))
@@ -568,8 +589,11 @@ class LivePlotter(object):
 				self.Time_curva6.append(x[5][1])
 				self.Time_curva7.append(x[6][1])
 				self.Time_curva8.append(x[7][1])
-
-				pg.QtGui.QApplication.processEvents()
+				self.update()
+			else:
+				global actual
+				actual = False
+			pg.QtGui.QApplication.processEvents()
 
 
 
