@@ -547,7 +547,7 @@ class LivePlotter(object):
 
 
 	def add(self, x):
-			self.Data_curva1.append(float(x[0][2]))
+				self.Data_curva1.append(float(x[0][2]))
 				self.Data_curva2.append(float(x[1][2]))
 				self.Data_curva3.append(float(x[2][2]))
 				self.Data_curva4.append(float(x[3][2]))
