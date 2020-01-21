@@ -572,6 +572,7 @@ class LivePlotter(object):
 						Status_graph = False
 					else:
 						Status_graph = True
+						break
 					pg.QtGui.QApplication.processEvents()
 			if Status_graph:
 				self.Data_curva1.append(float(x[0][2]))
