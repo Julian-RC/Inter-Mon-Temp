@@ -180,7 +180,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             RANGE_2 = True
         
     def start_adquisition(self):
-        global Start,actual, filename, label_scroll
+        global Start,actual, filename, label_scroll,status_heater_1
         Start,actual = True,False
         DataTemp2.Read_335('SETP?','1')
         DataTemp2.Read_335('SETP?','2')
@@ -236,9 +236,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
                               plt_mgr.close()
                               close_plot = False
-                    
-        
-        
+            if status_heater_1:
+                            label_heater_1 = '-------------------------\n'
+                            label_heater_1 += '     Print      \n'
+                            label_heater_1 = '-------------------------\n'
+                            self.status_1.setWidget(QtWidgets.QLabel(label_scroll))
+                            self.status_1.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
+
     def stop_adquisition(self):
         global Start,label_scroll
         Start = False
@@ -478,6 +482,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def desbloquear_seeStatus_1(self):
         if self.seeStatus_1.isChecked():
             self.status_1.setEnabled(True)
+            global status_heater_1,label_heater_1
+            status_heater_1 = True
+            label_heater_1 = '-------------------------\n'
+            label_heater_1 += '     Status Heater 1      \n'
+            label_heater_1 = '-------------------------\n'
+            self.status_1.setWidget(QtWidgets.QLabel(label_scroll))
+            self.status_1.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
     def desbloquear_seeStatus_2(self):
         if self.seeStatus_2.isChecked():
             self.status_2.setEnabled(True)
