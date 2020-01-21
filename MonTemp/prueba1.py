@@ -514,9 +514,7 @@ class LivePlotter(object):
 	"""
 	def __init__(self):
 			self.win = pg.GraphicsWindow(title='Data')
-
-		#try:
-			self.win = kwargs.get("win", pg.GraphicsWindow())
+#app = QtGui.QApplication([])
 			self.p = self.win.addPlot(title=Sensores_data)
 			self.p.addLegend()
 			self.curva1=self.p.plot(pen=(150,0,0),name='CernoxA')
