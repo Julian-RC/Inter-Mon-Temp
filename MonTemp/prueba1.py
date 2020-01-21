@@ -219,7 +219,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                           Data = []
                           for Obj in [DataTemp2,DataTemp]:
                               a=Obj.Last_data()
-                              if a=[]:
+                              if a==[]:
                                   pass
                               else:
                                   for b in a:
