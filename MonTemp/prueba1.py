@@ -539,9 +539,10 @@ class LivePlotter(object):
 	def add(self, x):
 		i=0
 		curvas=[self.curva1,self.curva2,self.curva3,self.curva4,self.curva5,self.curva6,self.curva7,self.curva8]
-		for i in range(8):
-				curvas[i].setData(x[i][1],x[i][2])
+		for curva in curvas:
+				curvas.setData(x[i][1],x[i][2])
 				pg.QtGui.QApplication.processEvents()
+				i += 1
 
 
 
