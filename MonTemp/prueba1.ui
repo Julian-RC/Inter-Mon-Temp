@@ -182,7 +182,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
      </rect>
     </property>
     <property name="toolTip">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string/>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(11, 93, 148);</string>
@@ -485,7 +485,7 @@ font: 12pt &quot;Sans Serif&quot;;</string>
        </rect>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Off Heater 1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Off Heater 1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(162, 42, 44);</string>
@@ -752,7 +752,7 @@ background-color: rgb(255, 59, 25);</string>
        </rect>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Off Heater 2&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#ffffff;&quot;&gt;Off Heater 2&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(163, 0, 2);</string>
