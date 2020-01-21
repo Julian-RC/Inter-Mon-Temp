@@ -221,11 +221,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                               a=Obj.Last_data()
                               for b in a:
                                       Data.append(b.pop(0))
-                          plt_mgr.add("Sensores", Data)
+                         # plt_mgr.add("Sensores", Data)
                           QtGui.QApplication.processEvents()
                           close_plot = True
             elif close_plot:
-                              plt_mgr.close()
+                              global plt_mgr
+                            #  plt_mgr.close()
                               close_plot = False
                     
         
@@ -483,7 +484,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if self.grafica1.isChecked():
             global plt_mgr
             actual, close_plot = True, False
-            plt_mgr = PlotManager(title="Plots", nline=1)
+            #plt_mgr = PlotManager(title="Plots", nline=1)
         #print(self.timeEdit.setTime(QtCore.QTime('')))
 
         
