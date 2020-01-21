@@ -546,7 +546,6 @@ class LivePlotter(object):
 				self.curva7.setData(x[6][1],x[6][2])
 				self.curva8.setData(x[7][1],x[7][2])
 				pg.QtGui.QApplication.processEvents()
-				i += 1
 
 
 
