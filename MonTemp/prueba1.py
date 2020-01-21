@@ -219,8 +219,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                           Data = []
                           for Obj in [DataTemp2,DataTemp]:
                               a=Obj.Last_data()
+                              QtGui.QApplication.processEvents()
                               for b in a:
-                                      Data.append(b.pop(0))
+                                  Data.append(b.pop(0))
+                                  QtGui.QApplication.processEvents()
                          # plt_mgr.add("Sensores", Data)
                           QtGui.QApplication.processEvents()
                           close_plot = True
