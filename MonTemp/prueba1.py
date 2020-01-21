@@ -215,10 +215,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
                     self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
             if actual:
-                          global curva1, curva2,curva3, curva4,curva5, curva6,curva7, curva8
                           global plt_mgr, close_plot
-                          plt_mgr.add("Sensores", random())
-                          plt_mgr.update()
+                          Data = []
+                          for Obj in [DataTemp2,DataTemp]:
+                              a=Obj.Last_data()
+                                  for b in a:
+                                      Data.append(b.pop(0))
+                          plt_mgr.add("Sensores", Data)
                           QtGui.QApplication.processEvents()
                           close_plot = True
             elif close_plot:
@@ -263,7 +266,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                                     self.heater_2.setChecked(False)
                                     self.off_heater_1()
                                     self.off_heater_2()
-                                    label_scroll+='                          Acquisition has stopped\n'
+                                    label_scroll+='                        Acquisition has stopped\n'
                                     label_scroll+='-------------------------------------------------------------------------\n'
                                     self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
                                     self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
@@ -471,11 +474,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.status_2.setEnabled(True)
     def graficar(self):
         global actual,close_plot,DataTemp, DataTemp2
-      #  for Obj in [DataTemp,DataTemp2]:
-       #     #primero van 1-6, despues 1-2
-        #    a=Obj.Last_data()
-         #   for b in a:
-          #      b.pop(0)
+
            #     print(b)
         if self.grafica2.isChecked():
             actual = False
@@ -533,13 +532,13 @@ class LivePlotter(object):
 			print ("Unable to initialize Live Plotter")
 
 
-	def add(self, y, x=None):
-		"""
-		Adds data to the plot
-		If x is None, will take time for x axis
-		"""
-		self.x += [x]
-		self.y += [y]
+	def add(self, x):
+		i=0
+		curvas=[self.curva1,self.curva2,self.curva3,self.curva4,self.curva5,self.curva6,self.curva7,self.curva8]
+		for i in range(8):
+				curvas[i].setData(x[i])
+				pg.QtGui.QApplication.processEvents()
+
 
 
 	def update(self,time,data):
@@ -599,7 +598,7 @@ class PlotManager(object):
 		except Exception as e:
 			print ("Unable to initialize Plot Manager")
 
-	def add(self, name, y, x=None, **kwargs):
+	def add(self, name, data):
 		"""
 		Adds data x, y to the data of the variable with name name.
 		"""
@@ -614,7 +613,7 @@ class PlotManager(object):
 					win=self.win,
 					**kwargs)
 
-			self.plots[name].add(y, x)
+			self.plots[name].add(data)
 		except Exception as e:
 			pass
 
