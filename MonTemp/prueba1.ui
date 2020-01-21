@@ -215,7 +215,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
        <x>10</x>
        <y>30</y>
        <width>341</width>
-       <height>181</height>
+       <height>191</height>
       </rect>
      </property>
      <property name="toolTip">
@@ -358,7 +358,7 @@ font: 12pt &quot;Sans Serif&quot;;</string>
         <x>120</x>
         <y>90</y>
         <width>221</width>
-        <height>51</height>
+        <height>61</height>
        </rect>
       </property>
       <property name="toolTip">
@@ -376,7 +376,7 @@ font: 12pt &quot;Sans Serif&quot;;</string>
          <x>0</x>
          <y>0</y>
          <width>219</width>
-         <height>49</height>
+         <height>59</height>
         </rect>
        </property>
        <widget class="QScrollBar" name="verticalScrollBar_2">
@@ -385,7 +385,7 @@ font: 12pt &quot;Sans Serif&quot;;</string>
           <x>200</x>
           <y>0</y>
           <width>20</width>
-          <height>51</height>
+          <height>71</height>
          </rect>
         </property>
         <property name="styleSheet">
@@ -403,8 +403,8 @@ font: 12pt &quot;Sans Serif&quot;;</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>220</x>
-        <y>150</y>
+        <x>210</x>
+        <y>160</y>
         <width>80</width>
         <height>23</height>
        </rect>
@@ -479,7 +479,7 @@ font: 12pt &quot;Sans Serif&quot;;</string>
       <property name="geometry">
        <rect>
         <x>60</x>
-        <y>150</y>
+        <y>160</y>
         <width>80</width>
         <height>23</height>
        </rect>
@@ -494,6 +494,38 @@ font: 12pt &quot;Sans Serif&quot;;</string>
        <string>Off</string>
       </property>
      </widget>
+     <widget class="QRadioButton" name="heater_1">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>110</x>
+        <y>0</y>
+        <width>108</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Sans Serif</family>
+        <pointsize>14</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="toolTip">
+       <string/>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 14pt &quot;Sans Serif&quot;;
+color: rgb(255, 255, 255);</string>
+      </property>
+      <property name="text">
+       <string>Heater 1</string>
+      </property>
+     </widget>
      <zorder>label_10</zorder>
      <zorder>frame_9</zorder>
      <zorder>setPoint_num_1</zorder>
@@ -505,6 +537,7 @@ font: 12pt &quot;Sans Serif&quot;;</string>
      <zorder>status_1</zorder>
      <zorder>update_1</zorder>
      <zorder>Off_1</zorder>
+     <zorder>heater_1</zorder>
     </widget>
     <widget class="QFrame" name="frame_8">
      <property name="geometry">
@@ -512,7 +545,7 @@ font: 12pt &quot;Sans Serif&quot;;</string>
        <x>370</x>
        <y>30</y>
        <width>341</width>
-       <height>181</height>
+       <height>191</height>
       </rect>
      </property>
      <property name="toolTip">
@@ -627,7 +660,7 @@ background-color: rgb(255, 59, 25);</string>
         <x>110</x>
         <y>90</y>
         <width>231</width>
-        <height>51</height>
+        <height>61</height>
        </rect>
       </property>
       <property name="toolTip">
@@ -645,7 +678,7 @@ background-color: rgb(255, 59, 25);</string>
          <x>0</x>
          <y>0</y>
          <width>229</width>
-         <height>49</height>
+         <height>59</height>
         </rect>
        </property>
        <widget class="QScrollBar" name="verticalScrollBar_3">
@@ -654,7 +687,7 @@ background-color: rgb(255, 59, 25);</string>
           <x>210</x>
           <y>0</y>
           <width>20</width>
-          <height>51</height>
+          <height>61</height>
          </rect>
         </property>
         <property name="styleSheet">
@@ -672,8 +705,8 @@ background-color: rgb(255, 59, 25);</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>210</x>
-        <y>150</y>
+        <x>220</x>
+        <y>160</y>
         <width>80</width>
         <height>23</height>
        </rect>
@@ -746,7 +779,7 @@ background-color: rgb(255, 59, 25);</string>
       <property name="geometry">
        <rect>
         <x>60</x>
-        <y>150</y>
+        <y>160</y>
         <width>80</width>
         <height>23</height>
        </rect>
@@ -789,6 +822,34 @@ background-color: rgb(255, 59, 25);</string>
        </property>
       </item>
      </widget>
+     <widget class="QRadioButton" name="heater_2">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>130</x>
+        <y>0</y>
+        <width>131</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>16</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+        <kerning>true</kerning>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 16pt &quot;Sans Serif&quot;;
+color: rgb(255, 255, 255);</string>
+      </property>
+      <property name="text">
+       <string>Heater 2</string>
+      </property>
+     </widget>
      <zorder>label_12</zorder>
      <zorder>frame_10</zorder>
      <zorder>seeStatus_2</zorder>
@@ -800,57 +861,7 @@ background-color: rgb(255, 59, 25);</string>
      <zorder>update_2</zorder>
      <zorder>Off_2</zorder>
      <zorder>range_2</zorder>
-    </widget>
-    <widget class="QRadioButton" name="heater_2">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>500</x>
-       <y>0</y>
-       <width>108</width>
-       <height>27</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>16</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-       <kerning>true</kerning>
-      </font>
-     </property>
-     <property name="text">
-      <string>Heater 2</string>
-     </property>
-    </widget>
-    <widget class="QRadioButton" name="heater_1">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>130</x>
-       <y>0</y>
-       <width>108</width>
-       <height>27</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>16</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-       <kerning>true</kerning>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string/>
-     </property>
-     <property name="text">
-      <string>Heater 1</string>
-     </property>
+     <zorder>heater_2</zorder>
     </widget>
    </widget>
    <widget class="QWidget" name="layoutWidget">
