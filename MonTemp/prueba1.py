@@ -523,13 +523,13 @@ class LivePlotter(object):
 			self.p = self.win.addPlot(title='Sensores_data')
 			self.p.addLegend()
 			self.curva1=self.p.plot(pen=(255,255,255),name='CernoxA')
-			self.curva2=self.p.plot(pen=(0,226,226),name='CernoxB')
+			self.curva2=self.p.plot(pen=(0,226,250),name='CernoxB')
 			self.curva3=self.p.plot(pen=(255,255,0),name='Diodo1')
 			self.curva4=self.p.plot(pen=(255,85,150),name='Diodo2')
 			self.curva5=self.p.plot(pen=(0,255,0),name='Diodo3')
 			self.curva6=self.p.plot(pen=(0,0,255),name='Diodo4')
-			self.curva7=self.p.plot(pen=(218,108,163),name='Cernox5')
-			self.curva8=self.p.plot(pen=(84,218,214),name='Cernox6')
+			self.curva7=self.p.plot(pen=(255,108,163),name='Cernox5')
+			self.curva8=self.p.plot(pen=(84,18,214),name='Cernox6')
 			self.p.setRange(yRange=[50, 300])
 			self.Data_curva1=[]
 			self.Data_curva2=[]
