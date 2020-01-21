@@ -992,7 +992,7 @@ def AverageFunction(Data,AverageStr,Sensors):
     #    print('ERROR: "Average" of the configuration file must be an integer.')
      #   QtGui.QApplication.processEvents() 
     
-    return AvgData, AvgDataStr
+        return AvgData, AvgDataStr
 
 #----------------------------------------------------------
 #Esta función se encarga de imprimir los datos
