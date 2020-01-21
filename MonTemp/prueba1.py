@@ -197,19 +197,25 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.heater_2.setEnabled(True)
         self.lastdata.setEnabled(True)
         while Start:
+            try:
                     DataTemp.GetData()
                     QtGui.QApplication.processEvents() 
                     QtGui.QApplication.processEvents()
                     if DataTemp.InitTime != 0: DataTemp2.InitTime = DataTemp.InitTime
                     DataTemp2.GetData()    
                     QtGui.QApplication.processEvents()
-                    if actual:
+            except:
+                    label_scroll += 'Error en la adquisición'
+                    self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
+                    self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
+            if actual:
+                          global curva1, curva2,curva3, curva4,curva5, curva6,curva7, curva8
                           global plt_mgr, close_plot
                           plt_mgr.add("Sensores", random())
                           plt_mgr.update()
                           QtGui.QApplication.processEvents()
                           close_plot = True
-                    elif close_plot:
+            elif close_plot:
                               plt_mgr.close()
                               close_plot = False
                     
@@ -292,7 +298,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
        
         
     def buscarDirectorio(self):
-        global DataTemp,DataTemp2, label_scroll,filename,filename2,patch
+        global label_scroll,filename,filename2,patch
         patch = QtWidgets.QFileDialog.getExistingDirectory(self, 'Buscar Carpeta', QtCore.QDir.homePath())
         if patch:
             self.linePatch.setText(patch) 
@@ -303,11 +309,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.pushButton.setEnabled(True)
             self.Todos.setEnabled(True)
             self.radioButton.setEnabled(True)
-            label_scroll+='Selected folder\n'
+            label_scroll+='Please selected folder\n'
             label_scroll+='No data\n'
             label_scroll+='Check Config_file\n'
             label_scroll+='Push "start" for begin adquisition\n'
             self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
+            self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
             path = os.path.realpath(__file__).strip('prueba1.py') 
             config_filename = path + "cfg/file_218.cfg"
             config_filename2 = path + "cfg/file_335.cfg"
@@ -317,7 +324,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             os.system('cd && cd '+patch+' && chmod 777 file_335.cfg')
             filename = patch + '/file_218.cfg'
             filename2 = patch + '/file_335.cfg'
-            Update_Config()
+            try:
+                Update_Config()
+            except:
+                label_scroll += 'Error al cargar la configuración de los modulos'
+                self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
+                self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
         pg.QtGui.QApplication.processEvents()
             
             
@@ -370,8 +382,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.D3.setEnabled(True)
             self.D4.setEnabled(True)
     def desbloquear_heater_1(self):
+        global label_scroll 
         if self.heater_1.isChecked():
-            self.On_335_1()
+            try:
+                self.On_335_1()
+            except:
+                label_scroll += 'Error al cargar Heater 1'
+                self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
+                self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
             self.setPoint_num_1.setEnabled(True)
             self.ramp_1.setEnabled(True)
             self.range_automatic_1.setEnabled(True)
@@ -388,8 +406,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.update_1.setEnabled(False)
             self.Off_1.setEnabled(False)
     def desbloquear_heater_2(self):
+        global label_scroll
         if self.heater_2.isChecked():
-            self.On_335_2()
+            try:
+                self.On_335_2()
+            except:
+                label_scroll += 'Error al cargar Heater 2'
+                self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
+                self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
             self.setPoint_num_2.setEnabled(True)
             self.ramp_2.setEnabled(True)
             self.range_automatic_2.setEnabled(True)
@@ -424,12 +448,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.status_2.setEnabled(True)
     def graficar(self):
         global actual,close_plot,DataTemp, DataTemp2
-        for Obj in [DataTemp,DataTemp2]:
-            #primero van 1-6, despues 1-2
-            a=Obj.Last_data()
-            for b in a:
-                b.pop(0)
-                print(b)
+      #  for Obj in [DataTemp,DataTemp2]:
+       #     #primero van 1-6, despues 1-2
+        #    a=Obj.Last_data()
+         #   for b in a:
+          #      b.pop(0)
+           #     print(b)
         if self.grafica2.isChecked():
             actual = False
             #for Obj in [DataTemp,DataTemp2]:
@@ -463,7 +487,7 @@ class LivePlotter(object):
 		update(): update the plot
 	"""
 	def __init__(self, **kwargs):
-		#global curva1, curva2,curva3, curva4,curva5, curva6,curva7, curva8
+		global curva1, curva2,curva3, curva4,curva5, curva6,curva7, curva8
 		self.name = kwargs.get("name", "live_plotter")
 		self.x, self.y = [], []
 
@@ -1300,7 +1324,7 @@ class ConfigModule:
 
 #filename = sys.argv[1]
 #filename = sys.argv[2]
-global  label_scrol,Start,close_plot
+global  label_scroll,Start,close_plot
 
 #Menu = CommandLine()
 label_scroll,Start,close_plot= '', False, False
