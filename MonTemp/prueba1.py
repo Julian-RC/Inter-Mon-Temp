@@ -214,7 +214,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     label_scroll += '                             Error en la adquisición'
                     self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
                     self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
-            print('ok-1')
             if actual:
                           global plt_mgr, close_plot
                           Data_2 = []
@@ -225,13 +224,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                                   pass
                               else:
                                   for algo in a:
-                                      Data_2.append(algo.pop(0))
+                                      Data_2.append(algo)
                                       QtGui.QApplication.processEvents()
                               QtGui.QApplication.processEvents()
                           plt_mgr.add("Sensores", Data_2)
                           QtGui.QApplication.processEvents()
                           close_plot = True
             elif close_plot:
+
                               plt_mgr.close()
                               close_plot = False
                     
