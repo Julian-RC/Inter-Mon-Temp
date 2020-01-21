@@ -217,7 +217,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             print('ok-1')
             if actual:
                           global plt_mgr, close_plot
-                          Data = []
+                          Data_2 = []
                           for Obj in [DataTemp2,DataTemp]:
                               a=Obj.Last_data()
                               print('ok-2')
@@ -226,10 +226,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                               else:
                                   for algo in a:
                                       print(algo)
-                                 #     Data.append(b.pop(0))
-                                   #   QtGui.QApplication.processEvents()
+                                      Data_2.append(b.pop(0))
+                                      QtGui.QApplication.processEvents()
                               QtGui.QApplication.processEvents()
-                         # plt_mgr.add("Sensores", Data)
+                          plt_mgr.add("Sensores", Data_2)
                           QtGui.QApplication.processEvents()
                           close_plot = True
             elif close_plot:
@@ -487,12 +487,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
            #     print(b)
         if self.grafica2.isChecked():
             actual = False
-            #for Obj in [DataTemp,DataTemp2]:
-             #   Obj.Plot(Obj.DataSerie)
         if self.grafica1.isChecked():
             global plt_mgr
             actual, close_plot = True, False
-            #plt_mgr = PlotManager(title="Plots", nline=1)
+            plt_mgr = PlotManager(title="Plots", nline=1)
         #print(self.timeEdit.setTime(QtCore.QTime('')))
 
         
@@ -983,19 +981,19 @@ def AverageFunction(Data,AverageStr,Sensors):
             for Num in range(DataLen-AverageInt,DataLen):
                 AvgData[Num2+1][0] += Data[Num][Num2][1]
                 AvgData[Num2+1][1] += float(Data[Num][Num2][2])
-                #QtGui.QApplication.processEvents() 
+                QtGui.QApplication.processEvents() 
 
             AvgData[Num2+1][0] /= AverageInt
             AvgData[Num2+1][1] /= AverageInt
             TProm += AvgData[Num2+1][0] / LenSens
-            #QtGui.QApplication.processEvents() 
+            QtGui.QApplication.processEvents() 
               
         AvgDataStr += str(TProm) + '\t'
         for Num2 in range(LenSens):
             AvgDataStr += '{}'.format(float(AvgData[Num2+1][1])) + '\t'
-            #QtGui.QApplication.processEvents() 
+            QtGui.QApplication.processEvents() 
         AvgDataStr += '\n'
-        #QtGui.QApplication.processEvents() 
+        QtGui.QApplication.processEvents() 
 
     except:
         print('ERROR: "Average" of the configuration file must be an integer.')
