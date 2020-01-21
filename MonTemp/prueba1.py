@@ -980,19 +980,19 @@ def AverageFunction(Data,AverageStr,Sensors):
             for Num in range(DataLen-AverageInt,DataLen):
                 AvgData[Num2+1][0] += Data[Num][Num2][1]
                 AvgData[Num2+1][1] += float(Data[Num][Num2][2])
-                QtGui.QApplication.processEvents() 
+                #QtGui.QApplication.processEvents() 
 
             AvgData[Num2+1][0] /= AverageInt
             AvgData[Num2+1][1] /= AverageInt
             TProm += AvgData[Num2+1][0] / LenSens
-            QtGui.QApplication.processEvents() 
+            #QtGui.QApplication.processEvents() 
               
         AvgDataStr += str(TProm) + '\t'
         for Num2 in range(LenSens):
             AvgDataStr += '{}'.format(float(AvgData[Num2+1][1])) + '\t'
-            QtGui.QApplication.processEvents() 
+            #QtGui.QApplication.processEvents() 
         AvgDataStr += '\n'
-        QtGui.QApplication.processEvents() 
+        #QtGui.QApplication.processEvents() 
 
     except:
         print('ERROR: "Average" of the configuration file must be an integer.')
