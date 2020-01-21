@@ -551,29 +551,29 @@ class LivePlotter(object):
 
 	def add(self, x):
 			Status_graph = True
-			for i in range(len(self.Time_curva1)):
-					if self.Time_curva1[-1]-self.Time_curva1[0]>100:
-						self.Data_curva1 = np.delete(self.Data_curva1, 0)
-						self.Data_curva2 = np.delete(self.Data_curva2, 0)
-						self.Data_curva3 = np.delete(self.Data_curva3, 0)
-						self.Data_curva4 = np.delete(self.Data_curva4, 0)
-						self.Data_curva5 = np.delete(self.Data_curva5, 0)
-						self.Data_curva6 = np.delete(self.Data_curva6, 0)
-						self.Data_curva7 = np.delete(self.Data_curva7, 0)
-						self.Data_curva8 = np.delete(self.Data_curva8, 0)
-						self.Time_curva1 = np.delete(self.Time_curva1, 0)
-						self.Time_curva2 = np.delete(self.Time_curva2, 0)
-						self.Time_curva3 = np.delete(self.Time_curva3, 0)
-						self.Time_curva4 = np.delete(self.Time_curva4, 0)
-						self.Time_curva5 = np.delete(self.Time_curva5, 0)
-						self.Time_curva6 = np.delete(self.Time_curva6, 0)
-						self.Time_curva7 = np.delete(self.Time_curva7, 0)
-						self.Time_curva8 = np.delete(self.Time_curva8, 0)
-						Status_graph = False
-					else:
-						Status_graph = True
-						break
-					pg.QtGui.QApplication.processEvents()
+			#for i in range(len(self.Time_curva1)):
+			#		if self.Time_curva1[-1]-self.Time_curva1[0]>100:
+			#			self.Data_curva1 = np.delete(self.Data_curva1, 0)
+			#			self.Data_curva2 = np.delete(self.Data_curva2, 0)
+			#			self.Data_curva3 = np.delete(self.Data_curva3, 0)
+			#			self.Data_curva4 = np.delete(self.Data_curva4, 0)
+			#			self.Data_curva5 = np.delete(self.Data_curva5, 0)
+			#			self.Data_curva6 = np.delete(self.Data_curva6, 0)
+			#			self.Data_curva7 = np.delete(self.Data_curva7, 0)
+			#			self.Data_curva8 = np.delete(self.Data_curva8, 0)
+			#			self.Time_curva1 = np.delete(self.Time_curva1, 0)
+			#			self.Time_curva2 = np.delete(self.Time_curva2, 0)
+			#			self.Time_curva3 = np.delete(self.Time_curva3, 0)
+			#			self.Time_curva4 = np.delete(self.Time_curva4, 0)
+			#			self.Time_curva5 = np.delete(self.Time_curva5, 0)
+			#			self.Time_curva6 = np.delete(self.Time_curva6, 0)
+			#			self.Time_curva7 = np.delete(self.Time_curva7, 0)
+			#			self.Time_curva8 = np.delete(self.Time_curva8, 0)
+			#			Status_graph = False
+			#		else:
+			#			Status_graph = True
+			#			break
+			#		pg.QtGui.QApplication.processEvents()
 			if Status_graph:
 				self.Data_curva1.append(float(x[0][2]))
 				self.Data_curva2.append(float(x[1][2]))
