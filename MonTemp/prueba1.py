@@ -530,7 +530,6 @@ class LivePlotter(object):
 			self.curva7=self.p.plot(pen=(150,0,75),name='Cernox5')
 			self.curva8=self.p.plot(pen=(150,0,150),name='Cernox6')
 			self.p.setRange(yRange=[50, 300])
-			self.plot = self.p.plot(self.x, self.y)
 		
 		except Exception as e:
 			print ("Unable to initialize Live Plotter")
