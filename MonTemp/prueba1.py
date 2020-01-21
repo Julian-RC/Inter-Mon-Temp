@@ -237,9 +237,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                               plt_mgr.close()
                               close_plot = False
             if status_heater_1:
-                            label_heater_1 = '-------------------------\n'
+                            label_heater_1 += '-------------------------\n'
                             label_heater_1 += '     Print      \n'
-                            label_heater_1 = '-------------------------\n'
+                            label_heater_1 += '-------------------------\n'
                             self.status_1.setWidget(QtWidgets.QLabel(label_heater_1))
                             self.status_1.verticalScrollBar().setValue(self.status_1.verticalScrollBar().maximum())
 
@@ -486,7 +486,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             status_heater_1 = True
             label_heater_1 = '-------------------------\n'
             label_heater_1 += '     Status Heater 1      \n'
-            label_heater_1 = '-------------------------\n'
+            label_heater_1 += '-------------------------\n'
             self.status_1.setWidget(QtWidgets.QLabel(label_heater_1))
             self.status_1.verticalScrollBar().setValue(self.status_1.verticalScrollBar().maximum())
     def desbloquear_seeStatus_2(self):
