@@ -219,7 +219,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                           Data = []
                           for Obj in [DataTemp2,DataTemp]:
                               a=Obj.Last_data()
-                                  for b in a:
+                              for b in a:
                                       Data.append(b.pop(0))
                           plt_mgr.add("Sensores", Data)
                           QtGui.QApplication.processEvents()
