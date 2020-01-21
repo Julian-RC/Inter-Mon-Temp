@@ -241,7 +241,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                             label_heater_1 += '     Print      \n'
                             label_heater_1 = '-------------------------\n'
                             self.status_1.setWidget(QtWidgets.QLabel(label_heater_1))
-                            self.status_1.verticalScrollBar_2().setValue(self.status_1.verticalScrollBar_2().maximum())
+                            self.status_1.verticalScrollBar().setValue(self.status_1.verticalScrollBar().maximum())
 
     def stop_adquisition(self):
         global Start,label_scroll
@@ -488,7 +488,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             label_heater_1 += '     Status Heater 1      \n'
             label_heater_1 = '-------------------------\n'
             self.status_1.setWidget(QtWidgets.QLabel(label_heater_1))
-            self.status_1.verticalScrollBar_2().setValue(self.status_1.verticalScrollBar_2().maximum())
+            self.status_1.verticalScrollBar().setValue(self.status_1.verticalScrollBar().maximum())
     def desbloquear_seeStatus_2(self):
         if self.seeStatus_2.isChecked():
             self.status_2.setEnabled(True)
