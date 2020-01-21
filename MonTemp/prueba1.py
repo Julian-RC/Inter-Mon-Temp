@@ -528,8 +528,8 @@ class LivePlotter(object):
 			self.curva4=self.p.plot(pen=(255,85,150),name='Diodo2')
 			self.curva5=self.p.plot(pen=(0,255,0),name='Diodo3')
 			self.curva6=self.p.plot(pen=(0,0,255),name='Diodo4')
-			self.curva7=self.p.plot(pen=(255,108,163),name='Cernox5')
-			self.curva8=self.p.plot(pen=(84,18,214),name='Cernox6')
+			self.curva7=self.p.plot(pen=(255,0,0),name='Cernox5')
+			self.curva8=self.p.plot(pen=(84,100,214),name='Cernox6')
 			self.p.setRange(yRange=[50, 300])
 			self.Data_curva1=[]
 			self.Data_curva2=[]
