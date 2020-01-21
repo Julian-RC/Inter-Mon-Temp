@@ -45,7 +45,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:18pt; color:#00557f;&quot;&gt;Acquisition of Data&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:18pt; font-weight:600; color:#00557f;&quot;&gt;Acquisition of Data&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
     </widget>
     <widget class="QScrollArea" name="scrollArea">
@@ -206,7 +206,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
       <string notr="true"/>
      </property>
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:18pt; color:#00ffff;&quot;&gt;Control&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:20pt; font-weight:600; color:#ffffff;&quot;&gt;Control&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
     </widget>
     <widget class="QFrame" name="frame_7">
@@ -815,9 +815,9 @@ background-color: rgb(255, 59, 25);</string>
      </property>
      <property name="font">
       <font>
-       <pointsize>13</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
+       <pointsize>16</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
        <kerning>true</kerning>
       </font>
      </property>
@@ -839,9 +839,9 @@ background-color: rgb(255, 59, 25);</string>
      </property>
      <property name="font">
       <font>
-       <pointsize>13</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
+       <pointsize>16</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
        <kerning>true</kerning>
       </font>
      </property>
@@ -1301,7 +1301,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
       </rect>
      </property>
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:18pt; color:#aaffff;&quot;&gt;Plot of Data&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:18pt; font-weight:600; color:#aaffff;&quot;&gt;Plot of Data&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
     </widget>
     <widget class="QFrame" name="frame_11">
