@@ -243,10 +243,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                             label_heater_1 += str(Ramp_1)
                             SetP_1 = str(DataTemp2.Read_335('SETP?','1'))
                             time.sleep(0.05)
-                            label_heater_1 += '---'str(SetP_1)
+                            label_heater_1 += '---'+str(SetP_1)
                             Ran_1 = str(DataTemp2.Read_335('RANGE?','1'))
                             time.sleep(0.05)
-                            label_heater_1 += '---'str(Ran_1)
+                            label_heater_1 += '---'+str(Ran_1)
                             label_heater_1 += '-------------------------------\n'
                             self.status_1.setWidget(QtWidgets.QLabel(label_heater_1))
                             self.status_1.verticalScrollBar().setValue(self.status_1.verticalScrollBar().maximum())
