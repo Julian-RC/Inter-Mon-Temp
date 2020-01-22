@@ -79,28 +79,6 @@ font: 11pt &quot;Sans Serif&quot;;</string>
         <height>409</height>
        </rect>
       </property>
-      <widget class="QScrollBar" name="verticalScrollBar">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>380</x>
-         <y>0</y>
-         <width>21</width>
-         <height>411</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(71, 95, 255);</string>
-       </property>
-       <property name="sliderPosition">
-        <number>99</number>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-      </widget>
      </widget>
     </widget>
     <widget class="QPushButton" name="stop">
@@ -176,9 +154,9 @@ font: 11pt &quot;Sans Serif&quot;;</string>
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>330</y>
+      <y>270</y>
       <width>721</width>
-      <height>231</height>
+      <height>291</height>
      </rect>
     </property>
     <property name="toolTip">
@@ -213,9 +191,9 @@ font: 11pt &quot;Sans Serif&quot;;</string>
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>30</y>
+       <y>40</y>
        <width>341</width>
-       <height>191</height>
+       <height>241</height>
       </rect>
      </property>
      <property name="toolTip">
@@ -357,8 +335,8 @@ font: 12pt &quot;Sans Serif&quot;;</string>
        <rect>
         <x>120</x>
         <y>90</y>
-        <width>221</width>
-        <height>61</height>
+        <width>211</width>
+        <height>101</height>
        </rect>
       </property>
       <property name="toolTip">
@@ -375,26 +353,10 @@ font: 12pt &quot;Sans Serif&quot;;</string>
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>219</width>
-         <height>59</height>
+         <width>209</width>
+         <height>99</height>
         </rect>
        </property>
-       <widget class="QScrollBar" name="verticalScrollBar_2">
-        <property name="geometry">
-         <rect>
-          <x>200</x>
-          <y>0</y>
-          <width>20</width>
-          <height>71</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: rgb(172, 157, 255);</string>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-       </widget>
       </widget>
      </widget>
      <widget class="QPushButton" name="update_1">
@@ -403,8 +365,8 @@ font: 12pt &quot;Sans Serif&quot;;</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>210</x>
-        <y>160</y>
+        <x>200</x>
+        <y>200</y>
         <width>80</width>
         <height>23</height>
        </rect>
@@ -479,7 +441,7 @@ font: 12pt &quot;Sans Serif&quot;;</string>
       <property name="geometry">
        <rect>
         <x>60</x>
-        <y>160</y>
+        <y>200</y>
         <width>80</width>
         <height>23</height>
        </rect>
@@ -543,9 +505,9 @@ color: rgb(255, 255, 255);</string>
      <property name="geometry">
       <rect>
        <x>370</x>
-       <y>30</y>
+       <y>40</y>
        <width>341</width>
-       <height>191</height>
+       <height>241</height>
       </rect>
      </property>
      <property name="toolTip">
@@ -659,8 +621,8 @@ background-color: rgb(255, 59, 25);</string>
        <rect>
         <x>110</x>
         <y>90</y>
-        <width>231</width>
-        <height>61</height>
+        <width>221</width>
+        <height>101</height>
        </rect>
       </property>
       <property name="toolTip">
@@ -677,26 +639,10 @@ background-color: rgb(255, 59, 25);</string>
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>229</width>
-         <height>59</height>
+         <width>219</width>
+         <height>99</height>
         </rect>
        </property>
-       <widget class="QScrollBar" name="verticalScrollBar_3">
-        <property name="geometry">
-         <rect>
-          <x>210</x>
-          <y>0</y>
-          <width>20</width>
-          <height>61</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: rgb(255, 92, 28);</string>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-       </widget>
       </widget>
      </widget>
      <widget class="QPushButton" name="update_2">
@@ -706,7 +652,7 @@ background-color: rgb(255, 59, 25);</string>
       <property name="geometry">
        <rect>
         <x>220</x>
-        <y>160</y>
+        <y>200</y>
         <width>80</width>
         <height>23</height>
        </rect>
@@ -778,8 +724,8 @@ background-color: rgb(255, 59, 25);</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>60</x>
-        <y>160</y>
+        <x>50</x>
+        <y>200</y>
         <width>80</width>
         <height>23</height>
        </rect>
@@ -926,7 +872,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
       <x>10</x>
       <y>40</y>
       <width>721</width>
-      <height>271</height>
+      <height>221</height>
      </rect>
     </property>
     <property name="toolTip">
@@ -945,8 +891,8 @@ background-color: rgb(85, 85, 127);</string>
     <widget class="QFrame" name="frame">
      <property name="geometry">
       <rect>
-       <x>20</x>
-       <y>60</y>
+       <x>10</x>
+       <y>10</y>
        <width>231</width>
        <height>103</height>
       </rect>
@@ -1000,8 +946,8 @@ font: 11pt &quot;Sans Serif&quot;;</string>
     <widget class="QFrame" name="frame_2">
      <property name="geometry">
       <rect>
-       <x>280</x>
-       <y>60</y>
+       <x>270</x>
+       <y>40</y>
        <width>261</width>
        <height>111</height>
       </rect>
@@ -1089,7 +1035,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
      <property name="geometry">
       <rect>
        <x>330</x>
-       <y>210</y>
+       <y>160</y>
        <width>131</width>
        <height>31</height>
       </rect>
@@ -1112,7 +1058,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
      <property name="geometry">
       <rect>
        <x>560</x>
-       <y>60</y>
+       <y>10</y>
        <width>141</width>
        <height>201</height>
       </rect>
@@ -1318,8 +1264,8 @@ font: 11pt &quot;Sans Serif&quot;;</string>
     <widget class="QFrame" name="frame_11">
      <property name="geometry">
       <rect>
-       <x>20</x>
-       <y>180</y>
+       <x>10</x>
+       <y>120</y>
        <width>230</width>
        <height>74</height>
       </rect>
