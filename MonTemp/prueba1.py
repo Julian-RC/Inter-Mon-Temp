@@ -237,16 +237,24 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                               plt_mgr.close()
                               close_plot = False
             if status_heater_1:
-                            label_heater_1 += '-------------------------------\n'
                             Ramp_1 = str(DataTemp2.Read_335('HTR?','1'))
                             time.sleep(0.05)
-                            label_heater_1 += str(Ramp_1)
+                            label_heater_1 += '   '+str(Ramp_1)+'%'
                             SetP_1 = str(DataTemp2.Read_335('SETP?','1'))
                             time.sleep(0.05)
-                            label_heater_1 += '---'+str(SetP_1)
+                            label_heater_1 +='   '+str(SetP_1)+'K'
                             Ran_1 = str(DataTemp2.Read_335('RANGE?','1'))
                             time.sleep(0.05)
-                            label_heater_1 += '---'+str(Ran_1)+'\n'
+                            Range = ''
+                            if int(Ran_1)==0:
+                                Range = 'Off'
+                            elif int(Ran_1)==1:
+                                Range = 'Low'
+                            elif int(Ran_1)==2:
+                                Range = 'Med'
+                            elif int(Ran_1)==3:
+                                Range = 'High'
+                            label_heater_1 += '   '+Range+'\n'
                             label_heater_1 += '-------------------------------\n'
                             self.status_1.setWidget(QtWidgets.QLabel(label_heater_1))
                             self.status_1.verticalScrollBar().setValue(self.status_1.verticalScrollBar().maximum())
