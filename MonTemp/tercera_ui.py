@@ -8,11 +8,11 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-class Ui_Dialog(object):
-    def setupUi(self, Dialog):
-        Dialog.setObjectName("Dialog")
-        Dialog.resize(702, 345)
-        self.frame_2 = QtWidgets.QFrame(Dialog)
+class Ui_Tercera(object):
+    def setupUi(self, Tercera):
+        Tercera.setObjectName("Tercera")
+        Tercera.resize(702, 345)
+        self.frame_2 = QtWidgets.QFrame(Tercera)
         self.frame_2.setGeometry(QtCore.QRect(10, 100, 391, 111))
         self.frame_2.setStyleSheet("background-color: rgb(85, 255, 0);\n"
 "font: 12pt \"Sans Serif\";")
@@ -49,7 +49,7 @@ class Ui_Dialog(object):
         self.lineEdit_10.setStyleSheet("background-color: rgb(255, 255, 255);\n"
 "font: 10pt \"Sans Serif\";")
         self.lineEdit_10.setObjectName("lineEdit_10")
-        self.frame_7 = QtWidgets.QFrame(Dialog)
+        self.frame_7 = QtWidgets.QFrame(Tercera)
         self.frame_7.setGeometry(QtCore.QRect(410, 100, 281, 61))
         self.frame_7.setStyleSheet("background-color: rgb(0, 255, 127);\n"
 "font: 12pt \"Sans Serif\";")
@@ -67,7 +67,7 @@ class Ui_Dialog(object):
         self.port_3.setStyleSheet("background-color: rgb(255, 255, 255);\n"
 "font: 10pt \"Sans Serif\";")
         self.port_3.setObjectName("port_3")
-        self.frame_3 = QtWidgets.QFrame(Dialog)
+        self.frame_3 = QtWidgets.QFrame(Tercera)
         self.frame_3.setGeometry(QtCore.QRect(190, 10, 501, 81))
         self.frame_3.setStyleSheet("background-color: rgb(85, 170, 0);\n"
 "font: 12pt \"Sans Serif\";")
@@ -99,7 +99,7 @@ class Ui_Dialog(object):
         self.name_4.setGeometry(QtCore.QRect(150, 50, 321, 21))
         self.name_4.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.name_4.setObjectName("name_4")
-        self.frame_4 = QtWidgets.QFrame(Dialog)
+        self.frame_4 = QtWidgets.QFrame(Tercera)
         self.frame_4.setGeometry(QtCore.QRect(410, 170, 281, 121))
         self.frame_4.setStyleSheet("background-color: rgb(85, 170, 127);\n"
 "font: 12pt \"Sans Serif\";")
@@ -126,7 +126,7 @@ class Ui_Dialog(object):
         self.timeOut_2.setGeometry(QtCore.QRect(100, 90, 61, 21))
         self.timeOut_2.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.timeOut_2.setObjectName("timeOut_2")
-        self.frame_5 = QtWidgets.QFrame(Dialog)
+        self.frame_5 = QtWidgets.QFrame(Tercera)
         self.frame_5.setGeometry(QtCore.QRect(190, 220, 211, 71))
         self.frame_5.setStyleSheet("background-color: rgb(85, 170, 255);\n"
 "font: 12pt \"Sans Serif\";")
@@ -143,12 +143,12 @@ class Ui_Dialog(object):
         self.samplinperiod_2.setGeometry(QtCore.QRect(140, 40, 61, 21))
         self.samplinperiod_2.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.samplinperiod_2.setObjectName("samplinperiod_2")
-        self.buttonBox_2 = QtWidgets.QDialogButtonBox(Dialog)
+        self.buttonBox_2 = QtWidgets.QDialogButtonBox(Tercera)
         self.buttonBox_2.setGeometry(QtCore.QRect(140, 300, 541, 41))
         self.buttonBox_2.setOrientation(QtCore.Qt.Horizontal)
         self.buttonBox_2.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
         self.buttonBox_2.setObjectName("buttonBox_2")
-        self.frame_6 = QtWidgets.QFrame(Dialog)
+        self.frame_6 = QtWidgets.QFrame(Tercera)
         self.frame_6.setGeometry(QtCore.QRect(10, 220, 171, 71))
         self.frame_6.setStyleSheet("background-color: rgb(0, 0, 255);\n"
 "font: 12pt \"Sans Serif\";")
@@ -165,7 +165,7 @@ class Ui_Dialog(object):
         self.average_2.setGeometry(QtCore.QRect(100, 40, 61, 21))
         self.average_2.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.average_2.setObjectName("average_2")
-        self.frame = QtWidgets.QFrame(Dialog)
+        self.frame = QtWidgets.QFrame(Tercera)
         self.frame.setGeometry(QtCore.QRect(10, 10, 171, 81))
         self.frame.setStyleSheet("background-color: rgb(0, 170, 255);\n"
 "font: 12pt \"Sans Serif\";")
@@ -182,47 +182,47 @@ class Ui_Dialog(object):
         self.label_38.setGeometry(QtCore.QRect(0, 0, 171, 20))
         self.label_38.setObjectName("label_38")
 
-        self.retranslateUi(Dialog)
-        QtCore.QMetaObject.connectSlotsByName(Dialog)
+        self.retranslateUi(Tercera)
+        QtCore.QMetaObject.connectSlotsByName(Tercera)
 
-    def retranslateUi(self, Dialog):
+    def retranslateUi(self, Tercera):
         _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
-        self.sensor1_2.setText(_translate("Dialog", "Sensor 1"))
-        self.sensor2_2.setText(_translate("Dialog", "Sensor 2"))
-        self.label_6.setText(_translate("Dialog", "<html><head/><body><p align=\"center\"><span style=\" font-weight:600;\">TypeSensors</span></p></body></html>"))
-        self.label_20.setText(_translate("Dialog", "<html><head/><body><p align=\"center\"><span style=\" font-weight:600;\">Curve</span></p></body></html>"))
-        self.lineEdit_9.setText(_translate("Dialog", "Diodo"))
-        self.lineEdit_10.setText(_translate("Dialog", "Diodo"))
-        self.label_22.setText(_translate("Dialog", "Model:"))
-        self.label_23.setText(_translate("Dialog", "<html><head/><body><p align=\"center\"><span style=\" font-weight:600;\">About sensors</span></p></body></html>"))
-        self.port_3.setText(_translate("Dialog", "1-2: Cernox"))
-        self.label_24.setText(_translate("Dialog", "<html><head/><body><p align=\"center\"><span style=\" font-weight:600;\">File</span></p></body></html>"))
-        self.label_25.setText(_translate("Dialog", "Name:"))
-        self.label_26.setText(_translate("Dialog", "SaveData:"))
-        self.name_3.setText(_translate("Dialog", "Sensores_M335.txt"))
-        self.label_27.setText(_translate("Dialog", "NameAverage:"))
-        self.name_4.setText(_translate("Dialog", "Sensores_Average_M335.txt"))
-        self.label_28.setText(_translate("Dialog", "<html><head/><body><p align=\"center\"><span style=\" font-weight:600;\">Communication parameters</span></p></body></html>"))
-        self.label_29.setText(_translate("Dialog", "Port:"))
-        self.label_30.setText(_translate("Dialog", "BaudeRade: 57600"))
-        self.label_31.setText(_translate("Dialog", "TimeOut:"))
-        self.port_4.setText(_translate("Dialog", "/dev/ttyUSB0"))
-        self.label_32.setText(_translate("Dialog", "<html><head/><body><p align=\"center\"><span style=\" font-weight:600;\">Acquisition</span></p></body></html>"))
-        self.label_33.setText(_translate("Dialog", "SamplinPeriod:"))
-        self.label_34.setText(_translate("Dialog", "<html><head/><body><p align=\"center\"><span style=\" font-weight:600;\">Storage</span></p></body></html>"))
-        self.label_35.setText(_translate("Dialog", "<html><head/><body><p align=\"center\">Average:</p></body></html>"))
-        self.label_36.setText(_translate("Dialog", "<html><head/><body><p><span style=\" font-weight:600;\">Brand:</span> Lakeshore</p></body></html>"))
-        self.label_37.setText(_translate("Dialog", "<html><head/><body><p><span style=\" font-weight:600;\">Model: 335</span></p></body></html>"))
-        self.label_38.setText(_translate("Dialog", "<html><head/><body><p align=\"center\"><span style=\" font-weight:600;\">Equipment</span></p></body></html>"))
+        Tercera.setWindowTitle(_translate("Tercera", "Dialog"))
+        self.sensor1_2.setText(_translate("Tercera", "Sensor 1"))
+        self.sensor2_2.setText(_translate("Tercera", "Sensor 2"))
+        self.label_6.setText(_translate("Tercera", "<html><head/><body><p align=\"center\"><span style=\" font-weight:600;\">TypeSensors</span></p></body></html>"))
+        self.label_20.setText(_translate("Tercera", "<html><head/><body><p align=\"center\"><span style=\" font-weight:600;\">Curve</span></p></body></html>"))
+        self.lineEdit_9.setText(_translate("Tercera", "Diodo"))
+        self.lineEdit_10.setText(_translate("Tercera", "Diodo"))
+        self.label_22.setText(_translate("Tercera", "Model:"))
+        self.label_23.setText(_translate("Tercera", "<html><head/><body><p align=\"center\"><span style=\" font-weight:600;\">About sensors</span></p></body></html>"))
+        self.port_3.setText(_translate("Tercera", "1-2: Cernox"))
+        self.label_24.setText(_translate("Tercera", "<html><head/><body><p align=\"center\"><span style=\" font-weight:600;\">File</span></p></body></html>"))
+        self.label_25.setText(_translate("Tercera", "Name:"))
+        self.label_26.setText(_translate("Tercera", "SaveData:"))
+        self.name_3.setText(_translate("Tercera", "Sensores_M335.txt"))
+        self.label_27.setText(_translate("Tercera", "NameAverage:"))
+        self.name_4.setText(_translate("Tercera", "Sensores_Average_M335.txt"))
+        self.label_28.setText(_translate("Tercera", "<html><head/><body><p align=\"center\"><span style=\" font-weight:600;\">Communication parameters</span></p></body></html>"))
+        self.label_29.setText(_translate("Tercera", "Port:"))
+        self.label_30.setText(_translate("Tercera", "BaudeRade: 57600"))
+        self.label_31.setText(_translate("Tercera", "TimeOut:"))
+        self.port_4.setText(_translate("Tercera", "/dev/ttyUSB0"))
+        self.label_32.setText(_translate("Tercera", "<html><head/><body><p align=\"center\"><span style=\" font-weight:600;\">Acquisition</span></p></body></html>"))
+        self.label_33.setText(_translate("Tercera", "SamplinPeriod:"))
+        self.label_34.setText(_translate("Tercera", "<html><head/><body><p align=\"center\"><span style=\" font-weight:600;\">Storage</span></p></body></html>"))
+        self.label_35.setText(_translate("Tercera", "<html><head/><body><p align=\"center\">Average:</p></body></html>"))
+        self.label_36.setText(_translate("Tercera", "<html><head/><body><p><span style=\" font-weight:600;\">Brand:</span> Lakeshore</p></body></html>"))
+        self.label_37.setText(_translate("Tercera", "<html><head/><body><p><span style=\" font-weight:600;\">Model: 335</span></p></body></html>"))
+        self.label_38.setText(_translate("Tercera", "<html><head/><body><p align=\"center\"><span style=\" font-weight:600;\">Equipment</span></p></body></html>"))
 
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    Dialog = QtWidgets.QDialog()
-    ui = Ui_Dialog()
-    ui.setupUi(Dialog)
-    Dialog.show()
+    Tercera = QtWidgets.QDialog()
+    ui = Ui_Tercera()
+    ui.setupUi(Tercera)
+    Tercera.show()
     sys.exit(app.exec_())
 
