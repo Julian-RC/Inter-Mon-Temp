@@ -67,7 +67,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         
         self.radioButton.toggled.connect(self.desbloquear_radioButton)
         self.radioButton_2.toggled.connect(self.desbloquear_radioButton_2)
-        self.grafica2.toggled.connect(self.desbloquear_grafica_2)
         self.Todos.toggled.connect(self.desbloquear_Todos)
         self.heater_1.toggled.connect(self.desbloquear_heater_1)
         self.heater_2.toggled.connect(self.desbloquear_heater_2)
@@ -406,21 +405,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def desbloquear_radioButton_2(self):
         if self.radioButton_2.isChecked():
             self.timeEdit.setEnabled(False)
-    def desbloquear_grafica_2(self):
-        if self.grafica2.isChecked():
-            self.SetPoint1.setEnabled(False)
-            self.SetPoint2.setEnabled(False)
-            self.heater1.setEnabled(False)
-            self.heater2.setEnabled(False)
-            self.SetPoint1.setChecked(False)
-            self.SetPoint2.setChecked(False)
-            self.heater1.setChecked(False)
-            self.heater2.setChecked(False)
-        else:
-            self.SetPoint1.setEnabled(True)
-            self.SetPoint2.setEnabled(True)
-            self.heater1.setEnabled(True)
-            self.heater2.setEnabled(True)
+
     def desbloquear_Todos(self):
         if self.Todos.isChecked():
             self.CA.setEnabled(False)
@@ -464,6 +449,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.seeStatus_1.setEnabled(True)
             self.update_1.setEnabled(True)
             self.Off_1.setEnabled(True)
+            if self.grafica2.isChecked():
+                self.SetPoint1.setEnabled(False)
+                self.heater1.setEnabled(False)
+                self.SetPoint1.setChecked(False)
+                self.heater1.setChecked(False)
+            else:
+                self.SetPoint1.setEnabled(True)
+                self.heater1.setEnabled(True)
         else:
             self.setPoint_num_1.setEnabled(False)
             self.ramp_1.setEnabled(False)
@@ -472,6 +465,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.seeStatus_1.setEnabled(False)
             self.update_1.setEnabled(False)
             self.Off_1.setEnabled(False)
+            self.SetPoint1.setEnabled(False)
+            self.heater1.setEnabled(False)
+            self.SetPoint1.setChecked(False)
+            self.heater1.setChecked(False)
+    
     def desbloquear_heater_2(self):
         global label_scroll
         if self.heater_2.isChecked():
@@ -533,6 +531,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if self.grafica1.isChecked():
             global plt_mgr
             actual, close_plot = True, False
+            curvas = [0,0,0,0,0,0,0,0,0,0,0,0]
+            if 
             plt_mgr = LivePlotter()
         #print(self.timeEdit.setTime(QtCore.QTime('')))
 
@@ -657,76 +657,7 @@ class LivePlotter(object):
 		except Exception as e:
 			pass
 
-class PlotManager(object):
-	"""
-	General class to handle multiple variable plotting in the same window
-	# Attributes
-		title (string): title of the window
-		size (tuple of integers): size of the window
-		nline (integer): number of plots for each line of the window, default 3
-		frequency (float): see LivePlotter
-		plots (OrderedDict of LivePlotter instances): where the plots are
-	# Example
-		length = 10000
-		costs  = np.arange(length)
-		plt_mgr = PlotManager(
-			title="plots", 
-			nline=3)
-		for i in range(length):
-			cost = costs[i]
-			plt_mgr.add("cost", cost)
-			plt_mgr.add("time", time.time())
-			plt_mgr.add("time2", time.time())
-			plt_mgr.update()
-		plt_mgr.close()
-	"""
-	def __init__(self, **kwargs):
-		self.title = kwargs.get("title", "Plots")
-		self.nline = kwargs.get("nline", 3)
-		self.nplots = -1
 
-		try:
-			self.plots = collections.OrderedDict()
-			self.win = pg.GraphicsWindow(title=self.title)
-		except Exception as e:
-			print ("Unable to initialize Plot Manager")
-
-	def add(self, name, data):
-		"""
-		Adds data x, y to the data of the variable with name name.
-		"""
-		try:
-			if name not in self.plots:
-				self.nplots += 1
-				if self.nplots % self.nline == 0:
-					self.win.nextRow()
-
-				self.plots[name] = LivePlotter(
-					name=name, 
-					win=self.win,
-					**kwargs)
-
-			self.plots[name].add(data)
-		except Exception as e:
-			pass
-
-	def update(self):
-		"""
-		Updates all subplots
-		"""
-		for name, plot in self.plots.items():
-			plot.update()
-
-	def close(self):
-		"""
-		Close window from Terminal
-		"""
-		try:
-			pass
-		except Exception as e:
-			pass
-		for name, plot in self.plots.items():
-			plot.close()
             
 #Se define la funcion x(t) de la ecuacion de posicion (movimiento horizontal)
 def fx (t):
