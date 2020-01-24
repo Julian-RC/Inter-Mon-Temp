@@ -413,7 +413,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             if self.heater_1.isChecked():
                 self.SetPoint1.setEnabled(True)
                 self.heater1.setEnabled(True)
-            if self.heater_22.isChecked():
+            if self.heater_2.isChecked():
                 self.SetPoint2.setEnabled(True)
                 self.heater2.setEnabled(True)
     
