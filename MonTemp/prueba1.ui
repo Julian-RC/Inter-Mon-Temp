@@ -324,7 +324,7 @@ font: 12pt &quot;Sans Serif&quot;;</string>
        </rect>
       </property>
       <property name="text">
-       <string>See Status</string>
+       <string>Status</string>
       </property>
      </widget>
      <widget class="QScrollArea" name="status_1">
@@ -333,9 +333,9 @@ font: 12pt &quot;Sans Serif&quot;;</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>120</x>
+        <x>80</x>
         <y>90</y>
-        <width>211</width>
+        <width>241</width>
         <height>101</height>
        </rect>
       </property>
@@ -343,7 +343,8 @@ font: 12pt &quot;Sans Serif&quot;;</string>
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Status Heater 1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 255);</string>
+       <string notr="true">background-color: rgb(255, 255, 255);
+font: 12pt &quot;Sans Serif&quot;;</string>
       </property>
       <property name="widgetResizable">
        <bool>true</bool>
@@ -353,7 +354,7 @@ font: 12pt &quot;Sans Serif&quot;;</string>
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>209</width>
+         <width>239</width>
          <height>99</height>
         </rect>
        </property>
@@ -610,7 +611,7 @@ background-color: rgb(255, 59, 25);</string>
        </rect>
       </property>
       <property name="text">
-       <string>See Status</string>
+       <string>Status</string>
       </property>
      </widget>
      <widget class="QScrollArea" name="status_2">
@@ -619,9 +620,9 @@ background-color: rgb(255, 59, 25);</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>110</x>
+        <x>80</x>
         <y>90</y>
-        <width>221</width>
+        <width>251</width>
         <height>101</height>
        </rect>
       </property>
@@ -639,7 +640,7 @@ background-color: rgb(255, 59, 25);</string>
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>219</width>
+         <width>249</width>
          <height>99</height>
         </rect>
        </property>

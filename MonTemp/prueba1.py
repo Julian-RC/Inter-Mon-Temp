@@ -242,7 +242,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                             label_heater_1 +=str(Ramp_1)+'%'
                             SetP_1 = str(DataTemp2.Read_335('SETP?','1'))
                             time.sleep(0.05)
-                            label_heater_1 +=' '+str(SetP_1)+'K'
+                            label_heater_1 +='   '+str(SetP_1)+'K'
                             Ran_1 = str(DataTemp2.Read_335('RANGE?','1'))
                             time.sleep(0.05)
                             Range = ''
@@ -254,8 +254,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                                 Range = 'Med'
                             elif int(Ran_1)==3:
                                 Range = 'High'
-                            label_heater_1 += ' '+Range+'\n'
-                            label_heater_1 += '---------------------------------\n'
+                            label_heater_1 += '   '+Range+'\n'
+                            label_heater_1 += '-----------------------------------\n'
                             self.status_1.setWidget(QtWidgets.QLabel(label_heater_1))
                             self.status_1.verticalScrollBar().setValue(self.status_1.verticalScrollBar().maximum())
 
@@ -500,9 +500,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.status_1.setEnabled(True)
             global status_heater_1,label_heater_1
             status_heater_1 = True
-            label_heater_1 = '---------------------------------\n'
-            label_heater_1 += '     Status Heater 1      \n'
-            label_heater_1 += '---------------------------------\n'
+            label_heater_1 = '-----------------------------------\n'
+            label_heater_1 += '       Status Heater 1      \n'
+            label_heater_1 += '-----------------------------------\n'
             self.status_1.setWidget(QtWidgets.QLabel(label_heater_1))
             self.status_1.verticalScrollBar().setValue(self.status_1.verticalScrollBar().maximum())
     def desbloquear_seeStatus_2(self):
