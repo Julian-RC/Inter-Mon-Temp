@@ -74,6 +74,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.range_manual_2.toggled.connect(self.desbloquear_range_manual_2)
         self.seeStatus_1.toggled.connect(self.desbloquear_seeStatus_1)
         self.seeStatus_2.toggled.connect(self.desbloquear_seeStatus_2)
+        self.grafica2.toggled.connect(self.desbloquear_grafica2)
         
         self.directorio.clicked.connect(self.buscarDirectorio)
         self.start.clicked.connect(self.start_adquisition)
@@ -398,7 +399,20 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
         pg.QtGui.QApplication.processEvents()
             
-            
+    def desbloquear_grafica2(self):
+        if self.grafica2.isChecked():
+                self.SetPoint1.setEnabled(False)
+                self.heater1.setEnabled(False)
+                self.SetPoint1.setChecked(False)
+                self.heater1.setChecked(False)
+        else:
+            if self.heater1.isChecked():
+                self.SetPoint1.setEnabled(True)
+                self.heater1.setEnabled(True)
+            if self.heater2.isChecked():
+                self.SetPoint2.setEnabled(True)
+                self.heater2.setEnabled(True)
+    
     def desbloquear_radioButton(self):
         if self.radioButton.isChecked():
             self.timeEdit.setEnabled(True)
@@ -467,8 +481,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.Off_1.setEnabled(False)
             self.SetPoint1.setEnabled(False)
             self.heater1.setEnabled(False)
-            self.SetPoint1.setChecked(False)
-            self.heater1.setChecked(False)
+
     
     def desbloquear_heater_2(self):
         global label_scroll
@@ -486,6 +499,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.seeStatus_2.setEnabled(True)
             self.update_2.setEnabled(True)
             self.Off_2.setEnabled(True)
+            if self.grafica2.isChecked():
+                self.SetPoint2.setEnabled(False)
+                self.heater2.setEnabled(False)
+                self.SetPoint2.setChecked(False)
+                self.heater2.setChecked(False)
+            else:
+                self.SetPoint2.setEnabled(True)
+                self.heater2.setEnabled(True)
             
         else:
             self.setPoint_num_2.setEnabled(False)
@@ -495,6 +516,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.seeStatus_2.setEnabled(False)
             self.update_2.setEnabled(False)
             self.Off_2.setEnabled(False)
+            self.SetPoint2.setEnabled(False)
+            self.heater2.setEnabled(False)
+            
     def desbloquear_range_manual_1(self):
         if self.range_manual_1.isChecked():
             self.range_1.setEnabled(True)
