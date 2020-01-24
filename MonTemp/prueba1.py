@@ -504,6 +504,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 label_heater_1 += '--------------------------------------\n'
                 label_heater_1 += '       Status Heater 1      \n'
                 label_heater_1 += '--------------------------------------\n'
+                heater_1_estatus = False
             self.status_1.setWidget(QtWidgets.QLabel(label_heater_1))
         else:
             status_heater_1 = False

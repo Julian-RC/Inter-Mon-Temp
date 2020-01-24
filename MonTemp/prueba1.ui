@@ -336,7 +336,7 @@ font: 12pt &quot;Sans Serif&quot;;</string>
         <x>80</x>
         <y>90</y>
         <width>241</width>
-        <height>121</height>
+        <height>111</height>
        </rect>
       </property>
       <property name="toolTip">
@@ -355,7 +355,7 @@ font: 12pt &quot;Sans Serif&quot;;</string>
          <x>0</x>
          <y>0</y>
          <width>239</width>
-         <height>119</height>
+         <height>109</height>
         </rect>
        </property>
       </widget>
