@@ -498,7 +498,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def desbloquear_seeStatus_1(self):
         if self.seeStatus_1.isChecked():
             self.status_1.setEnabled(True)
-            global status_heater_1,label_heater_1
+            global heater_1_estatus, status_heater_1,label_heater_1
             status_heater_1 = True
             if heater_1_estatus:
                 label_heater_1 += '--------------------------------------\n'
