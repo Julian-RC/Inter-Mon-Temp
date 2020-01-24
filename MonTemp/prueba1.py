@@ -2,6 +2,7 @@ import os
 from MonTemp.prueba1_ui import *
 from MonTemp.info_ui import *
 from MonTemp.segunda_ui import *
+from MonTemp.tercera_ui import *
 from pyqtgraph import QtGui, QtCore
 from PyQt5.QtWidgets import QDialog,QMessageBox,QLabel
 import pyqtgraph as pg
@@ -38,15 +39,21 @@ class Dialog(QDialog,Ui_Dialog):
         
 class Segunda(QDialog,Ui_Segunda):
     def __init__(self, *args, **kwargs):
-        global Start
         try:
             QDialog.__init__(self, *args, **kwargs)
             self.setupUi(self)
-            self.setWindowTitle("218")
+            self.setWindowTitle("218 TemperatureMonitor")
         except KeyboardInterrupt as KBI:
             pass
             
-        
+class Tercera(QDialog,Ui_Tercera):
+    def __init__(self, *args, **kwargs):
+        try:
+            QDialog.__init__(self, *args, **kwargs)
+            self.setupUi(self)
+            self.setWindowTitle("335 TemperatureController")
+        except KeyboardInterrupt as KBI:
+            pass
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self, *args, **kwargs):
@@ -75,6 +82,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.actionInfo.triggered.connect(self.show_dialog)
         self.action218.triggered.connect(self.show_218)
+        self.action335.triggered.connect(self.show_335)
         
         self.setPoint_num_1.setRange(50,300)
         self.setPoint_num_2.setRange(50,300)
@@ -333,10 +341,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def show_dialog(self):
         dialog = Dialog(self)  # self hace referencia al padre
         dialog.show()
+    
     def show_218(self):
         dialog = Segunda(self)  # self hace referencia al padre
         dialog.show()
-        
+    
+    def show_335(self):
+        dialog = Tercera(self)  # self hace referencia al padre
+        dialog.show()
        
         
     def buscarDirectorio(self):
