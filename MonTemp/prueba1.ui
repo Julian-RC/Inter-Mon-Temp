@@ -23,7 +23,7 @@
       <x>740</x>
       <y>40</y>
       <width>431</width>
-      <height>513</height>
+      <height>551</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -54,7 +54,7 @@
        <x>20</x>
        <y>50</y>
        <width>401</width>
-       <height>411</height>
+       <height>441</height>
       </rect>
      </property>
      <property name="toolTip">
@@ -76,7 +76,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
         <x>0</x>
         <y>0</y>
         <width>399</width>
-        <height>409</height>
+        <height>439</height>
        </rect>
       </property>
      </widget>
@@ -88,7 +88,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
      <property name="geometry">
       <rect>
        <x>340</x>
-       <y>480</y>
+       <y>510</y>
        <width>71</width>
        <height>23</height>
       </rect>
@@ -111,7 +111,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
      <property name="geometry">
       <rect>
        <x>40</x>
-       <y>480</y>
+       <y>510</y>
        <width>80</width>
        <height>23</height>
       </rect>
@@ -133,8 +133,8 @@ font: 11pt &quot;Sans Serif&quot;;</string>
      </property>
      <property name="geometry">
       <rect>
-       <x>160</x>
-       <y>480</y>
+       <x>150</x>
+       <y>510</y>
        <width>161</width>
        <height>23</height>
       </rect>
@@ -336,7 +336,7 @@ font: 12pt &quot;Sans Serif&quot;;</string>
         <x>80</x>
         <y>90</y>
         <width>241</width>
-        <height>141</height>
+        <height>121</height>
        </rect>
       </property>
       <property name="toolTip">
@@ -355,7 +355,7 @@ font: 12pt &quot;Sans Serif&quot;;</string>
          <x>0</x>
          <y>0</y>
          <width>239</width>
-         <height>139</height>
+         <height>119</height>
         </rect>
        </property>
       </widget>
@@ -623,7 +623,7 @@ background-color: rgb(255, 59, 25);</string>
         <x>80</x>
         <y>90</y>
         <width>251</width>
-        <height>141</height>
+        <height>121</height>
        </rect>
       </property>
       <property name="toolTip">
@@ -641,7 +641,7 @@ background-color: rgb(255, 59, 25);</string>
          <x>0</x>
          <y>0</y>
          <width>249</width>
-         <height>139</height>
+         <height>119</height>
         </rect>
        </property>
       </widget>

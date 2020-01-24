@@ -504,6 +504,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             label_heater_1 += '       Status Heater 1      \n'
             label_heater_1 += '--------------------------------------\n'
             self.status_1.setWidget(QtWidgets.QLabel(label_heater_1))
+        else:
+            status_heater_1 = False
             self.status_1.verticalScrollBar().setValue(self.status_1.verticalScrollBar().maximum())
     def desbloquear_seeStatus_2(self):
         if self.seeStatus_2.isChecked():
