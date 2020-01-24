@@ -532,7 +532,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             global plt_mgr
             actual, close_plot = True, False
             curvas = [0,0,0,0,0,0,0,0,0,0,0,0]
-            if 
+            #if 
             plt_mgr = LivePlotter()
         #print(self.timeEdit.setTime(QtCore.QTime('')))
 
