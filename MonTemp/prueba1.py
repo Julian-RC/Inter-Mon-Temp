@@ -500,9 +500,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.status_1.setEnabled(True)
             global status_heater_1,label_heater_1
             status_heater_1 = True
-            label_heater_1 = '--------------------------------------\n'
-            label_heater_1 += '       Status Heater 1      \n'
-            label_heater_1 += '--------------------------------------\n'
+            if heater_1_estatus:
+                label_heater_1 += '--------------------------------------\n'
+                label_heater_1 += '       Status Heater 1      \n'
+                label_heater_1 += '--------------------------------------\n'
             self.status_1.setWidget(QtWidgets.QLabel(label_heater_1))
         else:
             status_heater_1 = False
@@ -1431,7 +1432,7 @@ class ConfigModule:
 global  label_scroll,Start,close_plot,status_heater_1,label_heater_1
 
 #Menu = CommandLine()
-label_scroll,Start,close_plot,status_heater_1,label_heater_1= '', False, False,False,''
+label_scroll,Start,close_plot,status_heater_1,label_heater_1,heater_1_estatus= '', False, False,False,'',True
 
 def Update_Config():
     global textDict,textDict2,DataTemp,DataTemp2
