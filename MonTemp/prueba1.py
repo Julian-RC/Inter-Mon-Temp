@@ -93,7 +93,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         
         
         label_scroll='-------------------------------------------------------------------------\n'
-        label_scroll+='  Welcome, Interfaz TemperatureModule has begun\n'
+        label_scroll+=' Welcome, Interface TemperatureModule has begun\n'
         label_scroll+='                   Please select a folder to start\n'
         label_scroll+='-------------------------------------------------------------------------\n'
         self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
@@ -531,17 +531,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
                 
 class LivePlotter(object):
-	"""
-	Creates instance of QT app for plotting
-	Defines usefull methods to update data and plot
-	# Attributes
-		frequency (float): time in second, minimum time between two updates
-		downsample (integer): downsampling parameter, unused in this version
-		size (tuple of integers): size of the window
-	# Methods
-		add(x,y): adds data to plot data
-		update(): update the plot
-	"""
 	def __init__(self):
 			self.win = pg.GraphicsWindow(title='Data')
 #app = QtGui.QApplication([])
