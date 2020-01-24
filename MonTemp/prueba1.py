@@ -1266,7 +1266,7 @@ class TempClass:
         
         for Num in range(len(As)):
             try:
-                ListTupla.append([self.Sensors[Num],Bs[Num],As[Num]])
+                ListTupla.append([self.textDict['Sensor Type'][Num],Bs[Num],As[Num]])
                 QtGui.QApplication.processEvents() 
             except IndexError:
                 ListTupla.append([Num + 1,Bs[Num],As[Num]])
@@ -1321,7 +1321,7 @@ class TempClass:
         a = ' '
         if self.Data==[]:
             a += '------------------------------------------------------------\n'
-            a += 'Currently, buffer is empty of temperature data. Please try again in a moment.\n'
+            a += 'Currently, buffer is empty of temperature data. \n         Please try again in a moment.\n'
             a += '------------------------------------------------------------\n'
         else:
             a += '------------------------------------------------------------\n'
