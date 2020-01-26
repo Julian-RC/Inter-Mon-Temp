@@ -557,15 +557,37 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if self.grafica2.isChecked():
             actual = False
         if self.grafica1.isChecked():
-            global plt_mgr
+            global plt_mgr,curvas
             actual, close_plot = True, False
-            curvas = [0,0,0,0,0,0,0,0,0,0,0,0]
-            #if 
+            curvas = [0,0,0,0,0,0,0,0,0,0,0,0,0]
+            if self.Todos.isChecked():
+                curvas[0] = 1
+            else:
+                if self.CA.isChecked():
+                    curvas[1] = 1
+                if self.CB.isChecked():
+                    curvas[2] = 1
+                if self.D1.isChecked():
+                    curvas[3] = 1
+                if self.D2.isChecked():
+                    curvas[4] = 1
+                if self.D3.isChecked():
+                    curvas[5] = 1
+                if self.D4.isChecked():
+                    curvas[6] = 1
+                if self.C5.isChecked():
+                    curvas[7] = 1
+                if self.C6.isChecked():
+                    curvas[8] = 1
+            if self.SetPoint1.isChecked():
+                curvas[9] = 1
+            if self.heater1.isChecked():
+                curvas[10] = 1
+            if self.SetPoint2.isChecked():
+                curvas[11] = 1
+            if self.heater2.isChecked():
+                curvas[12] = 1
             plt_mgr = LivePlotter()
-        #print(self.timeEdit.setTime(QtCore.QTime('')))
-
-        
-       # plt_mgr.close()
         
     def matplotlib6(self):
     # Se crea el widget para matplotlib    
@@ -574,116 +596,167 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         mpl.show()
 
                 
-class LivePlotter(object):
-	def __init__(self):
-			self.win = pg.GraphicsWindow(title='Data')
-#app = QtGui.QApplication([])
-			self.p = self.win.addPlot(title='Sensores_data')
-			self.p.addLegend()
-			self.curva1=self.p.plot(pen=(255,255,255),name='CernoxA')
-			self.curva2=self.p.plot(pen=(0,226,250),name='CernoxB')
-			self.curva3=self.p.plot(pen=(255,255,0),name='Diodo1')
-			self.curva4=self.p.plot(pen=(255,85,150),name='Diodo2')
-			self.curva5=self.p.plot(pen=(0,255,0),name='Diodo3')
-			self.curva6=self.p.plot(pen=(0,0,255),name='Diodo4')
-			self.curva7=self.p.plot(pen=(255,0,0),name='Cernox5')
-			self.curva8=self.p.plot(pen=(84,100,214),name='Cernox6')
-			self.p.setRange(yRange=[50, 300])
-			self.Data_curva1=[]
-			self.Data_curva2=[]
-			self.Data_curva3=[]
-			self.Data_curva4=[]
-			self.Data_curva5=[]
-			self.Data_curva6=[]
-			self.Data_curva7=[]
-			self.Data_curva8=[]
-			self.Time_curva1=[]
-			self.Time_curva2=[]
-			self.Time_curva3=[]
-			self.Time_curva4=[]
-			self.Time_curva5=[]
-			self.Time_curva6=[]
-			self.Time_curva7=[]
-			self.Time_curva8=[]
-		#except Exception as e:
-		#	print ("Unable to initialize Live Plotter")
+class LivePlotter(object,curvas_on):
+    global curvas
+    def __init__(self):
+        self.win = pg.GraphicsWindow(title='Data')
+        self.p = self.win.addPlot(title='Sensores_data')
+        self.p.addLegend()
+        if curvas[0] == 1:
+            self.curva1=self.p.plot(pen=(255,255,255),name='CernoxA')
+            self.curva2=self.p.plot(pen=(0,226,250),name='CernoxB')
+            self.curva3=self.p.plot(pen=(255,255,0),name='Diodo1')
+            self.curva4=self.p.plot(pen=(255,85,150),name='Diodo2')
+            self.curva5=self.p.plot(pen=(0,255,0),name='Diodo3')
+            self.curva6=self.p.plot(pen=(0,0,255),name='Diodo4')
+            self.curva7=self.p.plot(pen=(255,0,0),name='Cernox5')
+            self.curva8=self.p.plot(pen=(84,100,214),name='Cernox6')
+            self.Data_curva1,self.Time_curva1=[],[]
+            self.Data_curva2,self.Time_curva2=[],[]
+            self.Data_curva3,self.Time_curva3=[],[]
+            self.Data_curva4,self.Time_curva4=[],[]
+            self.Data_curva5,self.Time_curva5=[],[]
+            self.Data_curva6,self.Time_curva6=[],[]
+            self.Data_curva7,self.Time_curva7=[],[]
+            self.Data_curva8,self.Time_curva8=[],[]
+        else:
+            if curvas[1] == 1:
+                self.curva1=self.p.plot(pen=(255,255,255),name='CernoxA')
+                self.Data_curva1,self.Time_curva1=[],[]
+            if curvas[2] == 1:
+                self.curva2=self.p.plot(pen=(0,226,250),name='CernoxB')
+                self.Data_curva2,self.Time_curva2=[],[]
+            if curvas[3] == 1:
+                self.curva3=self.p.plot(pen=(255,255,0),name='Diodo1')
+                self.Data_curva3,self.Time_curva3=[],[]
+            if curvas[4] == 1:
+                self.curva4=self.p.plot(pen=(255,85,150),name='Diodo2')
+                self.Data_curva4,self.Time_curva4=[],[]
+            if curvas[5] == 1:
+                self.curva5=self.p.plot(pen=(0,255,0),name='Diodo3')
+                self.Data_curva5,self.Time_curva5=[],[]
+            if curvas[6] == 1:
+                self.curva6=self.p.plot(pen=(0,0,255),name='Diodo4')
+                self.Data_curva6,self.Time_curva6=[],[]
+            if curvas[7] == 1:
+                self.curva7=self.p.plot(pen=(255,0,0),name='Cernox5')
+                self.Data_curva7,self.Time_curva7=[],[]
+            if curvas[8] == 1:
+                self.curva8=self.p.plot(pen=(84,100,214),name='Cernox6')
+                self.Data_curva8,self.Time_curva8=[],[]
+        self.p.setRange(yRange=[50, 300])
 
 
-	def add(self, x):
-			Status_graph = True
-			#for i in range(len(self.Time_curva1)):
-			#		if self.Time_curva1[-1]-self.Time_curva1[0]>100:
-			#			self.Data_curva1 = np.delete(self.Data_curva1, 0)
-			#			self.Data_curva2 = np.delete(self.Data_curva2, 0)
-			#			self.Data_curva3 = np.delete(self.Data_curva3, 0)
-			#			self.Data_curva4 = np.delete(self.Data_curva4, 0)
-			#			self.Data_curva5 = np.delete(self.Data_curva5, 0)
-			#			self.Data_curva6 = np.delete(self.Data_curva6, 0)
-			#			self.Data_curva7 = np.delete(self.Data_curva7, 0)
-			#			self.Data_curva8 = np.delete(self.Data_curva8, 0)
-			#			self.Time_curva1 = np.delete(self.Time_curva1, 0)
-			#			self.Time_curva2 = np.delete(self.Time_curva2, 0)
-			#			self.Time_curva3 = np.delete(self.Time_curva3, 0)
-			#			self.Time_curva4 = np.delete(self.Time_curva4, 0)
-			#			self.Time_curva5 = np.delete(self.Time_curva5, 0)
-			#			self.Time_curva6 = np.delete(self.Time_curva6, 0)
-			#			self.Time_curva7 = np.delete(self.Time_curva7, 0)
-			#			self.Time_curva8 = np.delete(self.Time_curva8, 0)
-			#			Status_graph = False
-			#		else:
-			#			Status_graph = True
-			#			break
-			#		pg.QtGui.QApplication.processEvents()
-			if Status_graph:
-				self.Data_curva1.append(float(x[0][2]))
-				self.Data_curva2.append(float(x[1][2]))
-				self.Data_curva3.append(float(x[2][2]))
-				self.Data_curva4.append(float(x[3][2]))
-				self.Data_curva5.append(float(x[4][2]))
-				self.Data_curva6.append(float(x[5][2]))
-				self.Data_curva7.append(float(x[6][2])*1.0257-2.1852)
-				self.Data_curva8.append(float(x[7][2])*1.0151-0.7786)
-				self.Time_curva1.append(x[0][1])
-				self.Time_curva2.append(x[1][1])
-				self.Time_curva3.append(x[2][1])
-				self.Time_curva4.append(x[3][1])
-				self.Time_curva5.append(x[4][1])
-				self.Time_curva6.append(x[5][1])
-				self.Time_curva7.append(x[6][1])
-				self.Time_curva8.append(x[7][1])
-				self.update()
-			else:
-				global actual
-				actual = False
-			pg.QtGui.QApplication.processEvents()
+    def add(self, x):
+        Status_graph = True
+        #for i in range(len(self.Time_curva1)):
+        #   if self.Time_curva1[-1]-self.Time_curva1[0]>100:
+        #       self.Data_curva1 = np.delete(self.Data_curva1, 0)
+        #       self.Data_curva2 = np.delete(self.Data_curva2, 0)
+        #       self.Data_curva3 = np.delete(self.Data_curva3, 0)
+        #       self.Data_curva4 = np.delete(self.Data_curva4, 0)
+        #       self.Data_curva5 = np.delete(self.Data_curva5, 0)
+        #       self.Data_curva6 = np.delete(self.Data_curva6, 0)
+        #       self.Data_curva7 = np.delete(self.Data_curva7, 0)
+        #       self.Data_curva8 = np.delete(self.Data_curva8, 0)
+        #       self.Time_curva1 = np.delete(self.Time_curva1, 0)
+        #       self.Time_curva2 = np.delete(self.Time_curva2, 0)
+        #       self.Time_curva3 = np.delete(self.Time_curva3, 0)
+        #       self.Time_curva4 = np.delete(self.Time_curva4, 0)
+        #       self.Time_curva5 = np.delete(self.Time_curva5, 0)
+        #       self.Time_curva6 = np.delete(self.Time_curva6, 0)
+        #       self.Time_curva7 = np.delete(self.Time_curva7, 0)
+        #       self.Time_curva8 = np.delete(self.Time_curva8, 0)
+        #       Status_graph = False
+        #   else:
+        #       Status_graph = True
+        #       break
+        #   pg.QtGui.QApplication.processEvents()
+        if Status_graph:
+            if curvas[0] == 1:
+                self.Data_curva1.append(float(x[0][2]))
+                self.Data_curva2.append(float(x[1][2]))
+                self.Data_curva3.append(float(x[2][2]))
+                self.Data_curva4.append(float(x[3][2]))
+                self.Data_curva5.append(float(x[4][2]))
+                self.Data_curva6.append(float(x[5][2]))
+                self.Data_curva7.append(float(x[6][2])*1.0257-2.1852)
+                self.Data_curva8.append(float(x[7][2])*1.0151-0.7786)
+                self.Time_curva1.append(x[0][1])
+                self.Time_curva2.append(x[1][1])
+                self.Time_curva3.append(x[2][1])
+                self.Time_curva4.append(x[3][1])
+                self.Time_curva5.append(x[4][1])
+                self.Time_curva6.append(x[5][1])
+                self.Time_curva7.append(x[6][1])
+                self.Time_curva8.append(x[7][1])
+            else:
+                if curvas[1] == 1:
+                    self.Data_curva1.append(float(x[0][2]))
+                    self.Time_curva1.append(x[0][1])
+                if curvas[2] == 1:
+                    self.Data_curva2.append(float(x[1][2]))
+                    self.Time_curva2.append(x[1][1])
+                if curvas[3] == 1:
+                    self.Data_curva3.append(float(x[2][2]))
+                    self.Time_curva3.append(x[2][1])
+                if curvas[4] == 1:
+                    self.Data_curva4.append(float(x[3][2]))
+                    self.Time_curva4.append(x[3][1])
+                if curvas[5] == 1:
+                    self.Data_curva5.append(float(x[4][2]))
+                    self.Time_curva5.append(x[4][1])
+                if curvas[6] == 1:
+                    self.Data_curva6.append(float(x[5][2]))
+                    self.Time_curva6.append(x[5][1])
+                if curvas[7] == 1:
+                    self.Data_curva7.append(float(x[6][2])*1.0257-2.1852)
+                    self.Time_curva7.append(x[6][1])
+                if curvas[8] == 1:
+                    self.Data_curva8.append(float(x[7][2])*1.0151-0.7786)
+                    self.Time_curva8.append(x[7][1])
+            global actual
+            actual = False
+        pg.QtGui.QApplication.processEvents()
 
 
 
-	def update(self):
-		"""
-		After having added data to the graph data, calling update updates the plot
-		"""
-		try:
-				self.curva1.setData(self.Time_curva1,self.Data_curva1)
-				self.curva2.setData(self.Time_curva2,self.Data_curva2)
-				self.curva3.setData(self.Time_curva3,self.Data_curva3)
-				self.curva4.setData(self.Time_curva4,self.Data_curva4)
-				self.curva5.setData(self.Time_curva5,self.Data_curva5)
-				self.curva6.setData(self.Time_curva6,self.Data_curva6)
-				self.curva7.setData(self.Time_curva7,self.Data_curva7)
-				self.curva8.setData(self.Time_curva8,self.Data_curva8)
-		except Exception as e:
-			pass
+    def update(self):
+        try:
+            if curvas[0] == 1:
+                self.curva1.setData(self.Time_curva1,self.Data_curva1)
+                self.curva2.setData(self.Time_curva2,self.Data_curva2)
+                self.curva3.setData(self.Time_curva3,self.Data_curva3)
+                self.curva4.setData(self.Time_curva4,self.Data_curva4)
+                self.curva5.setData(self.Time_curva5,self.Data_curva5)
+                self.curva6.setData(self.Time_curva6,self.Data_curva6)
+                self.curva7.setData(self.Time_curva7,self.Data_curva7)
+                self.curva8.setData(self.Time_curva8,self.Data_curva8)
+            else:
+                if curvas[1] == 1:
+                    self.curva1.setData(self.Time_curva1,self.Data_curva1)
+                if curvas[2] == 1:
+                    self.curva2.setData(self.Time_curva2,self.Data_curva2)
+                if curvas[3] == 1:
+                    self.curva3.setData(self.Time_curva3,self.Data_curva3)
+                if curvas[4] == 1:
+                    self.curva4.setData(self.Time_curva4,self.Data_curva4)
+                if curvas[5] == 1:
+                    self.curva5.setData(self.Time_curva5,self.Data_curva5)
+                if curvas[6] == 1:
+                    self.curva6.setData(self.Time_curva6,self.Data_curva6)
+                if curvas[7] == 1:
+                    self.curva7.setData(self.Time_curva7,self.Data_curva7)
+                if curvas[8] == 1:
+                    self.curva8.setData(self.Time_curva8,self.Data_curva8)
+        except Exception as e:
+            pass
 
-	def close(self):
-		"""
-		Closes the window
-		"""
-		try:
-			self.win.close()
-        
-		except Exception as e:
-			pass
+    def close(self):
+        try:
+            self.win.close()
+        except Exception as e:
+            pass
 
 
             
