@@ -664,12 +664,16 @@ class LivePlotter(object):
                 self.Data_curva8,self.Time_curva8=[],[]
         if curvas[9] == 1:
             self.curva9 = self.p.plot(pen=(214,103,29),name='SetPoint-1')
+            self.Data_curva9,self.Time_curva9=[],[]
         if curvas[10] == 1:
             self.curvas10 = self.p.plot(pen=(255,192,33), name = 'Heater-1')
+            self.Data_curva10,self.Time_curva10=[],[]
         if curvas[11] == 1:
             self.curvas11 = self.p.plot(pen=(214,140,162),name = 'SetPoint-2')
+            self.Data_curva11,self.Time_curva11=[],[]
         if curvas[12] == 1:
             self.curvas12 = self.p.plot(pen=(200,148,214),name = 'Heater-2')
+            self.Data_curva12,self.Time_curva12=[],[]
         self.p.setRange(yRange=[50, 300])
 
 
