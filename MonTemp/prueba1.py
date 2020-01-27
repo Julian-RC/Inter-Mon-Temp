@@ -801,7 +801,7 @@ class LivePlotter(object):
 
 
     def update(self):
-        try:
+        #try:
             if curvas[0] == 1:
                 self.curva1.setData(self.Time_curva1,self.Data_curva1)
                 self.curva2.setData(self.Time_curva2,self.Data_curva2)
@@ -836,8 +836,9 @@ class LivePlotter(object):
                 self.curva11.setData(self.Time_curva11,self.Data_curva11)
             if curvas[12] == 1:
                 self.curva12.setData(self.Time_curva12,self.Data_curva12)
-        except Exception as e:
-            pass
+     #   except Exception as e:
+      
+      #pass
 
     def close(self):
         try:
