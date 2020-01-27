@@ -795,7 +795,7 @@ class LivePlotter(object):
                     self.Data_curva12 = self.Data_curva12[-(len(self.Data_curva12)-1):]
                 
             global actual
-            actual = False
+           # actual = False
             pg.QtGui.QApplication.processEvents()
 
 
