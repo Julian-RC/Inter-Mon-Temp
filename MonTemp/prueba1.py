@@ -620,7 +620,10 @@ class LivePlotter(object):
     
     def __init__(self):
         self.win = pg.GraphicsWindow(title='Data')
-        self.p = self.win.addPlot(title='Sensores_data')
+        self.p = self.win.addPlot(title='Sensores',size=16)
+        self.win.setLabel('left', 'Temperature (K)', color='w', size=16)
+        self.win.setLabel('bottom', 'Time (s)', color='red', size=16)
+
         self.p.addLegend()
         if curvas[0] == 1:
             self.curva1=self.p.plot(pen=(255,255,255),width=10,name='CernoxA')
