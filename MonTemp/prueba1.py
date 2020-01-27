@@ -575,10 +575,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             minutos = self.mm.value()
             segundos = self.ss.value()
             Time_graph = horas*360 + minutos*60 + segundos
-            curvas = [0,0,0,0,0,0,0,0,0,0,0,0,0]
-            if self.Todos.isChecked():
+        else:
+            Time_graph = float('inf')
+        curvas = [0,0,0,0,0,0,0,0,0,0,0,0,0]
+        if self.Todos.isChecked():
                 curvas[0] = 1
-            else:
+        else:
                 if self.CA.isChecked():
                     curvas[1] = 1
                 if self.CB.isChecked():
@@ -595,15 +597,15 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     curvas[7] = 1
                 if self.C6.isChecked():
                     curvas[8] = 1
-            if self.SetPoint1.isChecked():
+        if self.SetPoint1.isChecked():
                 curvas[9] = 1
-            if self.heater1.isChecked():
+        if self.heater1.isChecked():
                 curvas[10] = 1
-            if self.SetPoint2.isChecked():
+        if self.SetPoint2.isChecked():
                 curvas[11] = 1
-            if self.heater2.isChecked():
+        if self.heater2.isChecked():
                 curvas[12] = 1
-            plt_mgr = LivePlotter()
+        plt_mgr = LivePlotter()
         
     def matplotlib6(self):
     # Se crea el widget para matplotlib    
