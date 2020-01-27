@@ -620,9 +620,9 @@ class LivePlotter(object):
     
     def __init__(self):
         self.win = pg.GraphicsWindow(title='Data')
-        self.p = self.win.addPlot(title='Sensores',size=16)
-        self.p.setLabel('left', 'Temperature ',units= 'K', size=16)
-        self.p.setLabel('bottom', 'Time ',units='s', size=16)
+        self.p = self.win.addPlot(title='Sensores')
+        self.p.setLabel('left', 'Temperature ',units= 'K')
+        self.p.setLabel('bottom', 'Time ',units='s')
         self.p.showGrid(x=True,y=True)
         self.p.addLegend()
         if curvas[0] == 1:
