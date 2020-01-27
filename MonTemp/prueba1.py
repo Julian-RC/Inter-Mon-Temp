@@ -776,7 +776,7 @@ class LivePlotter(object):
                     self.Time_curva9 = self.Time_curva9[-(len(self.Time_curva9)-1):]
                     self.Data_curva9 = self.Data_curva9[-(len(self.Data_curva9)-1):]
             if curvas[10] == 1:
-                HTR_1 = str(DataTemp2.Read_335('HTR?','1'))
+                HTR_1 = str(DataTemp2.Read_335('STP?','1'))
                 time.sleep(0.05)
                 self.Data_curva10.append(float(HTR_1))
                 self.Time_curva10.append(x[7][1])
@@ -790,7 +790,7 @@ class LivePlotter(object):
                     self.Time_curva11 = self.Time_curva11[-(len(self.Time_curva11)-1):]
                     self.Data_curva11 = self.Data_curva11[-(len(self.Data_curva11)-1):]
             if curvas[12] == 1:
-                HTR_2 = str(DataTemp2.Read_335('HTR?','2'))
+                HTR_2 = str(DataTemp2.Read_335('STP?','2'))
                 time.sleep(0.05)
                 self.Data_curva12.append(float(HTR_2))
                 self.Time_curva12.append(x[7][1])
