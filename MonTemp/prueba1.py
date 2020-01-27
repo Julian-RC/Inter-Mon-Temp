@@ -621,7 +621,7 @@ class LivePlotter(object):
         self.p = self.win.addPlot(title='Sensores_data')
         self.p.addLegend()
         if curvas[0] == 1:
-            self.curva1=self.p.plot(pen=(255,255,255),name='CernoxA')
+            self.curva1=self.p.plot(pen=(255,255,255),width=3,name='CernoxA')
             self.curva2=self.p.plot(pen=(0,226,250),name='CernoxB')
             self.curva3=self.p.plot(pen=(255,255,0),name='Diodo1')
             self.curva4=self.p.plot(pen=(255,85,150),name='Diodo2')
