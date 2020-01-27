@@ -623,7 +623,7 @@ class LivePlotter(object):
         self.p = self.win.addPlot(title='Sensores')
         self.p.setLabel('left', 'Temperature ',units= 'K')
         self.p.setLabel('bottom', 'Time ',units='s')
-        self.p.showGrid(x=True,y=True)
+        self.p.showGrid(x=False,y=True)
         self.p.addLegend()
         if curvas[0] == 1:
             self.curva1=self.p.plot(pen=(255,255,255),width=10,name='CernoxA')
