@@ -963,19 +963,6 @@ font: 11pt &quot;Sans Serif&quot;;</string>
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
-     <widget class="QTimeEdit" name="timeEdit">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>110</x>
-        <y>50</y>
-        <width>71</width>
-        <height>24</height>
-       </rect>
-      </property>
-     </widget>
      <widget class="QRadioButton" name="radioButton_2">
       <property name="enabled">
        <bool>false</bool>
@@ -1024,10 +1011,71 @@ font: 11pt &quot;Sans Serif&quot;;</string>
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;Time&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
-     <zorder>radioButton_2</zorder>
-     <zorder>radioButton</zorder>
-     <zorder>timeEdit</zorder>
-     <zorder>label_2</zorder>
+     <widget class="QSpinBox" name="hh">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>50</y>
+        <width>47</width>
+        <height>24</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_13">
+      <property name="geometry">
+       <rect>
+        <x>140</x>
+        <y>50</y>
+        <width>16</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>:</string>
+      </property>
+     </widget>
+     <widget class="QSpinBox" name="mm">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>50</y>
+        <width>47</width>
+        <height>24</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_14">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>50</y>
+        <width>16</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>:</string>
+      </property>
+     </widget>
+     <widget class="QSpinBox" name="ss">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>50</y>
+        <width>47</width>
+        <height>24</height>
+       </rect>
+      </property>
+     </widget>
     </widget>
     <widget class="QPushButton" name="pushButton">
      <property name="enabled">
