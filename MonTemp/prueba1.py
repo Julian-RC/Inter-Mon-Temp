@@ -883,7 +883,7 @@ class Ramp(object):
     
 
     def deriv_h4_no_uniforme(self,f,x):
-        f_prima = zeros(len(f))  #definimos la longitud de la funcion f
+        f_prima = [0]*len(f)  #definimos la longitud de la funcion f
         for i in range(2,len(f)-2): #tomamos un intervalo despreciando el primero, segundo, penúltimo y último término
             hi_2,hi_1,hi1, hi2 = x[i]-x[i-2],x[i]-x[i-1],x[i+1]-x[i],x[i+2]-x[i] # definimos las h utilizadas
             a,b,c,d=hi_2*hi1,hi2*hi_1,hi_1*hi1,hi2*hi_2 #definimos terminos que aparecen constantemente en la formula
