@@ -573,11 +573,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if self.seeStatus_2.isChecked():
             self.status_2.setEnabled(True)
     def graficar(self):
-        global actual,close_plot,DataTemp, DataTemp2
+        global actual,close_plot,DataTemp, DataTemp2, curvas
 
            #     print(b)
         if self.grafica1.isChecked():
-            global plt_mgr,curvas,Time_graph
+            global plt_mgr,Time_graph
             actual, close_plot = True, False
             plt_mgr = LivePlotter()
             self.see_ramp.setEnabled(True)
