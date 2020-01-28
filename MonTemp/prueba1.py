@@ -78,6 +78,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.directorio.clicked.connect(self.buscarDirectorio)
         self.start.clicked.connect(self.start_adquisition)
         self.stop.clicked.connect(self.stop_adquisition)
+        self.see_ramp.connect(self.rampa)
 
         self.actionInfo.triggered.connect(self.show_dialog)
         self.action218.triggered.connect(self.show_218)
@@ -106,6 +107,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         label_scroll+='                   Please select a folder to start\n'
         label_scroll+='-------------------------------------------------------------------------\n'
         self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
+    def rampa(self):
+        global ramp_stat,rampa_true
+        ramp_stat = True
+        rampa_true = Ramp()
+        
     def last(self):
         global label_scroll
         for Obj in [DataTemp,DataTemp2]:
@@ -196,7 +202,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             
 
     def start_adquisition(self):
-        global Start,actual, filename, label_scroll,status_heater_1,label_heater_1
+        global Start,actual, filename, label_scroll,status_heater_1,label_heater_1,ramp_stat
         Start,actual = True,False
         DataTemp2.Read_335('SETP?','1')
         DataTemp2.Read_335('SETP?','2')
@@ -229,7 +235,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
                     self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
             if actual:
-                          global plt_mgr, close_plot
+                          global plt_mgr, close_plot,rampa_true
                           Data_2 = []
                           for Obj in [DataTemp2,DataTemp]:
                               a=Obj.Last_data()
@@ -251,7 +257,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             elif close_plot:
 
                               plt_mgr.close()
+                              rampa_true.close()
+                              ramp_stat = False
                               close_plot = False
+            if ramp_stat:
+                rampa_true.plot()
             if status_heater_1:
                             Ramp_1 = str(DataTemp2.Read_335('HTR?','1'))
                             time.sleep(0.05)
@@ -566,11 +576,15 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         global actual,close_plot,DataTemp, DataTemp2
 
            #     print(b)
-        if self.grafica2.isChecked():
-            actual = False
         if self.grafica1.isChecked():
             global plt_mgr,curvas,Time_graph
             actual, close_plot = True, False
+            plt_mgr = LivePlotter()
+            self.see_ramp.setEnabled(True)
+        else:
+            actual = False
+            self.see_ramp.setEnabled(False)
+        if self.radioButton.isChecked():
             horas = self.hh.value()
             minutos = self.mm.value()
             segundos = self.ss.value()
@@ -605,7 +619,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 curvas[11] = 1
         if self.heater2.isChecked():
                 curvas[12] = 1
-        plt_mgr = LivePlotter()
+        
         
     def matplotlib6(self):
     # Se crea el widget para matplotlib    
@@ -623,7 +637,7 @@ class LivePlotter(object):
         self.p = self.win.addPlot(title='Sensores')
         self.p.setLabel('left', 'Temperature ',units= 'K')
         self.p.setLabel('bottom', 'Time ',units='s')
-        self.p.showGrid(x=False,y=True)
+        self.p.showGrid(x=False,y=True,alpha=0.3)
         self.p.addLegend()
         if curvas[0] == 1:
             self.curva1=self.p.plot(pen=(255,255,255),width=10,name='CernoxA')
@@ -680,7 +694,9 @@ class LivePlotter(object):
             self.curva12 = self.p.plot(pen=(200,148,214),name = 'Heater-2')
             self.Data_curva12,self.Time_curva12=[],[]
         self.p.setRange(yRange=[50, 300])
-
+    
+    def return_data(self):
+        return self.Data_curva1,self.Time_curva1
 
     def add(self, x):
             global Time_graph
@@ -855,6 +871,47 @@ class LivePlotter(object):
         except Exception as e:
             pass
 
+class Ramp(object):
+    def __init__(self):
+        self.win = pg.GraphicsWindow(title='Data')
+        self.p = self.win.addPlot(title='RAMP')
+        self.p.setLabel('left', 'RAMP ',units= 'K/min')
+        self.p.setLabel('bottom', 'Time ',units='s')
+        self.p.showGrid(x=False,y=True,alpha=0.3)
+        self.p.addLegend()
+        self.curva1=self.p.plot(pen=(255,255,255),width=10,name='Rampa-CernoxA')
+    
+
+    def deriv_h4_no_uniforme(self,f,x):
+        f_prima = zeros(len(f))  #definimos la longitud de la funcion f
+        for i in range(2,len(f)-2): #tomamos un intervalo despreciando el primero, segundo, penúltimo y último término
+            hi_2,hi_1,hi1, hi2 = x[i]-x[i-2],x[i]-x[i-1],x[i+1]-x[i],x[i+2]-x[i] # definimos las h utilizadas
+            a,b,c,d=hi_2*hi1,hi2*hi_1,hi_1*hi1,hi2*hi_2 #definimos terminos que aparecen constantemente en la formula
+            #implementamos la derivada
+            f_prima[i] = ((1/(a)+1/(b)-1/(c)-1/(d))**-1)\
+                       *(f[i] \
+                       *((hi2-hi_1)/((b)**2) \
+                       +(hi1-hi_2)/((a)**2)\
+                       -(hi1-hi_1)/((c)**2)\
+                       -(hi2-hi_2)/((d)**2))\
+                       -(hi_1**2*f[i+1]-hi1**2*f[i-1])/((hi_1+hi1)*(c)**2)\
+                       -(hi_2**2*f[i+2]-hi2**2*f[i-2])/((hi_2+hi2)*(d)**2)\
+                       +(hi_1**2*f[i+2]-hi2**2*f[i-1])/((hi_1+hi2)*(b)**2)\
+                       +(hi_2**2*f[i+1]-hi1**2*f[i-2])/((hi_2+hi1)*(a)**2))
+        return f_prima
+
+
+    def plot(self):
+        plot_data,plot_time = plt_mgr.return_data()
+        data_plot = self.deriv_h4_no_uniforme(plot_time,plot_data)
+        self.curva1.setData(plot_time,data_plot)
+        
+        
+    def close(self):
+        try:
+            self.win.close()
+        except Exception as e:
+            pass
 
             
 #Se define la funcion x(t) de la ecuacion de posicion (movimiento horizontal)
@@ -1572,11 +1629,11 @@ class ConfigModule:
 
 #filename = sys.argv[1]
 #filename = sys.argv[2]
-global  label_scroll,Start,close_plot,status_heater_1,label_heater_1,SP_1,SP_2
+global  label_scroll,Start,close_plot,status_heater_1,label_heater_1,SP_1,SP_2,ramp_stat
 
 #Menu = CommandLine()
 label_scroll,Start,close_plot,status_heater_1,label_heater_1,heater_1_estatus= '', False, False,False,'',True
-
+ramp_stat = False
 def Update_Config():
     global textDict,textDict2,DataTemp,DataTemp2
     textDict = ConfigModule(filename)
