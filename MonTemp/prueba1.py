@@ -78,7 +78,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.directorio.clicked.connect(self.buscarDirectorio)
         self.start.clicked.connect(self.start_adquisition)
         self.stop.clicked.connect(self.stop_adquisition)
-        self.see_ramp.connect(self.rampa)
+        self.see_ramp.clicked.connect(self.rampa)
 
         self.actionInfo.triggered.connect(self.show_dialog)
         self.action218.triggered.connect(self.show_218)

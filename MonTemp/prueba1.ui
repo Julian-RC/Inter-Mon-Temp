@@ -1375,7 +1375,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
       </item>
      </layout>
     </widget>
-    <widget class="QPushButton" name="pushButton_2">
+    <widget class="QPushButton" name="see_ramp">
      <property name="enabled">
       <bool>false</bool>
      </property>
