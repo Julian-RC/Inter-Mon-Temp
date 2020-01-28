@@ -903,7 +903,7 @@ class Ramp(object):
 
     def plot(self):
         plot_data,plot_time = plt_mgr.return_data()
-        data_plot = self.deriv_h4_no_uniforme(plot_time/60,plot_data)
+        data_plot = self.deriv_h4_no_uniforme(plot_time,plot_data)
         self.curva1.setData(plot_time,data_plot)
         
         
