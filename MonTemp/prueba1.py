@@ -574,23 +574,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.status_2.setEnabled(True)
     def graficar(self):
         global actual,close_plot,DataTemp, DataTemp2, curvas
-
-           #     print(b)
-        if self.grafica1.isChecked():
-            global plt_mgr,Time_graph
-            actual, close_plot = True, False
-            plt_mgr = LivePlotter()
-            self.see_ramp.setEnabled(True)
-        else:
-            actual = False
-            self.see_ramp.setEnabled(False)
-        if self.radioButton.isChecked():
-            horas = self.hh.value()
-            minutos = self.mm.value()
-            segundos = self.ss.value()
-            Time_graph = horas*360 + minutos*60 + segundos
-        else:
-            Time_graph = float('inf')
         curvas = [0,0,0,0,0,0,0,0,0,0,0,0,0]
         if self.Todos.isChecked():
                 curvas[0] = 1
@@ -620,6 +603,23 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if self.heater2.isChecked():
                 curvas[12] = 1
         
+           #     print(b)
+        if self.grafica1.isChecked():
+            global plt_mgr,Time_graph
+            actual, close_plot = True, False
+            plt_mgr = LivePlotter()
+            self.see_ramp.setEnabled(True)
+        else:
+            actual = False
+            self.see_ramp.setEnabled(False)
+        if self.radioButton.isChecked():
+            horas = self.hh.value()
+            minutos = self.mm.value()
+            segundos = self.ss.value()
+            Time_graph = horas*360 + minutos*60 + segundos
+        else:
+            Time_graph = float('inf')
+
         
     def matplotlib6(self):
     # Se crea el widget para matplotlib    
