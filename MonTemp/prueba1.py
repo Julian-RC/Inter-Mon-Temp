@@ -608,7 +608,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             global plt_mgr,Time_graph
             actual, close_plot = True, False
             plt_mgr = LivePlotter()
-            self.see_ramp.setEnabled(True)
+           # self.see_ramp.setEnabled(True)
         else:
             actual = False
             self.see_ramp.setEnabled(False)
