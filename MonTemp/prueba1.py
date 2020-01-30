@@ -384,8 +384,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                             if actual:
                                         plt_mgr.close()
                                         actual = False
-                            self.off_heater_1()
-                            self.off_heater_2()
+                            #self.off_heater_1()
+                            #self.off_heater_2()
                     else:
                             event.ignore()
                 else:
@@ -405,17 +405,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def show_335(self):
         dialog = Tercera(self)  # self hace referencia al padre
         dialog.show()
-       
-        
+      
     def buscarDirectorio(self):
-        global label_scroll,filename,filename2,patch
-        label_scroll+='                           Wait a moment Please\n'
-        label_scroll+='-------------------------------------------------------------------------\n'
-        self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
-        self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
-        patch = QtWidgets.QFileDialog.getExistingDirectory(self, 'Buscar Carpeta', QtCore.QDir.homePath())
-        self.setCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-        pg.QtGui.QApplication.processEvents()
+        global patch
+        self.buscarDirectorio_2()
         if patch:
             pg.QtGui.QApplication.processEvents()
             label_scroll+='                               Selected folder\n'
@@ -461,6 +454,17 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             label_scroll+='-------------------------------------------------------------------------\n'
             self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
             self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
+        
+    def buscarDirectorio_2(self):
+        global label_scroll,filename,filename2,patch
+        label_scroll+='                           Wait a moment Please\n'
+        label_scroll+='-------------------------------------------------------------------------\n'
+        self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
+        self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
+        patch = QtWidgets.QFileDialog.getExistingDirectory(self, 'Buscar Carpeta', QtCore.QDir.homePath())
+        self.setCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+        pg.QtGui.QApplication.processEvents()
+        
         pg.QtGui.QApplication.processEvents()
             
     def desbloquear_grafica2(self):
