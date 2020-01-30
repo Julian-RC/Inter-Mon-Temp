@@ -1485,7 +1485,7 @@ class TempClass:
     def Plot_inter(self):
         var = []
         for Obj in [DataTemp,DataTemp2]:
-                var.append(PlotData_interface(Obj.DataSerie))
+                var.append(PlotData_Interface(Obj.DataSerie))
         return var 
 
     def GetData(self):
