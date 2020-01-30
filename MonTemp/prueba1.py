@@ -408,6 +408,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
       
     def buscarDirectorio(self):
         global patch,label_scroll,filename,filename2
+        label_scroll+='                           Wait a moment Please\n'
+        label_scroll+='-------------------------------------------------------------------------\n'
+        self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
+        self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
         self.buscarDirectorio_2()
         if patch:
             pg.QtGui.QApplication.processEvents()
@@ -457,10 +461,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         
     def buscarDirectorio_2(self):
         global patch
-        label_scroll+='                           Wait a moment Please\n'
-        label_scroll+='-------------------------------------------------------------------------\n'
-        self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
-        self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
         patch = QtWidgets.QFileDialog.getExistingDirectory(self, 'Buscar Carpeta', QtCore.QDir.homePath())
         self.setCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         pg.QtGui.QApplication.processEvents()
