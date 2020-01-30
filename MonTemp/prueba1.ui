@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1178</width>
-    <height>633</height>
+    <width>1209</width>
+    <height>686</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,8 +22,8 @@
      <rect>
       <x>740</x>
       <y>40</y>
-      <width>431</width>
-      <height>551</height>
+      <width>461</width>
+      <height>601</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -38,9 +38,9 @@
     <widget class="QLabel" name="label_5">
      <property name="geometry">
       <rect>
-       <x>100</x>
+       <x>10</x>
        <y>10</y>
-       <width>261</width>
+       <width>451</width>
        <height>31</height>
       </rect>
      </property>
@@ -53,8 +53,8 @@
       <rect>
        <x>20</x>
        <y>50</y>
-       <width>401</width>
-       <height>441</height>
+       <width>421</width>
+       <height>511</height>
       </rect>
      </property>
      <property name="toolTip">
@@ -75,8 +75,8 @@ font: 11pt &quot;Sans Serif&quot;;</string>
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>399</width>
-        <height>439</height>
+        <width>419</width>
+        <height>509</height>
        </rect>
       </property>
      </widget>
@@ -88,7 +88,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
      <property name="geometry">
       <rect>
        <x>340</x>
-       <y>510</y>
+       <y>570</y>
        <width>71</width>
        <height>23</height>
       </rect>
@@ -110,8 +110,8 @@ font: 11pt &quot;Sans Serif&quot;;</string>
      </property>
      <property name="geometry">
       <rect>
-       <x>40</x>
-       <y>510</y>
+       <x>50</x>
+       <y>570</y>
        <width>80</width>
        <height>23</height>
       </rect>
@@ -134,7 +134,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
      <property name="geometry">
       <rect>
        <x>150</x>
-       <y>510</y>
+       <y>570</y>
        <width>161</width>
        <height>23</height>
       </rect>
@@ -153,9 +153,9 @@ font: 11pt &quot;Sans Serif&quot;;</string>
    <widget class="QFrame" name="frame_6">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>270</y>
-      <width>721</width>
+      <x>0</x>
+      <y>310</y>
+      <width>731</width>
       <height>331</height>
      </rect>
     </property>
@@ -837,6 +837,9 @@ color: rgb(255, 255, 255);</string>
      </item>
      <item>
       <widget class="QToolButton" name="directorio">
+       <property name="cursor">
+        <cursorShape>ArrowCursor</cursorShape>
+       </property>
        <property name="toolTip">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Select folder&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
@@ -870,11 +873,14 @@ font: 11pt &quot;Sans Serif&quot;;</string>
    <widget class="QFrame" name="frame_4">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>0</x>
       <y>40</y>
-      <width>721</width>
-      <height>221</height>
+      <width>731</width>
+      <height>261</height>
      </rect>
+    </property>
+    <property name="cursor">
+     <cursorShape>ArrowCursor</cursorShape>
     </property>
     <property name="toolTip">
      <string/>
@@ -893,9 +899,9 @@ background-color: rgb(85, 85, 127);</string>
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>10</y>
-       <width>231</width>
-       <height>103</height>
+       <y>30</y>
+       <width>191</width>
+       <height>91</height>
       </rect>
      </property>
      <property name="styleSheet">
@@ -908,48 +914,67 @@ font: 11pt &quot;Sans Serif&quot;;</string>
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <item>
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;Type&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QRadioButton" name="grafica1">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="text">
-         <string>Plot with refresh</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QRadioButton" name="grafica2">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="text">
-         <string>Plot without refresh</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     <widget class="QLabel" name="label">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>0</y>
+        <width>181</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;Type&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="grafica1">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>60</y>
+        <width>171</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Plot with refresh</string>
+      </property>
+      <property name="checked">
+       <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="grafica2">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>172</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Plot without refresh</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <zorder>grafica1</zorder>
+     <zorder>grafica2</zorder>
+     <zorder>label</zorder>
     </widget>
     <widget class="QFrame" name="frame_2">
      <property name="geometry">
       <rect>
-       <x>270</x>
-       <y>40</y>
-       <width>261</width>
+       <x>210</x>
+       <y>30</y>
+       <width>281</width>
        <height>91</height>
       </rect>
      </property>
@@ -1004,7 +1029,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
         <x>0</x>
         <y>0</y>
         <width>261</width>
-        <height>31</height>
+        <height>21</height>
        </rect>
       </property>
       <property name="text">
@@ -1083,9 +1108,9 @@ font: 11pt &quot;Sans Serif&quot;;</string>
      </property>
      <property name="geometry">
       <rect>
-       <x>330</x>
+       <x>200</x>
        <y>140</y>
-       <width>131</width>
+       <width>111</width>
        <height>31</height>
       </rect>
      </property>
@@ -1106,10 +1131,10 @@ font: 11pt &quot;Sans Serif&quot;;</string>
     <widget class="QFrame" name="frame_3">
      <property name="geometry">
       <rect>
-       <x>540</x>
-       <y>10</y>
-       <width>161</width>
-       <height>201</height>
+       <x>500</x>
+       <y>30</y>
+       <width>221</width>
+       <height>221</height>
       </rect>
      </property>
      <property name="toolTip">
@@ -1131,9 +1156,9 @@ font: 11pt &quot;Sans Serif&quot;;</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>20</x>
+        <x>10</x>
         <y>10</y>
-        <width>141</width>
+        <width>101</width>
         <height>21</height>
        </rect>
       </property>
@@ -1150,10 +1175,10 @@ font: 11pt &quot;Sans Serif&quot;;</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>40</x>
+        <x>20</x>
         <y>30</y>
-        <width>91</width>
-        <height>21</height>
+        <width>94</width>
+        <height>24</height>
        </rect>
       </property>
       <property name="text">
@@ -1169,7 +1194,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>40</x>
+        <x>20</x>
         <y>50</y>
         <width>91</width>
         <height>21</height>
@@ -1188,7 +1213,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>40</x>
+        <x>20</x>
         <y>70</y>
         <width>85</width>
         <height>21</height>
@@ -1207,7 +1232,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>40</x>
+        <x>20</x>
         <y>90</y>
         <width>85</width>
         <height>21</height>
@@ -1226,7 +1251,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>40</x>
+        <x>20</x>
         <y>110</y>
         <width>85</width>
         <height>21</height>
@@ -1245,7 +1270,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>40</x>
+        <x>20</x>
         <y>130</y>
         <width>85</width>
         <height>21</height>
@@ -1264,7 +1289,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>40</x>
+        <x>20</x>
         <y>150</y>
         <width>101</width>
         <height>21</height>
@@ -1283,7 +1308,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>40</x>
+        <x>20</x>
         <y>170</y>
         <width>101</width>
         <height>21</height>
@@ -1296,13 +1321,234 @@ font: 11pt &quot;Sans Serif&quot;;</string>
        <bool>true</bool>
       </property>
      </widget>
+     <widget class="QCheckBox" name="checkBox">
+      <property name="geometry">
+       <rect>
+        <x>140</x>
+        <y>30</y>
+        <width>16</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="checkBox_2">
+      <property name="geometry">
+       <rect>
+        <x>140</x>
+        <y>150</y>
+        <width>16</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="checkBox_3">
+      <property name="geometry">
+       <rect>
+        <x>140</x>
+        <y>70</y>
+        <width>16</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="checkBox_4">
+      <property name="geometry">
+       <rect>
+        <x>140</x>
+        <y>170</y>
+        <width>16</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="checkBox_5">
+      <property name="geometry">
+       <rect>
+        <x>140</x>
+        <y>130</y>
+        <width>16</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="checkBox_6">
+      <property name="geometry">
+       <rect>
+        <x>140</x>
+        <y>110</y>
+        <width>16</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="checkBox_7">
+      <property name="geometry">
+       <rect>
+        <x>140</x>
+        <y>90</y>
+        <width>16</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="checkBox_8">
+      <property name="geometry">
+       <rect>
+        <x>140</x>
+        <y>50</y>
+        <width>16</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_15">
+      <property name="geometry">
+       <rect>
+        <x>140</x>
+        <y>10</y>
+        <width>81</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;See Ramp:&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;&lt;br/&gt;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_16">
+      <property name="geometry">
+       <rect>
+        <x>160</x>
+        <y>30</y>
+        <width>51</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_19">
+      <property name="geometry">
+       <rect>
+        <x>160</x>
+        <y>50</y>
+        <width>51</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_20">
+      <property name="geometry">
+       <rect>
+        <x>160</x>
+        <y>70</y>
+        <width>51</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_21">
+      <property name="geometry">
+       <rect>
+        <x>160</x>
+        <y>90</y>
+        <width>51</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_22">
+      <property name="geometry">
+       <rect>
+        <x>160</x>
+        <y>110</y>
+        <width>51</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_23">
+      <property name="geometry">
+       <rect>
+        <x>160</x>
+        <y>130</y>
+        <width>51</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_24">
+      <property name="geometry">
+       <rect>
+        <x>160</x>
+        <y>150</y>
+        <width>51</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_25">
+      <property name="geometry">
+       <rect>
+        <x>160</x>
+        <y>170</y>
+        <width>51</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QLabel" name="label_4">
      <property name="geometry">
       <rect>
-       <x>310</x>
+       <x>250</x>
        <y>0</y>
-       <width>171</width>
+       <width>261</width>
        <height>31</height>
       </rect>
      </property>
@@ -1314,9 +1560,9 @@ font: 11pt &quot;Sans Serif&quot;;</string>
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>120</y>
-       <width>230</width>
-       <height>74</height>
+       <y>133</y>
+       <width>151</width>
+       <height>121</height>
       </rect>
      </property>
      <property name="toolTip">
@@ -1332,18 +1578,8 @@ font: 11pt &quot;Sans Serif&quot;;</string>
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
-     <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0">
-       <widget class="QCheckBox" name="SetPoint1">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="text">
-         <string>SetPoint 1</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
        <widget class="QCheckBox" name="SetPoint2">
         <property name="enabled">
          <bool>false</bool>
@@ -1353,23 +1589,33 @@ font: 11pt &quot;Sans Serif&quot;;</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
-       <widget class="QCheckBox" name="heater1">
+      <item>
+       <widget class="QCheckBox" name="SetPoint1">
         <property name="enabled">
          <bool>false</bool>
         </property>
         <property name="text">
-         <string>Heater 1</string>
+         <string>SetPoint 1</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
+      <item>
        <widget class="QCheckBox" name="heater2">
         <property name="enabled">
          <bool>false</bool>
         </property>
         <property name="text">
          <string>Heater 2</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="heater1">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Heater 1</string>
         </property>
        </widget>
       </item>
@@ -1381,16 +1627,23 @@ font: 11pt &quot;Sans Serif&quot;;</string>
      </property>
      <property name="geometry">
       <rect>
-       <x>270</x>
-       <y>180</y>
-       <width>241</width>
+       <x>340</x>
+       <y>140</y>
+       <width>121</width>
        <height>31</height>
       </rect>
      </property>
      <property name="text">
-      <string>See Ramp</string>
+      <string>See Plot Ramp</string>
      </property>
     </widget>
+    <zorder>frame</zorder>
+    <zorder>pushButton</zorder>
+    <zorder>frame_3</zorder>
+    <zorder>label_4</zorder>
+    <zorder>frame_11</zorder>
+    <zorder>see_ramp</zorder>
+    <zorder>frame_2</zorder>
    </widget>
    <zorder>layoutWidget</zorder>
    <zorder>frame_5</zorder>
@@ -1402,7 +1655,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1178</width>
+     <width>1209</width>
      <height>20</height>
     </rect>
    </property>

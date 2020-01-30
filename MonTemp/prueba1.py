@@ -4,7 +4,7 @@ from MonTemp.info_ui import *
 from MonTemp.segunda_ui import *
 from MonTemp.tercera_ui import *
 from pyqtgraph import QtGui, QtCore
-from PyQt5.QtWidgets import QDialog,QMessageBox,QLabel
+from PyQt5 import QtWidgets
 import pyqtgraph as pg
 from numpy import roll,append
 import serial
@@ -26,6 +26,44 @@ import pickle
 #matplotlib.use('TkAgg')
 #import os
 import matplotlib.pyplot as plt
+
+from PyQt5.QtGui import *
+from PyQt5.QtCore import *
+ 
+class QColorBox(QFrame):
+ 
+    colorChanged = pyqtSignal()
+ 
+    def __init__(self, parent=None, defaultColor=Qt.white):
+        super(QColorBox,self).__init__(parent)
+ 
+        self.setStyleSheet("border-color: rgba(0,0,0,0);")
+        self.__color = None
+        self.__defaultColor = QColor(defaultColor)
+        self.setColor(self.__defaultColor)
+        self.setFixedHeight(20)
+        self.setFrameStyle(1)
+ 
+    def setColor(self, color):
+        if color != self.__color:
+            self.__color = QColor(color)
+            self.setStyleSheet("background-color: %s;" % self.__color.name())
+            self.colorChanged.emit()
+ 
+    def color(self):
+        return self.__color
+ 
+    def mousePressEvent(self, e):
+        if e.buttons() == Qt.LeftButton:
+            color = QColorDialog.getColor(self.__color)
+            if color.isValid():
+                self.setColor(color)
+                self.colorChanged.emit()
+        elif e.button() == Qt.RightButton:
+            self.setColor(self.__defaultColor)
+ 
+#
+# test
 
 
 class Dialog(QDialog,Ui_Dialog):
@@ -135,16 +173,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.On_335_1()
         time.sleep(0.05)
         self.Update_1()
-        time.sleep(0.05)
-        DataTemp2.Update_335('RANGE','1','0')
         
         
     def off_heater_2(self):
         self.On_335_2()
         time.sleep(0.05)
         self.Update_2()
-        time.sleep(0.05)
-        DataTemp2.Update_335('RANGE','2','0')
+
     
  
     def On_335_1(self):
@@ -257,8 +292,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             elif close_plot:
 
                               plt_mgr.close()
-                              rampa_true.close()
-                              ramp_stat = False
+                              if ramp_stat:
+                                  rampa_true.close()
+                                  ramp_stat = False
                               close_plot = False
             if ramp_stat:
                 rampa_true.plot()
@@ -377,10 +413,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
         patch = QtWidgets.QFileDialog.getExistingDirectory(self, 'Buscar Carpeta', QtCore.QDir.homePath())
         if patch:
+            self.setCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+            pg.QtGui.QApplication.processEvents()
             label_scroll+='                               Selected folder\n'
             label_scroll+='-------------------------------------------------------------------------\n'
             self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
             self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
+            pg.QtGui.QApplication.processEvents()
             path = os.path.realpath(__file__).strip('prueba1.py') 
             config_filename = path + "cfg/file_218.cfg"
             config_filename2 = path + "cfg/file_335.cfg"
@@ -392,6 +431,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             filename2 = patch + '/file_335.cfg'
             try:
                 Update_Config()
+                pg.QtGui.QApplication.processEvents()
                 label_scroll+='                               Config File Ok\n'
                 self.linePatch.setText(patch) 
                 self.start.setEnabled(True)
@@ -405,11 +445,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 label_scroll+='-------------------------------------------------------------------------\n'
                 self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
                 self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
+                self.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
             except:
-                label_scroll += '                 Error al cargar la configuración de los modulos\n'
+                label_scroll += ' Error al cargar la configuración de los modulos\n'
                 label_scroll+='-------------------------------------------------------------------------\n'
                 self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
                 self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
+                self.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
         else:
             label_scroll+='                               No selected folder\n'
             label_scroll+='-------------------------------------------------------------------------\n'
@@ -573,13 +615,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if self.seeStatus_2.isChecked():
             self.status_2.setEnabled(True)
     def graficar(self):
-        global actual,close_plot,DataTemp, DataTemp2, curvas
+        global actual,close_plot,DataTemp, DataTemp2, curvas, curvas_last
         curvas = [0,0,0,0,0,0,0,0,0,0,0,0,0]
         if self.Todos.isChecked():
                 curvas[0] = 1
         else:
                 if self.CA.isChecked():
                     curvas[1] = 1
+                    self.see_ramp.setEnabled(True)
                 if self.CB.isChecked():
                     curvas[2] = 1
                 if self.D1.isChecked():
@@ -605,10 +648,16 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         
            #     print(b)
         if self.grafica1.isChecked():
-            global plt_mgr,Time_graph
-            actual, close_plot = True, False
-            plt_mgr = LivePlotter()
-           # self.see_ramp.setEnabled(True)
+            if curvas_last==[]:
+                pass
+            if curvas_last==curvas:
+                pass
+            else:
+                global plt_mgr,Time_graph
+                actual, close_plot = True, False
+                plt_mgr = LivePlotter()
+                curvas_last = curvas
+                
         else:
             actual = False
             self.see_ramp.setEnabled(False)
@@ -616,7 +665,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             horas = self.hh.value()
             minutos = self.mm.value()
             segundos = self.ss.value()
-            Time_graph = horas*360 + minutos*60 + segundos
+            Time_graph = horas*3600 + minutos*60 + segundos
         else:
             Time_graph = float('inf')
 
@@ -701,128 +750,70 @@ class LivePlotter(object):
     def add(self, x):
             global Time_graph
             if curvas[0] == 1:
-                self.Data_curva1.append(float(x[0][2]))
-                self.Data_curva2.append(float(x[1][2]))
-                self.Data_curva3.append(float(x[2][2]))
-                self.Data_curva4.append(float(x[3][2]))
-                self.Data_curva5.append(float(x[4][2]))
-                self.Data_curva6.append(float(x[5][2]))
-                self.Data_curva7.append(float(x[6][2])*1.0257-2.1852)
-                self.Data_curva8.append(float(x[7][2])*1.0151-0.7786)
-                self.Time_curva1.append(x[0][1])
-                self.Time_curva2.append(x[1][1])
-                self.Time_curva3.append(x[2][1])
-                self.Time_curva4.append(x[3][1])
-                self.Time_curva5.append(x[4][1])
-                self.Time_curva6.append(x[5][1])
-                self.Time_curva7.append(x[6][1])
-                self.Time_curva8.append(x[7][1])
-                if self.Time_curva1[-1]-self.Time_curva1[0] > Time_graph:
-                    self.Time_curva1 = self.Time_curva1[-(len(self.Time_curva1)-1):]
-                    self.Data_curva1 = self.Data_curva1[-(len(self.Data_curva1)-1):]
-                if self.Time_curva2[-1]-self.Time_curva2[0] > Time_graph:
-                    self.Time_curva2 = self.Time_curva2[-(len(self.Time_curva2)-1):]
-                    self.Data_curva2 = self.Data_curva2[-(len(self.Data_curva2)-1):]
-                if self.Time_curva3[-1]-self.Time_curva3[0] > Time_graph:
-                    self.Time_curva3 = self.Time_curva3[-(len(self.Time_curva3)-1):]
-                    self.Data_curva3 = self.Data_curva3[-(len(self.Data_curva3)-1):]
-                if self.Time_curva4[-1]-self.Time_curva4[0] > Time_graph:
-                    self.Time_curva4 = self.Time_curva4[-(len(self.Time_curva4)-1):]
-                    self.Data_curva4 = self.Data_curva4[-(len(self.Data_curva4)-1):]
-                if self.Time_curva5[-1]-self.Time_curva5[0] > Time_graph:
-                    self.Time_curva5 = self.Time_curva5[-(len(self.Time_curva5)-1):]
-                    self.Data_curva5 = self.Data_curva5[-(len(self.Data_curva5)-1):]
-                if self.Time_curva6[-1]-self.Time_curva6[0] > Time_graph:
-                    self.Time_curva6 = self.Time_curva6[-(len(self.Time_curva6)-1):]
-                    self.Data_curva6 = self.Data_curva6[-(len(self.Data_curva6)-1):]
-                if self.Time_curva7[-1]-self.Time_curva7[0] > Time_graph:
-                    self.Time_curva7 = self.Time_curva7[-(len(self.Time_curva7)-1):]
-                    self.Data_curva7 = self.Data_curva7[-(len(self.Data_curva7)-1):]
-                if self.Time_curva8[-1]-self.Time_curva8[0] > Time_graph:
-                    self.Time_curva8 = self.Time_curva8[-(len(self.Time_curva8)-1):]
-                    self.Data_curva8 = self.Data_curva8[-(len(self.Data_curva8)-1):]
+                self.Data_curva1,self.Time_curva1 = self.Curvas_add(self.Data_curva1, self.Time_curva1,float(x[0][2]),x[0][1])
+                self.Data_curva2,self.Time_curva2 = self.Curvas_add(self.Data_curva2, self.Time_curva2,float(x[1][2]),x[1][1])
+                self.Data_curva3,self.Time_curva3 = self.Curvas_add(self.Data_curva3, self.Time_curva3,float(x[2][2]),x[2][1])
+                self.Data_curva4,self.Time_curva4 = self.Curvas_add(self.Data_curva4, self.Time_curva4,float(x[3][2]),x[3][1])
+                self.Data_curva5,self.Time_curva5 = self.Curvas_add(self.Data_curva5, self.Time_curva5,float(x[4][2]),x[4][1])
+                self.Data_curva6,self.Time_curva6 = self.Curvas_add(self.Data_curva6, self.Time_curva6,float(x[5][2]),x[5][1])
+                self.Data_curva7,self.Time_curva7 = self.Curvas_add(self.Data_curva7, self.Time_curva7,float(x[6][2])*1.0257-2.1852,x[6][1])
+                self.Data_curva8,self.Time_curva8 = self.Curvas_add(self.Data_curva8, self.Time_curva8,float(x[7][2])*1.0151-0.7786,x[7][1])
             else:
                 if curvas[1] == 1:
-                    self.Data_curva1.append(float(x[0][2]))
-                    self.Time_curva1.append(x[0][1])
-                    if self.Time_curva1[-1]-self.Time_curva1[0] > Time_graph:
-                        self.Time_curva1 = self.Time_curva1[-(len(self.Time_curva1)-1):]
-                        self.Data_curva1 = self.Data_curva1[-(len(self.Data_curva1)-1):]
+                    self.Data_curva1,self.Time_curva1 = self.Curvas_add(self.Data_curva1, self.Time_curva1,float(x[0][2]),x[0][1])
                 if curvas[2] == 1:
-                    self.Data_curva2.append(float(x[1][2]))
-                    self.Time_curva2.append(x[1][1])
-                    if self.Time_curva2[-1]-self.Time_curva2[0] > Time_graph:
-                        self.Time_curva2 = self.Time_curva2[-(len(self.Time_curva2)-1):]
-                        self.Data_curva2 = self.Data_curva2[-(len(self.Data_curva2)-1):]
+                    self.Data_curva2,self.Time_curva2 = self.Curvas_add(self.Data_curva2, self.Time_curva2,float(x[1][2]),x[1][1])
                 if curvas[3] == 1:
-                    self.Data_curva3.append(float(x[2][2]))
-                    self.Time_curva3.append(x[2][1])
-                    if self.Time_curva3[-1]-self.Time_curva3[0] > Time_graph:
-                        self.Time_curva3 = self.Time_curva3[-(len(self.Time_curva3)-1):]
-                        self.Data_curva3 = self.Data_curva3[-(len(self.Data_curva3)-1):]
+                    self.Data_curva3,self.Time_curva3 = self.Curvas_add(self.Data_curva3, self.Time_curva3,float(x[2][2]),x[2][1])
                 if curvas[4] == 1:
-                    self.Data_curva4.append(float(x[3][2]))
-                    self.Time_curva4.append(x[3][1])
-                    if self.Time_curva4[-1]-self.Time_curva4[0] > Time_graph:
-                        self.Time_curva4 = self.Time_curva4[-(len(self.Time_curva4)-1):]
-                        self.Data_curva4 = self.Data_curva4[-(len(self.Data_curva4)-1):]
+                    self.Data_curva4,self.Time_curva4 = self.Curvas_add(self.Data_curva4, self.Time_curva4,float(x[3][2]),x[3][1])
                 if curvas[5] == 1:
-                    self.Data_curva5.append(float(x[4][2]))
-                    self.Time_curva5.append(x[4][1])
-                    if self.Time_curva5[-1]-self.Time_curva5[0] > Time_graph:
-                        self.Time_curva5 = self.Time_curva5[-(len(self.Time_curva5)-1):]
-                        self.Data_curva5 = self.Data_curva5[-(len(self.Data_curva5)-1):]
+                    self.Data_curva5,self.Time_curva5 = self.Curvas_add(self.Data_curva5, self.Time_curva5,float(x[4][2]),x[4][1])
+
                 if curvas[6] == 1:
-                    self.Data_curva6.append(float(x[5][2]))
-                    self.Time_curva6.append(x[5][1])
-                    if self.Time_curva6[-1]-self.Time_curva6[0] > Time_graph:
-                        self.Time_curva6 = self.Time_curva6[-(len(self.Time_curva6)-1):]
-                        self.Data_curva6 = self.Data_curva6[-(len(self.Data_curva6)-1):]
+                    self.Data_curva6,self.Time_curva6 = self.Curvas_add(self.Data_curva6, self.Time_curva6,float(x[5][2]),x[5][1])
+
                 if curvas[7] == 1:
-                    self.Data_curva7.append(float(x[6][2])*1.0257-2.1852)
-                    self.Time_curva7.append(x[6][1])
-                    if self.Time_curva7[-1]-self.Time_curva7[0] > Time_graph:
-                        self.Time_curva7 = self.Time_curva7[-(len(self.Time_curva7)-1):]
-                        self.Data_curva7 = self.Data_curva7[-(len(self.Data_curva7)-1):]
+                    self.Data_curva7,self.Time_curva7 = self.Curvas_add(self.Data_curva7, self.Time_curva7,float(x[6][2])*1.0257-2.1852,x[6][1])
+                    
                 if curvas[8] == 1:
-                    self.Data_curva8.append(float(x[7][2])*1.0151-0.7786)
-                    self.Time_curva8.append(x[7][1])
-                    if self.Time_curva8[-1]-self.Time_curva8[0] > Time_graph:
-                        self.Time_curva8 = self.Time_curva8[-(len(self.Time_curva8)-1):]
-                        self.Data_curva8 = self.Data_curva8[-(len(self.Data_curva8)-1):]
+                    self.Data_curva8,self.Time_curva8 = self.Curvas_add(self.Data_curva8, self.Time_curva8,float(x[7][2])*1.0151-0.7786,x[7][1])
+                        
             if curvas[9] == 1:
-                self.Data_curva9.append(SP_1)
-                self.Time_curva9.append(x[7][1])
-                if self.Time_curva9[-1]-self.Time_curva9[0] > Time_graph:
-                    self.Time_curva9 = self.Time_curva9[-(len(self.Time_curva9)-1):]
-                    self.Data_curva9 = self.Data_curva9[-(len(self.Data_curva9)-1):]
+                self.Data_curva9,self.Time_curva9 = self.Curvas_add(self.Data_curva9, self.Time_curva9,SP_1,x[7][1])
+                
             if curvas[10] == 1:
-                HTR_1 = str(DataTemp2.Read_335('SETP?','1'))
+                HTR_1 = float(DataTemp2.Read_335('SETP?','1'))
+                self.Data_curva10,self.Time_curva10 = self.Curvas_add(self.Data_curva10, self.Time_curva10,HTR_1,x[7][1])
                 time.sleep(0.05)
-                self.Data_curva10.append(float(HTR_1))
-                self.Time_curva10.append(x[7][1])
-                if self.Time_curva10[-1]-self.Time_curva10[0] > Time_graph:
-                    self.Time_curva10 = self.Time_curva10[-(len(self.Time_curva10)-1):]
-                    self.Data_curva10 = self.Data_curva10[-(len(self.Data_curva10)-1):]
+
             if curvas[11] == 1:
-                self.Data_curva11.append(SP_2)
-                self.Time_curva11.append(x[7][1])
-                if self.Time_curva11[-1]-self.Time_curva11[0] > Time_graph:
-                    self.Time_curva11 = self.Time_curva11[-(len(self.Time_curva11)-1):]
-                    self.Data_curva11 = self.Data_curva11[-(len(self.Data_curva11)-1):]
+                self.Data_curva11,self.Time_curva11 = self.Curvas_add(self.Data_curva11, self.Time_curva11,SP_2,x[7][1])
+
             if curvas[12] == 1:
-                HTR_2 = str(DataTemp2.Read_335('SETP?','2'))
+                HTR_2 = float(DataTemp2.Read_335('SETP?','2'))
+                self.Data_curva12,self.Time_curva12 = self.Curvas_add(self.Data_curva12, self.Time_curva12,HTR_2,x[7][1])
                 time.sleep(0.05)
-                self.Data_curva12.append(float(HTR_2))
-                self.Time_curva12.append(x[7][1])
-                if self.Time_curva12[-1]-self.Time_curva12[0] > Time_graph:
-                    self.Time_curva12 = self.Time_curva12[-(len(self.Time_curva12)-1):]
-                    self.Data_curva12 = self.Data_curva12[-(len(self.Data_curva12)-1):]
                 
             global actual
            # actual = False
             pg.QtGui.QApplication.processEvents()
-
+            
+    def Curvas_add(self,Datos_curvas,Tiempo_curvas,datos,tiempos):
+        Datos_curvas.append(datos)
+        Tiempo_curvas.append(tiempos)
+        for i in range(len(Tiempo_curvas)):
+            if Tiempo_curvas[-1]-Tiempo_curvas[0] > Time_graph:
+                self.Quitar_datos(Datos_curvas,Tiempo_curvas)
+            else:
+                break
+            QtGui.QApplication.processEvents() 
+        return Datos_curvas,Tiempo_curvas
+                
+        
+    def Quitar_datos(self, Arreglo_curvas,Arreglo_tiempo):
+        Arreglo_curvas = Arreglo_curvas[-(len(Arreglo_curvas)-1):]
+        Arreglo_tiempo = Arreglo_tiempo[-(len(Arreglo_tiempo)-1):]
 
 
     def update(self):
@@ -879,7 +870,7 @@ class Ramp(object):
         self.p.setLabel('bottom', 'Time ',units='s')
         self.p.showGrid(x=False,y=True,alpha=0.3)
         self.p.addLegend()
-        self.curva1=self.p.plot(pen=(255,255,255),width=10,name='Rampa-CernoxA')
+        self.curva1=self.p.plot(pen=(255,255,255),width=10,name='Rampa-CernoxB')
     
 
     def deriv_h4_no_uniforme(self,f,x):
@@ -898,12 +889,16 @@ class Ramp(object):
                        -(hi_2**2*f[i+2]-hi2**2*f[i-2])/((hi_2+hi2)*(d)**2)\
                        +(hi_1**2*f[i+2]-hi2**2*f[i-1])/((hi_1+hi2)*(b)**2)\
                        +(hi_2**2*f[i+1]-hi1**2*f[i-2])/((hi_2+hi1)*(a)**2))
+            QtGui.QApplication.processEvents() 
         return f_prima
 
 
     def plot(self):
+        global plt_mgr
         plot_data,plot_time = plt_mgr.return_data()
-        data_plot = self.deriv_h4_no_uniforme(plot_time,plot_data)
+        data_plot = self.deriv_h4_no_uniforme(plot_data,plot_time)
+        for i in range(len(data_plot)):
+            data_plot[i] = data_plot[i]*60
         self.curva1.setData(plot_time,data_plot)
         
         
@@ -1402,10 +1397,10 @@ class TempClass:
         self.DataRecovered = ''
         self.ConfigPlot = 1
         self.DataSerieOld = ''
-
-        print('------------------------------------------------------------')
-        print('The aquisition of the temperature with ' + self.Brand +' '+ self.Device + ' has begun.')
-        print('------------------------------------------------------------\n')
+        global label_scroll
+        label_scroll += '------------------------------------------------------------\n'
+        label_scroll += 'The aquisition of the temperature with ' + self.Brand +' '+ self.Device + ' has begun.\n'
+        label_scroll += '------------------------------------------------------------\n'
 
     def __str__(self): #Función completamente implementada
         StrFunction(self.Data,self.FileAddress)
@@ -1574,6 +1569,7 @@ class ConfigModule:
     
     #Define channel sensor status On/Off
     def setSensOn(self): 
+        global label_scroll
         Ch=1
         out={}
         for key in self.ConfigDict.keys():
@@ -1587,16 +1583,17 @@ class ConfigModule:
                     #read status 
                     str2port='INPUT? '+str(Ch)+'\r\n'
                     self.Port.write(str2port.encode())
-                    out.setdefault('Sens '+str(Ch),self.Port.read(79).decode().strip())
+                    out.setdefault('Sens '+str(Ch),self.Port.read(79).decode().strip()+'\n')
                     time.sleep(.1)
                     Ch=Ch+1
                 continue
             continue
-        print('Status\r')  #Print On/Iff Settings       
-        print(out)
+        label_scroll +='Status\r'  #Print On/Iff Settings       
+        label_scroll += str(out) + '\n'
         #return 'Done\r\n'
 
     def setCurves(self): 
+        global label_scroll
         Ch=1
         out={}
         for key in self.ConfigDict:
@@ -1614,8 +1611,8 @@ class ConfigModule:
                     Ch=Ch+1
                 continue
             continue
-        print('Curves\r') #Print Curve Settings
-        print(out)
+        label_scroll += 'Curves\r' #Print Curve Settings
+        label_scroll += str(out)+'\n' 
         #return   'Done\r\n'
 
     def ConfigPort(self):
@@ -1629,17 +1626,19 @@ class ConfigModule:
 
 #filename = sys.argv[1]
 #filename = sys.argv[2]
-global  label_scroll,Start,close_plot,status_heater_1,label_heater_1,SP_1,SP_2,ramp_stat
+global  label_scroll,Start,close_plot,status_heater_1,label_heater_1,SP_1,SP_2,ramp_stat,curvas_last
 
 #Menu = CommandLine()
 label_scroll,Start,close_plot,status_heater_1,label_heater_1,heater_1_estatus= '', False, False,False,'',True
-ramp_stat = False
+ramp_stat,curvas_last = False,[]
 def Update_Config():
     global textDict,textDict2,DataTemp,DataTemp2
     textDict = ConfigModule(filename)
     textDict2 = ConfigModule(filename2,0)
     DataTemp = TempClass(textDict.ConfigDict)
+    pg.QtGui.QApplication.processEvents()
     DataTemp2 = TempClass(textDict2.ConfigDict,DataTemp.InitTime)
+    pg.QtGui.QApplication.processEvents()
     
 def launch():
     try:
