@@ -675,7 +675,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             if curvas_last==[]:
                 pass
             if curvas_last==curvas:
-                if actual = False:
+                if actual == False:
                     global plt_mgr,Time_graph
                     actual, close_plot = True, False
                     plt_mgr = LivePlotter()
