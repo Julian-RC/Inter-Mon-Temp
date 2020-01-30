@@ -193,7 +193,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 
     def On_335_2(self):
         global SP_2
-        Ramp_2 = DataTemp2.Read_335('RAMP?','2')[2:7]
+        Ramp_2 = str(DataTemp2.Read_335('RAMP?','2')[2:7])
         self.ramp_2.setValue(float(Ramp_2))
         SetP_2 = DataTemp2.Read_335('SETP?','2')
         SP_2 = float(SetP_2)
@@ -412,6 +412,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
         self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
         patch = QtWidgets.QFileDialog.getExistingDirectory(self, 'Buscar Carpeta', QtCore.QDir.homePath())
+        pg.QtGui.QApplication.processEvents()
         if patch:
             self.setCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
             pg.QtGui.QApplication.processEvents()
@@ -446,6 +447,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
                 self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
                 self.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
+                pg.QtGui.QApplication.processEvents()
             except:
                 label_scroll += ' Error al cargar la configuración de los modulos\n'
                 label_scroll+='-------------------------------------------------------------------------\n'
@@ -1634,7 +1636,9 @@ ramp_stat,curvas_last = False,[]
 def Update_Config():
     global textDict,textDict2,DataTemp,DataTemp2
     textDict = ConfigModule(filename)
+    pg.QtGui.QApplication.processEvents()
     textDict2 = ConfigModule(filename2,0)
+    pg.QtGui.QApplication.processEvents()
     DataTemp = TempClass(textDict.ConfigDict)
     pg.QtGui.QApplication.processEvents()
     DataTemp2 = TempClass(textDict2.ConfigDict,DataTemp.InitTime)
