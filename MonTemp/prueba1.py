@@ -362,7 +362,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                                     self.off_heater_1()
                                    # self.off_heater_2()
                                     label_scroll+='                        Acquisition has stopped\n'
-                                    label_scroll+=     '+str(datetime.datetime.now())
+                                    label_scroll+='    '+str(datetime.datetime.now())
                                     label_scroll+='-------------------------------------------------------------------------\n'
                                     self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
                                     self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
