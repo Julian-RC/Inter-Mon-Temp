@@ -257,6 +257,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.heater_2.setEnabled(True)
         self.lastdata.setEnabled(True)
         label_scroll+='                          Acquisition has begun\n'
+        label_scroll+=str(datetime.now())
         label_scroll+='-------------------------------------------------------------------------\n'
         self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
         self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
