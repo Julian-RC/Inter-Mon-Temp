@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1209, 686)
+        MainWindow.resize(1208, 685)
         MainWindow.setStyleSheet("")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -285,7 +285,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addWidget(self.SeeData)
         self.frame_4 = QtWidgets.QFrame(self.centralwidget)
         self.frame_4.setGeometry(QtCore.QRect(0, 40, 731, 261))
-        self.frame_4.setCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+        self.frame_4.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
         self.frame_4.setToolTip("")
         self.frame_4.setStyleSheet("\n"
 "background-color: rgb(85, 85, 127);")
@@ -469,6 +469,11 @@ class Ui_MainWindow(object):
         self.label_25 = QtWidgets.QLabel(self.frame_3)
         self.label_25.setGeometry(QtCore.QRect(160, 170, 51, 16))
         self.label_25.setObjectName("label_25")
+        self.frame_12 = QtWidgets.QFrame(self.frame_3)
+        self.frame_12.setGeometry(QtCore.QRect(110, 30, 21, 21))
+        self.frame_12.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_12.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_12.setObjectName("frame_12")
         self.label_4 = QtWidgets.QLabel(self.frame_4)
         self.label_4.setGeometry(QtCore.QRect(250, 0, 261, 31))
         self.label_4.setObjectName("label_4")
@@ -514,7 +519,7 @@ class Ui_MainWindow(object):
         self.frame_4.raise_()
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1209, 20))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1208, 20))
         self.menubar.setObjectName("menubar")
         self.menupl = QtWidgets.QMenu(self.menubar)
         self.menupl.setObjectName("menupl")
