@@ -176,6 +176,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         
         
     def off_heater_2(self):
+        
         self.On_335_2()
         time.sleep(0.05)
         self.Update_2()
@@ -194,6 +195,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def On_335_2(self):
         global SP_2
         Ramp_2 = str(DataTemp2.Read_335('RAMP?','2')[2:7])
+        
         self.ramp_2.setValue(float(Ramp_2))
         SetP_2 = DataTemp2.Read_335('SETP?','2')
         SP_2 = float(SetP_2)
@@ -412,9 +414,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
         self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
         patch = QtWidgets.QFileDialog.getExistingDirectory(self, 'Buscar Carpeta', QtCore.QDir.homePath())
+        self.setCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         pg.QtGui.QApplication.processEvents()
         if patch:
-            self.setCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
             pg.QtGui.QApplication.processEvents()
             label_scroll+='                               Selected folder\n'
             label_scroll+='-------------------------------------------------------------------------\n'

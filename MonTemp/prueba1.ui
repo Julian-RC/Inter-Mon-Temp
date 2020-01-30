@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1208</width>
-    <height>685</height>
+    <width>1226</width>
+    <height>683</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,7 +20,7 @@
    <widget class="QFrame" name="frame_5">
     <property name="geometry">
      <rect>
-      <x>740</x>
+      <x>750</x>
       <y>40</y>
       <width>461</width>
       <height>601</height>
@@ -153,7 +153,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
    <widget class="QFrame" name="frame_6">
     <property name="geometry">
      <rect>
-      <x>0</x>
+      <x>10</x>
       <y>310</y>
       <width>731</width>
       <height>331</height>
@@ -873,7 +873,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
    <widget class="QFrame" name="frame_4">
     <property name="geometry">
      <rect>
-      <x>0</x>
+      <x>10</x>
       <y>40</y>
       <width>731</width>
       <height>261</height>
@@ -1663,15 +1663,15 @@ font: 11pt &quot;Sans Serif&quot;;</string>
    </widget>
    <zorder>layoutWidget</zorder>
    <zorder>frame_5</zorder>
-   <zorder>frame_6</zorder>
    <zorder>frame_4</zorder>
+   <zorder>frame_6</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1208</width>
+     <width>1226</width>
      <height>20</height>
     </rect>
    </property>
