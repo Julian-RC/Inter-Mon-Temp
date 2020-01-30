@@ -1425,7 +1425,7 @@ class TempClass:
         self.DataSerieOld = ''
         global label_scroll
         label_scroll += '------------------------------------------------------------\n'
-        label_scroll += 'The aquisition of the temperature with ' + self.Brand +' '+ self.Device + ' has begun.\n'
+        label_scroll += '      The aquisition of the temperature with\n ' +'    '+ self.Brand +' '+ self.Device + ' has begun.\n'
         label_scroll += '------------------------------------------------------------\n'
 
     def __str__(self): #Función completamente implementada
