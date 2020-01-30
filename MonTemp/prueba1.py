@@ -152,8 +152,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         
     def last(self):
         global label_scroll
-        label_scroll +='               ' + 'Sensor'+'        '+'Time'+ '          ' +'Data\n'
-        for Obj in [DataTemp,DataTemp2]:
+        label_scroll +='               ' + 'Sensor'+'           '+'Time'+ '            ' +'Data\n'
+        for Obj in [DataTemp2,DataTemp]:
                label_scroll += Obj.PrintValue()
         self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
         self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
@@ -1426,7 +1426,7 @@ class TempClass:
         self.DataSerieOld = ''
         global label_scroll
         label_scroll += '-------------------------------------------------------------------------\n'
-        label_scroll += '      The aquisition of the temperature with\n ' +'    '+ self.Brand +' '+ self.Device + ' has begun.\n'
+        label_scroll += '         The aquisition of the temperature with\n ' +'    '+ self.Brand +' '+ self.Device + ' has begun.\n'
         label_scroll += '-------------------------------------------------------------------------\n'
 
     def __str__(self): #Función completamente implementada
