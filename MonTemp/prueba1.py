@@ -806,7 +806,7 @@ class LivePlotter(object):
         Tiempo_curvas.append(tiempos)
         for i in range(len(Tiempo_curvas)):
             if Tiempo_curvas[-1]-Tiempo_curvas[0] > Time_graph:
-                self.Quitar_datos(Datos_curvas,Tiempo_curvas)
+                Datos_curvas,Tiempo_curvas = self.Quitar_datos(Datos_curvas,Tiempo_curvas)
             else:
                 break
             QtGui.QApplication.processEvents() 
@@ -816,6 +816,7 @@ class LivePlotter(object):
     def Quitar_datos(self, Arreglo_curvas,Arreglo_tiempo):
         Arreglo_curvas = Arreglo_curvas[-(len(Arreglo_curvas)-1):]
         Arreglo_tiempo = Arreglo_tiempo[-(len(Arreglo_tiempo)-1):]
+        return Arreglo_curvas,Arreglo_tiempo
 
 
     def update(self):
