@@ -430,7 +430,23 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             filename = patch + '/file_218.cfg'
             filename2 = patch + '/file_335.cfg'
             try:
-                Update_Config()
+                global textDict,textDict2,DataTemp,DataTemp2
+                textDict = ConfigModule(filename)
+                self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
+                self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
+                pg.QtGui.QApplication.processEvents()
+                textDict2 = ConfigModule(filename2,0)
+                self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
+                self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
+                pg.QtGui.QApplication.processEvents()
+                DataTemp = TempClass(textDict.ConfigDict)
+                pg.QtGui.QApplication.processEvents()
+                self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
+                self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
+                DataTemp2 = TempClass(textDict2.ConfigDict,DataTemp.InitTime)
+                pg.QtGui.QApplication.processEvents()
+                self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
+                self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
                 pg.QtGui.QApplication.processEvents()
                 label_scroll+='                               Config File Ok\n'
                 self.linePatch.setText(patch) 
@@ -458,6 +474,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             label_scroll+='-------------------------------------------------------------------------\n'
             self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
             self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
+            self.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
         
     def buscarDirectorio_2(self):
         global patch
