@@ -152,7 +152,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         
     def last(self):
         global label_scroll
-        label_scroll +='               ' + 'Sensor'+'           '+'Time[s]'+ '             ' +'Data[K]\n'
+        label_scroll +='               ' + 'Sensor'+'           '+'Time[s]'+ '        ' +'Data[K]\n'
         for Obj in [DataTemp2,DataTemp]:
                label_scroll += Obj.PrintValue()
         self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
@@ -1426,7 +1426,7 @@ class TempClass:
         self.DataSerieOld = ''
         global label_scroll
         label_scroll += '-------------------------------------------------------------------------\n'
-        label_scroll += '         The aquisition of the temperature with\n ' +'    '+ self.Brand +' '+ self.Device + ' has begun.\n'
+        label_scroll += '         The aquisition of the temperature with\n ' +'     '+ self.Brand +' '+ self.Device + ' has begun.\n'
         label_scroll += '-------------------------------------------------------------------------\n'
 
     def __str__(self): #Función completamente implementada
@@ -1530,7 +1530,7 @@ class TempClass:
         a = ''
         if self.Data==[]:
             a += '-------------------------------------------------------------------------\n'
-            a += '  Currently, buffer is empty of temperature data. \n                 Please try again in a moment.\n'
+            a += '    Currently, buffer is empty of temperature data. \n                 Please try again in a moment.\n'
             a += '-------------------------------------------------------------------------\n'
         else:
             a += '-------------------------------------------------------------------------\n'
