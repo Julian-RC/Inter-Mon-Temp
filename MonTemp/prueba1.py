@@ -1614,7 +1614,8 @@ class ConfigModule:
                     Ch=Ch+1
                 continue
             continue
-        label_scroll +='                             Status\n'  #Print On/Iff Settings       
+        label_scroll +='                                       Status\n'  #Print On/Iff Settings       
+        label_scroll+='-------------------------------------------------------------------------\n'
         i = 0
         for a in out:
             label_scroll +='      ' +a+':'+out[a].strip('\n')
@@ -1644,10 +1645,10 @@ class ConfigModule:
                     Ch=Ch+1
                 continue
             continue
-        label_scroll += '                             Curves\n' #Print Curve Settings
+        label_scroll += '                                       Curves\n' #Print Curve Settings
         i = 0
         for a in out:
-            label_scroll += '     '+a+':'+out[a].strip('\n')
+            label_scroll += '        '+a+' :'+out[a].strip('\n')
             i += 1
             if i == 4:
                 label_scroll += '\n'
