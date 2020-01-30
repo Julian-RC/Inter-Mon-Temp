@@ -972,9 +972,10 @@ class Lienzo(FigureCanvas):
         self.ejes = self.figura.add_subplot(111)
         #self.tiempo = np.arange(0.0, 5.65, 0.01)
         #Calculo de la posicion en el eje X y Y
-        for name in [DataTemp,DataTemp2]
+        for name in [DataTemp,DataTemp2]:
             a = name.Plot_inter()
-            self.ejes.plot(a[0], a[1])
+            for b in a:
+                self.ejes.plot(b[0], b[1])
         # inicializar el lienzo donde se crea la grafica.
         FigureCanvas.__init__(self, self.figura)
 
