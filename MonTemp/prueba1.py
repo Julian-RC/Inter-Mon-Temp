@@ -1482,6 +1482,7 @@ class TempClass:
             sys.exit()
 
     def Plot_inter(self):
+        self.RemoveHeader()
         var = PlotData_Interface(self.DataRecovered)
          # var.append(PlotData_Interface(Obj.DataSerie)) #header
         return var 
