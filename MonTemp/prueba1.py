@@ -1636,16 +1636,17 @@ class ConfigModule:
                     #Set curve in Ch channel
                     str2port='INCRV '+str(Ch)+','+ str(self.ConfigDict.get(key))+'\r\n'
                     self.Port.write(str2port.encode())
-                    time.sleep(.2)
+                    time.sleep(.1)
                     #read curve value   
                     str2port='INCRV? '+str(Ch)+'\r\n'
                     self.Port.write(str2port.encode())
                     out.setdefault(key,self.Port.read(79).decode().strip())
-                    time.sleep(.2)
+                    time.sleep(.1)
                     Ch=Ch+1
                 continue
             continue
         label_scroll += '                                    Curves\n' #Print Curve Settings
+        label_scroll+='-------------------------------------------------------------------------\n'
         i = 0
         for a in out:
             label_scroll += '       '+a+' :'+out[a].strip('\n')
