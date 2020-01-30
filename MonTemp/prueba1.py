@@ -703,7 +703,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 
 class LivePlotter(object):
     
-    global curvas
+    global curvas,actual
     
     def __init__(self):
         self.win = pg.GraphicsWindow(title='Data')
@@ -884,6 +884,7 @@ class LivePlotter(object):
     def close(self):
         try:
             self.win.close()
+            actual = False
         except Exception as e:
             pass
 
