@@ -688,6 +688,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             actual = False
             self.see_ramp.setEnabled(False)
+            self.matplotlib()
         if self.radioButton.isChecked():
             horas = self.hh.value()
             minutos = self.mm.value()
@@ -697,7 +698,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             Time_graph = float('inf')
 
         
-    def matplotlib6(self):
+    def matplotlib(self):
     # Se crea el widget para matplotlib    
         mpl = Lienzo()
     # Se muestra el widget.
