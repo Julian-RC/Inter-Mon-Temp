@@ -152,7 +152,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         
     def last(self):
         global label_scroll
-        label_scroll +='          ' + 'Sensor'+'      '+'Time'+ '      ' +'Data\n'
+        label_scroll +='               ' + 'Sensor'+'        '+'Time'+ '          ' +'Data\n'
         for Obj in [DataTemp,DataTemp2]:
                label_scroll += Obj.PrintValue()
         self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
@@ -1530,12 +1530,12 @@ class TempClass:
         a = ''
         if self.Data==[]:
             a += '-------------------------------------------------------------------------\n'
-            a += 'Currently, buffer is empty of temperature data. \n         Please try again in a moment.\n'
+            a += '  Currently, buffer is empty of temperature data. \n                 Please try again in a moment.\n'
             a += '-------------------------------------------------------------------------\n'
         else:
             a += '-------------------------------------------------------------------------\n'
             for Vect in self.Data[-1]:
-                a +='          ' + Vect[0]+'      '+str(round(Vect[1],2))+ '      ' +Vect[2]+'\n'
+                a +='               ' + Vect[0]+'        '+str(round(Vect[1],2))+ '        ' +Vect[2]+'\n'
             a += '-------------------------------------------------------------------------\n'
         return a
             
