@@ -358,7 +358,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                                     self.heater_1.setChecked(False)
                                     self.heater_2.setChecked(False)
                                     self.off_heater_1()
-                                    self.off_heater_2()
+                                   # self.off_heater_2()
                                     label_scroll+='                        Acquisition has stopped\n'
                                     label_scroll+='-------------------------------------------------------------------------\n'
                                     self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
@@ -1615,7 +1615,9 @@ class ConfigModule:
                 continue
             continue
         label_scroll +='Status\r'  #Print On/Iff Settings       
-        label_scroll += str(out) + '\n'
+        for a in out:
+            label_scroll += a+':'+out[a]+'   '
+        label_scroll+='-------------------------------------------------------------------------\n'
         #return 'Done\r\n'
 
     def setCurves(self): 
