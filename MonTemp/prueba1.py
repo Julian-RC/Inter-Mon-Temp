@@ -966,15 +966,15 @@ def fy(t):
 class Lienzo(FigureCanvas):
     """Clase que represente a FigureCanvas"""
     def __init__(self):
+        global DataTemp,DataTemp2
         # Codigo para generar la grafica
         self.figura = Figure()
         self.ejes = self.figura.add_subplot(111)
-        self.tiempo = np.arange(0.0, 5.65, 0.01)
+        #self.tiempo = np.arange(0.0, 5.65, 0.01)
         #Calculo de la posicion en el eje X y Y
-        self.x = fx(self.tiempo)
-        self.y = fy(self.tiempo)
-        #Se crea la grafica
-        self.ejes.plot(self.x, self.y)
+        for name in [DataTemp,DataTemp2]
+            a = name.Plot_inter()
+            self.ejes.plot(a[0], a[1])
         # inicializar el lienzo donde se crea la grafica.
         FigureCanvas.__init__(self, self.figura)
 
@@ -1209,6 +1209,29 @@ def PlotData(Data):
     plt.ylabel('Temperature/K')
     plt.show()
 
+
+def PlotData_Interface(Data):
+    PlotData = Data.split('\n')
+    PlotData = FilterEmptyStrings(PlotData)
+    Tiempo = []
+    Temperaturas = []
+    Data_plot = []
+    for Num in range(len(PlotData)):
+        VectAux = (PlotData[Num].split('\t'))
+        Tiempo.append(float(VectAux[0]))
+        TemperaturasVect = []
+        for Num2 in range(1,len(VectAux)):
+            TemperaturasVect.append(float(VectAux[Num2]))
+            
+        Temperaturas.append(TemperaturasVect)
+    
+    for Num in range(len(TemperaturasVect)):
+        TempCol = []
+        for Num2 in range(len(Temperaturas)):
+            TempCol.append(Temperaturas[Num2][Num])
+        
+        Data_plot.append([Tiempo, TempCol])
+    return Data_plot
 
 #----------------------------------------------------------
 #Esta función se encarga de leer los datos del monitor
@@ -1456,6 +1479,9 @@ class TempClass:
                 PlotData(self.DataRecovered)
             sys.exit()
 
+    def Plot_inter(sefl,Data):
+        return PlotData_Interface(Data)
+
     def GetData(self):
         ListTupla = []
         if self.InitTime == 0:
@@ -1676,16 +1702,6 @@ global  label_scroll,Start,close_plot,status_heater_1,label_heater_1,SP_1,SP_2,r
 #Menu = CommandLine()
 label_scroll,Start,close_plot,status_heater_1,label_heater_1,heater_1_estatus= '', False, False,False,'',True
 ramp_stat,curvas_last = False,[]
-def Update_Config():
-    global textDict,textDict2,DataTemp,DataTemp2
-    textDict = ConfigModule(filename)
-    pg.QtGui.QApplication.processEvents()
-    textDict2 = ConfigModule(filename2,0)
-    pg.QtGui.QApplication.processEvents()
-    DataTemp = TempClass(textDict.ConfigDict)
-    pg.QtGui.QApplication.processEvents()
-    DataTemp2 = TempClass(textDict2.ConfigDict,DataTemp.InitTime)
-    pg.QtGui.QApplication.processEvents()
     
 def launch():
     try:
