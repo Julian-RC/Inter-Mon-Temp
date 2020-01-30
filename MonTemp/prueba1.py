@@ -152,7 +152,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         
     def last(self):
         global label_scroll
-        label_scroll +='               ' + 'Sensor'+'           '+'Time'+ '            ' +'Data\n'
+        label_scroll +='               ' + 'Sensor'+'             '+'Time'+ '             ' +'Data\n'
         for Obj in [DataTemp2,DataTemp]:
                label_scroll += Obj.PrintValue()
         self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
