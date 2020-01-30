@@ -152,7 +152,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         
     def last(self):
         global label_scroll
-        label_scroll +='               ' + 'Sensor'+'           '+'Time[s]'+ '        ' +'Data[K]\n'
+        label_scroll +='               ' + 'Sensor'+'           '+'Time[s]'+ '         ' +'Data[K]\n'
         for Obj in [DataTemp2,DataTemp]:
                label_scroll += Obj.PrintValue()
         self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
@@ -165,7 +165,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             for Obj in [DataTemp,DataTemp2]:
                 Obj.__str__()
         except:
-           label_scroll += 'ERROR: Text file cannot be shown.\n'
+           label_scroll += '   ERROR: Text file cannot be shown.\n'
         self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
         self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
      
@@ -409,14 +409,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
       
     def buscarDirectorio(self):
         global patch,label_scroll,filename,filename2
-        label_scroll+='                           Wait a moment Please\n'
-        label_scroll+='-------------------------------------------------------------------------\n'
-        self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
-        self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
         self.buscarDirectorio_2()
         if patch:
             pg.QtGui.QApplication.processEvents()
             label_scroll+='                               Selected folder\n'
+            label_scroll+='-------------------------------------------------------------------------\n'
+            label_scroll+='                           Wait a moment Please\n'
             label_scroll+='-------------------------------------------------------------------------\n'
             self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
             self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
@@ -1426,7 +1424,7 @@ class TempClass:
         self.DataSerieOld = ''
         global label_scroll
         label_scroll += '-------------------------------------------------------------------------\n'
-        label_scroll += '         The aquisition of the temperature with\n ' +'     '+ self.Brand +' '+ self.Device + ' has begun.\n'
+        label_scroll += '         The aquisition of the temperature with\n ' +'   '+ self.Brand +' '+ self.Device + ' has begun.\n'
         label_scroll += '-------------------------------------------------------------------------\n'
 
     def __str__(self): #Función completamente implementada
