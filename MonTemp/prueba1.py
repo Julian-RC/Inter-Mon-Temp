@@ -1614,9 +1614,9 @@ class ConfigModule:
                     Ch=Ch+1
                 continue
             continue
-        label_scroll +='Status\r'  #Print On/Iff Settings       
+        label_scroll +='Status\n'  #Print On/Iff Settings       
         for a in out:
-            label_scroll += a+':'+out[a]+'   '
+            label_scroll += a+':'+out[a].strip('\n')
         label_scroll+='-------------------------------------------------------------------------\n'
         #return 'Done\r\n'
 
@@ -1639,8 +1639,10 @@ class ConfigModule:
                     Ch=Ch+1
                 continue
             continue
-        label_scroll += 'Curves\r' #Print Curve Settings
-        label_scroll += str(out)+'\n' 
+        label_scroll += 'Curves\n' #Print Curve Settings
+        for a in out:
+            label_scroll += a+':'+out[a].strip('\n')
+        label_scroll+='-------------------------------------------------------------------------\n'
         #return   'Done\r\n'
 
     def ConfigPort(self):
