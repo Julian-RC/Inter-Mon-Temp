@@ -407,7 +407,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         dialog.show()
       
     def buscarDirectorio(self):
-        global patch
+        global patch,label_scroll,filename,filename2
         self.buscarDirectorio_2()
         if patch:
             pg.QtGui.QApplication.processEvents()
@@ -456,7 +456,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
         
     def buscarDirectorio_2(self):
-        global label_scroll,filename,filename2,patch
+        global patch
         label_scroll+='                           Wait a moment Please\n'
         label_scroll+='-------------------------------------------------------------------------\n'
         self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
