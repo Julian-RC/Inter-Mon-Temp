@@ -639,7 +639,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if self.seeStatus_2.isChecked():
             self.status_2.setEnabled(True)
     def graficar(self):
-        global actual,close_plot,DataTemp, DataTemp2, curvas, curvas_last
+        global actual,close_plot,DataTemp, DataTemp2, curvas, curvas_last,plt_mgr,Time_graph
         curvas = [0,0,0,0,0,0,0,0,0,0,0,0,0]
         if self.Todos.isChecked():
                 curvas[0] = 1
@@ -676,13 +676,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 pass
             if curvas_last==curvas:
                 if actual == False:
-                    global plt_mgr,Time_graph
                     actual, close_plot = True, False
                     plt_mgr = LivePlotter()
                 else:
                     pass
             else:
-                global plt_mgr,Time_graph
                 actual, close_plot = True, False
                 plt_mgr = LivePlotter()
                 curvas_last = curvas
