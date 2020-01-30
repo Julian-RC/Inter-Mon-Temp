@@ -976,7 +976,7 @@ class Lienzo(FigureCanvas):
         for name in [DataTemp,DataTemp2]:
             a = name.Plot_inter()
             for b in a:
-                for c in a:
+                for c in b:
                     self.ejes.plot(c[0], c[1])
         # inicializar el lienzo donde se crea la grafica.
         FigureCanvas.__init__(self, self.figura)
