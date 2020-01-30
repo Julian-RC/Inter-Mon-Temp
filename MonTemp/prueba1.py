@@ -976,7 +976,8 @@ class Lienzo(FigureCanvas):
         for name in [DataTemp,DataTemp2]:
             a = name.Plot_inter()
             for b in a:
-                self.ejes.plot(b[0], b[1])
+                for c in a:
+                    self.ejes.plot(c[0], c[1])
         # inicializar el lienzo donde se crea la grafica.
         FigureCanvas.__init__(self, self.figura)
 
@@ -1481,8 +1482,11 @@ class TempClass:
                 PlotData(self.DataRecovered)
             sys.exit()
 
-    def Plot_inter(sefl,Data):
-        return PlotData_Interface(Data)
+    def Plot_inter(self):
+        var = []
+        for Obj in [DataTemp,DataTemp2]:
+                var.append(Obj.PlotData_interface(Obj.DataSerie))
+        return var 
 
     def GetData(self):
         ListTupla = []
