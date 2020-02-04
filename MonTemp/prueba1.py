@@ -1,10 +1,16 @@
 import os
+path_terminal = os.path.realpath(__file__).strip('prueba1.py') 
+path_terminal += "cfg/terminal.cfg"
+os.system("xrdb " +path_terminal) 
 from MonTemp.prueba1_ui import *
 from MonTemp.info_ui import *
 from MonTemp.segunda_ui import *
 from MonTemp.tercera_ui import *
 from pyqtgraph import QtGui, QtCore
 from PyQt5 import QtWidgets
+from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QAction, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QSpacerItem, QSizePolicy, QPushButton
+from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import QSize
 import pyqtgraph as pg
 from numpy import roll,append
 import serial
@@ -17,8 +23,11 @@ from matplotlib.figure import Figure
 #Se importa QT4Agg como Canvas.
 from matplotlib.backends.backend_qt5agg \
   import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qt5agg \
+  import NavigationToolbar2QT as NavigationToolbar
 import datetime
 #import serial
+import random
 import subprocess
 import pickle
 #import numpy as np
@@ -30,40 +39,8 @@ import matplotlib.pyplot as plt
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
  
-class QColorBox(QFrame):
+
  
-    colorChanged = pyqtSignal()
- 
-    def __init__(self, parent=None, defaultColor=Qt.white):
-        super(QColorBox,self).__init__(parent)
- 
-        self.setStyleSheet("border-color: rgba(0,0,0,0);")
-        self.__color = None
-        self.__defaultColor = QColor(defaultColor)
-        self.setColor(self.__defaultColor)
-        self.setFixedHeight(20)
-        self.setFrameStyle(1)
- 
-    def setColor(self, color):
-        if color != self.__color:
-            self.__color = QColor(color)
-            self.setStyleSheet("background-color: %s;" % self.__color.name())
-            self.colorChanged.emit()
- 
-    def color(self):
-        return self.__color
- 
-    def mousePressEvent(self, e):
-        if e.buttons() == Qt.LeftButton:
-            color = QColorDialog.getColor(self.__color)
-            if color.isValid():
-                self.setColor(color)
-                self.colorChanged.emit()
-        elif e.button() == Qt.RightButton:
-            self.setColor(self.__defaultColor)
- 
-#
-# test
 
 
 class Dialog(QDialog,Ui_Dialog):
@@ -83,7 +60,23 @@ class Segunda(QDialog,Ui_Segunda):
             self.setWindowTitle("218 TemperatureMonitor")
         except KeyboardInterrupt as KBI:
             pass
-            
+
+class Terminal(QtWidgets.QWidget):
+    def __init__(self, parent=None):
+        super(Terminal, self).__init__(parent)
+        self.process = QtCore.QProcess(self)
+        self.terminal = QtWidgets.QWidget(self)
+        layout = QtWidgets.QVBoxLayout(self)
+        layout.addWidget(self.terminal)
+        # Works also with urxvt:
+        self.process.start('urxvt',['-embed', str(int(self.winId()))])
+        self.setFixedSize(1350, 273)
+        QtGui.QApplication.processEvents()
+    def closeEvent(self,event):
+        self.process.terminate()
+        self.process.waitForFinished()
+        event.accept()
+
 class Tercera(QDialog,Ui_Tercera):
     def __init__(self, *args, **kwargs):
         try:
@@ -94,7 +87,8 @@ class Tercera(QDialog,Ui_Tercera):
             pass
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, parent=None,*args, **kwargs):
+        super(MainWindow, self).__init__(parent)
         QtWidgets.QMainWindow.__init__(self, *args, **kwargs)
         global label_scroll
 
@@ -138,13 +132,127 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.Off_2.clicked.connect(self.off_heater_2)
         self.SeeData.clicked.connect(self.see_data)
         self.lastdata.clicked.connect(self.last)
-        
+        self.color_H1.clicked.connect(self.change_color_H1)
+        self.color_H2.clicked.connect(self.change_color_H2)
+        self.color_S1.clicked.connect(self.change_color_S1)
+        self.color_S2.clicked.connect(self.change_color_S2)
+        self.color_D1.clicked.connect(self.change_color_D1)
+        self.color_D2.clicked.connect(self.change_color_D2)
+        self.color_D3.clicked.connect(self.change_color_D3)
+        self.color_D4.clicked.connect(self.change_color_D4)
+        self.color_C5.clicked.connect(self.change_color_C5)
+        self.color_C6.clicked.connect(self.change_color_C6)
+        self.color_CA.clicked.connect(self.change_color_CA)
+        self.color_CB.clicked.connect(self.change_color_CB)
+
         
         label_scroll='-------------------------------------------------------------------------\n'
         label_scroll+=' Welcome, Interface TemperatureModule has begun\n'
         label_scroll+='                   Please select a folder to start\n'
         label_scroll+='-------------------------------------------------------------------------\n'
         self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
+        self.tabWidget.clear()
+        self.tabWidget.addTab(Terminal(),"Terminal")
+        QtGui.QApplication.processEvents()
+    
+    def change_color_H1(self):
+        color_rgb=(10,22,34)
+        color = QColorDialog.getColor(QColor(color_rgb[0],color_rgb[1],color_rgb[2]))
+        if color.isValid():
+            color_rgb = color.getRgb()
+            self.color_H1.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','+str(color_rgb[2])+");")
+    
+    def change_color_S1(self):
+        color_rgb=(10,22,34)
+        color = QColorDialog.getColor(QColor(color_rgb[0],color_rgb[1],color_rgb[2]))
+        if color.isValid():
+            color_rgb = color.getRgb()
+            self.color_S1.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','+str(color_rgb[2])+");")
+        
+    def change_color_H2(self):
+        color_rgb=(10,22,34)
+        color = QColorDialog.getColor(QColor(color_rgb[0],color_rgb[1],color_rgb[2]))
+        if color.isValid():
+            color_rgb = color.getRgb()
+            self.color_H2.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','+str(color_rgb[2])+");")
+    
+    def change_color_S2(self):
+        color_rgb=(10,22,34)
+        color = QColorDialog.getColor(QColor(color_rgb[0],color_rgb[1],color_rgb[2]))
+        if color.isValid():
+            color_rgb = color.getRgb()
+            self.color_S2.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','+str(color_rgb[2])+");")
+    
+    def change_color_CA(self):
+        color_rgb=(10,22,34)
+        color = QColorDialog.getColor(QColor(color_rgb[0],color_rgb[1],color_rgb[2]))
+        if color.isValid():
+            color_rgb = color.getRgb()
+            self.color_CA.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','+str(color_rgb[2])+");")
+        
+    def change_color_CB(self):
+        color_rgb=(10,22,34)
+        color = QColorDialog.getColor(QColor(color_rgb[0],color_rgb[1],color_rgb[2]))
+        if color.isValid():
+            color_rgb = color.getRgb()
+            self.color_CB.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','+str(color_rgb[2])+");")
+    
+    def change_color_D1(self):
+        color_rgb=(10,22,34)
+        color = QColorDialog.getColor(QColor(color_rgb[0],color_rgb[1],color_rgb[2]))
+        if color.isValid():
+            color_rgb = color.getRgb()
+            self.color_D1.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','+str(color_rgb[2])+");")
+    
+    def change_color_D2(self):
+        color_rgb=(10,22,34)
+        color = QColorDialog.getColor(QColor(color_rgb[0],color_rgb[1],color_rgb[2]))
+        if color.isValid():
+            color_rgb = color.getRgb()
+            self.color_D2.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','+str(color_rgb[2])+");")
+
+    def change_color_D3(self):
+        color_rgb=(10,22,34)
+        color = QColorDialog.getColor(QColor(color_rgb[0],color_rgb[1],color_rgb[2]))
+        if color.isValid():
+            color_rgb = color.getRgb()
+            self.color_D3.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','+str(color_rgb[2])+");")
+
+    def change_color_D4(self):
+        color_rgb=(10,22,34)
+        color = QColorDialog.getColor(QColor(color_rgb[0],color_rgb[1],color_rgb[2]))
+        if color.isValid():
+            color_rgb = color.getRgb()
+            self.color_D4.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','+str(color_rgb[2])+");")
+    
+    def change_color_C5(self):
+        color_rgb=(10,22,34)
+        color = QColorDialog.getColor(QColor(color_rgb[0],color_rgb[1],color_rgb[2]))
+        if color.isValid():
+            color_rgb = color.getRgb()
+            self.color_C5.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','+str(color_rgb[2])+");")
+    
+    def change_color_C6(self):
+        color_rgb=(10,22,34)
+        color = QColorDialog.getColor(QColor(color_rgb[0],color_rgb[1],color_rgb[2]))
+        if color.isValid():
+            color_rgb = color.getRgb()
+            self.color_C6.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','+str(color_rgb[2])+");")
+
+    def change_color_CA(self):
+        color_rgb=(10,22,34)
+        color = QColorDialog.getColor(QColor(color_rgb[0],color_rgb[1],color_rgb[2]))
+        if color.isValid():
+            color_rgb = color.getRgb()
+            self.color_CA.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','+str(color_rgb[2])+");")
+    
+    def change_color_CB(self):
+        color_rgb=(10,22,34)
+        color = QColorDialog.getColor(QColor(color_rgb[0],color_rgb[1],color_rgb[2]))
+        if color.isValid():
+            color_rgb = color.getRgb()
+            self.color_CB.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','+str(color_rgb[2])+");")
+
     def rampa(self):
         global ramp_stat,rampa_true
         ramp_stat = True
@@ -152,8 +260,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         
     def last(self):
         global label_scroll
-        label_scroll +='               ' + 'Sensor'+'           '+'Time[s]'+ '         ' +'Data[K]\n'
-        for Obj in [DataTemp2,DataTemp]:
+        for Obj in [DataTemp,DataTemp2]:
                label_scroll += Obj.PrintValue()
         self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
         self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
@@ -165,7 +272,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             for Obj in [DataTemp,DataTemp2]:
                 Obj.__str__()
         except:
-           label_scroll += '   ERROR: Text file cannot be shown.\n'
+           label_scroll += 'ERROR: Text file cannot be shown.\n'
         self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
         self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
      
@@ -256,8 +363,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.heater_1.setEnabled(True)
         self.heater_2.setEnabled(True)
         self.lastdata.setEnabled(True)
+        DataTemp.Start()
+        DataTemp2.Start()
         label_scroll+='                          Acquisition has begun\n'
-        label_scroll+='                  '+str(datetime.datetime.now())+'\n'
         label_scroll+='-------------------------------------------------------------------------\n'
         self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
         self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
@@ -347,7 +455,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                                     self.grafica1.setEnabled(False)
                                     self.start.setEnabled(True)
                                     self.stop.setEnabled(False)
-                                    self.linePatch.setEnabled(True)
+                                    #self.linePatch.setEnabled(True)
                                     self.directorio.setEnabled(True)
                                     self.heater_1.setEnabled(False)
                                     self.heater_2.setEnabled(False)
@@ -362,7 +470,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                                     self.off_heater_1()
                                    # self.off_heater_2()
                                     label_scroll+='                        Acquisition has stopped\n'
-                                    label_scroll+='                  '+str(datetime.datetime.now())+'\n'
                                     label_scroll+='-------------------------------------------------------------------------\n'
                                     self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
                                     self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
@@ -411,32 +518,90 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
       
     def buscarDirectorio(self):
         global patch,label_scroll,filename,filename2
+        label_scroll+='                           Wait a moment Please\n'
+        label_scroll+='-------------------------------------------------------------------------\n'
+        self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
+        self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
         self.buscarDirectorio_2()
         if patch:
-            pg.QtGui.QApplication.processEvents()
-            label_scroll+='                               Selected folder\n'
-            label_scroll+='-------------------------------------------------------------------------\n'
-            label_scroll+='                           Wait a moment Please\n'
-            label_scroll+='-------------------------------------------------------------------------\n'
-            self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
-            self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
-            pg.QtGui.QApplication.processEvents()
-            path = os.path.realpath(__file__).strip('prueba1.py') 
-            config_filename = path + "cfg/file_218.cfg"
-            config_filename2 = path + "cfg/file_335.cfg"
-            os.system('cp '+ config_filename +' '+ patch)
-            os.system('cp '+ config_filename2 +' '+ patch)
-            os.system('cd && cd '+patch+' && chmod 777 file_218.cfg')
-            os.system('cd && cd '+patch+' && chmod 777 file_335.cfg')
-            filename = patch + '/file_218.cfg'
-            filename2 = patch + '/file_335.cfg'
-            try:
-                global textDict,textDict2,DataTemp,DataTemp2
-                textDict = ConfigModule(filename)
+            self.linePatch.setText(patch) 
+            global textDict,textDict2,DataTemp,DataTemp2
+            ls = subprocess.getoutput("cd && cd " +patch+ "&&ls").lstrip('\n')
+            if ls=='':
+                pg.QtGui.QApplication.processEvents()
+                label_scroll+='                               Selected folder\n'
+                label_scroll+='-------------------------------------------------------------------------\n'
                 self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
                 self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
                 pg.QtGui.QApplication.processEvents()
-                textDict2 = ConfigModule(filename2,0)
+                path = os.path.realpath(__file__).strip('prueba1.py') 
+                config_filename = path + "cfg/file_218.cfg"
+                config_filename2 = path + "cfg/file_335.cfg"
+                os.system('cp '+ config_filename +' '+ patch)
+                os.system('cp '+ config_filename2 +' '+ patch)
+                os.system('cd && cd '+patch+' && chmod 777 file_218.cfg')
+                os.system('cd && cd '+patch+' && chmod 777 file_335.cfg')
+                filename = patch + '/file_218.cfg'
+                filename2 = patch + '/file_335.cfg'
+                try:
+                    textDict = ConfigModule(filename,1,1)
+                    self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
+                    self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
+                    pg.QtGui.QApplication.processEvents()
+                    textDict2 = ConfigModule(filename2,0,1)
+                    self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
+                    self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
+                    pg.QtGui.QApplication.processEvents()
+                    DataTemp = TempClass(textDict.ConfigDict)
+                    pg.QtGui.QApplication.processEvents()
+                    self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
+                    self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
+                    DataTemp2 = TempClass(textDict2.ConfigDict,DataTemp.InitTime)
+                    pg.QtGui.QApplication.processEvents()
+                    self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
+                    self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
+                    pg.QtGui.QApplication.processEvents()
+                    label_scroll+='                               Config File Ok\n'
+                    self.start.setEnabled(True)
+                    self.SeeData.setEnabled(True)
+                    self.grafica2.setEnabled(True)
+                    self.radioButton_2.setEnabled(True)
+                    self.pushButton.setEnabled(True)
+                    self.Todos.setEnabled(True)
+                    self.radioButton.setEnabled(True)
+                    label_scroll+='               Push "Start" for begin adquisition\n'
+                    label_scroll+='-------------------------------------------------------------------------\n'
+                    self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
+                    self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
+                    self.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
+                    pg.QtGui.QApplication.processEvents()
+                except:
+                    label_scroll += ' Error al cargar la configuración de los modulos\n'
+                    label_scroll+='-------------------------------------------------------------------------\n'
+                    self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
+                    self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
+                    self.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
+            else:
+                label_scroll += '                         The folder contains files\n'
+                label_scroll+='-------------------------------------------------------------------------\n'
+                self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
+                self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
+                self.start.setEnabled(False)
+                self.SeeData.setEnabled(True)
+                self.grafica2.setEnabled(True)
+                self.radioButton_2.setEnabled(True)
+                self.pushButton.setEnabled(True)
+                self.Todos.setEnabled(True)
+                self.radioButton.setEnabled(True)
+                path = os.path.realpath(__file__).strip('prueba1.py') 
+                filename = path + "cfg/file_218.cfg"
+                filename2 = path + "cfg/file_335.cfg"
+                #global textDict,textDict2,DataTemp,DataTemp2
+                textDict = ConfigModule(filename,0,0)
+                self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
+                self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
+                pg.QtGui.QApplication.processEvents()
+                textDict2 = ConfigModule(filename2,0,0)
                 self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
                 self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
                 pg.QtGui.QApplication.processEvents()
@@ -448,28 +613,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 pg.QtGui.QApplication.processEvents()
                 self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
                 self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
-                pg.QtGui.QApplication.processEvents()
-                label_scroll+='                               Config File Ok\n'
-                self.linePatch.setText(patch) 
-                self.start.setEnabled(True)
-                self.SeeData.setEnabled(True)
-                self.grafica2.setEnabled(True)
-                self.radioButton_2.setEnabled(True)
-                self.pushButton.setEnabled(True)
-                self.Todos.setEnabled(True)
-                self.radioButton.setEnabled(True)
-                label_scroll+='               Push "Start" for begin adquisition\n'
-                label_scroll+='-------------------------------------------------------------------------\n'
-                self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
-                self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
                 self.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
-                pg.QtGui.QApplication.processEvents()
-            except:
-                label_scroll += ' Error al cargar la configuración de los modulos\n'
-                label_scroll+='-------------------------------------------------------------------------\n'
-                self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
-                self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
-                self.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
+                
         else:
             label_scroll+='                               No selected folder\n'
             label_scroll+='-------------------------------------------------------------------------\n'
@@ -641,7 +786,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if self.seeStatus_2.isChecked():
             self.status_2.setEnabled(True)
     def graficar(self):
-        global actual,close_plot,DataTemp, DataTemp2, curvas, curvas_last,plt_mgr,Time_graph
+        global actual,close_plot,DataTemp, DataTemp2, curvas, curvas_last
         curvas = [0,0,0,0,0,0,0,0,0,0,0,0,0]
         if self.Todos.isChecked():
                 curvas[0] = 1
@@ -677,12 +822,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             if curvas_last==[]:
                 pass
             if curvas_last==curvas:
-                if actual == False:
-                    actual, close_plot = True, False
-                    plt_mgr = LivePlotter()
-                else:
-                    pass
+                pass
             else:
+                global plt_mgr,Time_graph
                 actual, close_plot = True, False
                 plt_mgr = LivePlotter()
                 curvas_last = curvas
@@ -709,7 +851,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 
 class LivePlotter(object):
     
-    global curvas,actual
+    global curvas
     
     def __init__(self):
         self.win = pg.GraphicsWindow(title='Data')
@@ -890,7 +1032,6 @@ class LivePlotter(object):
     def close(self):
         try:
             self.win.close()
-            actual = False
         except Exception as e:
             pass
 
@@ -941,29 +1082,7 @@ class Ramp(object):
             pass
 
             
-#Se define la funcion x(t) de la ecuacion de posicion (movimiento horizontal)
-def fx (t):
-    #Se define la posicion inicial en 0
-    x0 = 0
-    #Se define la velocidad inicial en 2 mts/seg
-    v0x = 2
-    #Se define la aceleracion en 1 mts/seg^2
-    ax = 1
-    #Se hace el calculo de la posicion con respecto al tiempo
-    x = x0 + v0x*t + 0.5*ax*t**2
-    return x
 
-#Se define la funcion y(t) de la ecuacion de posicion altura
-def fy(t):
-    #Se define la altura inicial en 100 mts
-    y0 = 100
-    #Se define la velocidad inicial en 10 mts/seg
-    v0y = 10
-    #Se define la gravedad en 9.81 mts/seg^2
-    g = 9.81
-    #Se realiza el calculo de l posicion en funcion del tiempo
-    y = y0 + v0y*t - 0.5*g*t**2
-    return y
 
 
 class Lienzo(FigureCanvas):
@@ -972,6 +1091,7 @@ class Lienzo(FigureCanvas):
         global DataTemp,DataTemp2
         # Codigo para generar la grafica
         self.figura = Figure()
+        self.figura_2 = Figure()
         self.ejes = self.figura.add_subplot(111)
         #self.tiempo = np.arange(0.0, 5.65, 0.01)
         #Calculo de la posicion en el eje X y Y
@@ -980,9 +1100,17 @@ class Lienzo(FigureCanvas):
             for b in a:
                 self.ejes.plot(b[0], b[1])
         # inicializar el lienzo donde se crea la grafica.
-        FigureCanvas.__init__(self, self.figura)
+        FigureCanvas.__init__(self,self.figura_2)
+        self.canvas = FigureCanvas(self.figura)
+        self.canvas.setParent(self)
+        self.toolbar = NavigationToolbar(self.canvas, self)
+        self.vbox = QtGui.QVBoxLayout()
+        self.vbox.addWidget(self.toolbar)
+        self.vbox.addWidget(self.canvas)
+        
+        self.setLayout(self.vbox)
 
-#############################################################
+#################################################################################################################
 
 
 
@@ -1213,7 +1341,6 @@ def PlotData(Data):
     plt.ylabel('Temperature/K')
     plt.show()
 
-
 def PlotData_Interface(Data):
     PlotData = Data.split('\n')
     PlotData = FilterEmptyStrings(PlotData)
@@ -1428,11 +1555,7 @@ class TempClass:
         self.textDict['Average'] = self.Average
         self.SamplingPeriod = float(textDict['SamplingPeriod'])
         self.FileAddress = self.root + self.name #Dirección completa del archivo
-        self.Header = FileHeader(self.root,self.name,self.textDict,'Complete Data')
-        self.HeaderAvg = FileHeader(self.root,self.nameAvg,self.textDict,'Averaged') 
-        self.ColumnText = ColumnText(self.Sensors)
-        ColumnNames(self.root,self.name,self.ColumnText)
-        ColumnNames(self.root,self.nameAvg,self.ColumnText)
+        
         
         try:
             self.Channels = [int(i) for i in textDict['Channels'].split(',')]
@@ -1446,16 +1569,25 @@ class TempClass:
         self.DataSerie = '' #En esta variable se almacenan N datos de la medición en formato cadena para despúes vaciarlos al archivo de texto
         self.DataAverage = [] #En esta variable se almacena el promedio de M lecturas
         self.DataAverageText = '' #En esta variable se guardan los datos del promedio en formato cadena
-        self.port = serial.Serial(textDict['Port'], textDict['BaudRate'], timeout=float(textDict['TimeOut']), bytesize=serial.SEVENBITS, parity=serial.PARITY_ODD, stopbits=serial.STOPBITS_ONE)
+        
         self.InitTime = 0 #Esta variable almacena el tiempo en el cual se inició la medición       
         self.Cont = 0   #Esta variable almacena el valor de muestras que se han guardado y que no han sido guardadas 
         self.Tiempo = ''
         self.DataRecovered = ''
         self.ConfigPlot = 1
         self.DataSerieOld = ''
+        
+
+    def Start(self):
+        self.Header = FileHeader(self.root,self.name,self.textDict,'Complete Data')
+        self.HeaderAvg = FileHeader(self.root,self.nameAvg,self.textDict,'Averaged') 
+        self.ColumnText = ColumnText(self.Sensors)
+        ColumnNames(self.root,self.name,self.ColumnText)
+        ColumnNames(self.root,self.nameAvg,self.ColumnText)
+        self.port = serial.Serial(textDict['Port'], textDict['BaudRate'], timeout=float(textDict['TimeOut']), bytesize=serial.SEVENBITS, parity=serial.PARITY_ODD, stopbits=serial.STOPBITS_ONE)
         global label_scroll
         label_scroll += '-------------------------------------------------------------------------\n'
-        label_scroll += '         The aquisition of the temperature with\n ' +'   '+ self.Brand +' '+ self.Device + ' has begun.\n'
+        label_scroll += '      The aquisition of the temperature with\n ' +'    '+ self.Brand +' '+ self.Device + ' has begun.\n'
         label_scroll += '-------------------------------------------------------------------------\n'
 
     def __str__(self): #Función completamente implementada
@@ -1565,12 +1697,12 @@ class TempClass:
         a = ''
         if self.Data==[]:
             a += '-------------------------------------------------------------------------\n'
-            a += '    Currently, buffer is empty of temperature data. \n                 Please try again in a moment.\n'
+            a += 'Currently, buffer is empty of temperature data. \n         Please try again in a moment.\n'
             a += '-------------------------------------------------------------------------\n'
         else:
             a += '-------------------------------------------------------------------------\n'
             for Vect in self.Data[-1]:
-                a +='               ' + Vect[0]+'        '+str(round(Vect[1],2))+ '        ' +Vect[2]+'\n'
+                a +='              ' + Vect[0]+'         '+str(round(Vect[1],2))+ '         ' +Vect[2]+'\n'
             a += '-------------------------------------------------------------------------\n'
         return a
             
@@ -1596,12 +1728,13 @@ class TempClass:
 
 class ConfigModule:
 
-    def __init__(self,configFileName,setCurvesFlag=1):
+    def __init__(self,configFileName,setCurvesFlag,port):
        
         self.ConfigDict = {}
         self.configFileName = configFileName
         self.getDictFromConfigFile()
-        self.Port = self.ConfigPort()
+        if port == 1:
+            self.Port = self.ConfigPort()
         self.Channel = ''
         if setCurvesFlag == 1:
             self.setCurves()
@@ -1709,13 +1842,13 @@ global  label_scroll,Start,close_plot,status_heater_1,label_heater_1,SP_1,SP_2,r
 #Menu = CommandLine()
 label_scroll,Start,close_plot,status_heater_1,label_heater_1,heater_1_estatus= '', False, False,False,'',True
 ramp_stat,curvas_last = False,[]
-    
+
 def launch():
     try:
         app = QtWidgets.QApplication([])
         window = MainWindow()
         window.show()
-        app.exec_()
+        sys.exit(app.exec_())
     except KeyboardInterrupt as KBI:
         pass
 
