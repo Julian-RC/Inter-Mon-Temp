@@ -74,7 +74,7 @@ class Terminal(QtWidgets.QWidget):
         QtGui.QApplication.processEvents()
     def closeEvent(self,event):
         self.process.terminate()
-        self.process.waitForFinished()
+        self.process.waitForFinished(-1)
         event.accept()
 
 class Tercera(QDialog,Ui_Tercera):
@@ -1098,10 +1098,42 @@ class Lienzo(FigureCanvas):
         self.ejes = self.figura.add_subplot(111)
         #self.tiempo = np.arange(0.0, 5.65, 0.01)
         #Calculo de la posicion en el eje X y Y
-        for name in [DataTemp,DataTemp2]:
+        b = []
+        for name in [DataTemp2,DataTemp]:
             a = name.Plot_inter()
-            for b in a:
-                self.ejes.plot(b[0], b[1])
+            for c in a:
+                b.append(c)
+        if curvas[0] == 1:
+            self.ejes.plot(b[0][0], b[0][1],label='Cernox A',color=[100/255,100/255,100/255])
+            self.ejes.plot(b[1][0], b[1][1],label='Cernox B',color=[0,0,200/255])
+            self.ejes.plot(b[2][0], b[2][1],label='Diodo 1',color=[0,0,100/255])
+            self.ejes.plot(b[3][0], b[3][1],label='Diodo 2',color=[0,100/255,100/255])
+            self.ejes.plot(b[4][0], b[4][1],label='Diodo 3',color=[100/255,0,100/255])
+            self.ejes.plot(b[5][0], b[5][1],label='Diodo 4',color=[0,100/255,0])
+            self.ejes.plot(b[6][0], b[6][1],label='Cernox 5',color=[100/255,100/255,0])
+            self.ejes.plot(b[7][0], b[7][1],label='Cernox 6',color=[100/255,0,0])
+            
+        else:
+            if curvas[1] == 1:
+                self.ejes.plot(b[0][0], b[0][1],label='Cernox A',color=[100/255,100/255,100/255])
+            if curvas[2] == 1:
+                self.ejes.plot(b[1][0], b[1][1],label='Cernox B',color=[0,0,200/255])
+            if curvas[3] == 1:
+                self.ejes.plot(b[2][0], b[2][1],label='Diodo 1',color=[0,0,100/255])
+            if curvas[4] == 1:
+                self.ejes.plot(b[3][0], b[3][1],label='Diodo 2',color=[0,100/255,100/255])
+            if curvas[5] == 1:
+                self.ejes.plot(b[4][0], b[4][1],label='Diodo 3',color=[100/255,0,100/255])
+            if curvas[6] == 1:
+                self.ejes.plot(b[5][0], b[5][1],label='Diodo 4',color=[0,100/255,0])
+            if curvas[7] == 1:
+                self.ejes.plot(b[6][0], b[6][1],label='Cernox 5',color=[100/255,100/255,0])
+            if curvas[8] == 1:
+                self.ejes.plot(b[7][0], b[7][1],label='Cernox 6',color=[100/255,0,0])
+        self.ejes.title.set_text("Plot of Data")
+        self.ejes.set_xlabel("t [s]")
+        self.ejes.set_ylabel("T [K]")
+        self.ejes.grid(),self.ejes.legend()
         # inicializar el lienzo donde se crea la grafica.
         FigureCanvas.__init__(self,self.figura_2)
         self.canvas = FigureCanvas(self.figura)
