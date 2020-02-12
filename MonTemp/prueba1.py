@@ -1555,7 +1555,7 @@ class TempClass:
         self.ColumnText = ColumnText(self.Sensors)
         ColumnNames(self.root,self.name,self.ColumnText)
         ColumnNames(self.root,self.nameAvg,self.ColumnText)
-        self.port = serial.Serial(textDict['Port'], textDict['BaudRate'], timeout=float(textDict['TimeOut']), bytesize=serial.SEVENBITS, parity=serial.PARITY_ODD, stopbits=serial.STOPBITS_ONE)
+        self.port = serial.Serial(self.textDict['Port'], self.textDict['BaudRate'], timeout=float(self.textDict['TimeOut']), bytesize=serial.SEVENBITS, parity=serial.PARITY_ODD, stopbits=serial.STOPBITS_ONE)
         global label_scroll
         label_scroll += '-------------------------------------------------------------------------\n'
         label_scroll += '      The aquisition of the temperature with\n ' +'    '+ self.Brand +' '+ self.Device + ' has begun.\n'
