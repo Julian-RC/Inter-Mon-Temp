@@ -1,7 +1,7 @@
 import os, serial, sys, time, datetime, subprocess, pickle
 os.system("xrdb " +os.path.realpath(__file__).strip('prueba1.py') + "cfg/terminal.cfg") 
-print(os.path.realpath(__file__).strip('prueba1.py')+'Temperature.png')
-print(os.system('which Temperature'))
+#print(os.path.realpath(__file__).strip('prueba1.py')+'Temperature.png')
+#print(os.system('which Temperature'))
 from MonTemp.prueba1_ui import Ui_MainWindow
 from MonTemp.info_ui import Ui_Dialog
 from MonTemp.segunda_ui import Ui_Segunda
@@ -328,6 +328,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def start_adquisition(self):
         global Start,actual, filename, label_scroll,status_heater_1,label_heater_1,ramp_stat
         Start,actual = True,False
+        DataTemp.Start()
+        DataTemp2.Start()
         DataTemp2.Read_335('SETP?','1')
         DataTemp2.Read_335('SETP?','2')
         DataTemp2.Read_335('RAMP?','1')
@@ -342,8 +344,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.heater_1.setEnabled(True)
         self.heater_2.setEnabled(True)
         self.lastdata.setEnabled(True)
-        DataTemp.Start()
-        DataTemp2.Start()
         label_scroll+='                          Acquisition has begun\n'
         label_scroll+='                  '+str(datetime.datetime.now())+'\n'
         label_scroll+='-------------------------------------------------------------------------\n'
@@ -505,7 +505,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.linePatch.setText(patch) 
             global textDict,textDict2,DataTemp,DataTemp2
             ls = subprocess.getoutput("cd && cd " +patch+ "&&ls").lstrip('\n')
-            if ls=='':
+            if len(ls)<150:
                     label_scroll+='                               Selected folder\n'
                     label_scroll+='-------------------------------------------------------------------------\n'
                     self.Update_label()
