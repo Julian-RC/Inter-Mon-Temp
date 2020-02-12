@@ -16,7 +16,7 @@ setup(name='Interfaz MonitorTemperature',
             "matplotlib",
             "datetime"
           ],
-      data_files=['MonTemp/cfg/file_218.cfg','MonTemp/cfg/file_335.cfg','MonTemp/Temperature.jpg','MonTemp/cfg/terminal.cfg'],
+      data_files=['MonTemp/cfg/file_218.cfg','MonTemp/cfg/file_335.cfg','MonTemp/Temperature.png','MonTemp/cfg/terminal.cfg'],
       entry_points={
             'console_scripts': [
             'Temperature=MonTemp.prueba1:launch',
