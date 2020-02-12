@@ -1,5 +1,7 @@
 import os, serial, sys, time, datetime, subprocess, pickle
 os.system("xrdb " +os.path.realpath(__file__).strip('prueba1.py') + "cfg/terminal.cfg") 
+print(os.path.realpath(__file__).strip('prueba1.py')+'Temperature.png')
+print(os.system('which Temperature'))
 from MonTemp.prueba1_ui import Ui_MainWindow
 from MonTemp.info_ui import Ui_Dialog
 from MonTemp.segunda_ui import Ui_Segunda
@@ -64,7 +66,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         global label_scroll
         self.setupUi(self)
         self.setWindowTitle("Temperature Module")
-        
+        self.setWindowIcon(QtGui.QIcon(os.path.realpath(__file__).strip('prueba1.py')+'Temperature.png')) 
         self.pushButton.clicked.connect(self.graficar)
         
         self.radioButton.toggled.connect(self.desbloquear_radioButton)
