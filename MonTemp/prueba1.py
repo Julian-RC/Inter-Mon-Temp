@@ -31,8 +31,13 @@ class Segunda(QtWidgets.QDialog,Ui_Segunda):
             QtWidgets.QDialog.__init__(self, *args, **kwargs)
             self.setupUi(self)
             self.setWindowTitle("218 TemperatureMonitor")
+            self.buttonBox.accepted.connect(self.accept)
         except KeyboardInterrupt as KBI:
             pass
+    
+    def accept(self):
+        print('ok')
+        self.close()
 
 class Terminal(QtWidgets.QWidget):
     def __init__(self, parent=None):
@@ -501,19 +506,19 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             global textDict,textDict2,DataTemp,DataTemp2
             ls = subprocess.getoutput("cd && cd " +patch+ "&&ls").lstrip('\n')
             if ls=='':
-                label_scroll+='                               Selected folder\n'
-                label_scroll+='-------------------------------------------------------------------------\n'
-                self.Update_label()
-                path = os.path.realpath(__file__).strip('prueba1.py') 
-                config_filename = path + "cfg/file_218.cfg"
-                config_filename2 = path + "cfg/file_335.cfg"
-                os.system('cp '+ config_filename +' '+ patch)
-                os.system('cp '+ config_filename2 +' '+ patch)
-                os.system('cd && cd '+patch+' && chmod 777 file_218.cfg')
-                os.system('cd && cd '+patch+' && chmod 777 file_335.cfg')
-                filename = patch + '/file_218.cfg'
-                filename2 = patch + '/file_335.cfg'
-                try:
+                    label_scroll+='                               Selected folder\n'
+                    label_scroll+='-------------------------------------------------------------------------\n'
+                    self.Update_label()
+                    path = os.path.realpath(__file__).strip('prueba1.py') 
+                    config_filename = path + "cfg/file_218.cfg"
+                    config_filename2 = path + "cfg/file_335.cfg"
+                    os.system('cp '+ config_filename +' '+ patch)
+                    os.system('cp '+ config_filename2 +' '+ patch)
+                    os.system('cd && cd '+patch+' && chmod 777 file_218.cfg')
+                    os.system('cd && cd '+patch+' && chmod 777 file_335.cfg')
+                    filename = patch + '/file_218.cfg'
+                    filename2 = patch + '/file_335.cfg'
+                #try:
                     textDict = ConfigModule(filename,1,1)
                     self.Update_label()
                     pg.QtGui.QApplication.processEvents()
@@ -538,11 +543,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.Update_label()
                     self.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
                     pg.QtGui.QApplication.processEvents()
-                except:
-                    label_scroll += '              Error al cargar la configuración de los modulos\n'
-                    label_scroll+='-------------------------------------------------------------------------\n'
-                    self.Update_label()
-                    self.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
+                #except:
+                 #   label_scroll += '       Error al cargar la configuración de los modulos\n'
+                  #  label_scroll+='-------------------------------------------------------------------------\n'
+                   # self.Update_label()
+                    #self.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
             else:
                 label_scroll += '                         The folder contains files\n'
                 label_scroll+='-------------------------------------------------------------------------\n'
@@ -1020,10 +1025,6 @@ class Ramp(object):
             self.win.close()
         except Exception as e:
             pass
-
-            
-
-
 
 class Lienzo(FigureCanvas):
   
@@ -1685,10 +1686,10 @@ class TempClass:
                 Return.append(Vect)
         return Return
     
-    def Change_root(self,file,new): 
+    def Change_root(self,file,new,string_file): 
         with open(file, "r") as f:
             lines = (line.rstrip() for line in f)
-            altered_lines = ['Root: '+new+'/' if line== 'Root: '+self.root else line for line in lines]
+            altered_lines = [string_file+': '+new+'/' if line== string_file+':'+textDict[string_file] else line for line in lines]
         with open(file, "w") as f:
             f.write('\n'.join(altered_lines) + '\n')
 #----------------------------------------------------------
