@@ -47,7 +47,7 @@ class Terminal(QtWidgets.QWidget):
         layout = QtWidgets.QVBoxLayout(self)
         layout.addWidget(self.terminal)
         self.process.start('urxvt',['-embed', str(int(self.winId()))])
-        self.setFixedSize(1350, 273)
+        self.setFixedSize(1300, 273)
         pg.QtGui.QApplication.processEvents()
 
     def closeEvent(self,event):
@@ -506,19 +506,19 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             global textDict,textDict2,DataTemp,DataTemp2
             ls = subprocess.getoutput("cd && cd " +patch+ "&&ls").lstrip('\n')
             if len(ls)<150:
-                    label_scroll+='                               Selected folder\n'
-                    label_scroll+='-------------------------------------------------------------------------\n'
-                    self.Update_label()
-                    path = os.path.realpath(__file__).strip('prueba1.py') 
-                    config_filename = path + "cfg/file_218.cfg"
-                    config_filename2 = path + "cfg/file_335.cfg"
-                    os.system('cp '+ config_filename +' '+ patch)
-                    os.system('cp '+ config_filename2 +' '+ patch)
-                    os.system('cd && cd '+patch+' && chmod 777 file_218.cfg')
-                    os.system('cd && cd '+patch+' && chmod 777 file_335.cfg')
-                    filename = patch + '/file_218.cfg'
-                    filename2 = patch + '/file_335.cfg'
-                #try:
+                label_scroll+='                               Selected folder\n'
+                label_scroll+='-------------------------------------------------------------------------\n'
+                self.Update_label()
+                path = os.path.realpath(__file__).strip('prueba1.py') 
+                config_filename = path + "cfg/file_218.cfg"
+                config_filename2 = path + "cfg/file_335.cfg"
+                os.system('cp '+ config_filename +' '+ patch)
+                os.system('cp '+ config_filename2 +' '+ patch)
+                os.system('cd && cd '+patch+' && chmod 777 file_218.cfg')
+                os.system('cd && cd '+patch+' && chmod 777 file_335.cfg')
+                filename = patch + '/file_218.cfg'
+                filename2 = patch + '/file_335.cfg'
+                try:
                     textDict = ConfigModule(filename,1,1)
                     self.Update_label()
                     pg.QtGui.QApplication.processEvents()
@@ -543,27 +543,27 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.Update_label()
                     self.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
                     pg.QtGui.QApplication.processEvents()
-                #except:
-                 #   label_scroll += '       Error al cargar la configuración de los modulos\n'
-                  #  label_scroll+='-------------------------------------------------------------------------\n'
-                   # self.Update_label()
-                    #self.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
+                except:
+                    label_scroll += '       Error al cargar la configuración de los modulos\n'
+                    label_scroll+='-------------------------------------------------------------------------\n'
+                    self.Update_label()
+                    self.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
             else:
                 label_scroll += '                         The folder contains files\n'
                 label_scroll+='-------------------------------------------------------------------------\n'
                 self.Update_label()
                 self.start.setEnabled(False)
                 self.SeeData.setEnabled(True)
-                self.Time.setStyleSheet("color:rgb(255,205,171);border: 0px solid black;background-color: a( 0);")
+                self.Time.setStyleSheet("color:rgb(255,255,255);border: 0px solid black;background-color: a( 0);")
                 self.grafica2.setEnabled(True)
                 self.Type.setStyleSheet("color:rgb(255,255,255);border: 0px solid black;background-color: a( 0);")
                 self.radioButton_2.setEnabled(True)
-                self.color_sensor.setStyleSheet("color:rgb(71,83,255);")
+                self.color_sensor.setStyleSheet("color:rgb(255,255,255);")
                 self.pushButton.setEnabled(True)
                 self.Todos.setEnabled(True)
                 self.ramp.setEnabled(True)
-                self.ramp_la.setStyleSheet("color:rgb(90,0,0);")
-                self.graph_sensor.setStyleSheet("color:rgb(0,170,0);")
+                self.ramp_la.setStyleSheet("color:rgb(255,255,255);")
+                self.graph_sensor.setStyleSheet("color:rgb(255,255,255);")
                 path = os.path.realpath(__file__).strip('prueba1.py') 
                 filename = path + "cfg/file_218.cfg"
                 filename2 = path + "cfg/file_335.cfg"
