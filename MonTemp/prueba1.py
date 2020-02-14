@@ -468,7 +468,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         
     def last(self):
         global label_scroll
-        label_scroll +='                             See Last Data\n                                  '+'{:%H:%M:%S}'.format(datetime.datetime.now())+'\n-------------------------------------------------------------------------\n'
+        label_scroll +='                              See Last Data\n                                  '+'{:%H:%M:%S}'.format(datetime.datetime.now())+'\n-------------------------------------------------------------------------\n'
         self.Update_label()
         label_scroll +='               ' + 'Sensor'+'           '+'Time[s]'+ '        ' +'Data[K]\n'
         for Obj in [DataTemp2,DataTemp]:
@@ -746,7 +746,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.linePatch.setText(patch) 
             global textDict,textDict2,DataTemp,DataTemp2
             ls = subprocess.getoutput("cd && cd " +patch+ "&&ls")
-            print(ls.strip('\n'))
+           # print(ls.strip('\n'))
             if len(ls)<150:
                 label_scroll+='                               Selected folder\n'
                 label_scroll+='-------------------------------------------------------------------------\n'
