@@ -468,9 +468,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         
     def last(self):
         global label_scroll
-        label_scroll +='                          See Last Data\n                                  '+'{:%H:%M:%S}'.format(datetime.datetime.now())+'\n-------------------------------------------------------------------------\n'
+        label_scroll +='                             See Last Data\n                                  '+'{:%H:%M:%S}'.format(datetime.datetime.now())+'\n-------------------------------------------------------------------------\n'
         self.Update_label()
-        label_scroll +='               ' + 'Sensor'+'           '+'Time[s]'+ '         ' +'Data[K]\n'
+        label_scroll +='               ' + 'Sensor'+'           '+'Time[s]'+ '        ' +'Data[K]\n'
         for Obj in [DataTemp2,DataTemp]:
                label_scroll += Obj.PrintValue()
         self.Update_label()
@@ -538,7 +538,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             RANGE_1 = True  
             Range = 'Auto'
         
-        label_scroll +='                          Update Heater 1\n                                  '+'{:%H:%M:%S}'.format(datetime.datetime.now())+'\n'+'-------------------------------------------------------------------------\n'
+        label_scroll +='                            Update Heater 1\n                                  '+'{:%H:%M:%S}'.format(datetime.datetime.now())+'\n'+'-------------------------------------------------------------------------\n'
         label_scroll +='Ramp= '+Ramp_1+' k/min SetPoint= '+SetP_1+' k  Range= '+ Range +'\n-------------------------------------------------------------------------\n'
         self.Update_label()
     def Update_2(self):
@@ -591,7 +591,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     DataTemp2.GetData()    
                     pg.QtGui.QApplication.processEvents()
             except:
-                    label_scroll += '                             Error en la adquisición'
+                    label_scroll += '                             Error en la adquisición\n'
+                    label_scroll+='-------------------------------------------------------------------------\n'
                     self.Update_label()
             if actual:
                           global plt_mgr, close_plot,rampa_true
