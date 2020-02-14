@@ -468,6 +468,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         
     def last(self):
         global label_scroll
+        label_scroll +='                          See Last Data\n                        '+'{:%H:%M:%S}'.format(datetime.datetime.now())+'\n-------------------------------------------------------------------------\n'
+        self.Update_label()
         label_scroll +='               ' + 'Sensor'+'           '+'Time[s]'+ '         ' +'Data[K]\n'
         for Obj in [DataTemp2,DataTemp]:
                label_scroll += Obj.PrintValue()
@@ -528,8 +530,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             RANGE_1 = True  
             Range = 'Auto'
         
-        label_scroll+='                          Update Heater 1\n                        {:%H:%M:%S}'.format(datetime.datetime.now())+'\n'
-        label_scroll += '  Rampa= 'Ramp_1+' k/min    SetPoint= '+SetP_1+' k       Range= ' + Range +'\n-------------------------------------------------------------------------\n'
+        label_scroll +='                          Update Heater 1\n                        '+'{:%H:%M:%S}'.format(datetime.datetime.now())+'\n'
+        label_scroll += '  Rampa= '+Ramp_1+' k/min    SetPoint= '+SetP_1+' k       Range= ' + Range +'\n-------------------------------------------------------------------------\n'
         self.Update_label()
     def Update_2(self):
         global RANGE_2
