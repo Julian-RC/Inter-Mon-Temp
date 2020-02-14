@@ -233,7 +233,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None,*args, **kwargs):
         super(MainWindow, self).__init__(parent)
         QtWidgets.QMainWindow.__init__(self, *args, **kwargs)
-        global label_scroll, textDict, textDict2, patch
+        global label_scroll, textDict, textDict2, patch,textDict_color
         patch = os.path.realpath(__file__).strip('prueba1.py') 
         filename = patch + "cfg/file_218.cfg"
         filename2 = patch + "cfg/file_335.cfg"
@@ -258,7 +258,19 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.seeStatus_1.toggled.connect(self.desbloquear_seeStatus_1)
         self.seeStatus_2.toggled.connect(self.desbloquear_seeStatus_2)
         self.grafica2.toggled.connect(self.desbloquear_grafica2)
-        
+        self.CA.toggled.connect(self.desbloquear_sensores_CA)
+        self.CB.toggled.connect(self.desbloquear_sensores_CB)
+        self.C5.toggled.connect(self.desbloquear_sensores_C5)
+        self.C6.toggled.connect(self.desbloquear_sensores_C6)
+        self.D1.toggled.connect(self.desbloquear_sensores_D1)
+        self.D2.toggled.connect(self.desbloquear_sensores_D2)
+        self.D3.toggled.connect(self.desbloquear_sensores_D3)
+        self.D4.toggled.connect(self.desbloquear_sensores_D4)
+        self.heater1.toggled.connect(self.desbloquear_heater1)
+        self.heater2.toggled.connect(self.desbloquear_heater2)
+        self.SetPoint1.toggled.connect(self.desbloquear_SetPoint1)
+        self.SetPoint2.toggled.connect(self.desbloquear_SetPoint2)
+
         self.directorio.clicked.connect(self.buscarDirectorio)
         self.start.clicked.connect(self.start_adquisition)
         self.stop.clicked.connect(self.stop_adquisition)
@@ -297,6 +309,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.color_CA.clicked.connect(self.change_color_CA)
         self.color_CB.clicked.connect(self.change_color_CB)
 
+
         
         label_scroll='-------------------------------------------------------------------------\n               Welcome, Temperature has begun\n                                  {:%H:%M:%S}\n'.format(datetime.datetime.now())+'-------------------------------------------------------------------------\n '+\
                         '                   Please select a folder to start\n-------------------------------------------------------------------------\n'
@@ -304,109 +317,149 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.tabWidget.clear()
         self.tabWidget.addTab(Terminal(),"Terminal")
         pg.QtGui.QApplication.processEvents()
-        
     def Update_label(self):
         self.scrollArea.setWidget(QtWidgets.QLabel(label_scroll))
         self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
         pg.QtGui.QApplication.processEvents()
-
     def change_color_H1(self):
-        color_rgb=(10,22,34)
-        color = QtWidgets.QColorDialog.getColor(QtGui.QColor(color_rgb[0],color_rgb[1],color_rgb[2]))
+        global textDict_color 
+        color_rgb = textDict_color.ConfigDict['H1']  
+        color = QtWidgets.QColorDialog.getColor(QtGui.QColor(int(color_rgb[0]),int(color_rgb[1]),int(color_rgb[2])))
+        pg.QtGui.QApplication.processEvents()
         if color.isValid():
             color_rgb = color.getRgb()
+            textDict_color.ConfigDict['H1']=[str(color_rgb[0]),str(color_rgb[1]),str(color_rgb[2])]
             self.color_H1.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','+str(color_rgb[2])+");")
-    
+            pg.QtGui.QApplication.processEvents()
     def change_color_S1(self):
-        color_rgb=(10,22,34)
-        color = QtWidgets.QColorDialog.getColor(QtGui.QColor(color_rgb[0],color_rgb[1],color_rgb[2]))
+        global textDict_color 
+        color_rgb = textDict_color.ConfigDict['S1']  
+        color = QtWidgets.QColorDialog.getColor(QtGui.QColor(int(color_rgb[0]),int(color_rgb[1]),int(color_rgb[2])))
+        pg.QtGui.QApplication.processEvents()
         if color.isValid():
             color_rgb = color.getRgb()
-            self.color_S1.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','+str(color_rgb[2])+");")
-        
+            textDict_color.ConfigDict['S1']=[str(color_rgb[0]),str(color_rgb[1]),str(color_rgb[2])]
+            self.color_S1.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','+str(color_rgb[2])+");")  
+            pg.QtGui.QApplication.processEvents()    
     def change_color_H2(self):
-        color_rgb=(10,22,34)
-        color = QtWidgets.QColorDialog.getColor(QtGui.QColor(color_rgb[0],color_rgb[1],color_rgb[2]))
+        global textDict_color 
+        color_rgb = textDict_color.ConfigDict['H2']  
+        color = QtWidgets.QColorDialog.getColor(QtGui.QColor(int(color_rgb[0]),int(color_rgb[1]),int(color_rgb[2])))
+        pg.QtGui.QApplication.processEvents()
         if color.isValid():
             color_rgb = color.getRgb()
-            self.color_H2.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','+str(color_rgb[2])+");")
-    
+            textDict_color.ConfigDict['H2']=[str(color_rgb[0]),str(color_rgb[1]),str(color_rgb[2])]
+            self.color_H2.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','+str(color_rgb[2])+");") 
+            pg.QtGui.QApplication.processEvents() 
     def change_color_S2(self):
-        color_rgb=(10,22,34)
-        color = QtWidgets.QColorDialog.getColor(QtGui.QColor(color_rgb[0],color_rgb[1],color_rgb[2]))
+        global textDict_color 
+        color_rgb = textDict_color.ConfigDict['S2']  
+        color = QtWidgets.QColorDialog.getColor(QtGui.QColor(int(color_rgb[0]),int(color_rgb[1]),int(color_rgb[2])))
         if color.isValid():
             color_rgb = color.getRgb()
-            self.color_S2.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','+str(color_rgb[2])+");")
-    
+            textDict_color.ConfigDict['S2']=[str(color_rgb[0]),str(color_rgb[1]),str(color_rgb[2])]
+            self.color_S2.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','+str(color_rgb[2])+");")  
+            pg.QtGui.QApplication.processEvents()
     def change_color_CA(self):
-        color_rgb=(10,22,34)
-        color = QtWidgets.QColorDialog.getColor(QtGui.QColor(color_rgb[0],color_rgb[1],color_rgb[2]))
+        global textDict_color 
+        color_rgb = textDict_color.ConfigDict['CA']  
+        color = QtWidgets.QColorDialog.getColor(QtGui.QColor(int(color_rgb[0]),int(color_rgb[1]),int(color_rgb[2])))
+        pg.QtGui.QApplication.processEvents()
         if color.isValid():
             color_rgb = color.getRgb()
-            self.color_CA.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','+str(color_rgb[2])+");")
-        
+            textDict_color.ConfigDict['CA']=[str(color_rgb[0]),str(color_rgb[1]),str(color_rgb[2])]
+            self.color_CA.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','+str(color_rgb[2])+");") 
+            pg.QtGui.QApplication.processEvents()     
     def change_color_CB(self):
-        color_rgb=(10,22,34)
-        color = QtWidgets.QColorDialog.getColor(QtGui.QColor(color_rgb[0],color_rgb[1],color_rgb[2]))
+        global textDict_color 
+        color_rgb = textDict_color.ConfigDict['CB']  
+        color = QtWidgets.QColorDialog.getColor(QtGui.QColor(int(color_rgb[0]),int(color_rgb[1]),int(color_rgb[2])))
+        pg.QtGui.QApplication.processEvents()
         if color.isValid():
             color_rgb = color.getRgb()
+            textDict_color.ConfigDict['CB']=[str(color_rgb[0]),str(color_rgb[1]),str(color_rgb[2])]
             self.color_CB.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','+str(color_rgb[2])+");")
-    
+            pg.QtGui.QApplication.processEvents()
     def change_color_D1(self):
-        color_rgb=(10,22,34)
-        color = QtWidgets.QColorDialog.getColor(QtGui.QColor(color_rgb[0],color_rgb[1],color_rgb[2]))
+        global textDict_color 
+        color_rgb = textDict_color.ConfigDict['D1']  
+        color = QtWidgets.QColorDialog.getColor(QtGui.QColor(int(color_rgb[0]),int(color_rgb[1]),int(color_rgb[2])))
+        pg.QtGui.QApplication.processEvents()
         if color.isValid():
             color_rgb = color.getRgb()
+            textDict_color.ConfigDict['D1']=[str(color_rgb[0]),str(color_rgb[1]),str(color_rgb[2])]
             self.color_D1.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','+str(color_rgb[2])+");")
-    
+            pg.QtGui.QApplication.processEvents()
     def change_color_D2(self):
-        color_rgb=(10,22,34)
-        color = QtWidgets.QColorDialog.getColor(QtGui.QColor(color_rgb[0],color_rgb[1],color_rgb[2]))
+        global textDict_color 
+        color_rgb = textDict_color.ConfigDict['D2']  
+        color = QtWidgets.QColorDialog.getColor(QtGui.QColor(int(color_rgb[0]),int(color_rgb[1]),int(color_rgb[2])))
+        pg.QtGui.QApplication.processEvents()
         if color.isValid():
             color_rgb = color.getRgb()
+            textDict_color.ConfigDict['D2']=[str(color_rgb[0]),str(color_rgb[1]),str(color_rgb[2])]
             self.color_D2.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','+str(color_rgb[2])+");")
-
+            pg.QtGui.QApplication.processEvents()
     def change_color_D3(self):
-        color_rgb=(10,22,34)
-        color = QtWidgets.QColorDialog.getColor(QtGui.QColor(color_rgb[0],color_rgb[1],color_rgb[2]))
+        global textDict_color 
+        color_rgb = textDict_color.ConfigDict['D3']  
+        color = QtWidgets.QColorDialog.getColor(QtGui.QColor(int(color_rgb[0]),int(color_rgb[1]),int(color_rgb[2])))
+        pg.QtGui.QApplication.processEvents()
         if color.isValid():
             color_rgb = color.getRgb()
+            textDict_color.ConfigDict['D3']=[str(color_rgb[0]),str(color_rgb[1]),str(color_rgb[2])]
             self.color_D3.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','+str(color_rgb[2])+");")
-
+            pg.QtGui.QApplication.processEvents()
     def change_color_D4(self):
-        color_rgb=(10,22,34)
-        color = QtWidgets.QColorDialog.getColor(QtGui.QColor(color_rgb[0],color_rgb[1],color_rgb[2]))
+        global textDict_color 
+        color_rgb = textDict_color.ConfigDict['D4']  
+        color = QtWidgets.QColorDialog.getColor(QtGui.QColor(int(color_rgb[0]),int(color_rgb[1]),int(color_rgb[2])))
+        pg.QtGui.QApplication.processEvents()
         if color.isValid():
             color_rgb = color.getRgb()
+            textDict_color.ConfigDict['D4']=[str(color_rgb[0]),str(color_rgb[1]),str(color_rgb[2])]
             self.color_D4.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','+str(color_rgb[2])+");")
-    
+            pg.QtGui.QApplication.processEvents()
     def change_color_C5(self):
-        color_rgb=(10,22,34)
-        color = QtWidgets.QColorDialog.getColor(QtGui.QColor(color_rgb[0],color_rgb[1],color_rgb[2]))
+        global textDict_color 
+        color_rgb = textDict_color.ConfigDict['C5']  
+        color = QtWidgets.QColorDialog.getColor(QtGui.QColor(int(color_rgb[0]),int(color_rgb[1]),int(color_rgb[2])))
+        pg.QtGui.QApplication.processEvents()
         if color.isValid():
             color_rgb = color.getRgb()
-            self.color_C5.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','+str(color_rgb[2])+");")
-    
+            textDict_color.ConfigDict['C5']=[str(color_rgb[0]),str(color_rgb[1]),str(color_rgb[2])]
+            self.color_C5.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','+str(color_rgb[2])+");")  
+            pg.QtGui.QApplication.processEvents()
     def change_color_C6(self):
-        color_rgb=(10,22,34)
-        color = QtWidgets.QColorDialog.getColor(QtGui.QColor(color_rgb[0],color_rgb[1],color_rgb[2]))
+        global textDict_color 
+        color_rgb = textDict_color.ConfigDict['C6']  
+        color = QtWidgets.QColorDialog.getColor(QtGui.QColor(int(color_rgb[0]),int(color_rgb[1]),int(color_rgb[2])))
+        pg.QtGui.QApplication.processEvents()
         if color.isValid():
             color_rgb = color.getRgb()
+            textDict_color.ConfigDict['C6']=[str(color_rgb[0]),str(color_rgb[1]),str(color_rgb[2])]
             self.color_C6.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','+str(color_rgb[2])+");")
-
+            pg.QtGui.QApplication.processEvents()
     def change_color_CA(self):
-        color_rgb=(10,22,34)
-        color = QtWidgets.QColorDialog.getColor(QtGui.QColor(color_rgb[0],color_rgb[1],color_rgb[2]))
+        global textDict_color 
+        color_rgb = textDict_color.ConfigDict['CA']  
+        color = QtWidgets.QColorDialog.getColor(QtGui.QColor(int(color_rgb[0]),int(color_rgb[1]),int(color_rgb[2])))
+        pg.QtGui.QApplication.processEvents()
         if color.isValid():
             color_rgb = color.getRgb()
-            self.color_CA.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','+str(color_rgb[2])+");")
-    
+            textDict_color.ConfigDict['CA']=[str(color_rgb[0]),str(color_rgb[1]),str(color_rgb[2])]
+            self.color_CA.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','+str(color_rgb[2])+");")  
+            pg.QtGui.QApplication.processEvents()
     def change_color_CB(self):
-        color_rgb=(10,22,34)
-        color = QtWidgets.QColorDialog.getColor(QtGui.QColor(color_rgb[0],color_rgb[1],color_rgb[2]))
+        global textDict_color 
+        color_rgb = textDict_color.ConfigDict['CB']  
+        color = QtWidgets.QColorDialog.getColor(QtGui.QColor(int(color_rgb[0]),int(color_rgb[1]),int(color_rgb[2])))
+        pg.QtGui.QApplication.processEvents()
         if color.isValid():
             color_rgb = color.getRgb()
+            textDict_color.ConfigDict['CB']=[str(color_rgb[0]),str(color_rgb[1]),str(color_rgb[2])]
             self.color_CB.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','+str(color_rgb[2])+");")
+            pg.QtGui.QApplication.processEvents()
 
     def rampa(self):
         global ramp_stat,rampa_true
@@ -457,8 +510,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.ramp_2.setValue(float(Ramp_2))
         SetP_2 = DataTemp2.Read_335('SETP?','2')
         SP_2 = float(SetP_2)
-        self.setPoint_num_2.setValue(SP_2)
-        
+        self.setPoint_num_2.setValue(SP_2)   
     def Update_1(self):
         global RANGE_1,SP_1
         Ramp_1 = str(self.ramp_1.value())
@@ -473,8 +525,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             Range = str(self.range_1.currentIndex()+1)
             DataTemp2.Update_335('RANGE','1',Range)
         else:
-            RANGE_1 = True
-            
+            RANGE_1 = True         
     def Update_2(self):
         global RANGE_2
         DataTemp2.Update_335('RANGE','2','1')
@@ -491,8 +542,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             Range = str(self.range_2.currentIndex()+1)
             DataTemp2.Update_335('RANGE','2',Range)
         else:
-            RANGE_2 = True
-            
+            RANGE_2 = True       
     def start_adquisition(self):
         global Start,actual, filename, label_scroll,status_heater_1,label_heater_1,ramp_stat
         Start,actual = True,False
@@ -578,7 +628,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                             label_heater_1 += '--------------------------------------\n'
                             self.status_1.setWidget(QtWidgets.QLabel(label_heater_1))
                             self.status_1.verticalScrollBar().setValue(self.status_1.verticalScrollBar().maximum())
-
     def stop_adquisition(self):
         global Start,label_scroll
         Start = False
@@ -620,7 +669,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                                     label_scroll+='                  '+str(datetime.datetime.now())+'\n'
                                     label_scroll+='-------------------------------------------------------------------------\n'
                                     self.Update_label()
-  
     def closeEvent(self, event):
         try:
             global actual,Start,plt_mgr
@@ -653,8 +701,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             pass
     def show_dialog(self):
         dialog = Dialog(self)  # self hace referencia al padre
-        dialog.show()
-    
+        dialog.show()  
     def show_218(self):
         dialog = Segunda(self)  # self hace referencia al padre
         dialog.show()  
@@ -704,6 +751,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.radioButton_2.setEnabled(True)
                     self.pushButton.setEnabled(True)
                     self.Todos.setEnabled(True)
+                    self.Todos.setChecked(True)
                     self.radioButton.setEnabled(True)
                     label_scroll+='               Push "Start" for begin adquisition\n'
                     label_scroll+='-------------------------------------------------------------------------\n'
@@ -728,6 +776,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.color_sensor.setStyleSheet("color:rgb(255,255,255);")
                 self.pushButton.setEnabled(True)
                 self.Todos.setEnabled(True)
+                self.Todos.setChecked(True)
                 self.ramp.setEnabled(True)
                 self.ramp_la.setStyleSheet("color:rgb(255,255,255);")
                 self.graph_sensor.setStyleSheet("color:rgb(255,255,255);")
@@ -777,6 +826,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.mm.setEnabled(False)
             self.ss.setEnabled(False)
     def desbloquear_Todos(self):
+        
         if self.Todos.isChecked():
             self.CA.setEnabled(False)
             self.CB.setEnabled(False)
@@ -897,6 +947,137 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def desbloquear_seeStatus_2(self):
         if self.seeStatus_2.isChecked():
             self.status_2.setEnabled(True)
+    def desbloquear_sensores_CA(self):
+        global textDict_color 
+        if self.CA.isChecked():
+            self.color_CA.setEnabled(True)
+            self.ramp_CA.setEnabled(True)
+            color_rgb = textDict_color.ConfigDict['CA']
+            self.color_CA.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+");")
+        else:
+            self.color_CA.setEnabled(False)
+            self.ramp_CA.setEnabled(False)
+            self.ramp_CA.setChecked(False)
+            self.color_CA.setStyleSheet("background-color: a(0);")
+    def desbloquear_sensores_CB(self):
+        global textDict_color 
+        if self.CB.isChecked():
+            self.color_CB.setEnabled(True)
+            self.ramp_CB.setEnabled(True)
+            color_rgb = textDict_color.ConfigDict['CB']
+            self.color_CB.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+");")
+        else:
+            self.color_CB.setEnabled(False)
+            self.ramp_CB.setEnabled(False)
+            self.ramp_CB.setChecked(False)
+            self.color_CB.setStyleSheet("background-color: a(0);")
+    def desbloquear_sensores_C5(self):
+        global textDict_color 
+        if self.C5.isChecked():
+            self.color_C5.setEnabled(True)
+            self.ramp_C5.setEnabled(True)
+            color_rgb = textDict_color.ConfigDict['C5']
+            self.color_C5.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+");")
+        else:
+            self.color_C5.setEnabled(False)
+            self.ramp_C5.setEnabled(False)
+            self.ramp_C5.setChecked(False)
+            self.color_C5.setStyleSheet("background-color: a(0);")
+    def desbloquear_sensores_C6(self):
+        global textDict_color 
+        if self.C6.isChecked():
+            self.color_C6.setEnabled(True)
+            self.ramp_C6.setEnabled(True)
+            color_rgb = textDict_color.ConfigDict['C6']
+            self.color_C6.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+");")
+        else:
+            self.color_C6.setEnabled(False)
+            self.ramp_C6.setEnabled(False)
+            self.ramp_C6.setChecked(False)
+            self.color_C6.setStyleSheet("background-color: a(0);")
+    def desbloquear_sensores_D1(self):
+        global textDict_color 
+        if self.D1.isChecked():
+            self.color_D1.setEnabled(True)
+            self.ramp_D1.setEnabled(True)
+            color_rgb = textDict_color.ConfigDict['D1']
+            self.color_D1.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+");")
+        else:
+            self.color_D1.setEnabled(False)
+            self.ramp_D1.setEnabled(False)
+            self.ramp_D1.setChecked(False)
+            self.color_D1.setStyleSheet("background-color: a(0);")
+    def desbloquear_sensores_D2(self):
+        global textDict_color 
+        if self.D2.isChecked():
+            self.color_D2.setEnabled(True)
+            self.ramp_D2.setEnabled(True)
+            color_rgb = textDict_color.ConfigDict['D2']
+            self.color_D2.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+");")
+        else:
+            self.color_D2.setEnabled(False)
+            self.ramp_D2.setEnabled(False)
+            self.color_D2.setStyleSheet("background-color: a(0);")
+    def desbloquear_sensores_D3(self):
+        global textDict_color 
+        if self.D3.isChecked():
+            self.color_D3.setEnabled(True)
+            self.ramp_D3.setEnabled(True)
+            color_rgb = textDict_color.ConfigDict['D3']
+            self.color_D3.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+");")
+        else:
+            self.color_D3.setEnabled(False)
+            self.ramp_D3.setEnabled(False)
+            self.ramp_D3.setChecked(False)
+            self.color_D3.setStyleSheet("background-color: a(0);")
+    def desbloquear_sensores_D4(self):
+        global textDict_color 
+        if self.D4.isChecked():
+            self.color_D4.setEnabled(True)
+            self.ramp_D4.setEnabled(True)
+            color_rgb = textDict_color.ConfigDict['D4']
+            self.color_D4.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+");")
+        else:
+            self.color_D4.setEnabled(False)
+            self.ramp_D4.setEnabled(False)
+            self.ramp_D4.setChecked(False)
+            self.color_D4.setStyleSheet("background-color: a(0);")
+    def desbloquear_heater1(self):
+        global textDict_color 
+        if self.heater1.isChecked():
+            self.color_H1.setEnabled(True)
+            color_rgb = textDict_color.ConfigDict['H1']
+            self.color_H1.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+");")
+        else:
+            self.color_H1.setEnabled(False)
+            self.color_H1.setStyleSheet("background-color: a(0);")
+    def desbloquear_heater2(self):
+        global textDict_color 
+        if self.heater2.isChecked():
+            self.color_H2.setEnabled(True)
+            color_rgb = textDict_color.ConfigDict['H2']
+            self.color_H2.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+");")
+        else:
+            self.color_H2.setEnabled(False)
+            self.color_H2.setStyleSheet("background-color: a(0);")
+    def desbloquear_SetPoint1(self):
+        global textDict_color 
+        if self.SetPoint1.isChecked():
+            self.color_S1.setEnabled(True)
+            color_rgb = textDict_color.ConfigDict['S1']
+            self.color_S1.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+");")
+        else:
+            self.color_S1.setEnabled(False)
+            self.color_S1.setStyleSheet("background-color: a(0);")
+    def desbloquear_SetPoint2(self):
+        global textDict_color 
+        if self.SetPoint2.isChecked():
+            self.color_S2.setEnabled(True)
+            color_rgb = textDict_color.ConfigDict['S2']
+            self.color_S2.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+");")
+        else:
+            self.color_S2.setEnabled(False)
+            self.color_S2.setStyleSheet("background-color: a(0);")
     def graficar(self):
         global actual,close_plot,DataTemp, DataTemp2, curvas, curvas_last
         curvas = [0,0,0,0,0,0,0,0,0,0,0,0,0]
@@ -958,7 +1139,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
               
 class LivePlotter(object):
     
-    global curvas
+    global curvas, textDict_color 
     
     def __init__(self):
         self.win = pg.GraphicsWindow(title='Data')
@@ -968,14 +1149,14 @@ class LivePlotter(object):
         self.p.showGrid(x=False,y=True,alpha=0.3)
         self.p.addLegend()
         if curvas[0] == 1:
-            self.curva1=self.p.plot(pen=(255,255,255),width=10,name='CernoxA')
-            self.curva2=self.p.plot(pen=(0,226,250),name='CernoxB')
-            self.curva3=self.p.plot(pen=(255,255,0),name='Diodo1')
-            self.curva4=self.p.plot(pen=(255,85,150),name='Diodo2')
-            self.curva5=self.p.plot(pen=(0,255,0),name='Diodo3')
-            self.curva6=self.p.plot(pen=(0,0,255),name='Diodo4')
-            self.curva7=self.p.plot(pen=(255,0,0),name='Cernox5')
-            self.curva8=self.p.plot(pen=(84,100,214),name='Cernox6')
+            self.curva1=self.p.plot(pen=(int(textDict_color.ConfigDict['CA'][0]),int(textDict_color.ConfigDict['CA'][1]),int(textDict_color.ConfigDict['CA'][2])),name='CernoxA')
+            self.curva2=self.p.plot(pen=(int(textDict_color.ConfigDict['CB'][0]),int(textDict_color.ConfigDict['CB'][1]),int(textDict_color.ConfigDict['CB'][2])),name='CernoxB')
+            self.curva3=self.p.plot(pen=(int(textDict_color.ConfigDict['D1'][0]),int(textDict_color.ConfigDict['D1'][1]),int(textDict_color.ConfigDict['D1'][2])),name='Diodo1')
+            self.curva4=self.p.plot(pen=(int(textDict_color.ConfigDict['D2'][0]),int(textDict_color.ConfigDict['D2'][1]),int(textDict_color.ConfigDict['D2'][2])),name='Diodo2')
+            self.curva5=self.p.plot(pen=(int(textDict_color.ConfigDict['D3'][0]),int(textDict_color.ConfigDict['D3'][1]),int(textDict_color.ConfigDict['D3'][2])),name='Diodo3')
+            self.curva6=self.p.plot(pen=(int(textDict_color.ConfigDict['D4'][0]),int(textDict_color.ConfigDict['D4'][1]),int(textDict_color.ConfigDict['D4'][2])),name='Diodo4')
+            self.curva7=self.p.plot(pen=(int(textDict_color.ConfigDict['C5'][0]),int(textDict_color.ConfigDict['C5'][1]),int(textDict_color.ConfigDict['C5'][2])),name='Cernox5')
+            self.curva8=self.p.plot(pen=(int(textDict_color.ConfigDict['C6'][0]),int(textDict_color.ConfigDict['C6'][1]),int(textDict_color.ConfigDict['C6'][2])),name='Cernox6')
             self.Data_curva1,self.Time_curva1=[],[]
             self.Data_curva2,self.Time_curva2=[],[]
             self.Data_curva3,self.Time_curva3=[],[]
@@ -986,40 +1167,40 @@ class LivePlotter(object):
             self.Data_curva8,self.Time_curva8=[],[]
         else:
             if curvas[1] == 1:
-                self.curva1=self.p.plot(pen=(255,255,255),name='CernoxA')
+                self.curva1=self.p.plot(pen=(int(textDict_color.ConfigDict['CA'][0]),int(textDict_color.ConfigDict['CA'][1]),int(textDict_color.ConfigDict['CA'][2])),name='CernoxA')
                 self.Data_curva1,self.Time_curva1=[],[]
             if curvas[2] == 1:
-                self.curva2=self.p.plot(pen=(0,226,250),name='CernoxB')
+                self.curva2=self.p.plot(pen=(int(textDict_color.ConfigDict['CB'][0]),int(textDict_color.ConfigDict['CB'][1]),int(textDict_color.ConfigDict['CB'][2])),name='CernoxB')
                 self.Data_curva2,self.Time_curva2=[],[]
             if curvas[3] == 1:
-                self.curva3=self.p.plot(pen=(255,255,0),name='Diodo1')
+                self.curva3=self.p.plot(pen=(int(textDict_color.ConfigDict['D1'][0]),int(textDict_color.ConfigDict['D1'][1]),int(textDict_color.ConfigDict['D1'][2])),name='Diodo1')
                 self.Data_curva3,self.Time_curva3=[],[]
             if curvas[4] == 1:
-                self.curva4=self.p.plot(pen=(255,85,150),name='Diodo2')
+                self.curva4=self.p.plot(pen=(int(textDict_color.ConfigDict['D2'][0]),int(textDict_color.ConfigDict['D2'][1]),int(textDict_color.ConfigDict['D2'][2])),name='Diodo2')
                 self.Data_curva4,self.Time_curva4=[],[]
             if curvas[5] == 1:
-                self.curva5=self.p.plot(pen=(0,255,0),name='Diodo3')
+                self.curva5=self.p.plot(pen=(int(textDict_color.ConfigDict['D3'][0]),int(textDict_color.ConfigDict['D3'][1]),int(textDict_color.ConfigDict['D3'][2])),name='Diodo3')
                 self.Data_curva5,self.Time_curva5=[],[]
             if curvas[6] == 1:
-                self.curva6=self.p.plot(pen=(0,0,255),name='Diodo4')
+                self.curva6=self.p.plot(pen=(int(textDict_color.ConfigDict['D4'][0]),int(textDict_color.ConfigDict['D4'][1]),int(textDict_color.ConfigDict['D4'][2])),name='Diodo4')
                 self.Data_curva6,self.Time_curva6=[],[]
             if curvas[7] == 1:
-                self.curva7=self.p.plot(pen=(255,0,0),name='Cernox5')
+                self.curva7=self.p.plot(pen=(int(textDict_color.ConfigDict['C5'][0]),int(textDict_color.ConfigDict['C5'][1]),int(textDict_color.ConfigDict['C5'][2])),name='Cernox5')
                 self.Data_curva7,self.Time_curva7=[],[]
             if curvas[8] == 1:
-                self.curva8=self.p.plot(pen=(178,155,214),name='Cernox6')
+                self.curva8=self.p.plot(pen=(int(textDict_color.ConfigDict['C6'][0]),int(textDict_color.ConfigDict['C6'][1]),int(textDict_color.ConfigDict['C6'][2])),name='Cernox6')
                 self.Data_curva8,self.Time_curva8=[],[]
         if curvas[9] == 1:
-            self.curva9 = self.p.plot(pen=(214,103,29),name='SetPoint-1')
+            self.curva9 = self.p.plot(pen=(int(textDict_color.ConfigDict['S1'][0]),int(textDict_color.ConfigDict['S1'][1]),int(textDict_color.ConfigDict['S1'][2])),name='SetPoint-1')
             self.Data_curva9,self.Time_curva9=[],[]
         if curvas[10] == 1:
-            self.curva10 = self.p.plot(pen=(255,192,33), name = 'Heater-1')
+            self.curva10 = self.p.plot(pen=(int(textDict_color.ConfigDict['H1'][0]),int(textDict_color.ConfigDict['H1'][1]),int(textDict_color.ConfigDict['H1'][2])), name = 'Heater-1')
             self.Data_curva10,self.Time_curva10=[],[]
         if curvas[11] == 1:
-            self.curva11 = self.p.plot(pen=(214,140,162),name = 'SetPoint-2')
+            self.curva11 = self.p.plot(pen=(int(textDict_color.ConfigDict['S2'][0]),int(textDict_color.ConfigDict['S2'][1]),int(textDict_color.ConfigDict['S2'][2])),name = 'SetPoint-2')
             self.Data_curva11,self.Time_curva11=[],[]
         if curvas[12] == 1:
-            self.curva12 = self.p.plot(pen=(200,148,214),name = 'Heater-2')
+            self.curva12 = self.p.plot(pen=(int(textDict_color.ConfigDict['H2'][0]),int(textDict_color.ConfigDict['H2'][1]),int(textDict_color.ConfigDict['H2'][2])),name = 'Heater-2')
             self.Data_curva12,self.Time_curva12=[],[]
         self.p.setRange(yRange=[50, 300])
     
@@ -1201,32 +1382,32 @@ class Lienzo(FigureCanvas):
             for c in a:
                 b.append(c)
         if curvas[0] == 1:
-            self.ejes.plot(b[0][0], b[0][1],label='Cernox A',color=[100/255,100/255,100/255])
-            self.ejes.plot(b[1][0], b[1][1],label='Cernox B',color=[0,0,200/255])
-            self.ejes.plot(b[2][0], b[2][1],label='Diodo 1',color=[0,0,100/255])
-            self.ejes.plot(b[3][0], b[3][1],label='Diodo 2',color=[0,100/255,100/255])
-            self.ejes.plot(b[4][0], b[4][1],label='Diodo 3',color=[100/255,0,100/255])
-            self.ejes.plot(b[5][0], b[5][1],label='Diodo 4',color=[0,100/255,0])
-            self.ejes.plot(b[6][0], b[6][1],label='Cernox 5',color=[100/255,100/255,0])
-            self.ejes.plot(b[7][0], b[7][1],label='Cernox 6',color=[100/255,0,0])
+            self.ejes.plot(b[0][0], b[0][1],label='Cernox A',color=[int(textDict_color.ConfigDict['CA'][0])/255,int(textDict_color.ConfigDict['CA'][1])/255,int(textDict_color.ConfigDict['CA'][2])/255])
+            self.ejes.plot(b[1][0], b[1][1],label='Cernox B',color=[int(textDict_color.ConfigDict['CB'][0])/255,int(textDict_color.ConfigDict['CB'][1])/255,int(textDict_color.ConfigDict['CB'][2])/255])
+            self.ejes.plot(b[2][0],  b[2][1],label='Diodo 1',color=[int(textDict_color.ConfigDict['D1'][0])/255,int(textDict_color.ConfigDict['D1'][1])/255,int(textDict_color.ConfigDict['D1'][2])/255])
+            self.ejes.plot(b[3][0],  b[3][1],label='Diodo 2',color=[int(textDict_color.ConfigDict['D2'][0])/255,int(textDict_color.ConfigDict['D2'][1])/255,int(textDict_color.ConfigDict['D2'][2])/255])
+            self.ejes.plot(b[4][0],  b[4][1],label='Diodo 3',color=[int(textDict_color.ConfigDict['D3'][0])/255,int(textDict_color.ConfigDict['D3'][1])/255,int(textDict_color.ConfigDict['D3'][2])/255])
+            self.ejes.plot(b[5][0],  b[5][1],label='Diodo 4',color=[int(textDict_color.ConfigDict['D4'][0])/255,int(textDict_color.ConfigDict['D4'][1])/255,int(textDict_color.ConfigDict['D4'][2])/255])
+            self.ejes.plot(b[6][0], b[6][1],label='Cernox 5',color=[int(textDict_color.ConfigDict['C5'][0])/255,int(textDict_color.ConfigDict['C5'][1])/255,int(textDict_color.ConfigDict['C5'][2])/255])
+            self.ejes.plot(b[7][0], b[7][1],label='Cernox 6',color=[int(textDict_color.ConfigDict['C6'][0])/255,int(textDict_color.ConfigDict['C6'][1])/255,int(textDict_color.ConfigDict['C6'][2])/255])
             
         else:
             if curvas[1] == 1:
-                self.ejes.plot(b[0][0], b[0][1],label='Cernox A',color=[100/255,100/255,100/255])
+                self.ejes.plot(b[0][0], b[0][1],label='Cernox A',color=[int(textDict_color.ConfigDict['CA'][0])/255,int(textDict_color.ConfigDict['CA'][1])/255,int(textDict_color.ConfigDict['CA'][2])/255])
             if curvas[2] == 1:
-                self.ejes.plot(b[1][0], b[1][1],label='Cernox B',color=[0,0,200/255])
+                self.ejes.plot(b[1][0], b[1][1],label='Cernox B',color=[int(textDict_color.ConfigDict['CB'][0])/255,int(textDict_color.ConfigDict['CB'][1])/255,int(textDict_color.ConfigDict['CB'][2])/255])
             if curvas[3] == 1:
-                self.ejes.plot(b[2][0], b[2][1],label='Diodo 1',color=[0,0,100/255])
+                self.ejes.plot(b[2][0],  b[2][1],label='Diodo 1',color=[int(textDict_color.ConfigDict['D1'][0])/255,int(textDict_color.ConfigDict['D1'][1])/255,int(textDict_color.ConfigDict['D1'][2])/255])
             if curvas[4] == 1:
-                self.ejes.plot(b[3][0], b[3][1],label='Diodo 2',color=[0,100/255,100/255])
+                self.ejes.plot(b[3][0],  b[3][1],label='Diodo 2',color=[int(textDict_color.ConfigDict['D2'][0])/255,int(textDict_color.ConfigDict['D2'][1])/255,int(textDict_color.ConfigDict['D2'][2])/255])
             if curvas[5] == 1:
-                self.ejes.plot(b[4][0], b[4][1],label='Diodo 3',color=[100/255,0,100/255])
+                self.ejes.plot(b[4][0],  b[4][1],label='Diodo 3',color=[int(textDict_color.ConfigDict['D3'][0])/255,int(textDict_color.ConfigDict['D3'][1])/255,int(textDict_color.ConfigDict['D3'][2])/255])
             if curvas[6] == 1:
-                self.ejes.plot(b[5][0], b[5][1],label='Diodo 4',color=[0,100/255,0])
+                self.ejes.plot(b[5][0],  b[5][1],label='Diodo 4',color=[int(textDict_color.ConfigDict['D4'][0])/255,int(textDict_color.ConfigDict['D4'][1])/255,int(textDict_color.ConfigDict['D4'][2])/255])
             if curvas[7] == 1:
-                self.ejes.plot(b[6][0], b[6][1],label='Cernox 5',color=[100/255,100/255,0])
+                self.ejes.plot(b[6][0], b[6][1],label='Cernox 5',color=[int(textDict_color.ConfigDict['C5'][0])/255,int(textDict_color.ConfigDict['C5'][1])/255,int(textDict_color.ConfigDict['C5'][2])/255])
             if curvas[8] == 1:
-                self.ejes.plot(b[7][0], b[7][1],label='Cernox 6',color=[100/255,0,0])
+                self.ejes.plot(b[7][0], b[7][1],label='Cernox 6',color=[int(textDict_color.ConfigDict['C6'][0])/255,int(textDict_color.ConfigDict['C6'][1])/255,int(textDict_color.ConfigDict['C6'][2])/255])
         self.ejes.title.set_text("Plot of Data")
         self.ejes.set_xlabel("t [s]")
         self.ejes.set_ylabel("T [K]")

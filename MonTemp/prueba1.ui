@@ -590,7 +590,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
      </property>
      <widget class="QCheckBox" name="SetPoint1">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -609,7 +609,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
      </widget>
      <widget class="QCheckBox" name="heater2">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -628,7 +628,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
      </widget>
      <widget class="QCheckBox" name="heater1">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -648,7 +648,7 @@ alternate-background-color: rgb(85, 255, 127);</string>
      </widget>
      <widget class="QCheckBox" name="SetPoint2">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -870,7 +870,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
        <string>All sensors</string>
       </property>
       <property name="checked">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
      </widget>
      <widget class="QCheckBox" name="CA">
@@ -893,7 +893,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
        <string>Cernox A</string>
       </property>
       <property name="checked">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
      </widget>
      <widget class="QCheckBox" name="CB">
@@ -915,7 +915,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
        <string>Cernox B</string>
       </property>
       <property name="checked">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
      </widget>
      <widget class="QCheckBox" name="D1">
@@ -937,7 +937,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
        <string>Diodo 1</string>
       </property>
       <property name="checked">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
      </widget>
      <widget class="QCheckBox" name="D2">
@@ -959,7 +959,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
        <string>Diodo 2</string>
       </property>
       <property name="checked">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
      </widget>
      <widget class="QCheckBox" name="D3">
@@ -981,7 +981,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
        <string>Diodo 3</string>
       </property>
       <property name="checked">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
      </widget>
      <widget class="QCheckBox" name="D4">
@@ -1003,7 +1003,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
        <string>Diodo 4</string>
       </property>
       <property name="checked">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
      </widget>
      <widget class="QCheckBox" name="C5">
@@ -1025,7 +1025,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
        <string>Cernox 5</string>
       </property>
       <property name="checked">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
      </widget>
      <widget class="QCheckBox" name="C6">
@@ -1047,7 +1047,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
        <string>Cernox 6</string>
       </property>
       <property name="checked">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
      </widget>
      <widget class="QCheckBox" name="ramp_CA">
