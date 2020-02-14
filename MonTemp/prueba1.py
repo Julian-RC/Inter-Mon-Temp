@@ -527,7 +527,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             RANGE_1 = True  
             Range = 'Auto'
-        label_scroll += '                   Heater 1 Update:\n'+Ramp1+' k/min    '+SetP_1+' k       ' + Range +'\n-------------------------------------------------------------------------\n'     
+        label_scroll += 'Heater 1 Update:{:%H:%M:%S}\n'.format(datetime.datetime.now())+'\n'+Ramp_1+' k/min    '+SetP_1+' k       ' + Range +'\n-------------------------------------------------------------------------\n'     
     def Update_2(self):
         global RANGE_2
         DataTemp2.Update_335('RANGE','2','1')
