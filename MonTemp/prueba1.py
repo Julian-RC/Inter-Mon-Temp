@@ -26,8 +26,6 @@ class Dialog(QtWidgets.QDialog,Ui_Dialog):
         except KeyboardInterrupt as KBI:
             pass
     
-
-
 class Segunda(QtWidgets.QDialog,Ui_Segunda):
     def __init__(self, *args, **kwargs):
         try:
@@ -232,7 +230,6 @@ class Tercera(QtWidgets.QDialog,Ui_Tercera):
             self.sensor2.setEnabled(True)
         else:
             self.sensor2.setEnabled(False)
-
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None,*args, **kwargs):
@@ -959,8 +956,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def matplotlib(self):
         mpl = Lienzo()
         mpl.show()
-
-                
+              
 class LivePlotter(object):
     
     global curvas
