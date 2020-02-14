@@ -512,7 +512,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         SP_2 = float(SetP_2)
         self.setPoint_num_2.setValue(SP_2)   
     def Update_1(self):
-        global RANGE_1,SP_1
+        global RANGE_1,SP_1,label_scroll
         Ramp_1 = str(self.ramp_1.value())
         DataTemp2.Update_335('RAMP','1','1,'+Ramp_1)
         time.sleep(0.05)        
@@ -525,7 +525,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             Range = str(self.range_1.currentIndex()+1)
             DataTemp2.Update_335('RANGE','1',Range)
         else:
-            RANGE_1 = True         
+            RANGE_1 = True  
+            Range = 'Auto'
+        label_scroll += '                   Heater 1 Update:\n'+Ramp1+' k/min    '+SetP_1+' k       ' + Range +'\n-------------------------------------------------------------------------\n'     
     def Update_2(self):
         global RANGE_2
         DataTemp2.Update_335('RANGE','2','1')
@@ -546,6 +548,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def start_adquisition(self):
         global Start,actual, filename, label_scroll,status_heater_1,label_heater_1,ramp_stat
         Start,actual = True,False
+        self.pushButton.setEnabled(True)
         DataTemp.Start()
         DataTemp2.Start()
         DataTemp2.Read_335('SETP?','1')
@@ -563,7 +566,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.heater_2.setEnabled(True)
         self.lastdata.setEnabled(True)
         label_scroll+='                          Acquisition has begun\n'
-        label_scroll+='                  '+str(datetime.datetime.now())+'\n'
+        label_scroll+='                  {:%H:%M:%S}\n'.format(datetime.datetime.now())+'\n'
         label_scroll+='-------------------------------------------------------------------------\n'
         self.Update_label()
         while Start:
@@ -666,7 +669,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                                     self.off_heater_1()
                                    # self.off_heater_2()
                                     label_scroll+='                        Acquisition has stopped\n'
-                                    label_scroll+='                  '+str(datetime.datetime.now())+'\n'
+                                    label_scroll+='                  {:%H:%M:%S}\n'.format(datetime.datetime.now())+'\n'
                                     label_scroll+='-------------------------------------------------------------------------\n'
                                     self.Update_label()
     def closeEvent(self, event):
@@ -749,7 +752,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.SeeData.setEnabled(True)
                     self.grafica2.setEnabled(True)
                     self.radioButton_2.setEnabled(True)
-                    self.pushButton.setEnabled(True)
                     self.Todos.setEnabled(True)
                     self.Todos.setChecked(True)
                     self.radioButton.setEnabled(True)
