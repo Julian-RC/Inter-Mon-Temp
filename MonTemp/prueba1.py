@@ -683,7 +683,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                                     self.off_heater_1()
                                    # self.off_heater_2()
                                     label_scroll+='                        Acquisition has stopped\n'
-                                    label_scroll+='                  {:%H:%M:%S}\n'.format(datetime.datetime.now())+'\n'
+                                    label_scroll+='                                  '+'{:%H:%M:%S}'.format(datetime.datetime.now())+'\n'
                                     label_scroll+='-------------------------------------------------------------------------\n'
                                     self.Update_label()
     def closeEvent(self, event):
