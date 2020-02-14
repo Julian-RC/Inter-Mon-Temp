@@ -19,21 +19,150 @@ import matplotlib.pyplot as plt
 class Dialog(QtWidgets.QDialog,Ui_Dialog):
     def __init__(self, *args, **kwargs):
         try:
+            global textDict
             QtWidgets.QDialog.__init__(self, *args, **kwargs)
             self.setupUi(self)
             self.setWindowTitle("About Temperature Module")
         except KeyboardInterrupt as KBI:
             pass
-        
+    
+
+
 class Segunda(QtWidgets.QDialog,Ui_Segunda):
     def __init__(self, *args, **kwargs):
         try:
             QtWidgets.QDialog.__init__(self, *args, **kwargs)
             self.setupUi(self)
+            self.timeOut.setRange(0.1,99.9)
+            self.timeOut.setDecimals(1)
+            self.savedata.setRange(10,1000)
+            self.samplinperiod.setDecimals(1)
+            self.samplinperiod.setRange(0,100)
+            self.average.setRange(10,1000)
+            self.curve1.setRange(0,28)
+            self.curve2.setRange(0,28)
+            self.curve3.setRange(0,28)
+            self.curve4.setRange(0,28)
+            self.curve5.setRange(0,28)
+            self.curve6.setRange(0,28)
+            self.curve7.setRange(0,28)
+            self.curve8.setRange(0,28)
             self.setWindowTitle("218 TemperatureMonitor")
+            self.name.setText(textDict.ConfigDict['Name'])
+            self.nameaverage.setText(textDict.ConfigDict['NameAverage'])
+            self.model.setText(textDict.ConfigDict['Model'])
+            if textDict.ConfigDict['Sensor Status 1']=='1':
+                self.sensor1.setText(textDict.ConfigDict['Sensor Type'][0])
+                self.sensor1_on.setChecked(True)
+                self.curve1.setValue(int(textDict.ConfigDict['CP1']))
+            if textDict.ConfigDict['Sensor Status 2']=='1':
+                self.sensor2.setText(textDict.ConfigDict['Sensor Type'][1])
+                self.sensor2_on.setChecked(True)
+                self.curve2.setValue(int(textDict.ConfigDict['CP2']))
+            if textDict.ConfigDict['Sensor Status 3']=='1':
+                self.sensor3.setText(textDict.ConfigDict['Sensor Type'][2])
+                self.sensor3_on.setChecked(True)
+                self.curve3.setValue(int(textDict.ConfigDict['CP3']))
+            if textDict.ConfigDict['Sensor Status 4']=='1':
+                self.sensor4.setText(textDict.ConfigDict['Sensor Type'][3])
+                self.sensor4_on.setChecked(True)
+                self.curve4.setValue(int(textDict.ConfigDict['CP4']))
+            if textDict.ConfigDict['Sensor Status 5']=='1':
+                self.sensor5.setText(textDict.ConfigDict['Sensor Type'][4])
+                self.sensor5_on.setChecked(True)
+                self.curve5.setValue(int(textDict.ConfigDict['CP5']))
+            if textDict.ConfigDict['Sensor Status 6']=='1':
+                self.sensor6.setText(textDict.ConfigDict['Sensor Type'][5])
+                self.sensor6_on.setChecked(True)
+                self.curve6.setValue(int(textDict.ConfigDict['CP6']))
+            if textDict.ConfigDict['Sensor Status 7']=='1':
+                self.sensor7.setText(textDict.ConfigDict['Sensor Type'][6])
+                self.sensor7_on.setChecked(True)
+                self.curve7.setValue(int(textDict.ConfigDict['CP7']))
+            if textDict.ConfigDict['Sensor Status 8']=='1':
+                self.sensor8.setText(textDict.ConfigDict['Sensor Type'][7])
+                self.sensor8_on.setChecked(True)
+                self.curve8.setValue(int(textDict.ConfigDict['CP8']))
+            self.sensor1_on.toggled.connect(self.desbloquear_sensor1)
+            self.sensor2_on.toggled.connect(self.desbloquear_sensor2)
+            self.sensor3_on.toggled.connect(self.desbloquear_sensor3)
+            self.sensor4_on.toggled.connect(self.desbloquear_sensor4)
+            self.sensor5_on.toggled.connect(self.desbloquear_sensor5)
+            self.sensor6_on.toggled.connect(self.desbloquear_sensor6)
+            self.sensor7_on.toggled.connect(self.desbloquear_sensor7)
+            self.sensor8_on.toggled.connect(self.desbloquear_sensor8)
+            self.port.setText(textDict.ConfigDict['Port'])
+            self.savedata.setValue(int(textDict.ConfigDict['SaveData']))
+            self.average.setValue(int(textDict.ConfigDict['Average']))
+            self.samplinperiod.setValue(float(textDict.ConfigDict['SamplingPeriod']))
+            self.timeOut.setValue(float(textDict.ConfigDict['TimeOut']))
             self.buttonBox.accepted.connect(self.accept)
         except KeyboardInterrupt as KBI:
             pass
+
+    def desbloquear_sensor1(self):
+        if self.sensor1_on.isChecked():
+            self.sensor1.setEnabled(True)
+            self.curve1.setEnabled(True)
+        else:
+            self.sensor1.setEnabled(False)
+            self.surve1.setEnabled(False)
+
+    def desbloquear_sensor2(self):
+        if self.sensor2_on.isChecked():
+            self.sensor2.setEnabled(True)
+            self.curve2.setEnabled(True)
+        else:
+            self.sensor2.setEnabled(False)
+            self.curve2.setEnabled(False)
+
+    def desbloquear_sensor3(self):
+        if self.sensor3_on.isChecked():
+            self.sensor3.setEnabled(True)
+            self.curve3.setEnabled(True)
+        else:
+            self.sensor3.setEnabled(False)
+            self.curve3.setEnabled(False)
+
+    def desbloquear_sensor4(self):
+        if self.sensor4_on.isChecked():
+            self.sensor4.setEnabled(True)
+            self.curve4.setEnabled(True)
+        else:
+            self.sensor4.setEnabled(False)
+            self.curve4.setEnabled(False)
+
+    def desbloquear_sensor5(self):
+        if self.sensor5_on.isChecked():
+            self.sensor5.setEnabled(True)
+            self.curve5.setEnabled(True)
+        else:
+            self.sensor5.setEnabled(False)
+            self.curve5.setEnabled(False)
+
+    def desbloquear_sensor6(self):
+        if self.sensor6_on.isChecked():
+            self.sensor6.setEnabled(True)
+            self.curve6.setEnabled(True)
+        else:
+            self.sensor6.setEnabled(False)
+            self.curve6.setEnabled(False)
+
+    def desbloquear_sensor7(self):
+        if self.sensor7_on.isChecked():
+            self.sensor7.setEnabled(True)
+            self.curve7.setEnabled(True)
+        else:
+            self.sensor7.setEnabled(False)
+            self.curve7.setEnabled(False)
+
+    def desbloquear_sensor8(self):
+        if self.sensor8_on.isChecked():
+            self.sensor8.setEnabled(True)
+            self.curve8.setEnabled(True)
+        else:
+            self.sensor8.setEnabled(False)
+            self.curve8.setEnabled(False)
     
     def accept(self):
         print('ok')
@@ -58,17 +187,65 @@ class Terminal(QtWidgets.QWidget):
 class Tercera(QtWidgets.QDialog,Ui_Tercera):
     def __init__(self, *args, **kwargs):
         try:
+            global textDict2
             QtWidgets.QDialog.__init__(self, *args, **kwargs)
             self.setupUi(self)
+            self.timeOut.setRange(0.1,99.9)
+            self.timeOut.setDecimals(1)
+            self.savedata.setRange(10,1000)
+            self.samplinperiod.setDecimals(1)
+            self.samplinperiod.setRange(0,100)
+            self.average.setRange(10,1000)
             self.setWindowTitle("335 TemperatureController")
+            self.name.setText(textDict2.ConfigDict['Name'])
+            self.nameAverage.setText(textDict2.ConfigDict['NameAverage'])
+            self.model.setText(textDict2.ConfigDict['Model'])
+            if len(textDict2.ConfigDict['Channels'])==2:
+                self.sensor1.setText(textDict2.ConfigDict['Sensor Type'][0])
+                self.sensor2.setText(textDict2.ConfigDict['Sensor Type'][1])
+                self.sensor1_on.setChecked(True)
+                self.sensor2_on.setChecked(True)
+            elif textDict2.ConfigDict['Channels']=='A':
+                self.sensor1.setText(textDict2.ConfigDict['Sensor Type'])
+                self.sensor1_on.setChecked(True)
+            elif textDict2.ConfigDict['Channels']=='B':
+                self.sensor2.setText(textDict2.ConfigDict['Sensor Type'])
+                self.sensor2_on.setChecked(True)
+            self.sensor1_on.toggled.connect(self.desbloquear_sensor1)
+            self.sensor2_on.toggled.connect(self.desbloquear_sensor2)
+            self.port.setText(textDict2.ConfigDict['Port'])
+            self.savedata.setValue(int(textDict2.ConfigDict['SaveData']))
+            self.average.setValue(int(textDict2.ConfigDict['Average']))
+            self.samplinperiod.setValue(float(textDict2.ConfigDict['SamplingPeriod']))
+            self.timeOut.setValue(float(textDict2.ConfigDict['TimeOut']))
+            
         except KeyboardInterrupt as KBI:
             pass
+    def desbloquear_sensor1(self):
+        if self.sensor1_on.isChecked():
+            self.sensor1.setEnabled(True)
+        else:
+            self.sensor1.setEnabled(False)
+
+    def desbloquear_sensor2(self):
+        if self.sensor2_on.isChecked():
+            self.sensor2.setEnabled(True)
+        else:
+            self.sensor2.setEnabled(False)
+
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None,*args, **kwargs):
         super(MainWindow, self).__init__(parent)
         QtWidgets.QMainWindow.__init__(self, *args, **kwargs)
-        global label_scroll
+        global label_scroll, textDict, textDict2, patch
+        patch = os.path.realpath(__file__).strip('prueba1.py') 
+        filename = patch + "cfg/file_218.cfg"
+        filename2 = patch + "cfg/file_335.cfg"
+        textDict = ConfigModule(filename,0,0)
+        textDict2 = ConfigModule(filename2,0,0)
+        DataTemp = TempClass(textDict.ConfigDict)
+        DataTemp2 = TempClass(textDict2.ConfigDict,DataTemp.InitTime)
         self.setupUi(self)
         self.setWindowTitle("Temperature Module")
         self.setWindowIcon(QtGui.QIcon(os.path.realpath(__file__).strip('prueba1.py')+'Temperature.png')) 
@@ -123,7 +300,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.color_CB.clicked.connect(self.change_color_CB)
 
         
-        label_scroll='-------------------------------------------------------------------------\n Welcome, Interface TemperatureModule has begun\n'+\
+        label_scroll='-------------------------------------------------------------------------\n               Welcome, Temperature has begun\n                                  {:%H:%M:%S}\n'.format(datetime.datetime.now())+'-------------------------------------------------------------------------\n '+\
                         '                   Please select a folder to start\n-------------------------------------------------------------------------\n'
         self.Update_label()
         self.tabWidget.clear()
@@ -252,7 +429,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             for Obj in [DataTemp,DataTemp2]:
                 Obj.__str__()
         except:
-           label_scroll += 'ERROR: Text file cannot be shown.\n'
+           label_scroll += '   ERROR: Text file cannot be shown.\n'
         self.Update_label()
 
     def off_heater_1(self):
@@ -260,16 +437,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.On_335_1()
         time.sleep(0.05)
         self.Update_1()
-        
-        
+                
     def off_heater_2(self):
         
         self.On_335_2()
         time.sleep(0.05)
         self.Update_2()
 
-    
- 
     def On_335_1(self):
         global SP_1
         Ramp_1 = str(DataTemp2.Read_335('RAMP?','1')[2:7])
@@ -277,7 +451,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         SetP_1 = str(DataTemp2.Read_335('SETP?','1'))
         SP_1 = float(SetP_1)
         self.setPoint_num_1.setValue(SP_1)
-        
                 
     def On_335_2(self):
         global SP_2
@@ -288,8 +461,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         SP_2 = float(SetP_2)
         self.setPoint_num_2.setValue(SP_2)
         
-        
-
     def Update_1(self):
         global RANGE_1,SP_1
         Ramp_1 = str(self.ramp_1.value())
@@ -324,7 +495,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             RANGE_2 = True
             
-
     def start_adquisition(self):
         global Start,actual, filename, label_scroll,status_heater_1,label_heater_1,ramp_stat
         Start,actual = True,False
@@ -452,8 +622,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                                     label_scroll+='                  '+str(datetime.datetime.now())+'\n'
                                     label_scroll+='-------------------------------------------------------------------------\n'
                                     self.Update_label()
-
-        
+  
     def closeEvent(self, event):
         global actual,Start,plt_mgr
         self.box = QtWidgets.QMessageBox()
@@ -481,7 +650,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     event.accept()
         else:
                 event.ignore()
-        
         
     def show_dialog(self):
         dialog = Dialog(self)  # self hace referencia al padre
@@ -567,7 +735,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 path = os.path.realpath(__file__).strip('prueba1.py') 
                 filename = path + "cfg/file_218.cfg"
                 filename2 = path + "cfg/file_335.cfg"
-                #global textDict,textDict2,DataTemp,DataTemp2
                 textDict = ConfigModule(filename,0,0)
                 textDict2 = ConfigModule(filename2,0,0)
                 DataTemp = TempClass(textDict.ConfigDict)

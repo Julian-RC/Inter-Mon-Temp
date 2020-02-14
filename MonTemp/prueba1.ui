@@ -1767,7 +1767,8 @@ font: 12pt &quot;Sans Serif&quot;;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">background-color: a(0);</string>
+         <string notr="true">background-color: a(0);
+border: 1px solid black;</string>
         </property>
         <item>
          <property name="text">
@@ -1920,7 +1921,7 @@ font: 10pt &quot;Sans Serif&quot;;</string>
        <string notr="true">background-color: rgb(162, 42, 44);</string>
       </property>
       <property name="text">
-       <string>Off</string>
+       <string>Stop</string>
       </property>
      </widget>
      <widget class="QPushButton" name="update_1">
@@ -2131,9 +2132,9 @@ font: 12pt &quot;Sans Serif&quot;;</string>
        <property name="geometry">
         <rect>
          <x>0</x>
-         <y>40</y>
+         <y>30</y>
          <width>81</width>
-         <height>21</height>
+         <height>31</height>
         </rect>
        </property>
        <property name="styleSheet">
@@ -2146,8 +2147,8 @@ font: 12pt &quot;Sans Serif&quot;;</string>
       <widget class="QFrame" name="frame_18">
        <property name="geometry">
         <rect>
-         <x>9</x>
-         <y>70</y>
+         <x>10</x>
+         <y>60</y>
          <width>71</width>
          <height>80</height>
         </rect>
@@ -2212,7 +2213,8 @@ font: 12pt &quot;Sans Serif&quot;;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">background-color: a(0);</string>
+         <string notr="true">background-color: a(0);
+border: 1px solid black;</string>
         </property>
         <item>
          <property name="text">
@@ -2387,7 +2389,7 @@ font: 10pt &quot;Sans Serif&quot;;</string>
        <string notr="true">background-color: rgb(163, 0, 2);</string>
       </property>
       <property name="text">
-       <string>Off</string>
+       <string>Stop</string>
       </property>
      </widget>
     </widget>
@@ -2423,9 +2425,8 @@ font: 10pt &quot;Sans Serif&quot;;</string>
      <string>Help</string>
     </property>
     <addaction name="actionInfo"/>
+    <addaction name="separator"/>
     <addaction name="actionHelp"/>
-    <addaction name="actionAbout_335"/>
-    <addaction name="actionAbout_318"/>
    </widget>
    <widget class="QMenu" name="menuSettings">
     <property name="title">
