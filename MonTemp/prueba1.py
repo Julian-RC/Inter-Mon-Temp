@@ -539,7 +539,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             Range = 'Auto'
         
         label_scroll +='                          Update Heater 1\n                                  '+'{:%H:%M:%S}'.format(datetime.datetime.now())+'\n'+'-------------------------------------------------------------------------\n'
-        label_scroll +='Ramp= '+Ramp_1+' k/min  SetPoint= '+SetP_1+' k    Range= '+ Range +'\n-------------------------------------------------------------------------\n'
+        label_scroll +='Ramp= '+Ramp_1+' k/min SetPoint= '+SetP_1+' k  Range= '+ Range +'\n-------------------------------------------------------------------------\n'
         self.Update_label()
     def Update_2(self):
         global RANGE_2
@@ -579,7 +579,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.heater_2.setEnabled(True)
         self.lastdata.setEnabled(True)
         label_scroll+='                          Aquisition has begun\n'
-        label_scroll+=                                  +'{:%H:%M:%S}'.format(datetime.datetime.now())+'\n'
+        label_scroll+='                                  '+'{:%H:%M:%S}'.format(datetime.datetime.now())+'\n'
         label_scroll+='-------------------------------------------------------------------------\n'
         self.Update_label()
         while Start:
