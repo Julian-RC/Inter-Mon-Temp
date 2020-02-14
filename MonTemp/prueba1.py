@@ -564,6 +564,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.pushButton.setEnabled(True)
         DataTemp.Start()
         DataTemp2.Start()
+        label_scroll+='                          Aquisition has begun\n'
+        label_scroll+='                                  '+'{:%H:%M:%S}'.format(datetime.datetime.now())+'\n'
+        label_scroll+='-------------------------------------------------------------------------\n'
+        self.Update_label()
         DataTemp2.Read_335('SETP?','1')
         DataTemp2.Read_335('SETP?','2')
         DataTemp2.Read_335('RAMP?','1')
@@ -578,10 +582,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.heater_1.setEnabled(True)
         self.heater_2.setEnabled(True)
         self.lastdata.setEnabled(True)
-        label_scroll+='                          Aquisition has begun\n'
-        label_scroll+='                                  '+'{:%H:%M:%S}'.format(datetime.datetime.now())+'\n'
-        label_scroll+='-------------------------------------------------------------------------\n'
-        self.Update_label()
+        
         while Start:
             try:
                     DataTemp.GetData()
@@ -686,6 +687,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                                     label_scroll+='                                  '+'{:%H:%M:%S}'.format(datetime.datetime.now())+'\n'
                                     label_scroll+='-------------------------------------------------------------------------\n'
                                     self.Update_label()
+                                    
     def closeEvent(self, event):
         try:
             global actual,Start,plt_mgr
@@ -712,6 +714,15 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                                 event.ignore()
                     else:
                         event.accept()
+                    reply = self.box.question(self,
+                                                    'Bitácora',
+                                                    "¿Desea guardar la bitácora?",
+                                                    self.box.Yes | self.box.No, self.box.No)
+                    if reply == self.box.Yes:
+                        global label_scroll, patch
+                        f = open (patch+'/Temperature.bt','a')
+                        f.write(label_scroll)
+                        f.close()
             else:
                     event.ignore()
         except KeyboardInterrupt as KBI:
