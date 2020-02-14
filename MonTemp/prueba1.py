@@ -530,9 +530,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 Range_print='Low'
             elif Range == '2':
                 Range_print='Med'
-            elif Range = '3':
+            elif Range == '3':
                 Range_print='High'
-            elif Range = '0' :
+            elif Range == '0' :
                 Range_print='Off'
         else:
             RANGE_1 = True  
