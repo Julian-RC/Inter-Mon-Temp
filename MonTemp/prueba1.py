@@ -168,19 +168,17 @@ class Segunda(QtWidgets.QDialog,Ui_Segunda):
 
 class Terminal(QtWidgets.QWidget):
     def __init__(self, parent=None):
-        super(Terminal, self).__init__(parent)
-        self.process = QtCore.QProcess(self)
-        self.terminal = QtWidgets.QWidget(self)
-        layout = QtWidgets.QVBoxLayout(self)
-        layout.addWidget(self.terminal)
-        self.process.start('urxvt',['-embed', str(int(self.winId()))])
-        self.setFixedSize(1300, 273)
-        pg.QtGui.QApplication.processEvents()
-
-    def closeEvent(self,event):
-        self.process.terminate()
-        self.process.waitForFinished(-1)
-        event.accept()
+        try:
+            super(Terminal, self).__init__(parent)
+            self.process = QtCore.QProcess(self)
+            self.terminal = QtWidgets.QWidget(self)
+            layout = QtWidgets.QVBoxLayout(self)
+            layout.addWidget(self.terminal)
+            self.process.start('urxvt',['-embed', str(int(self.winId()))])
+            self.setFixedSize(1300, 273)
+            pg.QtGui.QApplication.processEvents()
+        except KeyboardInterrupt as KBI:
+            pass
 
 class Tercera(QtWidgets.QDialog,Ui_Tercera):
     def __init__(self, *args, **kwargs):
@@ -239,15 +237,18 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         patch = os.path.realpath(__file__).strip('prueba1.py') 
         filename = patch + "cfg/file_218.cfg"
         filename2 = patch + "cfg/file_335.cfg"
+        filename_color = patch + "cfg/color.cfg"
         textDict = ConfigModule(filename,0,0)
         textDict2 = ConfigModule(filename2,0,0)
+        textDict_color = ConfigModule(filename_color,0,0)
+        for a in textDict_color.ConfigDict:
+            textDict_color.ConfigDict[a]=textDict_color.ConfigDict[a].split(',')
         DataTemp = TempClass(textDict.ConfigDict)
         DataTemp2 = TempClass(textDict2.ConfigDict,DataTemp.InitTime)
         self.setupUi(self)
         self.setWindowTitle("Temperature Module")
         self.setWindowIcon(QtGui.QIcon(os.path.realpath(__file__).strip('prueba1.py')+'Temperature.png')) 
         self.pushButton.clicked.connect(self.graficar)
-        
         self.radioButton.toggled.connect(self.desbloquear_radioButton)
         self.Todos.toggled.connect(self.desbloquear_Todos)
         self.heater_1.toggled.connect(self.desbloquear_heater_1)
@@ -621,45 +622,45 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                                     self.Update_label()
   
     def closeEvent(self, event):
-        global actual,Start,plt_mgr
-        self.box = QtWidgets.QMessageBox()
-        reply = self.box.question(self,
-                                 'Exit',
-                                 "¿Realmente desea cerrar la aplicacion?",
-                                  self.box.Yes | self.box.No, self.box.No)
-        pg.QtGui.QApplication.processEvents()
-        if reply == self.box.Yes:
-                if Start == True:
-                    reply = self.box.question(self,
-                                 'Stop',
-                                 "Hay una adquisición en proceso, ¿Desea detenerla?",
-                                  self.box.Yes | self.box.No, self.box.No)
-                    if reply == self.box.Yes:
-                            Start = False
-                            if actual:
-                                        plt_mgr.close()
-                                        actual = False
-                            #self.off_heater_1()
-                            #self.off_heater_2()
+        try:
+            global actual,Start,plt_mgr
+            self.box = QtWidgets.QMessageBox()
+            reply = self.box.question(self,
+                                    'Exit',
+                                    "¿Realmente desea cerrar la aplicacion?",
+                                    self.box.Yes | self.box.No, self.box.No)
+            pg.QtGui.QApplication.processEvents()
+            if reply == self.box.Yes:
+                    if Start == True:
+                        reply = self.box.question(self,
+                                    'Stop',
+                                    "Hay una adquisición en proceso, ¿Desea detenerla?",
+                                    self.box.Yes | self.box.No, self.box.No)
+                        if reply == self.box.Yes:
+                                Start = False
+                                if actual:
+                                            plt_mgr.close()
+                                            actual = False
+                                #self.off_heater_1()
+                                #self.off_heater_2()
+                        else:
+                                event.ignore()
                     else:
-                            event.ignore()
-                else:
-                    event.accept()
-        else:
-                event.ignore()
-        
+                        event.accept()
+            else:
+                    event.ignore()
+        except KeyboardInterrupt as KBI:
+            pass
     def show_dialog(self):
         dialog = Dialog(self)  # self hace referencia al padre
         dialog.show()
     
     def show_218(self):
         dialog = Segunda(self)  # self hace referencia al padre
-        dialog.show()
-    
+        dialog.show()  
     def show_335(self):
         dialog = Tercera(self)  # self hace referencia al padre
-        dialog.show()
-      
+        dialog.show() 
     def buscarDirectorio(self):
         global patch,label_scroll,filename,filename2
         label_scroll+='                           Wait a moment Please\n'
@@ -669,7 +670,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if patch:
             self.linePatch.setText(patch) 
             global textDict,textDict2,DataTemp,DataTemp2
-            ls = subprocess.getoutput("cd && cd " +patch+ "&&ls").lstrip('\n')
+            ls = subprocess.getoutput("cd && cd " +patch+ "&&ls")
+            print(ls.strip('\n'))
             if len(ls)<150:
                 label_scroll+='                               Selected folder\n'
                 label_scroll+='-------------------------------------------------------------------------\n'
@@ -742,14 +744,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             label_scroll+='                               No selected folder\n'
             label_scroll+='-------------------------------------------------------------------------\n'
             self.Update_label()
-            self.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
-        
+            self.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))      
     def buscarDirectorio_2(self):
         global patch
         patch = QtWidgets.QFileDialog.getExistingDirectory(self, 'Buscar Carpeta', QtCore.QDir.homePath())
         self.setCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-        pg.QtGui.QApplication.processEvents()
-            
+        pg.QtGui.QApplication.processEvents()      
     def desbloquear_grafica2(self):
         if self.grafica2.isChecked():
                 self.SetPoint1.setEnabled(False)
@@ -767,7 +767,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             if self.heater_2.isChecked():
                 self.SetPoint2.setEnabled(True)
                 self.heater2.setEnabled(True)
-    
     def desbloquear_radioButton(self):
         if self.radioButton.isChecked():
             self.hh.setEnabled(True)

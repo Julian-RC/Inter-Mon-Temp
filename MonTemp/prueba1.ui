@@ -78,6 +78,15 @@
        <height>471</height>
       </rect>
      </property>
+     <property name="cursor" stdset="0">
+      <cursorShape>IBeamCursor</cursorShape>
+     </property>
+     <property name="mouseTracking">
+      <bool>true</bool>
+     </property>
+     <property name="acceptDrops">
+      <bool>true</bool>
+     </property>
      <property name="toolTip">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Status&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
@@ -1402,7 +1411,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
    </widget>
    <widget class="QLineEdit" name="linePatch">
     <property name="enabled">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
     <property name="geometry">
      <rect>
@@ -1412,8 +1421,14 @@ font: 11pt &quot;Sans Serif&quot;;</string>
       <height>23</height>
      </rect>
     </property>
+    <property name="tabletTracking">
+     <bool>false</bool>
+    </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(255, 255, 255);</string>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QToolButton" name="directorio">
@@ -1676,6 +1691,9 @@ font: 12pt &quot;Sans Serif&quot;;</string>
          <width>241</width>
          <height>141</height>
         </rect>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
        </property>
        <property name="toolTip">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Status Heater 1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -2066,6 +2084,9 @@ font: 12pt &quot;Sans Serif&quot;;</string>
          <width>231</width>
          <height>141</height>
         </rect>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
        </property>
        <property name="toolTip">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Status Heater 2&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
