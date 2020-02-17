@@ -1,6 +1,9 @@
 import os, serial, sys, time, datetime, subprocess, pickle
-os.system("xrdb " +os.path.realpath(__file__).strip('prueba1.py') + "cfg/terminal.cfg") 
-#print(os.path.realpath(__file__).strip('prueba1.py')+'Temperature.png')
+sudoPassword = 'rakshasadebian'
+command = 'sudo apt upgrade'
+#os.system('echo %s|sudo -S %s' % (sudoPassword, command))
+os.system("xrdb " +os.path.realpath(__file__).strip('prueba1.py') + "cfg/terminal.cfg")
+#os.system('cd '+os.path.realpath(__file__).strip('prueba1.py')+'cfg && sudo chmod 777 /dev/ttyUSB*')
 #print(os.system('which Temperature'))
 from MonTemp.prueba1_ui import Ui_MainWindow
 from MonTemp.info_ui import Ui_Dialog
@@ -22,10 +25,10 @@ class Dialog(QtWidgets.QDialog,Ui_Dialog):
             global textDict
             QtWidgets.QDialog.__init__(self, *args, **kwargs)
             self.setupUi(self)
-            self.setWindowTitle("About Temperature Module")
+            self.setWindowTitle("About Temperature")
         except KeyboardInterrupt as KBI:
             pass
-    
+
 class Segunda(QtWidgets.QDialog,Ui_Segunda):
     def __init__(self, *args, **kwargs):
         try:
@@ -94,7 +97,7 @@ class Segunda(QtWidgets.QDialog,Ui_Segunda):
             self.average.setValue(int(textDict.ConfigDict['Average']))
             self.samplinperiod.setValue(float(textDict.ConfigDict['SamplingPeriod']))
             self.timeOut.setValue(float(textDict.ConfigDict['TimeOut']))
-            self.buttonBox.accepted.connect(self.accept)
+            #self.buttonBox.accepted.connect(self.accept)
         except KeyboardInterrupt as KBI:
             pass
 
@@ -161,11 +164,149 @@ class Segunda(QtWidgets.QDialog,Ui_Segunda):
         else:
             self.sensor8.setEnabled(False)
             self.curve8.setEnabled(False)
-    
-    def accept(self):
-        print('ok')
-        self.close()
 
+    def accept(self):
+        if 9<self.curve1.value()<21:
+            self.box = QtWidgets.QMessageBox()
+            reply = self.box.question(self,
+                                    'Error',
+                                    "Valor inválido Curve Sensor 1",
+                                    self.box.Ok , self.box.Ok)
+            pg.QtGui.QApplication.processEvents()
+        elif 9<self.curve2.value()<21:
+            self.box = QtWidgets.QMessageBox()
+            reply = self.box.question(self,
+                                    'Error',
+                                    "Valor inválido Curve Sensor 2",
+                                    self.box.Ok , self.box.Ok)
+            pg.QtGui.QApplication.processEvents()
+        elif 9<self.curve3.value()<21:
+            self.box = QtWidgets.QMessageBox()
+            reply = self.box.question(self,
+                                    'Error',
+                                    "Valor inválido Curve Sensor 3",
+                                    self.box.Ok , self.box.Ok)
+            pg.QtGui.QApplication.processEvents()
+        elif 9<self.curve4.value()<21:
+            self.box = QtWidgets.QMessageBox()
+            reply = self.box.question(self,
+                                    'Error',
+                                    "Valor inválido Curve Sensor 4",
+                                    self.box.Ok , self.box.Ok)
+            pg.QtGui.QApplication.processEvents()
+        elif 9<self.curve5.value()<21:
+            self.box = QtWidgets.QMessageBox()
+            reply = self.box.question(self,
+                                    'Error',
+                                    "Valor inválido Curve Sensor 5",
+                                    self.box.Ok , self.box.Ok)
+            pg.QtGui.QApplication.processEvents()
+        elif 9<self.curve6.value()<21:
+            self.box = QtWidgets.QMessageBox()
+            reply = self.box.question(self,
+                                    'Error',
+                                    "Valor inválido Curve Sensor 6",
+                                    self.box.Ok , self.box.Ok)
+            pg.QtGui.QApplication.processEvents()
+        elif 9<self.curve7.value()<21:
+            self.box = QtWidgets.QMessageBox()
+            reply = self.box.question(self,
+                                    'Error',
+                                    "Valor inválido Curve Sensor 7",
+                                    self.box.Ok , self.box.Ok)
+            pg.QtGui.QApplication.processEvents()
+        elif 9<self.curve8.value()<21:
+            self.box = QtWidgets.QMessageBox()
+            reply = self.box.question(self,
+                                    'Error',
+                                    "Valor inválido Curve Sensor 8",
+                                    self.box.Ok , self.box.Ok)
+            pg.QtGui.QApplication.processEvents()
+        elif not self.name.text() or self.name.text().isspace():
+            self.box = QtWidgets.QMessageBox()
+            reply = self.box.question(self,
+                                    'Error',
+                                    "Valor inválido Name",
+                                    self.box.Ok , self.box.Ok)
+            pg.QtGui.QApplication.processEvents()
+        elif not self.nameaverage.text() or self.nameaverage.text().isspace():
+            self.box = QtWidgets.QMessageBox()
+            reply = self.box.question(self,
+                                    'Error',
+                                    "Valor inválido Name Average",
+                                    self.box.Ok , self.box.Ok)
+            pg.QtGui.QApplication.processEvents()
+        elif not self.model.text() or self.model.text().isspace():
+            self.box = QtWidgets.QMessageBox()
+            reply = self.box.question(self,
+                                    'Error',
+                                    "Valor inválido Model",
+                                    self.box.Ok , self.box.Ok)
+            pg.QtGui.QApplication.processEvents()
+        elif not self.port.text() or self.port.text().isspace():
+            self.box = QtWidgets.QMessageBox()
+            reply = self.box.question(self,
+                                    'Error',
+                                    "Valor inválido Port",
+                                    self.box.Ok , self.box.Ok)
+            pg.QtGui.QApplication.processEvents()
+        elif not self.sensor1.text() or self.sensor1.text().isspace():
+            self.box = QtWidgets.QMessageBox()
+            reply = self.box.question(self,
+                                    'Error',
+                                    "Valor inválido TypeSensor1",
+                                    self.box.Ok , self.box.Ok)
+            pg.QtGui.QApplication.processEvents()
+        elif not self.sensor2.text() or self.sensor2.text().isspace():
+            self.box = QtWidgets.QMessageBox()
+            reply = self.box.question(self,
+                                    'Error',
+                                    "Valor inválido TypeSensors2",
+                                    self.box.Ok , self.box.Ok)
+            pg.QtGui.QApplication.processEvents()
+        elif not self.sensor3.text() or self.sensor3.text().isspace():
+            self.box = QtWidgets.QMessageBox()
+            reply = self.box.question(self,
+                                    'Error',
+                                    "Valor inválido TypeSensor3",
+                                    self.box.Ok , self.box.Ok)
+            pg.QtGui.QApplication.processEvents()
+        elif not self.sensor4.text() or self.sensor4.text().isspace():
+            self.box = QtWidgets.QMessageBox()
+            reply = self.box.question(self,
+                                    'Error',
+                                    "Valor inválido TypeSensors4",
+                                    self.box.Ok , self.box.Ok)
+            pg.QtGui.QApplication.processEvents()
+        elif not self.sensor5.text() or self.sensor5.text().isspace():
+            self.box = QtWidgets.QMessageBox()
+            reply = self.box.question(self,
+                                    'Error',
+                                    "Valor inválido TypeSensors5",
+                                    self.box.Ok , self.box.Ok)
+            pg.QtGui.QApplication.processEvents()
+        elif not self.sensor6.text() or self.sensor6.text().isspace():
+            self.box = QtWidgets.QMessageBox()
+            reply = self.box.question(self,
+                                    'Error',
+                                    "Valor inválido TypeSensors6",
+                                    self.box.Ok , self.box.Ok)
+            pg.QtGui.QApplication.processEvents()
+        elif not self.sensor7.text() or self.sensor7.text().isspace():
+            self.box = QtWidgets.QMessageBox()
+            reply = self.box.question(self,
+                                    'Error',
+                                    "Valor inválido TypeSensors7",
+                                    self.box.Ok , self.box.Ok)
+            pg.QtGui.QApplication.processEvents()
+        elif not self.sensor8.text() or self.sensor8.text().isspace():
+            self.box = QtWidgets.QMessageBox()
+            reply = self.box.question(self,
+                                    'Error',
+                                    "Valor inválido TypeSensors8",
+                                    self.box.Ok , self.box.Ok)
+            pg.QtGui.QApplication.processEvents()
+            
 class Terminal(QtWidgets.QWidget):
     def __init__(self, parent=None):
         try:
@@ -214,7 +355,7 @@ class Tercera(QtWidgets.QDialog,Ui_Tercera):
             self.average.setValue(int(textDict2.ConfigDict['Average']))
             self.samplinperiod.setValue(float(textDict2.ConfigDict['SamplingPeriod']))
             self.timeOut.setValue(float(textDict2.ConfigDict['TimeOut']))
-            
+
         except KeyboardInterrupt as KBI:
             pass
     def desbloquear_sensor1(self):
@@ -228,13 +369,56 @@ class Tercera(QtWidgets.QDialog,Ui_Tercera):
             self.sensor2.setEnabled(True)
         else:
             self.sensor2.setEnabled(False)
+    def accept(self):
+        if not self.name.text() or self.name.text().isspace():
+            self.box = QtWidgets.QMessageBox()
+            reply = self.box.question(self,
+                                    'Error',
+                                    "Valor inválido Name",
+                                    self.box.Ok , self.box.Ok)
+            pg.QtGui.QApplication.processEvents()
+        elif not self.nameAverage.text() or self.nameAverage.text().isspace():
+            self.box = QtWidgets.QMessageBox()
+            reply = self.box.question(self,
+                                    'Error',
+                                    "Valor inválido Name Average",
+                                    self.box.Ok , self.box.Ok)
+            pg.QtGui.QApplication.processEvents()
+        elif not self.model.text() or self.model.text().isspace():
+            self.box = QtWidgets.QMessageBox()
+            reply = self.box.question(self,
+                                    'Error',
+                                    "Valor inválido Model",
+                                    self.box.Ok , self.box.Ok)
+            pg.QtGui.QApplication.processEvents()
+        elif not self.port.text() or self.port.text().isspace():
+            self.box = QtWidgets.QMessageBox()
+            reply = self.box.question(self,
+                                    'Error',
+                                    "Valor inválido Port",
+                                    self.box.Ok , self.box.Ok)
+            pg.QtGui.QApplication.processEvents()
+        elif not self.sensor1.text() or self.sensor1.text().isspace():
+            self.box = QtWidgets.QMessageBox()
+            reply = self.box.question(self,
+                                    'Error',
+                                    "Valor inválido TypeSensor1",
+                                    self.box.Ok , self.box.Ok)
+            pg.QtGui.QApplication.processEvents()
+        elif not self.sensor2.text() or self.sensor2.text().isspace():
+            self.box = QtWidgets.QMessageBox()
+            reply = self.box.question(self,
+                                    'Error',
+                                    "Valor inválido TypeSensors2",
+                                    self.box.Ok , self.box.Ok)
+            pg.QtGui.QApplication.processEvents()
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None,*args, **kwargs):
         super(MainWindow, self).__init__(parent)
         QtWidgets.QMainWindow.__init__(self, *args, **kwargs)
         global label_scroll, textDict, textDict2, patch,textDict_color
-        patch = os.path.realpath(__file__).strip('prueba1.py') 
+        patch = os.path.realpath(__file__).strip('prueba1.py')
         filename = patch + "cfg/file_218.cfg"
         filename2 = patch + "cfg/file_335.cfg"
         filename_color = patch + "cfg/color.cfg"
@@ -247,17 +431,21 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         DataTemp2 = TempClass(textDict2.ConfigDict,DataTemp.InitTime)
         self.setupUi(self)
         self.setWindowTitle("Temperature Module")
-        self.setWindowIcon(QtGui.QIcon(os.path.realpath(__file__).strip('prueba1.py')+'Temperature.png')) 
+        self.setWindowIcon(QtGui.QIcon(os.path.realpath(__file__).strip('prueba1.py')+'Temperature.png'))
         self.pushButton.clicked.connect(self.graficar)
         self.radioButton.toggled.connect(self.desbloquear_radioButton)
+        self.radioButton_2.toggled.connect(self.desbloquear_radioButton_2)
         self.Todos.toggled.connect(self.desbloquear_Todos)
         self.heater_1.toggled.connect(self.desbloquear_heater_1)
         self.heater_2.toggled.connect(self.desbloquear_heater_2)
         self.range_manual_1.toggled.connect(self.desbloquear_range_manual_1)
+        self.range_automatic_1.toggled.connect(self.desbloquear_range_automatic_1)
         self.range_manual_2.toggled.connect(self.desbloquear_range_manual_2)
+        self.range_automatic_2.toggled.connect(self.desbloquear_range_automatic_2)
         self.seeStatus_1.toggled.connect(self.desbloquear_seeStatus_1)
         self.seeStatus_2.toggled.connect(self.desbloquear_seeStatus_2)
         self.grafica2.toggled.connect(self.desbloquear_grafica2)
+        self.grafica1.toggled.connect(self.desbloquear_grafica1)
         self.CA.toggled.connect(self.desbloquear_sensores_CA)
         self.CB.toggled.connect(self.desbloquear_sensores_CB)
         self.C5.toggled.connect(self.desbloquear_sensores_C5)
@@ -279,10 +467,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionInfo.triggered.connect(self.show_dialog)
         self.action218.triggered.connect(self.show_218)
         self.action335.triggered.connect(self.show_335)
-        
+
         self.setPoint_num_1.setRange(50,300)
         self.setPoint_num_2.setRange(50,300)
-        
+
         self.ramp_1.setDecimals(1)
         self.ramp_2.setDecimals(1)
         self.ramp_1.setRange(0,5)
@@ -310,9 +498,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.color_CB.clicked.connect(self.change_color_CB)
 
 
-        
-        label_scroll='-------------------------------------------------------------------------\n               Welcome, Temperature has begun\n                                  {:%H:%M:%S}\n'.format(datetime.datetime.now())+'-------------------------------------------------------------------------\n '+\
-                        '                   Please select a folder to start\n-------------------------------------------------------------------------\n'
+
+        label_scroll='-------------------------------------------------------------------------\n'+\
+                     '               Welcome, Temperature has begun\n                          '+\
+                     '{:%d-%m-%Y %H:%M:%S}\n'.format(datetime.datetime.now())+\
+                     '-------------------------------------------------------------------------\n '+\
+                     '                   Please select a folder to start\n'\
+                     '-------------------------------------------------------------------------\n'
         self.Update_label()
         self.tabWidget.clear()
         self.tabWidget.addTab(Terminal(),"Terminal")
@@ -322,153 +514,147 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
         pg.QtGui.QApplication.processEvents()
     def change_color_H1(self):
-        global textDict_color 
-        color_rgb = textDict_color.ConfigDict['H1']  
+        global textDict_color
+        color_rgb = textDict_color.ConfigDict['H1']
         color = QtWidgets.QColorDialog.getColor(QtGui.QColor(int(color_rgb[0]),int(color_rgb[1]),int(color_rgb[2])))
         pg.QtGui.QApplication.processEvents()
         if color.isValid():
             color_rgb = color.getRgb()
             textDict_color.ConfigDict['H1']=[str(color_rgb[0]),str(color_rgb[1]),str(color_rgb[2])]
-            self.color_H1.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','+str(color_rgb[2])+");")
+            self.color_H1.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','\
+                                        +str(color_rgb[2])+");border: 1px solid black;")
             pg.QtGui.QApplication.processEvents()
     def change_color_S1(self):
-        global textDict_color 
-        color_rgb = textDict_color.ConfigDict['S1']  
+        global textDict_color
+        color_rgb = textDict_color.ConfigDict['S1']
         color = QtWidgets.QColorDialog.getColor(QtGui.QColor(int(color_rgb[0]),int(color_rgb[1]),int(color_rgb[2])))
         pg.QtGui.QApplication.processEvents()
         if color.isValid():
             color_rgb = color.getRgb()
             textDict_color.ConfigDict['S1']=[str(color_rgb[0]),str(color_rgb[1]),str(color_rgb[2])]
-            self.color_S1.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','+str(color_rgb[2])+");")  
-            pg.QtGui.QApplication.processEvents()    
+            self.color_S1.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','\
+                                        +str(color_rgb[2])+");border: 1px solid black;")
+            pg.QtGui.QApplication.processEvents()
     def change_color_H2(self):
-        global textDict_color 
-        color_rgb = textDict_color.ConfigDict['H2']  
+        global textDict_color
+        color_rgb = textDict_color.ConfigDict['H2']
         color = QtWidgets.QColorDialog.getColor(QtGui.QColor(int(color_rgb[0]),int(color_rgb[1]),int(color_rgb[2])))
         pg.QtGui.QApplication.processEvents()
         if color.isValid():
             color_rgb = color.getRgb()
             textDict_color.ConfigDict['H2']=[str(color_rgb[0]),str(color_rgb[1]),str(color_rgb[2])]
-            self.color_H2.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','+str(color_rgb[2])+");") 
-            pg.QtGui.QApplication.processEvents() 
+            self.color_H2.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','\
+                                        +str(color_rgb[2])+");border: 1px solid black;")
+            pg.QtGui.QApplication.processEvents()
     def change_color_S2(self):
-        global textDict_color 
-        color_rgb = textDict_color.ConfigDict['S2']  
+        global textDict_color
+        color_rgb = textDict_color.ConfigDict['S2']
         color = QtWidgets.QColorDialog.getColor(QtGui.QColor(int(color_rgb[0]),int(color_rgb[1]),int(color_rgb[2])))
         if color.isValid():
             color_rgb = color.getRgb()
             textDict_color.ConfigDict['S2']=[str(color_rgb[0]),str(color_rgb[1]),str(color_rgb[2])]
-            self.color_S2.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','+str(color_rgb[2])+");")  
+            self.color_S2.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','\
+                                        +str(color_rgb[2])+");border: 1px solid black;")
             pg.QtGui.QApplication.processEvents()
     def change_color_CA(self):
-        global textDict_color 
-        color_rgb = textDict_color.ConfigDict['CA']  
+        global textDict_color
+        color_rgb = textDict_color.ConfigDict['CA']
         color = QtWidgets.QColorDialog.getColor(QtGui.QColor(int(color_rgb[0]),int(color_rgb[1]),int(color_rgb[2])))
         pg.QtGui.QApplication.processEvents()
         if color.isValid():
             color_rgb = color.getRgb()
             textDict_color.ConfigDict['CA']=[str(color_rgb[0]),str(color_rgb[1]),str(color_rgb[2])]
-            self.color_CA.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','+str(color_rgb[2])+");") 
-            pg.QtGui.QApplication.processEvents()     
+            self.color_CA.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','\
+                                        +str(color_rgb[2])+");border: 1px solid black;")
+            pg.QtGui.QApplication.processEvents()
     def change_color_CB(self):
-        global textDict_color 
-        color_rgb = textDict_color.ConfigDict['CB']  
+        global textDict_color
+        color_rgb = textDict_color.ConfigDict['CB']
         color = QtWidgets.QColorDialog.getColor(QtGui.QColor(int(color_rgb[0]),int(color_rgb[1]),int(color_rgb[2])))
         pg.QtGui.QApplication.processEvents()
         if color.isValid():
             color_rgb = color.getRgb()
             textDict_color.ConfigDict['CB']=[str(color_rgb[0]),str(color_rgb[1]),str(color_rgb[2])]
-            self.color_CB.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','+str(color_rgb[2])+");")
+            self.color_CB.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','\
+                                        +str(color_rgb[2])+");border: 1px solid black;")
             pg.QtGui.QApplication.processEvents()
     def change_color_D1(self):
-        global textDict_color 
-        color_rgb = textDict_color.ConfigDict['D1']  
+        global textDict_color
+        color_rgb = textDict_color.ConfigDict['D1']
         color = QtWidgets.QColorDialog.getColor(QtGui.QColor(int(color_rgb[0]),int(color_rgb[1]),int(color_rgb[2])))
         pg.QtGui.QApplication.processEvents()
         if color.isValid():
             color_rgb = color.getRgb()
             textDict_color.ConfigDict['D1']=[str(color_rgb[0]),str(color_rgb[1]),str(color_rgb[2])]
-            self.color_D1.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','+str(color_rgb[2])+");")
+            self.color_D1.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','\
+                                        +str(color_rgb[2])+");border: 1px solid black;")
             pg.QtGui.QApplication.processEvents()
     def change_color_D2(self):
-        global textDict_color 
-        color_rgb = textDict_color.ConfigDict['D2']  
+        global textDict_color
+        color_rgb = textDict_color.ConfigDict['D2']
         color = QtWidgets.QColorDialog.getColor(QtGui.QColor(int(color_rgb[0]),int(color_rgb[1]),int(color_rgb[2])))
         pg.QtGui.QApplication.processEvents()
         if color.isValid():
             color_rgb = color.getRgb()
             textDict_color.ConfigDict['D2']=[str(color_rgb[0]),str(color_rgb[1]),str(color_rgb[2])]
-            self.color_D2.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','+str(color_rgb[2])+");")
+            self.color_D2.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','\
+                                        +str(color_rgb[2])+");border: 1px solid black;")
             pg.QtGui.QApplication.processEvents()
     def change_color_D3(self):
-        global textDict_color 
-        color_rgb = textDict_color.ConfigDict['D3']  
+        global textDict_color
+        color_rgb = textDict_color.ConfigDict['D3']
         color = QtWidgets.QColorDialog.getColor(QtGui.QColor(int(color_rgb[0]),int(color_rgb[1]),int(color_rgb[2])))
         pg.QtGui.QApplication.processEvents()
         if color.isValid():
             color_rgb = color.getRgb()
             textDict_color.ConfigDict['D3']=[str(color_rgb[0]),str(color_rgb[1]),str(color_rgb[2])]
-            self.color_D3.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','+str(color_rgb[2])+");")
+            self.color_D3.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','\
+                                        +str(color_rgb[2])+");border: 1px solid black;")
             pg.QtGui.QApplication.processEvents()
     def change_color_D4(self):
-        global textDict_color 
-        color_rgb = textDict_color.ConfigDict['D4']  
+        global textDict_color
+        color_rgb = textDict_color.ConfigDict['D4']
         color = QtWidgets.QColorDialog.getColor(QtGui.QColor(int(color_rgb[0]),int(color_rgb[1]),int(color_rgb[2])))
         pg.QtGui.QApplication.processEvents()
         if color.isValid():
             color_rgb = color.getRgb()
             textDict_color.ConfigDict['D4']=[str(color_rgb[0]),str(color_rgb[1]),str(color_rgb[2])]
-            self.color_D4.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','+str(color_rgb[2])+");")
+            self.color_D4.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','\
+                                        +str(color_rgb[2])+");border: 1px solid black;")
             pg.QtGui.QApplication.processEvents()
     def change_color_C5(self):
-        global textDict_color 
-        color_rgb = textDict_color.ConfigDict['C5']  
+        global textDict_color
+        color_rgb = textDict_color.ConfigDict['C5']
         color = QtWidgets.QColorDialog.getColor(QtGui.QColor(int(color_rgb[0]),int(color_rgb[1]),int(color_rgb[2])))
         pg.QtGui.QApplication.processEvents()
         if color.isValid():
             color_rgb = color.getRgb()
             textDict_color.ConfigDict['C5']=[str(color_rgb[0]),str(color_rgb[1]),str(color_rgb[2])]
-            self.color_C5.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','+str(color_rgb[2])+");")  
+            self.color_C5.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','\
+                                        +str(color_rgb[2])+");border: 1px solid black;")
             pg.QtGui.QApplication.processEvents()
     def change_color_C6(self):
-        global textDict_color 
-        color_rgb = textDict_color.ConfigDict['C6']  
+        global textDict_color
+        color_rgb = textDict_color.ConfigDict['C6']
         color = QtWidgets.QColorDialog.getColor(QtGui.QColor(int(color_rgb[0]),int(color_rgb[1]),int(color_rgb[2])))
         pg.QtGui.QApplication.processEvents()
         if color.isValid():
             color_rgb = color.getRgb()
             textDict_color.ConfigDict['C6']=[str(color_rgb[0]),str(color_rgb[1]),str(color_rgb[2])]
-            self.color_C6.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','+str(color_rgb[2])+");")
+            self.color_C6.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','\
+                                        +str(color_rgb[2])+");border: 1px solid black;")
             pg.QtGui.QApplication.processEvents()
-    def change_color_CA(self):
-        global textDict_color 
-        color_rgb = textDict_color.ConfigDict['CA']  
-        color = QtWidgets.QColorDialog.getColor(QtGui.QColor(int(color_rgb[0]),int(color_rgb[1]),int(color_rgb[2])))
-        pg.QtGui.QApplication.processEvents()
-        if color.isValid():
-            color_rgb = color.getRgb()
-            textDict_color.ConfigDict['CA']=[str(color_rgb[0]),str(color_rgb[1]),str(color_rgb[2])]
-            self.color_CA.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','+str(color_rgb[2])+");")  
-            pg.QtGui.QApplication.processEvents()
-    def change_color_CB(self):
-        global textDict_color 
-        color_rgb = textDict_color.ConfigDict['CB']  
-        color = QtWidgets.QColorDialog.getColor(QtGui.QColor(int(color_rgb[0]),int(color_rgb[1]),int(color_rgb[2])))
-        pg.QtGui.QApplication.processEvents()
-        if color.isValid():
-            color_rgb = color.getRgb()
-            textDict_color.ConfigDict['CB']=[str(color_rgb[0]),str(color_rgb[1]),str(color_rgb[2])]
-            self.color_CB.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','+str(color_rgb[2])+");")
-            pg.QtGui.QApplication.processEvents()
-
+    
     def rampa(self):
         global ramp_stat,rampa_true
         ramp_stat = True
         rampa_true = Ramp()
-        
+
     def last(self):
         global label_scroll
-        label_scroll +='                              See Last Data\n                                  '+'{:%H:%M:%S}'.format(datetime.datetime.now())+'\n-------------------------------------------------------------------------\n'
+        label_scroll +='                              See Last Data\n                           '+\
+                       '{:%d-%m-%Y %H:%M:%S}'.format(datetime.datetime.now())+\
+                       '\n-------------------------------------------------------------------------\n'
         self.Update_label()
         label_scroll +='               ' + 'Sensor'+'           '+'Time[s]'+ '        ' +'Data[K]\n'
         for Obj in [DataTemp2,DataTemp]:
@@ -476,7 +662,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.Update_label()
 
     def see_data(self):
-        
+
         global label_scroll
         try:
             for Obj in [DataTemp,DataTemp2]:
@@ -486,13 +672,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.Update_label()
 
     def off_heater_1(self):
-        
+
         self.On_335_1()
         time.sleep(0.05)
         self.Update_1()
-                
+
     def off_heater_2(self):
-        
+
         self.On_335_2()
         time.sleep(0.05)
         self.Update_2()
@@ -504,20 +690,20 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         SetP_1 = str(DataTemp2.Read_335('SETP?','1'))
         SP_1 = float(SetP_1)
         self.setPoint_num_1.setValue(SP_1)
-                
+
     def On_335_2(self):
         global SP_2
         Ramp_2 = str(DataTemp2.Read_335('RAMP?','2')[2:7])
-        
+
         self.ramp_2.setValue(float(Ramp_2))
         SetP_2 = DataTemp2.Read_335('SETP?','2')
         SP_2 = float(SetP_2)
-        self.setPoint_num_2.setValue(SP_2)   
+        self.setPoint_num_2.setValue(SP_2)
     def Update_1(self):
         global RANGE_1,SP_1,label_scroll
         Ramp_1 = str(self.ramp_1.value())
         DataTemp2.Update_335('RAMP','1','1,'+Ramp_1)
-        time.sleep(0.05)        
+        time.sleep(0.05)
         SetP_1 = str(self.setPoint_num_1.value())
         SP_1 = float(SetP_1)
         DataTemp2.Update_335('SETP','1',SetP_1)
@@ -535,11 +721,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             elif Range == '0' :
                 Range_print='Off'
         else:
-            RANGE_1 = True  
+            RANGE_1 = True
             Range = 'Auto'
-        
-        label_scroll +='                            Update Heater 1\n                                  '+'{:%H:%M:%S}'.format(datetime.datetime.now())+'\n'+'-------------------------------------------------------------------------\n'
-        label_scroll +='Ramp= '+Ramp_1+' k/min SetPoint= '+SetP_1+' k  Range= '+ Range +'\n-------------------------------------------------------------------------\n'
+
+        label_scroll +='                            Update Heater 1\n                          '+\
+                        '{:%d-%m-%Y %H:%M:%S}'.format(datetime.datetime.now())+'\n'+\
+                        '-------------------------------------------------------------------------\n'
+        label_scroll +='Ramp= '+Ramp_1+' k/min SetPoint= '+SetP_1+' k  Range= '+ Range +\
+                        '\n-------------------------------------------------------------------------\n'
         self.Update_label()
     def Update_2(self):
         global RANGE_2
@@ -547,7 +736,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         time.sleep(0.05)
         Ramp_2 = str(self.ramp_2.value())
         DataTemp2.Update_335('RAMP','2','1,'+Ramp_2)
-        time.sleep(0.05)        
+        time.sleep(0.05)
         SetP_2 = str(self.setPoint_num_2.value())
         SP_2 = float(SetP_2)
         DataTemp2.Update_335('SETP','2',SetP_2)
@@ -557,16 +746,16 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             Range = str(self.range_2.currentIndex()+1)
             DataTemp2.Update_335('RANGE','2',Range)
         else:
-            RANGE_2 = True       
+            RANGE_2 = True
     def start_adquisition(self):
         global Start,actual, filename, label_scroll,status_heater_1,label_heater_1,ramp_stat
         Start,actual = True,False
         self.pushButton.setEnabled(True)
         DataTemp.Start()
         DataTemp2.Start()
-        label_scroll+='                          Aquisition has begun\n'
-        label_scroll+='                                  '+'{:%H:%M:%S}'.format(datetime.datetime.now())+'\n'
-        label_scroll+='-------------------------------------------------------------------------\n'
+        label_scroll+='                          Aquisition has begun\n'\
+                        '                          '+'{:%d-%m-%Y %H:%M:%S}'.format(datetime.datetime.now())+'\n'\
+                        '-------------------------------------------------------------------------\n'
         self.Update_label()
         DataTemp2.Read_335('SETP?','1')
         DataTemp2.Read_335('SETP?','2')
@@ -582,14 +771,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.heater_1.setEnabled(True)
         self.heater_2.setEnabled(True)
         self.lastdata.setEnabled(True)
-        
+
         while Start:
             try:
                     DataTemp.GetData()
-                    pg.QtGui.QApplication.processEvents() 
+                    pg.QtGui.QApplication.processEvents()
                     pg.QtGui.QApplication.processEvents()
                     if DataTemp.InitTime != 0: DataTemp2.InitTime = DataTemp.InitTime
-                    DataTemp2.GetData()    
+                    DataTemp2.GetData()
                     pg.QtGui.QApplication.processEvents()
             except:
                     label_scroll += '                             Error en la adquisición\n'
@@ -684,10 +873,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                                     self.off_heater_1()
                                    # self.off_heater_2()
                                     label_scroll+='                        Acquisition has stopped\n'
-                                    label_scroll+='                                  '+'{:%H:%M:%S}'.format(datetime.datetime.now())+'\n'
+                                    label_scroll+='                          '+'{:%d-%m-%Y %H:%M:%S}'.format(datetime.datetime.now())+'\n'
                                     label_scroll+='-------------------------------------------------------------------------\n'
                                     self.Update_label()
-                                    
+
     def closeEvent(self, event):
         try:
             global actual,Start,plt_mgr
@@ -717,7 +906,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     reply = self.box.question(self,
                                                     'Bitácora',
                                                     "¿Desea guardar la bitácora?",
-                                                    self.box.Yes | self.box.No, self.box.No)
+                                                    self.box.Yes | self.box.No, self.box.Yes)
                     if reply == self.box.Yes:
                         global label_scroll, patch
                         f = open (patch+'/Temperature.bt','a')
@@ -729,13 +918,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             pass
     def show_dialog(self):
         dialog = Dialog(self)  # self hace referencia al padre
-        dialog.show()  
+        dialog.show()
     def show_218(self):
         dialog = Segunda(self)  # self hace referencia al padre
-        dialog.show()  
+        dialog.show()
     def show_335(self):
         dialog = Tercera(self)  # self hace referencia al padre
-        dialog.show() 
+        dialog.show()
     def buscarDirectorio(self):
         global patch,label_scroll,filename,filename2
         label_scroll+='                           Wait a moment Please\n'
@@ -743,7 +932,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.Update_label()
         self.buscarDirectorio_2()
         if patch:
-            self.linePatch.setText(patch) 
+            self.linePatch.setText(patch)
             global textDict,textDict2,DataTemp,DataTemp2
             ls = subprocess.getoutput("cd && cd " +patch+ "&&ls")
            # print(ls.strip('\n'))
@@ -751,7 +940,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 label_scroll+='                               Selected folder\n'
                 label_scroll+='-------------------------------------------------------------------------\n'
                 self.Update_label()
-                path = os.path.realpath(__file__).strip('prueba1.py') 
+                path = os.path.realpath(__file__).strip('prueba1.py')
                 config_filename = path + "cfg/file_218.cfg"
                 config_filename2 = path + "cfg/file_335.cfg"
                 os.system('cp '+ config_filename +' '+ patch)
@@ -776,10 +965,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.start.setEnabled(True)
                     self.SeeData.setEnabled(True)
                     self.grafica2.setEnabled(True)
+                    self.grafica2.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
                     self.radioButton_2.setEnabled(True)
                     self.Todos.setEnabled(True)
                     self.Todos.setChecked(True)
-                    self.radioButton.setEnabled(True)
                     label_scroll+='               Push "Start" for begin adquisition\n'
                     label_scroll+='-------------------------------------------------------------------------\n'
                     self.Update_label()
@@ -798,36 +987,43 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.SeeData.setEnabled(True)
                 self.Time.setStyleSheet("color:rgb(255,255,255);border: 0px solid black;background-color: a( 0);")
                 self.grafica2.setEnabled(True)
+                self.grafica2.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
                 self.Type.setStyleSheet("color:rgb(255,255,255);border: 0px solid black;background-color: a( 0);")
                 self.radioButton_2.setEnabled(True)
                 self.color_sensor.setStyleSheet("color:rgb(255,255,255);")
                 self.pushButton.setEnabled(True)
                 self.Todos.setEnabled(True)
                 self.Todos.setChecked(True)
+                self.Todos.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
                 self.ramp.setEnabled(True)
                 self.ramp_la.setStyleSheet("color:rgb(255,255,255);")
                 self.graph_sensor.setStyleSheet("color:rgb(255,255,255);")
-                path = os.path.realpath(__file__).strip('prueba1.py') 
+                path = os.path.realpath(__file__).strip('prueba1.py')
                 filename = path + "cfg/file_218.cfg"
                 filename2 = path + "cfg/file_335.cfg"
                 textDict = ConfigModule(filename,0,0)
                 textDict2 = ConfigModule(filename2,0,0)
+                print(textDict.ConfigDict)
+                print(textDict2.ConfigDict)
                 DataTemp = TempClass(textDict.ConfigDict)
                 DataTemp2 = TempClass(textDict2.ConfigDict,DataTemp.InitTime)
                 self.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
-                
+
         else:
             label_scroll+='                               No selected folder\n'
             label_scroll+='-------------------------------------------------------------------------\n'
             self.Update_label()
-            self.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))      
+            self.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
     def buscarDirectorio_2(self):
         global patch
-        patch = QtWidgets.QFileDialog.getExistingDirectory(self, 'Buscar Carpeta', QtCore.QDir.homePath())
+        patch = QtWidgets.QFileDialog.getExistingDirectory(self, 'Search folder', QtCore.QDir.homePath())
         self.setCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-        pg.QtGui.QApplication.processEvents()      
+        pg.QtGui.QApplication.processEvents()
     def desbloquear_grafica2(self):
         if self.grafica2.isChecked():
+                self.grafica2.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
+                self.radioButton.setEnabled(False)
+                self.radioButton.setStyleSheet("background-color: a(0);")
                 self.SetPoint1.setEnabled(False)
                 self.heater1.setEnabled(False)
                 self.SetPoint1.setChecked(False)
@@ -836,25 +1032,55 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.heater2.setEnabled(False)
                 self.SetPoint2.setChecked(False)
                 self.heater2.setChecked(False)
+                self.graph_heater_la.setStyleSheet(" ")
+                self.color_heater.setStyleSheet(" ")
+                self.SetPoint1.setStyleSheet("background-color: a(0);")
+                self.SetPoint2.setStyleSheet("background-color: a(0);")
+                self.heater1.setStyleSheet("background-color: a(0);")
+                self.heater2.setStyleSheet("background-color: a(0);")
         else:
+            self.grafica2.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
+            self.radioButton.setEnabled(True)
+            self.radioButton.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             if self.heater_1.isChecked():
                 self.SetPoint1.setEnabled(True)
                 self.heater1.setEnabled(True)
+                self.graph_heater_la.setStyleSheet("color:rgb(255,255,255);")
+                self.color_heater.setStyleSheet("color:rgb(255,255,255);")
+                self.SetPoint1.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
+                self.heater1.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             if self.heater_2.isChecked():
                 self.SetPoint2.setEnabled(True)
                 self.heater2.setEnabled(True)
+                self.graph_heater_la.setStyleSheet("color:rgb(255,255,255);")
+                self.color_heater.setStyleSheet("color:rgb(255,255,255);")
+                self.SetPoint2.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
+                self.heater2.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
+    def desbloquear_grafica1(self):
+        if self.grafica1.isChecked():
+            self.grafica1.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
+        else:
+            self.grafica1.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
     def desbloquear_radioButton(self):
         if self.radioButton.isChecked():
+            self.radioButton.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
             self.hh.setEnabled(True)
             self.mm.setEnabled(True)
             self.ss.setEnabled(True)
         else:
+            self.radioButton.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.hh.setEnabled(False)
             self.mm.setEnabled(False)
             self.ss.setEnabled(False)
+    def desbloquear_radioButton_2(self):
+        if self.radioButton_2.isChecked():
+            self.radioButton_2.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
+        else:
+            self.radioButton_2.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
     def desbloquear_Todos(self):
-        
+
         if self.Todos.isChecked():
+            self.Todos.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
             self.CA.setEnabled(False)
             self.CB.setEnabled(False)
             self.C5.setEnabled(False)
@@ -871,7 +1097,16 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.D2.setChecked(True)
             self.D3.setChecked(True)
             self.D4.setChecked(True)
+            self.CA.setStyleSheet("background-color: a(0);")
+            self.CB.setStyleSheet("background-color: a(0);")
+            self.C5.setStyleSheet("background-color: a(0);")
+            self.C6.setStyleSheet("background-color: a(0);")
+            self.D1.setStyleSheet("background-color: a(0);")
+            self.D2.setStyleSheet("background-color: a(0);")
+            self.D3.setStyleSheet("background-color: a(0);")
+            self.D4.setStyleSheet("background-color: a(0);")
         else:
+            self.Todos.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.CA.setEnabled(True)
             self.CB.setEnabled(True)
             self.C5.setEnabled(True)
@@ -880,39 +1115,109 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.D2.setEnabled(True)
             self.D3.setEnabled(True)
             self.D4.setEnabled(True)
+            self.CA.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
+            self.CB.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
+            self.C5.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
+            self.C6.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
+            self.D1.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
+            self.D2.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
+            self.D3.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
+            self.D4.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
     def desbloquear_heater_1(self):
-        global label_scroll 
+        global label_scroll
         if self.heater_1.isChecked():
             try:
-                self.On_335_1()
+                #self.On_335_1()
+                self.heater_1.setStyleSheet("background-color: a(0);color: rgb(255, 240, 23);font: 15pt 'Sans Serif';")
+                self.label_7.setStyleSheet("background-color: a(0);color: rgb(255, 255, 255);")
+                self.label_13.setStyleSheet("background-color: a(0);color: rgb(255, 255, 255);")
+                self.setPoint_num_1.setEnabled(True)
+                self.label_9.setStyleSheet("background-color: a(0);color: rgb(255, 255, 255);")
+                self.label.setStyleSheet("background-color: a(0);color: rgb(255, 255, 255);")
+                self.ramp_1.setEnabled(True)
+                self.label_10.setStyleSheet("background-color: a(0);color: rgb(255, 255, 255);")
+                self.range_automatic_1.setEnabled(True)
+                self.range_automatic_1.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
+                self.range_manual_1.setEnabled(True)
+                self.range_manual_1.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
+                self.seeStatus_1.setEnabled(True)
+                self.seeStatus_1.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);font: 12pt 'Sans Serif';")
+                self.update_1.setEnabled(True)
+                self.Off_1.setEnabled(True)
+                if self.grafica2.isChecked():
+                    self.SetPoint1.setEnabled(False)
+                    self.heater1.setEnabled(False)
+                    self.SetPoint1.setChecked(False)
+                    self.heater1.setChecked(False)
+                    self.graph_heater_la.setStyleSheet(" ")
+                    self.color_heater.setStyleSheet(" ")
+                    self.SetPoint1.setStyleSheet("background-color: a(0);")
+                    self.heater1.setStyleSheet("background-color: a(0);")
+                else:
+                    self.SetPoint1.setEnabled(True)
+                    self.heater1.setEnabled(True)
+                    self.graph_heater_la.setStyleSheet("color:rgb(255,255,255);")
+                    self.color_heater.setStyleSheet("color:rgb(255,255,255);")
+                    self.SetPoint1.setStyleSheet("background-color: a(0);color:rgb(88, 160, 255);")
+                    self.heater1.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             except:
                 label_scroll += '                     Error al cargar Heater 1'
+                self.heater_1.setStyleSheet("background-color: a(0);color: rgb(0,255, 0);font: 15pt 'Sans Serif';")
                 self.Update_label()
-            self.setPoint_num_1.setEnabled(True)
-            self.ramp_1.setEnabled(True)
-            self.range_automatic_1.setEnabled(True)
-            self.range_manual_1.setEnabled(True)
-            self.seeStatus_1.setEnabled(True)
-            self.update_1.setEnabled(True)
-            self.Off_1.setEnabled(True)
-            if self.grafica2.isChecked():
+                self.label_13.setStyleSheet("background-color: a(0);")
+                self.label_7.setStyleSheet("background-color: a(0);")
+                self.setPoint_num_1.setEnabled(False)
+                self.label_9.setStyleSheet("background-color: a(0);")
+                self.label.setStyleSheet("background-color: a(0);")
+                self.ramp_1.setEnabled(False)
+                self.label_10.setStyleSheet("background-color: a(0);")
+                self.range_automatic_1.setChecked(True)
+                self.range_automatic_1.setEnabled(False)
+                self.range_automatic_1.setStyleSheet("background-color: a(0);")
+                self.range_manual_1.setEnabled(False)
+                self.range_manual_1.setStyleSheet("background-color: a(0);")
+                self.seeStatus_1.setEnabled(False)
+                self.seeStatus_1.setStyleSheet("background-color: a(0);font: 12pt 'Sans Serif';")
+                self.seeStatus_1.setChecked(False)
+                self.update_1.setEnabled(False)
+                self.Off_1.setEnabled(False)
                 self.SetPoint1.setEnabled(False)
                 self.heater1.setEnabled(False)
                 self.SetPoint1.setChecked(False)
                 self.heater1.setChecked(False)
-            else:
-                self.SetPoint1.setEnabled(True)
-                self.heater1.setEnabled(True)
+                self.graph_heater_la.setStyleSheet(" ")
+                self.color_heater.setStyleSheet(" ")
+                self.SetPoint1.setStyleSheet("background-color: a(0);")
+                self.heater1.setStyleSheet("background-color: a(0);")
+            
         else:
+            self.heater_1.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);font: 15pt 'Sans Serif';")
+            self.label_13.setStyleSheet("background-color: a(0);")
+            self.label_7.setStyleSheet("background-color: a(0);")
             self.setPoint_num_1.setEnabled(False)
+            self.label_9.setStyleSheet("background-color: a(0);")
+            self.label.setStyleSheet("background-color: a(0);")
             self.ramp_1.setEnabled(False)
+            self.label_10.setStyleSheet("background-color: a(0);")
+            self.range_automatic_1.setChecked(True)
             self.range_automatic_1.setEnabled(False)
+            self.range_automatic_1.setStyleSheet("background-color: a(0);")
             self.range_manual_1.setEnabled(False)
+            self.range_manual_1.setStyleSheet("background-color: a(0);")
             self.seeStatus_1.setEnabled(False)
+            self.seeStatus_1.setChecked(False)
+            self.seeStatus_1.setStyleSheet("background-color: a(0);font: 12pt 'Sans Serif';")
             self.update_1.setEnabled(False)
             self.Off_1.setEnabled(False)
             self.SetPoint1.setEnabled(False)
             self.heater1.setEnabled(False)
+            self.SetPoint1.setChecked(False)
+            self.heater1.setChecked(False)
+            self.graph_heater_la.setStyleSheet(" ")
+            self.color_heater.setStyleSheet(" ")
+            self.SetPoint1.setStyleSheet("background-color: a(0);")
+            self.heater1.setStyleSheet("background-color: a(0);")
+            #self.off_heater_1()
     def desbloquear_heater_2(self):
         global label_scroll
         if self.heater_2.isChecked():
@@ -936,7 +1241,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             else:
                 self.SetPoint2.setEnabled(True)
                 self.heater2.setEnabled(True)
-            
+
         else:
             self.setPoint_num_2.setEnabled(False)
             self.ramp_2.setEnabled(False)
@@ -946,19 +1251,34 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.update_2.setEnabled(False)
             self.Off_2.setEnabled(False)
             self.SetPoint2.setEnabled(False)
-            self.heater2.setEnabled(False)         
+            self.heater2.setEnabled(False)
     def desbloquear_range_manual_1(self):
         if self.range_manual_1.isChecked():
+            self.range_manual_1.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
             self.range_1.setEnabled(True)
         else:
+            self.range_manual_1.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.range_1.setEnabled(False)
+    def desbloquear_range_automatic_1(self):
+        if self.range_automatic_1.isChecked():
+            self.range_automatic_1.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
+        else:
+            self.range_automatic_1.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
     def desbloquear_range_manual_2(self):
         if self.range_manual_2.isChecked():
+            self.range_manual_2.setStyleSheet("background-color: a(0);color: rgb(0, 255,0);")
             self.range_2.setEnabled(True)
         else:
+            self.range_manual_2.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.range_2.setEnabled(False)
+    def desbloquear_range_automatic_2(self):
+        if self.range_automatic_2.isChecked():
+            self.range_automatic_2.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
+        else:
+            self.range_automatic_2.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
     def desbloquear_seeStatus_1(self):
         if self.seeStatus_1.isChecked():
+            self.seeStatus_1.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);font: 12pt 'Sans Serif';")
             self.status_1.setEnabled(True)
             global heater_1_estatus, status_heater_1,label_heater_1
             status_heater_1 = True
@@ -969,140 +1289,180 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 heater_1_estatus = False
             self.status_1.setWidget(QtWidgets.QLabel(label_heater_1))
         else:
+            self.seeStatus_1.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);font: 12pt 'Sans Serif';")
             status_heater_1 = False
             self.status_1.verticalScrollBar().setValue(self.status_1.verticalScrollBar().maximum())
     def desbloquear_seeStatus_2(self):
         if self.seeStatus_2.isChecked():
+            self.seeStatus_2.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
             self.status_2.setEnabled(True)
+        else:
+            self.seeStatus_2.setStyleSheet("background-color: a(0);rgb(88, 160, 255);")
     def desbloquear_sensores_CA(self):
-        global textDict_color 
+        global textDict_color
         if self.CA.isChecked():
+            self.CA.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
             self.color_CA.setEnabled(True)
             self.ramp_CA.setEnabled(True)
             color_rgb = textDict_color.ConfigDict['CA']
-            self.color_CA.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+");")
+            self.color_CA.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+\
+                                        ");border: 1px solid black;")
         else:
+            self.CA.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.color_CA.setEnabled(False)
             self.ramp_CA.setEnabled(False)
             self.ramp_CA.setChecked(False)
             self.color_CA.setStyleSheet("background-color: a(0);")
     def desbloquear_sensores_CB(self):
-        global textDict_color 
+        global textDict_color
         if self.CB.isChecked():
+            self.CB.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
             self.color_CB.setEnabled(True)
             self.ramp_CB.setEnabled(True)
             color_rgb = textDict_color.ConfigDict['CB']
-            self.color_CB.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+");")
+            self.color_CB.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+\
+                                        ");border: 1px solid black;")
         else:
+            self.CB.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.color_CB.setEnabled(False)
             self.ramp_CB.setEnabled(False)
             self.ramp_CB.setChecked(False)
             self.color_CB.setStyleSheet("background-color: a(0);")
     def desbloquear_sensores_C5(self):
-        global textDict_color 
+        global textDict_color
         if self.C5.isChecked():
+            self.C5.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
             self.color_C5.setEnabled(True)
             self.ramp_C5.setEnabled(True)
             color_rgb = textDict_color.ConfigDict['C5']
-            self.color_C5.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+");")
+            self.color_C5.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+\
+                                        ");border: 1px solid black;")
         else:
+            self.C5.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.color_C5.setEnabled(False)
             self.ramp_C5.setEnabled(False)
             self.ramp_C5.setChecked(False)
             self.color_C5.setStyleSheet("background-color: a(0);")
     def desbloquear_sensores_C6(self):
-        global textDict_color 
+        global textDict_color
         if self.C6.isChecked():
+            self.C6.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
             self.color_C6.setEnabled(True)
             self.ramp_C6.setEnabled(True)
             color_rgb = textDict_color.ConfigDict['C6']
-            self.color_C6.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+");")
+            self.color_C6.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+\
+                                        ");border: 1px solid black;")
         else:
+            self.C6.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.color_C6.setEnabled(False)
             self.ramp_C6.setEnabled(False)
             self.ramp_C6.setChecked(False)
             self.color_C6.setStyleSheet("background-color: a(0);")
     def desbloquear_sensores_D1(self):
-        global textDict_color 
+        global textDict_color
         if self.D1.isChecked():
+            self.D1.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
             self.color_D1.setEnabled(True)
             self.ramp_D1.setEnabled(True)
             color_rgb = textDict_color.ConfigDict['D1']
-            self.color_D1.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+");")
+            self.color_D1.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+\
+                                        ");border: 1px solid black;")
         else:
+            self.D1.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.color_D1.setEnabled(False)
             self.ramp_D1.setEnabled(False)
             self.ramp_D1.setChecked(False)
             self.color_D1.setStyleSheet("background-color: a(0);")
     def desbloquear_sensores_D2(self):
-        global textDict_color 
+        global textDict_color
         if self.D2.isChecked():
+            self.D2.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
             self.color_D2.setEnabled(True)
             self.ramp_D2.setEnabled(True)
             color_rgb = textDict_color.ConfigDict['D2']
-            self.color_D2.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+");")
+            self.color_D2.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+\
+                                        ");border: 1px solid black;")
         else:
+            self.D2.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.color_D2.setEnabled(False)
             self.ramp_D2.setEnabled(False)
             self.color_D2.setStyleSheet("background-color: a(0);")
     def desbloquear_sensores_D3(self):
-        global textDict_color 
+        global textDict_color
         if self.D3.isChecked():
+            self.D3.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
             self.color_D3.setEnabled(True)
             self.ramp_D3.setEnabled(True)
             color_rgb = textDict_color.ConfigDict['D3']
-            self.color_D3.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+");")
+            self.color_D3.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+\
+                                        ");border: 1px solid black;")
         else:
+            self.D3.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.color_D3.setEnabled(False)
             self.ramp_D3.setEnabled(False)
             self.ramp_D3.setChecked(False)
             self.color_D3.setStyleSheet("background-color: a(0);")
     def desbloquear_sensores_D4(self):
-        global textDict_color 
+        global textDict_color
         if self.D4.isChecked():
+            self.D4.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
             self.color_D4.setEnabled(True)
             self.ramp_D4.setEnabled(True)
             color_rgb = textDict_color.ConfigDict['D4']
-            self.color_D4.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+");")
+            self.color_D4.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+\
+                                        ");border: 1px solid black;")
         else:
+            self.D4.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.color_D4.setEnabled(False)
             self.ramp_D4.setEnabled(False)
             self.ramp_D4.setChecked(False)
             self.color_D4.setStyleSheet("background-color: a(0);")
     def desbloquear_heater1(self):
-        global textDict_color 
+        global textDict_color
         if self.heater1.isChecked():
+            self.heater1.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
             self.color_H1.setEnabled(True)
             color_rgb = textDict_color.ConfigDict['H1']
-            self.color_H1.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+");")
+            self.color_H1.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+\
+                                        ");border: 1px solid black;")
         else:
+            self.heater1.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.color_H1.setEnabled(False)
             self.color_H1.setStyleSheet("background-color: a(0);")
     def desbloquear_heater2(self):
-        global textDict_color 
+        global textDict_color
         if self.heater2.isChecked():
+            self.heater2.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
             self.color_H2.setEnabled(True)
             color_rgb = textDict_color.ConfigDict['H2']
-            self.color_H2.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+");")
+            self.color_H2.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+\
+                                        ");border: 1px solid black;")
         else:
+            self.heater2.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.color_H2.setEnabled(False)
             self.color_H2.setStyleSheet("background-color: a(0);")
     def desbloquear_SetPoint1(self):
-        global textDict_color 
+        global textDict_color
         if self.SetPoint1.isChecked():
+            self.SetPoint1.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
             self.color_S1.setEnabled(True)
             color_rgb = textDict_color.ConfigDict['S1']
-            self.color_S1.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+");")
+            self.color_S1.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+\
+                                        ");border: 1px solid black;")
         else:
+            self.SetPoint1.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.color_S1.setEnabled(False)
             self.color_S1.setStyleSheet("background-color: a(0);")
     def desbloquear_SetPoint2(self):
-        global textDict_color 
+        global textDict_color
         if self.SetPoint2.isChecked():
+            self.SetPoint2.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
             self.color_S2.setEnabled(True)
             color_rgb = textDict_color.ConfigDict['S2']
-            self.color_S2.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+");")
+            self.color_S2.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+\
+                                        ");border: 1px solid black;")
         else:
+            self.SetPoint2.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.color_S2.setEnabled(False)
             self.color_S2.setStyleSheet("background-color: a(0);")
     def graficar(self):
@@ -1136,7 +1496,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 curvas[11] = 1
         if self.heater2.isChecked():
                 curvas[12] = 1
-        
+
            #     print(b)
         if self.grafica1.isChecked():
             if curvas_last==[]:
@@ -1148,7 +1508,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 actual, close_plot = True, False
                 plt_mgr = LivePlotter()
                 curvas_last = curvas
-                
+
         else:
             actual = False
             self.see_ramp.setEnabled(False)
@@ -1163,11 +1523,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def matplotlib(self):
         mpl = Lienzo()
         mpl.show()
-              
+
 class LivePlotter(object):
-    
-    global curvas, textDict_color 
-    
+
+    global curvas, textDict_color
+
     def __init__(self):
         self.win = pg.GraphicsWindow(title='Data')
         self.p = self.win.addPlot(title='Sensores')
@@ -1176,14 +1536,38 @@ class LivePlotter(object):
         self.p.showGrid(x=False,y=True,alpha=0.3)
         self.p.addLegend()
         if curvas[0] == 1:
-            self.curva1=self.p.plot(pen=(int(textDict_color.ConfigDict['CA'][0]),int(textDict_color.ConfigDict['CA'][1]),int(textDict_color.ConfigDict['CA'][2])),name='CernoxA')
-            self.curva2=self.p.plot(pen=(int(textDict_color.ConfigDict['CB'][0]),int(textDict_color.ConfigDict['CB'][1]),int(textDict_color.ConfigDict['CB'][2])),name='CernoxB')
-            self.curva3=self.p.plot(pen=(int(textDict_color.ConfigDict['D1'][0]),int(textDict_color.ConfigDict['D1'][1]),int(textDict_color.ConfigDict['D1'][2])),name='Diodo1')
-            self.curva4=self.p.plot(pen=(int(textDict_color.ConfigDict['D2'][0]),int(textDict_color.ConfigDict['D2'][1]),int(textDict_color.ConfigDict['D2'][2])),name='Diodo2')
-            self.curva5=self.p.plot(pen=(int(textDict_color.ConfigDict['D3'][0]),int(textDict_color.ConfigDict['D3'][1]),int(textDict_color.ConfigDict['D3'][2])),name='Diodo3')
-            self.curva6=self.p.plot(pen=(int(textDict_color.ConfigDict['D4'][0]),int(textDict_color.ConfigDict['D4'][1]),int(textDict_color.ConfigDict['D4'][2])),name='Diodo4')
-            self.curva7=self.p.plot(pen=(int(textDict_color.ConfigDict['C5'][0]),int(textDict_color.ConfigDict['C5'][1]),int(textDict_color.ConfigDict['C5'][2])),name='Cernox5')
-            self.curva8=self.p.plot(pen=(int(textDict_color.ConfigDict['C6'][0]),int(textDict_color.ConfigDict['C6'][1]),int(textDict_color.ConfigDict['C6'][2])),name='Cernox6')
+            self.curva1=self.p.plot(pen=(int(textDict_color.ConfigDict['CA'][0]),\
+                                         int(textDict_color.ConfigDict['CA'][1]),\
+                                         int(textDict_color.ConfigDict['CA'][2])),\
+                                         name='CernoxA')
+            self.curva2=self.p.plot(pen=(int(textDict_color.ConfigDict['CB'][0]),\
+                                        int(textDict_color.ConfigDict['CB'][1]),\
+                                        int(textDict_color.ConfigDict['CB'][2])),\
+                                        name='CernoxB')
+            self.curva3=self.p.plot(pen=(int(textDict_color.ConfigDict['D1'][0]),\
+                                        int(textDict_color.ConfigDict['D1'][1]),\
+                                        int(textDict_color.ConfigDict['D1'][2])),\
+                                        name='Diodo1')
+            self.curva4=self.p.plot(pen=(int(textDict_color.ConfigDict['D2'][0]),\
+                                        int(textDict_color.ConfigDict['D2'][1]),\
+                                        int(textDict_color.ConfigDict['D2'][2])),\
+                                        name='Diodo2')
+            self.curva5=self.p.plot(pen=(int(textDict_color.ConfigDict['D3'][0]),\
+                                        int(textDict_color.ConfigDict['D3'][1]),\
+                                        int(textDict_color.ConfigDict['D3'][2])),\
+                                        name='Diodo3')
+            self.curva6=self.p.plot(pen=(int(textDict_color.ConfigDict['D4'][0]),\
+                                        int(textDict_color.ConfigDict['D4'][1]),\
+                                        int(textDict_color.ConfigDict['D4'][2])),\
+                                        name='Diodo4')
+            self.curva7=self.p.plot(pen=(int(textDict_color.ConfigDict['C5'][0]),\
+                                        int(textDict_color.ConfigDict['C5'][1]),\
+                                        int(textDict_color.ConfigDict['C5'][2])),\
+                                        name='Cernox5')
+            self.curva8=self.p.plot(pen=(int(textDict_color.ConfigDict['C6'][0]),\
+                                        int(textDict_color.ConfigDict['C6'][1]),\
+                                        int(textDict_color.ConfigDict['C6'][2])),\
+                                        name='Cernox6')
             self.Data_curva1,self.Time_curva1=[],[]
             self.Data_curva2,self.Time_curva2=[],[]
             self.Data_curva3,self.Time_curva3=[],[]
@@ -1194,98 +1578,152 @@ class LivePlotter(object):
             self.Data_curva8,self.Time_curva8=[],[]
         else:
             if curvas[1] == 1:
-                self.curva1=self.p.plot(pen=(int(textDict_color.ConfigDict['CA'][0]),int(textDict_color.ConfigDict['CA'][1]),int(textDict_color.ConfigDict['CA'][2])),name='CernoxA')
+                self.curva1=self.p.plot(pen=(int(textDict_color.ConfigDict['CA'][0]),\
+                                            int(textDict_color.ConfigDict['CA'][1]),\
+                                            int(textDict_color.ConfigDict['CA'][2])),\
+                                            name='CernoxA')
                 self.Data_curva1,self.Time_curva1=[],[]
             if curvas[2] == 1:
-                self.curva2=self.p.plot(pen=(int(textDict_color.ConfigDict['CB'][0]),int(textDict_color.ConfigDict['CB'][1]),int(textDict_color.ConfigDict['CB'][2])),name='CernoxB')
+                self.curva2=self.p.plot(pen=(int(textDict_color.ConfigDict['CB'][0]),\
+                                            int(textDict_color.ConfigDict['CB'][1]),\
+                                            int(textDict_color.ConfigDict['CB'][2])),\
+                                            name='CernoxB')
                 self.Data_curva2,self.Time_curva2=[],[]
             if curvas[3] == 1:
-                self.curva3=self.p.plot(pen=(int(textDict_color.ConfigDict['D1'][0]),int(textDict_color.ConfigDict['D1'][1]),int(textDict_color.ConfigDict['D1'][2])),name='Diodo1')
+                self.curva3=self.p.plot(pen=(int(textDict_color.ConfigDict['D1'][0]),\
+                                            int(textDict_color.ConfigDict['D1'][1]),\
+                                            int(textDict_color.ConfigDict['D1'][2])),\
+                                            name='Diodo1')
                 self.Data_curva3,self.Time_curva3=[],[]
             if curvas[4] == 1:
-                self.curva4=self.p.plot(pen=(int(textDict_color.ConfigDict['D2'][0]),int(textDict_color.ConfigDict['D2'][1]),int(textDict_color.ConfigDict['D2'][2])),name='Diodo2')
+                self.curva4=self.p.plot(pen=(int(textDict_color.ConfigDict['D2'][0]),\
+                                            int(textDict_color.ConfigDict['D2'][1]),\
+                                            int(textDict_color.ConfigDict['D2'][2])),\
+                                            name='Diodo2')
                 self.Data_curva4,self.Time_curva4=[],[]
             if curvas[5] == 1:
-                self.curva5=self.p.plot(pen=(int(textDict_color.ConfigDict['D3'][0]),int(textDict_color.ConfigDict['D3'][1]),int(textDict_color.ConfigDict['D3'][2])),name='Diodo3')
+                self.curva5=self.p.plot(pen=(int(textDict_color.ConfigDict['D3'][0]),\
+                                            int(textDict_color.ConfigDict['D3'][1]),\
+                                            int(textDict_color.ConfigDict['D3'][2])),\
+                                            name='Diodo3')
                 self.Data_curva5,self.Time_curva5=[],[]
             if curvas[6] == 1:
-                self.curva6=self.p.plot(pen=(int(textDict_color.ConfigDict['D4'][0]),int(textDict_color.ConfigDict['D4'][1]),int(textDict_color.ConfigDict['D4'][2])),name='Diodo4')
+                self.curva6=self.p.plot(pen=(int(textDict_color.ConfigDict['D4'][0]),\
+                                            int(textDict_color.ConfigDict['D4'][1]),\
+                                            int(textDict_color.ConfigDict['D4'][2])),\
+                                            name='Diodo4')
                 self.Data_curva6,self.Time_curva6=[],[]
             if curvas[7] == 1:
-                self.curva7=self.p.plot(pen=(int(textDict_color.ConfigDict['C5'][0]),int(textDict_color.ConfigDict['C5'][1]),int(textDict_color.ConfigDict['C5'][2])),name='Cernox5')
+                self.curva7=self.p.plot(pen=(int(textDict_color.ConfigDict['C5'][0]),\
+                                            int(textDict_color.ConfigDict['C5'][1]),\
+                                            int(textDict_color.ConfigDict['C5'][2])),\
+                                            name='Cernox5')
                 self.Data_curva7,self.Time_curva7=[],[]
             if curvas[8] == 1:
-                self.curva8=self.p.plot(pen=(int(textDict_color.ConfigDict['C6'][0]),int(textDict_color.ConfigDict['C6'][1]),int(textDict_color.ConfigDict['C6'][2])),name='Cernox6')
+                self.curva8=self.p.plot(pen=(int(textDict_color.ConfigDict['C6'][0]),\
+                                            int(textDict_color.ConfigDict['C6'][1]),\
+                                            int(textDict_color.ConfigDict['C6'][2])),\
+                                            name='Cernox6')
                 self.Data_curva8,self.Time_curva8=[],[]
         if curvas[9] == 1:
-            self.curva9 = self.p.plot(pen=(int(textDict_color.ConfigDict['S1'][0]),int(textDict_color.ConfigDict['S1'][1]),int(textDict_color.ConfigDict['S1'][2])),name='SetPoint-1')
+            self.curva9 = self.p.plot(pen=(int(textDict_color.ConfigDict['S1'][0]),\
+                                            int(textDict_color.ConfigDict['S1'][1]),\
+                                            int(textDict_color.ConfigDict['S1'][2])),\
+                                            name='SetPoint-1')
             self.Data_curva9,self.Time_curva9=[],[]
         if curvas[10] == 1:
-            self.curva10 = self.p.plot(pen=(int(textDict_color.ConfigDict['H1'][0]),int(textDict_color.ConfigDict['H1'][1]),int(textDict_color.ConfigDict['H1'][2])), name = 'Heater-1')
+            self.curva10 = self.p.plot(pen=(int(textDict_color.ConfigDict['H1'][0]),\
+                                            int(textDict_color.ConfigDict['H1'][1]),\
+                                            int(textDict_color.ConfigDict['H1'][2])), \
+                                            name = 'Heater-1')
             self.Data_curva10,self.Time_curva10=[],[]
         if curvas[11] == 1:
-            self.curva11 = self.p.plot(pen=(int(textDict_color.ConfigDict['S2'][0]),int(textDict_color.ConfigDict['S2'][1]),int(textDict_color.ConfigDict['S2'][2])),name = 'SetPoint-2')
+            self.curva11 = self.p.plot(pen=(int(textDict_color.ConfigDict['S2'][0]),\
+                                            int(textDict_color.ConfigDict['S2'][1]),\
+                                            int(textDict_color.ConfigDict['S2'][2])),\
+                                            name = 'SetPoint-2')
             self.Data_curva11,self.Time_curva11=[],[]
         if curvas[12] == 1:
-            self.curva12 = self.p.plot(pen=(int(textDict_color.ConfigDict['H2'][0]),int(textDict_color.ConfigDict['H2'][1]),int(textDict_color.ConfigDict['H2'][2])),name = 'Heater-2')
+            self.curva12 = self.p.plot(pen=(int(textDict_color.ConfigDict['H2'][0]),\
+                                            int(textDict_color.ConfigDict['H2'][1]),\
+                                            int(textDict_color.ConfigDict['H2'][2])),\
+                                            name = 'Heater-2')
             self.Data_curva12,self.Time_curva12=[],[]
         self.p.setRange(yRange=[50, 300])
-    
+
     def return_data(self):
         return self.Data_curva1,self.Time_curva1
 
     def add(self, x):
             global Time_graph
             if curvas[0] == 1:
-                self.Data_curva1,self.Time_curva1 = self.Curvas_add(self.Data_curva1, self.Time_curva1,float(x[0][2]),x[0][1])
-                self.Data_curva2,self.Time_curva2 = self.Curvas_add(self.Data_curva2, self.Time_curva2,float(x[1][2]),x[1][1])
-                self.Data_curva3,self.Time_curva3 = self.Curvas_add(self.Data_curva3, self.Time_curva3,float(x[2][2]),x[2][1])
-                self.Data_curva4,self.Time_curva4 = self.Curvas_add(self.Data_curva4, self.Time_curva4,float(x[3][2]),x[3][1])
-                self.Data_curva5,self.Time_curva5 = self.Curvas_add(self.Data_curva5, self.Time_curva5,float(x[4][2]),x[4][1])
-                self.Data_curva6,self.Time_curva6 = self.Curvas_add(self.Data_curva6, self.Time_curva6,float(x[5][2]),x[5][1])
-                self.Data_curva7,self.Time_curva7 = self.Curvas_add(self.Data_curva7, self.Time_curva7,float(x[6][2])*1.0257-2.1852,x[6][1])
-                self.Data_curva8,self.Time_curva8 = self.Curvas_add(self.Data_curva8, self.Time_curva8,float(x[7][2])*1.0151-0.7786,x[7][1])
+                self.Data_curva1,self.Time_curva1 = self.Curvas_add(self.Data_curva1,\
+                                                    self.Time_curva1,float(x[0][2]),x[0][1])
+                self.Data_curva2,self.Time_curva2 = self.Curvas_add(self.Data_curva2, \
+                                                    self.Time_curva2,float(x[1][2]),x[1][1])
+                self.Data_curva3,self.Time_curva3 = self.Curvas_add(self.Data_curva3, \
+                                                    self.Time_curva3,float(x[2][2]),x[2][1])
+                self.Data_curva4,self.Time_curva4 = self.Curvas_add(self.Data_curva4, \
+                                                    self.Time_curva4,float(x[3][2]),x[3][1])
+                self.Data_curva5,self.Time_curva5 = self.Curvas_add(self.Data_curva5, \
+                                                    self.Time_curva5,float(x[4][2]),x[4][1])
+                self.Data_curva6,self.Time_curva6 = self.Curvas_add(self.Data_curva6, \
+                                                    self.Time_curva6,float(x[5][2]),x[5][1])
+                self.Data_curva7,self.Time_curva7 = self.Curvas_add(self.Data_curva7, \
+                                                    self.Time_curva7,float(x[6][2])*1.0257-2.1852,x[6][1])
+                self.Data_curva8,self.Time_curva8 = self.Curvas_add(self.Data_curva8, \
+                                                    self.Time_curva8,float(x[7][2])*1.0151-0.7786,x[7][1])
             else:
                 if curvas[1] == 1:
-                    self.Data_curva1,self.Time_curva1 = self.Curvas_add(self.Data_curva1, self.Time_curva1,float(x[0][2]),x[0][1])
+                    self.Data_curva1,self.Time_curva1 = self.Curvas_add(self.Data_curva1,\
+                                                        self.Time_curva1,float(x[0][2]),x[0][1])
                 if curvas[2] == 1:
-                    self.Data_curva2,self.Time_curva2 = self.Curvas_add(self.Data_curva2, self.Time_curva2,float(x[1][2]),x[1][1])
+                    self.Data_curva2,self.Time_curva2 = self.Curvas_add(self.Data_curva2,\
+                                                        self.Time_curva2,float(x[1][2]),x[1][1])
                 if curvas[3] == 1:
-                    self.Data_curva3,self.Time_curva3 = self.Curvas_add(self.Data_curva3, self.Time_curva3,float(x[2][2]),x[2][1])
+                    self.Data_curva3,self.Time_curva3 = self.Curvas_add(self.Data_curva3,\
+                                                        self.Time_curva3,float(x[2][2]),x[2][1])
                 if curvas[4] == 1:
-                    self.Data_curva4,self.Time_curva4 = self.Curvas_add(self.Data_curva4, self.Time_curva4,float(x[3][2]),x[3][1])
+                    self.Data_curva4,self.Time_curva4 = self.Curvas_add(self.Data_curva4, \
+                                                        self.Time_curva4,float(x[3][2]),x[3][1])
                 if curvas[5] == 1:
-                    self.Data_curva5,self.Time_curva5 = self.Curvas_add(self.Data_curva5, self.Time_curva5,float(x[4][2]),x[4][1])
-
+                    self.Data_curva5,self.Time_curva5 = self.Curvas_add(self.Data_curva5, \
+                                                        self.Time_curva5,float(x[4][2]),x[4][1])
                 if curvas[6] == 1:
-                    self.Data_curva6,self.Time_curva6 = self.Curvas_add(self.Data_curva6, self.Time_curva6,float(x[5][2]),x[5][1])
-
+                    self.Data_curva6,self.Time_curva6 = self.Curvas_add(self.Data_curva6, \
+                                                        self.Time_curva6,float(x[5][2]),x[5][1])
                 if curvas[7] == 1:
-                    self.Data_curva7,self.Time_curva7 = self.Curvas_add(self.Data_curva7, self.Time_curva7,float(x[6][2])*1.0257-2.1852,x[6][1])
-                    
+                    self.Data_curva7,self.Time_curva7 = self.Curvas_add(self.Data_curva7, \
+                                                        self.Time_curva7,float(x[6][2])*1.0257-2.1852,x[6][1])
+
                 if curvas[8] == 1:
-                    self.Data_curva8,self.Time_curva8 = self.Curvas_add(self.Data_curva8, self.Time_curva8,float(x[7][2])*1.0151-0.7786,x[7][1])
-                        
+                    self.Data_curva8,self.Time_curva8 = self.Curvas_add(self.Data_curva8, \
+                                                        self.Time_curva8,float(x[7][2])*1.0151-0.7786,x[7][1])
+
             if curvas[9] == 1:
-                self.Data_curva9,self.Time_curva9 = self.Curvas_add(self.Data_curva9, self.Time_curva9,SP_1,x[7][1])
-                
+                self.Data_curva9,self.Time_curva9 = self.Curvas_add(self.Data_curva9, \
+                                                    self.Time_curva9,SP_1,x[7][1])
+
             if curvas[10] == 1:
                 HTR_1 = float(DataTemp2.Read_335('SETP?','1'))
-                self.Data_curva10,self.Time_curva10 = self.Curvas_add(self.Data_curva10, self.Time_curva10,HTR_1,x[7][1])
+                self.Data_curva10,self.Time_curva10 = self.Curvas_add(self.Data_curva10, \
+                                                      self.Time_curva10,HTR_1,x[7][1])
                 time.sleep(0.05)
 
             if curvas[11] == 1:
-                self.Data_curva11,self.Time_curva11 = self.Curvas_add(self.Data_curva11, self.Time_curva11,SP_2,x[7][1])
+                self.Data_curva11,self.Time_curva11 = self.Curvas_add(self.Data_curva11, \
+                                                      self.Time_curva11,SP_2,x[7][1])
 
             if curvas[12] == 1:
                 HTR_2 = float(DataTemp2.Read_335('SETP?','2'))
-                self.Data_curva12,self.Time_curva12 = self.Curvas_add(self.Data_curva12, self.Time_curva12,HTR_2,x[7][1])
+                self.Data_curva12,self.Time_curva12 = self.Curvas_add(self.Data_curva12,\
+                                                      self.Time_curva12,HTR_2,x[7][1])
                 time.sleep(0.05)
-                
+
             global actual
            # actual = False
             pg.QtGui.QApplication.processEvents()
-            
+
     def Curvas_add(self,Datos_curvas,Tiempo_curvas,datos,tiempos):
         Datos_curvas.append(datos)
         Tiempo_curvas.append(tiempos)
@@ -1294,10 +1732,10 @@ class LivePlotter(object):
                 Datos_curvas,Tiempo_curvas = self.Quitar_datos(Datos_curvas,Tiempo_curvas)
             else:
                 break
-            pg.QtGui.QApplication.processEvents() 
+            pg.QtGui.QApplication.processEvents()
         return Datos_curvas,Tiempo_curvas
-                
-        
+
+
     def Quitar_datos(self, Arreglo_curvas,Arreglo_tiempo):
         Arreglo_curvas = Arreglo_curvas[-(len(Arreglo_curvas)-1):]
         Arreglo_tiempo = Arreglo_tiempo[-(len(Arreglo_tiempo)-1):]
@@ -1341,7 +1779,7 @@ class LivePlotter(object):
             if curvas[12] == 1:
                 self.curva12.setData(self.Time_curva12,self.Data_curva12)
      #   except Exception as e:
-      
+
       #pass
 
     def close(self):
@@ -1359,7 +1797,7 @@ class Ramp(object):
         self.p.showGrid(x=False,y=True,alpha=0.3)
         self.p.addLegend()
         self.curva1=self.p.plot(pen=(255,255,255),width=10,name='Rampa-CernoxB')
-    
+
 
     def deriv_h4_no_uniforme(self,f,x):
         f_prima = [0]*len(f)  #definimos la longitud de la funcion f
@@ -1377,7 +1815,7 @@ class Ramp(object):
                        -(hi_2**2*f[i+2]-hi2**2*f[i-2])/((hi_2+hi2)*(d)**2)\
                        +(hi_1**2*f[i+2]-hi2**2*f[i-1])/((hi_1+hi2)*(b)**2)\
                        +(hi_2**2*f[i+1]-hi1**2*f[i-2])/((hi_2+hi1)*(a)**2))
-            pg.QtGui.QApplication.processEvents() 
+            pg.QtGui.QApplication.processEvents()
         return f_prima
 
 
@@ -1388,8 +1826,8 @@ class Ramp(object):
         for i in range(len(data_plot)):
             data_plot[i] = data_plot[i]*60
         self.curva1.setData(plot_time,data_plot)
-        
-        
+
+
     def close(self):
         try:
             self.win.close()
@@ -1397,7 +1835,7 @@ class Ramp(object):
             pass
 
 class Lienzo(FigureCanvas):
-  
+
     def __init__(self):
         global DataTemp,DataTemp2
         self.figura = Figure()
@@ -1409,32 +1847,64 @@ class Lienzo(FigureCanvas):
             for c in a:
                 b.append(c)
         if curvas[0] == 1:
-            self.ejes.plot(b[0][0], b[0][1],label='Cernox A',color=[int(textDict_color.ConfigDict['CA'][0])/255,int(textDict_color.ConfigDict['CA'][1])/255,int(textDict_color.ConfigDict['CA'][2])/255])
-            self.ejes.plot(b[1][0], b[1][1],label='Cernox B',color=[int(textDict_color.ConfigDict['CB'][0])/255,int(textDict_color.ConfigDict['CB'][1])/255,int(textDict_color.ConfigDict['CB'][2])/255])
-            self.ejes.plot(b[2][0],  b[2][1],label='Diodo 1',color=[int(textDict_color.ConfigDict['D1'][0])/255,int(textDict_color.ConfigDict['D1'][1])/255,int(textDict_color.ConfigDict['D1'][2])/255])
-            self.ejes.plot(b[3][0],  b[3][1],label='Diodo 2',color=[int(textDict_color.ConfigDict['D2'][0])/255,int(textDict_color.ConfigDict['D2'][1])/255,int(textDict_color.ConfigDict['D2'][2])/255])
-            self.ejes.plot(b[4][0],  b[4][1],label='Diodo 3',color=[int(textDict_color.ConfigDict['D3'][0])/255,int(textDict_color.ConfigDict['D3'][1])/255,int(textDict_color.ConfigDict['D3'][2])/255])
-            self.ejes.plot(b[5][0],  b[5][1],label='Diodo 4',color=[int(textDict_color.ConfigDict['D4'][0])/255,int(textDict_color.ConfigDict['D4'][1])/255,int(textDict_color.ConfigDict['D4'][2])/255])
-            self.ejes.plot(b[6][0], b[6][1],label='Cernox 5',color=[int(textDict_color.ConfigDict['C5'][0])/255,int(textDict_color.ConfigDict['C5'][1])/255,int(textDict_color.ConfigDict['C5'][2])/255])
-            self.ejes.plot(b[7][0], b[7][1],label='Cernox 6',color=[int(textDict_color.ConfigDict['C6'][0])/255,int(textDict_color.ConfigDict['C6'][1])/255,int(textDict_color.ConfigDict['C6'][2])/255])
-            
+            self.ejes.plot(b[0][0], b[0][1],label='Cernox A',color=[int(textDict_color.ConfigDict['CA'][0])/255,\
+                                                                    int(textDict_color.ConfigDict['CA'][1])/255,\
+                                                                    int(textDict_color.ConfigDict['CA'][2])/255])
+            self.ejes.plot(b[1][0], b[1][1],label='Cernox B',color=[int(textDict_color.ConfigDict['CB'][0])/255,\
+                                                                    int(textDict_color.ConfigDict['CB'][1])/255,\
+                                                                    int(textDict_color.ConfigDict['CB'][2])/255])
+            self.ejes.plot(b[2][0],  b[2][1],label='Diodo 1',color=[int(textDict_color.ConfigDict['D1'][0])/255,\
+                                                                    int(textDict_color.ConfigDict['D1'][1])/255,\
+                                                                    int(textDict_color.ConfigDict['D1'][2])/255])
+            self.ejes.plot(b[3][0],  b[3][1],label='Diodo 2',color=[int(textDict_color.ConfigDict['D2'][0])/255,\
+                                                                    int(textDict_color.ConfigDict['D2'][1])/255,\
+                                                                    int(textDict_color.ConfigDict['D2'][2])/255])
+            self.ejes.plot(b[4][0],  b[4][1],label='Diodo 3',color=[int(textDict_color.ConfigDict['D3'][0])/255,\
+                                                                    int(textDict_color.ConfigDict['D3'][1])/255,\
+                                                                    int(textDict_color.ConfigDict['D3'][2])/255])
+            self.ejes.plot(b[5][0],  b[5][1],label='Diodo 4',color=[int(textDict_color.ConfigDict['D4'][0])/255,\
+                                                                    int(textDict_color.ConfigDict['D4'][1])/255,\
+                                                                    int(textDict_color.ConfigDict['D4'][2])/255])
+            self.ejes.plot(b[6][0], b[6][1],label='Cernox 5',color=[int(textDict_color.ConfigDict['C5'][0])/255,\
+                                                                    int(textDict_color.ConfigDict['C5'][1])/255,\
+                                                                    int(textDict_color.ConfigDict['C5'][2])/255])
+            self.ejes.plot(b[7][0], b[7][1],label='Cernox 6',color=[int(textDict_color.ConfigDict['C6'][0])/255,\
+                                                                    int(textDict_color.ConfigDict['C6'][1])/255,\
+                                                                    int(textDict_color.ConfigDict['C6'][2])/255])
+
         else:
             if curvas[1] == 1:
-                self.ejes.plot(b[0][0], b[0][1],label='Cernox A',color=[int(textDict_color.ConfigDict['CA'][0])/255,int(textDict_color.ConfigDict['CA'][1])/255,int(textDict_color.ConfigDict['CA'][2])/255])
+                self.ejes.plot(b[0][0], b[0][1],label='Cernox A',color=[int(textDict_color.ConfigDict['CA'][0])/255,\
+                                                                        int(textDict_color.ConfigDict['CA'][1])/255,
+                                                                        int(textDict_color.ConfigDict['CA'][2])/255])
             if curvas[2] == 1:
-                self.ejes.plot(b[1][0], b[1][1],label='Cernox B',color=[int(textDict_color.ConfigDict['CB'][0])/255,int(textDict_color.ConfigDict['CB'][1])/255,int(textDict_color.ConfigDict['CB'][2])/255])
+                self.ejes.plot(b[1][0], b[1][1],label='Cernox B',color=[int(textDict_color.ConfigDict['CB'][0])/255,\
+                                                                        int(textDict_color.ConfigDict['CB'][1])/255,\
+                                                                        int(textDict_color.ConfigDict['CB'][2])/255])
             if curvas[3] == 1:
-                self.ejes.plot(b[2][0],  b[2][1],label='Diodo 1',color=[int(textDict_color.ConfigDict['D1'][0])/255,int(textDict_color.ConfigDict['D1'][1])/255,int(textDict_color.ConfigDict['D1'][2])/255])
+                self.ejes.plot(b[2][0],  b[2][1],label='Diodo 1',color=[int(textDict_color.ConfigDict['D1'][0])/255,\
+                                                                        int(textDict_color.ConfigDict['D1'][1])/255,\
+                                                                        int(textDict_color.ConfigDict['D1'][2])/255])
             if curvas[4] == 1:
-                self.ejes.plot(b[3][0],  b[3][1],label='Diodo 2',color=[int(textDict_color.ConfigDict['D2'][0])/255,int(textDict_color.ConfigDict['D2'][1])/255,int(textDict_color.ConfigDict['D2'][2])/255])
+                self.ejes.plot(b[3][0],  b[3][1],label='Diodo 2',color=[int(textDict_color.ConfigDict['D2'][0])/255,\
+                                                                        int(textDict_color.ConfigDict['D2'][1])/255,\
+                                                                        int(textDict_color.ConfigDict['D2'][2])/255])
             if curvas[5] == 1:
-                self.ejes.plot(b[4][0],  b[4][1],label='Diodo 3',color=[int(textDict_color.ConfigDict['D3'][0])/255,int(textDict_color.ConfigDict['D3'][1])/255,int(textDict_color.ConfigDict['D3'][2])/255])
+                self.ejes.plot(b[4][0],  b[4][1],label='Diodo 3',color=[int(textDict_color.ConfigDict['D3'][0])/255,\
+                                                                        int(textDict_color.ConfigDict['D3'][1])/255,\
+                                                                        int(textDict_color.ConfigDict['D3'][2])/255])
             if curvas[6] == 1:
-                self.ejes.plot(b[5][0],  b[5][1],label='Diodo 4',color=[int(textDict_color.ConfigDict['D4'][0])/255,int(textDict_color.ConfigDict['D4'][1])/255,int(textDict_color.ConfigDict['D4'][2])/255])
+                self.ejes.plot(b[5][0],  b[5][1],label='Diodo 4',color=[int(textDict_color.ConfigDict['D4'][0])/255,\
+                                                                        int(textDict_color.ConfigDict['D4'][1])/255,\
+                                                                        int(textDict_color.ConfigDict['D4'][2])/255])
             if curvas[7] == 1:
-                self.ejes.plot(b[6][0], b[6][1],label='Cernox 5',color=[int(textDict_color.ConfigDict['C5'][0])/255,int(textDict_color.ConfigDict['C5'][1])/255,int(textDict_color.ConfigDict['C5'][2])/255])
+                self.ejes.plot(b[6][0], b[6][1],label='Cernox 5',color=[int(textDict_color.ConfigDict['C5'][0])/255,\
+                                                                        int(textDict_color.ConfigDict['C5'][1])/255,\
+                                                                        int(textDict_color.ConfigDict['C5'][2])/255])
             if curvas[8] == 1:
-                self.ejes.plot(b[7][0], b[7][1],label='Cernox 6',color=[int(textDict_color.ConfigDict['C6'][0])/255,int(textDict_color.ConfigDict['C6'][1])/255,int(textDict_color.ConfigDict['C6'][2])/255])
+                self.ejes.plot(b[7][0], b[7][1],label='Cernox 6',color=[int(textDict_color.ConfigDict['C6'][0])/255,\
+                                                                        int(textDict_color.ConfigDict['C6'][1])/255,\
+                                                                        int(textDict_color.ConfigDict['C6'][2])/255])
         self.ejes.title.set_text("Plot of Data")
         self.ejes.set_xlabel("t [s]")
         self.ejes.set_ylabel("T [K]")
@@ -1446,7 +1916,7 @@ class Lienzo(FigureCanvas):
         self.vbox = QtGui.QVBoxLayout()
         self.vbox.addWidget(self.toolbar)
         self.vbox.addWidget(self.canvas)
-        
+
         self.setLayout(self.vbox)
 
 #################################################################################################################
@@ -1471,18 +1941,18 @@ def RemoveHeaderFunction(root,name):
     StringData = ''
     for line in open(root + name):
             if line[0] == "#" :
-                
+
                 continue
             elif line[0] == "\n" :
-                
+
                 continue
             else:
-                StringData += line + '\n' 
-    
+                StringData += line + '\n'
+
     return StringData
 #----------------------------------------------------------
 #Esta función escribe encuentra el comando que fue
-# seleccionado. 
+# seleccionado.
 #----------------------------------------------------------
 '''
 def MenuCommandFunction(Command,ObjArray):
@@ -1526,7 +1996,7 @@ def MenuCommandFunction(Command,ObjArray):
         #try:
             for Obj in ObjArray:
                 Obj.Plot(Obj.DataSerie)
-        #except: 
+        #except:
         #    print('\nERROR: Data cannot be plotted.')
 
     elif Command == 'str':
@@ -1542,7 +2012,7 @@ def MenuCommandFunction(Command,ObjArray):
             print('This program was developed by: Jaime Octavio Guerra Pulido and Mauricio Martínez Montero')
             print('Version: 2.0')
             print('Date of last update: October 2019')
-            print('This program is a modification of the original one to make it able to read two modules at the same time.')    
+            print('This program is a modification of the original one to make it able to read two modules at the same time.')
             print('------------------------------------------------------------\n')
         except:
             print('\nERROR: Additional information cannot be shown.')
@@ -1565,7 +2035,7 @@ def MenuCommandFunction(Command,ObjArray):
             print('ERROR: Values cannot be printed.')
 
     else:
-        return 1 
+        return 1
     return 0
 
 '''
@@ -1587,11 +2057,11 @@ def WriteToFile(root,name,Text):
 #----------------------------------------------------------
 
 def AppendToPickleFile(root,name,Data):
-    
+
     FilePickle = open(root + name,'ba')
     pickle.dump(Data,FilePickle)
     FilePickle.close()
-    
+
 #----------------------------------------------------------
 #Esta función crea un archivo de texto donde se guardarán
 #los datos obtenidos de las mediciones.
@@ -1599,17 +2069,18 @@ def AppendToPickleFile(root,name,Data):
 
 def FileHeader(root,name,textDict,MeasureType):
     HeaderText = "#--------------------------------------------------------------------\n"
-    HeaderText += "#Temperature Measurments using a {} {} {}\n".format(textDict['Brand'],textDict['Device'],textDict['Model'])
+    HeaderText += "#Temperature Measurments using a {} {} {}\n".format(textDict['Brand'],\
+                    textDict['Device'],textDict['Model'])
     HeaderText += "#Type of file: " + MeasureType +"\n"
     HeaderText += "#Sensors: "
     #HeaderText += "Sensors: {} \n".format(textDict['Sensor type'])
     ListaSensores = textDict['Sensors']
     TipoSensores = textDict['Sensor Type']
-        
+
     for Num, String in enumerate(TipoSensores):
         HeaderText += ListaSensores[Num] + ' -- ' + String + '  '
-    
-    HeaderText += "\n#Date: {:%d-%m-%Y %H:%M:%S}\n".format(datetime.datetime.now())    
+
+    HeaderText += "\n#Date: {:%d-%m-%Y %H:%M:%S}\n".format(datetime.datetime.now())
     HeaderText += "#--------------------------------------------------------------------\n"
     HeaderText = WriteToFile(root,name,HeaderText)
     return HeaderText
@@ -1628,7 +2099,7 @@ def ColumnText(ListaSensores):
         ColumnText += "\n"
     except:
         print('ERROR: El encabezado no pudo ser escrito.')
-    
+
     return ColumnText
 
 #----------------------------------------------------------
@@ -1636,7 +2107,7 @@ def ColumnText(ListaSensores):
 #----------------------------------------------------------
 
 def ColumnNames(root,name,ColumnNames):
-    
+
     ColumnNames = WriteToFile(root,name,ColumnNames)
     #return ColumnNames
 
@@ -1645,7 +2116,7 @@ def ColumnNames(root,name,ColumnNames):
 #----------------------------------------------------------
 
 def SaveData(root,name,nameAvg,Data,DataSerie,DataAverage,DataAverageText):
-    
+
     WriteToFile(root,name,DataSerie)
     WriteToFile(root,nameAvg,DataAverageText)
     namepck = name.split('.')
@@ -1669,14 +2140,14 @@ def PlotData(Data):
         TemperaturasVect = []
         for Num2 in range(1,len(VectAux)):
             TemperaturasVect.append(float(VectAux[Num2]))
-            
+
         Temperaturas.append(TemperaturasVect)
-    
+
     for Num in range(len(TemperaturasVect)):
         TempCol = []
         for Num2 in range(len(Temperaturas)):
             TempCol.append(Temperaturas[Num2][Num])
-        
+
         plt.plot(Tiempo, TempCol)
     plt.xlabel('Time/s')
     plt.ylabel('Temperature/K')
@@ -1694,14 +2165,14 @@ def PlotData_Interface(Data):
         TemperaturasVect = []
         for Num2 in range(1,len(VectAux)):
             TemperaturasVect.append(float(VectAux[Num2]))
-            
+
         Temperaturas.append(TemperaturasVect)
-    
+
     for Num in range(len(TemperaturasVect)):
         TempCol = []
         for Num2 in range(len(Temperaturas)):
             TempCol.append(Temperaturas[Num2][Num])
-        
+
         Data_plot.append([Tiempo, TempCol])
     return Data_plot
 
@@ -1711,44 +2182,44 @@ def PlotData_Interface(Data):
 
 def GetDataFunction(port,Channels,InitialTime):
     datos,tiempo,ReadTime,ps,flag,= [] ,[], [],0,1
-    
-    
-    
-    
+
+
+
+
     for Channel in Channels:
-        
+
         while flag == 1:
             str2port = 'KRDG? ' +str(Channel)+'\r\n'
             port.write(str2port.encode())
             BinData = port.read(79)
             if (len(BinData) == 9) or (len(BinData) == 65):
                 flag = 0
-                pg.QtGui.QApplication.processEvents() 
-            pg.QtGui.QApplication.processEvents() 
-                
+                pg.QtGui.QApplication.processEvents()
+            pg.QtGui.QApplication.processEvents()
+
         tiempo.append(time.time())
         StrData = BinData.decode()
         ReadTime.append(tiempo[ps] - InitialTime)
         if (len(BinData) == 9):
-            datos.append(StrData.rstrip('\r\n'))    
-            pg.QtGui.QApplication.processEvents()       
+            datos.append(StrData.rstrip('\r\n'))
+            pg.QtGui.QApplication.processEvents()
         elif (len(BinData) == 65):
             datos = StrData.rstrip('\r\n').split(',')
             break
-            pg.QtGui.QApplication.processEvents() 
-            
+            pg.QtGui.QApplication.processEvents()
+
         ps += 1
         flag = 1
-        pg.QtGui.QApplication.processEvents() 
+        pg.QtGui.QApplication.processEvents()
     AvgTime = sum(ReadTime)/len(ReadTime)
     datosFormatted = '{:10.2f}'.format(AvgTime)
-    pg.QtGui.QApplication.processEvents() 
+    pg.QtGui.QApplication.processEvents()
     for dato in datos:
         datosFormatted += '\t' + dato
-        pg.QtGui.QApplication.processEvents() 
+        pg.QtGui.QApplication.processEvents()
 
     datosFormatted += '\n'
-    pg.QtGui.QApplication.processEvents() 
+    pg.QtGui.QApplication.processEvents()
     return datos, ReadTime, datosFormatted
 
 #----------------------------------------------------------
@@ -1756,7 +2227,7 @@ def GetDataFunction(port,Channels,InitialTime):
 #----------------------------------------------------------
 
 def AverageFunction(Data,AverageStr,Sensors):
-    
+
     AvgDataStr = ''
     LenSens = len(Sensors)
     AvgData = ['Average']
@@ -1764,32 +2235,32 @@ def AverageFunction(Data,AverageStr,Sensors):
     AverageInt = int(AverageStr)
     DataLen = len(Data)
     for Num in range(LenSens):
-        AvgData.append([0] * LenSens) 
-        pg.QtGui.QApplication.processEvents() 
+        AvgData.append([0] * LenSens)
+        pg.QtGui.QApplication.processEvents()
     try:
-        
+
         for Num2 in range(LenSens):
             for Num in range(DataLen-AverageInt,DataLen):
                 AvgData[Num2+1][0] += Data[Num][Num2][1]
                 AvgData[Num2+1][1] += float(Data[Num][Num2][2])
-                pg.QtGui.QApplication.processEvents() 
+                pg.QtGui.QApplication.processEvents()
 
             AvgData[Num2+1][0] /= AverageInt
             AvgData[Num2+1][1] /= AverageInt
             TProm += AvgData[Num2+1][0] / LenSens
-            pg.QtGui.QApplication.processEvents() 
-              
+            pg.QtGui.QApplication.processEvents()
+
         AvgDataStr += str(TProm) + '\t'
         for Num2 in range(LenSens):
             AvgDataStr += '{}'.format(float(AvgData[Num2+1][1])) + '\t'
-            pg.QtGui.QApplication.processEvents() 
+            pg.QtGui.QApplication.processEvents()
         AvgDataStr += '\n'
-        pg.QtGui.QApplication.processEvents() 
+        pg.QtGui.QApplication.processEvents()
 
     except:
         print('ERROR: "Average" of the configuration file must be an integer.')
-        pg.QtGui.QApplication.processEvents() 
-    
+        pg.QtGui.QApplication.processEvents()
+
     return AvgData, AvgDataStr
 
 #----------------------------------------------------------
@@ -1799,7 +2270,7 @@ def AverageFunction(Data,AverageStr,Sensors):
 def StrFunction(Data,Address):
     try:
         subprocess.Popen(['gedit', Address])
-                
+
     except:
         print('El editor de texto "gedit" no se encuentra en sus sistema. /rInstalelo para habilitar esta función')
         #print(Data)
@@ -1810,7 +2281,7 @@ def StrFunction(Data,Address):
 #----------------------------------------------------------
 
 def TerminateFunction(ObjArray):
-    
+
     print('\n------------------------------------------------------------')
     print('Are you sure you want to end the data aquisition?')
     print('------------------------------------------------------------\n')
@@ -1826,7 +2297,7 @@ def TerminateFunction(ObjArray):
             StrKey = YesOrNo(ValidChar)
             if StrKey == 'y':
                 Obj.__str__()
-        
+
         for Obj in ObjArray:
             print('\n------------------------------------------------------------')
             print('Do you want to plot the data of ' + Obj.name +'?')
@@ -1860,7 +2331,7 @@ def YesOrNo(ValidChar):
 #----------------------------------------------------------
 '''
 class CommandLine:
-    
+
     def __init__(self):
         self.InputString = ""
         self.IsCommand = False
@@ -1896,13 +2367,13 @@ class TempClass:
         self.textDict['Average'] = self.Average
         self.SamplingPeriod = float(textDict['SamplingPeriod'])
         self.FileAddress = self.root + self.name #Dirección completa del archivo
-        
-        
+
+
         try:
             self.Channels = [int(i) for i in textDict['Channels'].split(',')]
         except ValueError:
             self.Channels = [i for i in textDict['Channels'].split(',')]
-        
+
         self.textDict['Channels'] = self.Channels
         self.Brand = self.textDict['Brand']
         self.Device = self.textDict['Device']
@@ -1910,31 +2381,34 @@ class TempClass:
         self.DataSerie = '' #En esta variable se almacenan N datos de la medición en formato cadena para despúes vaciarlos al archivo de texto
         self.DataAverage = [] #En esta variable se almacena el promedio de M lecturas
         self.DataAverageText = '' #En esta variable se guardan los datos del promedio en formato cadena
-        
-        self.InitTime = 0 #Esta variable almacena el tiempo en el cual se inició la medición       
-        self.Cont = 0   #Esta variable almacena el valor de muestras que se han guardado y que no han sido guardadas 
+
+        self.InitTime = 0 #Esta variable almacena el tiempo en el cual se inició la medición
+        self.Cont = 0   #Esta variable almacena el valor de muestras que se han guardado y que no han sido guardadas
         self.Tiempo = ''
         self.DataRecovered = ''
         self.ConfigPlot = 1
         self.DataSerieOld = ''
-        
+
 
     def Start(self):
         self.Header = FileHeader(self.root,self.name,self.textDict,'Complete Data')
-        self.HeaderAvg = FileHeader(self.root,self.nameAvg,self.textDict,'Averaged') 
+        self.HeaderAvg = FileHeader(self.root,self.nameAvg,self.textDict,'Averaged')
         self.ColumnText = ColumnText(self.Sensors)
         ColumnNames(self.root,self.name,self.ColumnText)
         ColumnNames(self.root,self.nameAvg,self.ColumnText)
-        self.port = serial.Serial(self.textDict['Port'], self.textDict['BaudRate'], timeout=float(self.textDict['TimeOut']), bytesize=serial.SEVENBITS, parity=serial.PARITY_ODD, stopbits=serial.STOPBITS_ONE)
+        self.port = serial.Serial(self.textDict['Port'], self.textDict['BaudRate'], timeout=\
+                    float(self.textDict['TimeOut']), bytesize=serial.SEVENBITS, parity=serial.PARITY_ODD, \
+                    stopbits=serial.STOPBITS_ONE)
         global label_scroll
         label_scroll += '-------------------------------------------------------------------------\n'
-        label_scroll += '      The aquisition of the temperature with\n ' +'    '+ self.Brand +' '+ self.Device + ' has begun.\n'
+        label_scroll += '      The aquisition of the temperature with\n ' +'    '+ self.Brand +' '+ \
+                        self.Device + ' has begun.\n'
         label_scroll += '-------------------------------------------------------------------------\n'
 
     def __str__(self): #Función completamente implementada
         StrFunction(self.Data,self.FileAddress)
-            
-    def Save(self): 
+
+    def Save(self):
         SaveData(self.root,self.name,self.nameAvg,self.Data,self.DataSerie,self.DataAverage,self.DataAverageText)
         self.Data = []
         self.DataSerie = ''
@@ -1947,7 +2421,7 @@ class TempClass:
         pid = os.fork()
         #pid = 0
 
-        time.sleep(0.05)        
+        time.sleep(0.05)
         if pid == 0:
             if self.ConfigPlot == 0:
                 PlotData(Data)
@@ -1960,51 +2434,51 @@ class TempClass:
         self.RemoveHeader()
         var = PlotData_Interface(self.DataRecovered)
          # var.append(PlotData_Interface(Obj.DataSerie)) #header
-        return var 
+        return var
 
     def GetData(self):
         ListTupla = []
         if self.InitTime == 0:
             self.InitTime = time.time()
-            pg.QtGui.QApplication.processEvents() 
-        
+            pg.QtGui.QApplication.processEvents()
+
         As,Bs,Cs = GetDataFunction(self.port,self.Channels,self.InitTime)
-        
+
         if self.SamplingPeriod != 0:
             time.sleep(self.SamplingPeriod)
-            pg.QtGui.QApplication.processEvents() 
-        
+            pg.QtGui.QApplication.processEvents()
+
         self.DataSerie += Cs
         if (len(Bs) != len(As)):
-            Bs *= len(As) 
-            pg.QtGui.QApplication.processEvents() 
-        
-        
+            Bs *= len(As)
+            pg.QtGui.QApplication.processEvents()
+
+
         for Num in range(len(As)):
             try:
                 ListTupla.append([self.textDict['Sensor Type'][Num],Bs[Num],As[Num]])
-                pg.QtGui.QApplication.processEvents() 
+                pg.QtGui.QApplication.processEvents()
             except IndexError:
                 ListTupla.append([Num + 1,Bs[Num],As[Num]])
-                pg.QtGui.QApplication.processEvents() 
-            pg.QtGui.QApplication.processEvents() 
-                
-        
+                pg.QtGui.QApplication.processEvents()
+            pg.QtGui.QApplication.processEvents()
+
+
         self.Data.append(ListTupla)
         self.Cont += 1
 
         if self.Cont % float(self.Average) == 0:
-            self.AverageCalc() 
-            pg.QtGui.QApplication.processEvents() 
-        pg.QtGui.QApplication.processEvents() 
-            
+            self.AverageCalc()
+            pg.QtGui.QApplication.processEvents()
+        pg.QtGui.QApplication.processEvents()
+
     def Update_335(self,Orden,Heater,Data,Otro=None):
         if Otro == None:
             Command = Orden+ ''+Heater+','+Data + '\r\n'
         else:
             Command = Orden+ ''+Heater+','+Data+Otro+'\r\n'
         self.port.write(Command.encode())
-        return 0 
+        return 0
 
     def Read_335(self,Orden,Heater):
         Command = Orden+' '+Heater+'\r\n'
@@ -2012,16 +2486,16 @@ class TempClass:
         datos = self.port.read(69)
         datos = datos.decode().strip('\r\n')
         return datos
-    
+
     def AverageCalc(self):
         As, Bs = AverageFunction(self.Data,self.Average,self.Sensors)
         self.DataAverage.append(As)
         self.DataAverageText += Bs
-        
+
         if self.Cont >= int(self.textDict['SaveData']):
             self.Save()
-            pg.QtGui.QApplication.processEvents() 
-        pg.QtGui.QApplication.processEvents() 
+            pg.QtGui.QApplication.processEvents()
+        pg.QtGui.QApplication.processEvents()
 
     def RemoveHeader(self):
         self.DataRecovered = RemoveHeaderFunction(self.root,self.name)
@@ -2046,7 +2520,7 @@ class TempClass:
                 a +='              ' + Vect[0]+'         '+str(round(Vect[1],2))+ '         ' +Vect[2]+'\n'
             a += '-------------------------------------------------------------------------\n'
         return a
-            
+
     def Last_data(self):
         Return = []
         if self.Data==[]:
@@ -2055,22 +2529,23 @@ class TempClass:
             for Vect in self.Data[-1]:
                 Return.append(Vect)
         return Return
-    
-    def Change_root(self,file,new,string_file): 
+
+    def Change_root(self,file,new,string_file):
         with open(file, "r") as f:
             lines = (line.rstrip() for line in f)
-            altered_lines = [string_file+': '+new+'/' if line== string_file+':'+textDict[string_file] else line for line in lines]
+            altered_lines = [string_file+': '+new+'/' if line== string_file+':'+textDict[string_file] \
+                            else line for line in lines]
         with open(file, "w") as f:
             f.write('\n'.join(altered_lines) + '\n')
 #----------------------------------------------------------
-#Esta clase contiene toda la información y métodos para 
+#Esta clase contiene toda la información y métodos para
 #crear los diccionarios y configurar el módulo de temperatura
 #----------------------------------------------------------
 
 class ConfigModule:
 
     def __init__(self,configFileName,setCurvesFlag,port):
-       
+
         self.ConfigDict = {}
         self.configFileName = configFileName
         self.getDictFromConfigFile()
@@ -2083,7 +2558,7 @@ class ConfigModule:
 
 
     def getDictFromConfigFile(self):
-        
+
         for line in open(self.configFileName):
             if line[0] == "#" :
                 #print("skipping comment")
@@ -2092,9 +2567,9 @@ class ConfigModule:
                 #print("skipping comment")
                 continue
             List=line.split(":")
-            self.ConfigDict.setdefault(List[0],List[1].strip()) #strip() quita espacios 
+            self.ConfigDict.setdefault(List[0],List[1].strip()) #strip() quita espacios
     #Simple data acquisition rutine, ask for all the channels and print the result
-    
+
     def getData(self):
 
         str2port='KRDG? '+str(self.Channel)+'\r\n'
@@ -2102,21 +2577,21 @@ class ConfigModule:
         datos=self.Port.read(79)
         datos=datos.decode()
         return datos
-    
+
     #Define channel sensor status On/Off
-    def setSensOn(self): 
+    def setSensOn(self):
         global label_scroll
         Ch=1
         out={}
         for key in self.ConfigDict.keys():
             keySplit = key.split(' ')
-            if keySplit[0]=='Sensor':  #Sensor 
+            if keySplit[0]=='Sensor':  #Sensor
                 if keySplit[1]=='Status':  #Status On/Off
                     #set On/Off
                     str2port='INPUT '+str(Ch)+','+str(self.ConfigDict.get(key))+'\r\n'
                     self.Port.write(str2port.encode())
                     time.sleep(.1)
-                    #read status 
+                    #read status
                     str2port='INPUT? '+str(Ch)+'\r\n'
                     self.Port.write(str2port.encode())
                     out.setdefault('Sens '+str(Ch),self.Port.read(79).decode().strip()+'\n')
@@ -2124,7 +2599,7 @@ class ConfigModule:
                     Ch=Ch+1
                 continue
             continue
-        label_scroll +='                                    Status\n'  #Print On/Iff Settings       
+        label_scroll +='                                    Status\n'  #Print On/Iff Settings
         label_scroll+='-------------------------------------------------------------------------\n'
         i = 0
         for a in out:
@@ -2132,11 +2607,11 @@ class ConfigModule:
             i += 1
             if i == 4:
                 label_scroll += '\n'
-                i=0
+                i = 0
         label_scroll+='-------------------------------------------------------------------------\n'
         #return 'Done\r\n'
 
-    def setCurves(self): 
+    def setCurves(self):
         global label_scroll
         Ch=1
         out={}
@@ -2147,7 +2622,7 @@ class ConfigModule:
                     str2port='INCRV '+str(Ch)+','+ str(self.ConfigDict.get(key))+'\r\n'
                     self.Port.write(str2port.encode())
                     time.sleep(.1)
-                    #read curve value   
+                    #read curve value
                     str2port='INCRV? '+str(Ch)+'\r\n'
                     self.Port.write(str2port.encode())
                     out.setdefault(key,self.Port.read(79).decode().strip())
@@ -2170,14 +2645,15 @@ class ConfigModule:
     def ConfigPort(self):
         return serial.Serial(self.ConfigDict['Port'], self.ConfigDict['BaudRate'], serial.SEVENBITS,\
             serial.PARITY_ODD, serial.STOPBITS_ONE, float(self.ConfigDict['TimeOut']))
-        
+
 
 #----------------------------------------------------------
 #Main code --- MAIN
 #----------------------------------------------------------
 
-global  label_scroll,Start,close_plot,status_heater_1,label_heater_1,SP_1,SP_2,ramp_stat,curvas_last
-label_scroll,Start,close_plot,status_heater_1,label_heater_1,heater_1_estatus,ramp_stat,curvas_last= '', False, False,False,'',True, False,[]
+global  label_scroll,Start,close_plot,status_heater_1,label_heater_1,SP_1,SP_2,ramp_stat,curvas_last,bt,cfg
+label_scroll,Start,close_plot,status_heater_1,label_heater_1,heater_1_estatus,ramp_stat,curvas_last, bt,cfg\
+    = '',     False, False,      False,          '',              True,         False,       []    ,False,False
 
 def launch():
     try:

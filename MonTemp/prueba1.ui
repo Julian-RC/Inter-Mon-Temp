@@ -124,7 +124,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
       </rect>
      </property>
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#ffffff;&quot;&gt;Stop acquisition&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#ffffff;&quot;&gt;Stop aquisition&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="styleSheet">
       <string notr="true">background-color: rgb(255, 0, 0);
@@ -147,7 +147,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
       </rect>
      </property>
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Start acquisition&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Start aquisition&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="styleSheet">
       <string notr="true">background-color: rgb(85, 255, 0);
@@ -534,7 +534,7 @@ background-color: rgba(0, 0, 0, 0);</string>
       </rect>
      </property>
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Plot&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Plot&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="whatsThis">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Plot&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -601,7 +601,8 @@ font: 11pt &quot;Sans Serif&quot;;</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: a(0);</string>
+       <string notr="true">background-color: a(0);
+</string>
       </property>
       <property name="text">
        <string>SetPoint 1</string>
@@ -639,8 +640,8 @@ font: 11pt &quot;Sans Serif&quot;;</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: a(90);
-alternate-background-color: rgb(85, 255, 127);</string>
+       <string notr="true">background-color: a(0);
+</string>
       </property>
       <property name="text">
        <string>Heater 1</string>
@@ -715,6 +716,9 @@ alternate-background-color: rgb(85, 255, 127);</string>
         <height>21</height>
        </rect>
       </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: a(0);</string>
+      </property>
       <property name="text">
        <string/>
       </property>
@@ -730,6 +734,9 @@ alternate-background-color: rgb(85, 255, 127);</string>
         <width>31</width>
         <height>21</height>
        </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: a(0);</string>
       </property>
       <property name="text">
        <string/>
@@ -747,6 +754,9 @@ alternate-background-color: rgb(85, 255, 127);</string>
         <height>21</height>
        </rect>
       </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: a(0);</string>
+      </property>
       <property name="text">
        <string/>
       </property>
@@ -762,6 +772,9 @@ alternate-background-color: rgb(85, 255, 127);</string>
         <width>31</width>
         <height>21</height>
        </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: a(0);</string>
       </property>
       <property name="text">
        <string/>
@@ -779,6 +792,9 @@ alternate-background-color: rgb(85, 255, 127);</string>
        <width>151</width>
        <height>31</height>
       </rect>
+     </property>
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Plot of Ramp&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="styleSheet">
       <string notr="true">background-color: rgb(0, 170, 255);
@@ -801,6 +817,9 @@ selection-background-color: rgb(255, 255, 0);</string>
        <height>31</height>
       </rect>
      </property>
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Update plot&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
      <property name="styleSheet">
       <string notr="true">background-color: rgb(255, 255, 0);
 font: 12pt &quot;Sans Serif&quot;;</string>
@@ -820,6 +839,9 @@ font: 12pt &quot;Sans Serif&quot;;</string>
        <width>101</width>
        <height>31</height>
       </rect>
+     </property>
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Ramp &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="styleSheet">
       <string notr="true">background-color: rgb(255, 0, 0);
@@ -864,7 +886,8 @@ font: 11pt &quot;Sans Serif&quot;;</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: a(0);</string>
+       <string notr="true">background-color: a(0);
+</string>
       </property>
       <property name="text">
        <string>All sensors</string>
@@ -1052,7 +1075,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
      </widget>
      <widget class="QCheckBox" name="ramp_CA">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -1064,6 +1087,8 @@ font: 11pt &quot;Sans Serif&quot;;</string>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color: a(0);
+color: rgb( 255, 0, 0);
+
 </string>
       </property>
       <property name="text">
@@ -1080,7 +1105,8 @@ font: 11pt &quot;Sans Serif&quot;;</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: a(0);</string>
+       <string notr="true">background-color: a(0);
+color: rgb( 255, 0, 0);</string>
       </property>
       <property name="text">
        <string/>
@@ -1096,7 +1122,8 @@ font: 11pt &quot;Sans Serif&quot;;</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: a(0);</string>
+       <string notr="true">background-color: a(0);
+color: rgb( 255, 0, 0);</string>
       </property>
       <property name="text">
        <string/>
@@ -1112,7 +1139,8 @@ font: 11pt &quot;Sans Serif&quot;;</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: a(0);</string>
+       <string notr="true">background-color: a(0);
+color: rgb( 255, 0, 0);</string>
       </property>
       <property name="text">
        <string/>
@@ -1128,7 +1156,8 @@ font: 11pt &quot;Sans Serif&quot;;</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: a(0);</string>
+       <string notr="true">background-color: a(0);
+color: rgb( 255, 0, 0);</string>
       </property>
       <property name="text">
        <string/>
@@ -1144,7 +1173,8 @@ font: 11pt &quot;Sans Serif&quot;;</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: a(0);</string>
+       <string notr="true">background-color: a(0);
+color: rgb( 255, 0, 0);</string>
       </property>
       <property name="text">
        <string/>
@@ -1160,7 +1190,8 @@ font: 11pt &quot;Sans Serif&quot;;</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: a(0);</string>
+       <string notr="true">background-color: a(0);
+color: rgb( 255, 0, 0);</string>
       </property>
       <property name="text">
        <string/>
@@ -1179,7 +1210,8 @@ font: 11pt &quot;Sans Serif&quot;;</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: a(0);</string>
+       <string notr="true">background-color: a(0);
+color: rgb( 255, 0, 0);</string>
       </property>
       <property name="text">
        <string/>
@@ -1254,6 +1286,9 @@ font: 11pt &quot;Sans Serif&quot;;</string>
         <height>21</height>
        </rect>
       </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: a(0);</string>
+      </property>
       <property name="text">
        <string/>
       </property>
@@ -1269,6 +1304,9 @@ font: 11pt &quot;Sans Serif&quot;;</string>
         <width>31</width>
         <height>21</height>
        </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: a(0);</string>
       </property>
       <property name="text">
        <string/>
@@ -1286,6 +1324,9 @@ font: 11pt &quot;Sans Serif&quot;;</string>
         <height>21</height>
        </rect>
       </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: a(0);</string>
+      </property>
       <property name="text">
        <string/>
       </property>
@@ -1301,6 +1342,9 @@ font: 11pt &quot;Sans Serif&quot;;</string>
         <width>31</width>
         <height>21</height>
        </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: a(0);</string>
       </property>
       <property name="text">
        <string/>
@@ -1318,6 +1362,9 @@ font: 11pt &quot;Sans Serif&quot;;</string>
         <height>21</height>
        </rect>
       </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: a(0);</string>
+      </property>
       <property name="text">
        <string/>
       </property>
@@ -1333,6 +1380,9 @@ font: 11pt &quot;Sans Serif&quot;;</string>
         <width>31</width>
         <height>21</height>
        </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: a(0);</string>
       </property>
       <property name="text">
        <string/>
@@ -1350,6 +1400,9 @@ font: 11pt &quot;Sans Serif&quot;;</string>
         <height>21</height>
        </rect>
       </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: a(0);</string>
+      </property>
       <property name="text">
        <string/>
       </property>
@@ -1365,6 +1418,9 @@ font: 11pt &quot;Sans Serif&quot;;</string>
         <width>31</width>
         <height>21</height>
        </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: a(0);</string>
       </property>
       <property name="text">
        <string/>
@@ -1436,7 +1492,7 @@ font: 11pt &quot;Sans Serif&quot;;</string>
      <rect>
       <x>950</x>
       <y>0</y>
-      <width>20</width>
+      <width>31</width>
       <height>22</height>
      </rect>
     </property>
@@ -1596,7 +1652,8 @@ font: 12pt &quot;Sans Serif&quot;;</string>
         </property>
         <property name="styleSheet">
          <string notr="true">font: 15pt &quot;Sans Serif&quot;;
-background-color: a(0);</string>
+background-color: a(0);
+</string>
         </property>
         <property name="text">
          <string>Heater 1</string>
@@ -1854,7 +1911,7 @@ font: 13pt &quot;Sans Serif&quot;;</string>
 font: 10pt &quot;Sans Serif&quot;;</string>
         </property>
         <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;K/min&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;K/min&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
       </widget>
@@ -1907,7 +1964,7 @@ font: 13pt &quot;Sans Serif&quot;;</string>
 font: 10pt &quot;Sans Serif&quot;;</string>
         </property>
         <property name="text">
-         <string>K</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;K&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
       </widget>
@@ -1933,7 +1990,7 @@ font: 10pt &quot;Sans Serif&quot;;</string>
        </rect>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Off Heater 1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Stop Heater 1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(162, 42, 44);</string>
@@ -2303,7 +2360,7 @@ font: 13pt &quot;Sans Serif&quot;;</string>
 font: 10pt &quot;Sans Serif&quot;;</string>
         </property>
         <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;K/min&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;K/min&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
       </widget>
@@ -2356,7 +2413,7 @@ font: 12pt &quot;Sans Serif&quot;;</string>
 font: 10pt &quot;Sans Serif&quot;;</string>
         </property>
         <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;K&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;K&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
       </widget>
@@ -2404,7 +2461,7 @@ font: 10pt &quot;Sans Serif&quot;;</string>
        </rect>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#ffffff;&quot;&gt;Off Heater 2&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Stop Heater 2&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(163, 0, 2);</string>
@@ -2445,17 +2502,36 @@ font: 10pt &quot;Sans Serif&quot;;</string>
     <property name="title">
      <string>Help</string>
     </property>
+    <widget class="QMenu" name="menuHelp">
+     <property name="title">
+      <string>Help</string>
+     </property>
+     <addaction name="actionAbout_Temperature"/>
+     <addaction name="separator"/>
+     <addaction name="actionAbout_Temperature_Monitor_218"/>
+     <addaction name="actionAbout_Temperature_Control_335"/>
+    </widget>
+    <addaction name="menuHelp"/>
+    <addaction name="separator"/>
     <addaction name="actionInfo"/>
     <addaction name="separator"/>
-    <addaction name="actionHelp"/>
    </widget>
    <widget class="QMenu" name="menuSettings">
     <property name="title">
      <string>Settings</string>
     </property>
     <addaction name="separator"/>
+    <addaction name="actionAquisition_2"/>
+    <addaction name="separator"/>
+    <addaction name="actionFit_of_data"/>
+    <addaction name="separator"/>
+    <addaction name="actionPlot_File"/>
+    <addaction name="separator"/>
     <addaction name="action218"/>
     <addaction name="action335"/>
+    <addaction name="separator"/>
+    <addaction name="actionTerminal"/>
+    <addaction name="separator"/>
    </widget>
    <addaction name="menuSettings"/>
    <addaction name="menupl"/>
@@ -2467,17 +2543,12 @@ font: 10pt &quot;Sans Serif&quot;;</string>
   </action>
   <action name="action218">
    <property name="text">
-    <string>218</string>
+    <string>Temperature Monitor 218</string>
    </property>
   </action>
   <action name="action335">
    <property name="text">
-    <string>335</string>
-   </property>
-  </action>
-  <action name="actionHelp">
-   <property name="text">
-    <string>Help</string>
+    <string>Temperature Control 335</string>
    </property>
   </action>
   <action name="actionAbout_335">
@@ -2488,6 +2559,46 @@ font: 10pt &quot;Sans Serif&quot;;</string>
   <action name="actionAbout_318">
    <property name="text">
     <string>About 318</string>
+   </property>
+  </action>
+  <action name="actionTerminal">
+   <property name="text">
+    <string>Terminal</string>
+   </property>
+  </action>
+  <action name="actionAquisition">
+   <property name="text">
+    <string>Aquisition </string>
+   </property>
+  </action>
+  <action name="actionAquisition_2">
+   <property name="text">
+    <string>Aquisition</string>
+   </property>
+  </action>
+  <action name="actionAbout_Temperature">
+   <property name="text">
+    <string>About Temperature</string>
+   </property>
+  </action>
+  <action name="actionAbout_Temperature_Monitor_218">
+   <property name="text">
+    <string>About Temperature Monitor 218</string>
+   </property>
+  </action>
+  <action name="actionAbout_Temperature_Control_335">
+   <property name="text">
+    <string>About Temperature Control 335</string>
+   </property>
+  </action>
+  <action name="actionFit_of_data">
+   <property name="text">
+    <string>Fit of data</string>
+   </property>
+  </action>
+  <action name="actionPlot_File">
+   <property name="text">
+    <string>Plot File</string>
    </property>
   </action>
  </widget>

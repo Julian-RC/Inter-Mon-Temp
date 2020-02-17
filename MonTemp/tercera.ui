@@ -61,7 +61,7 @@ font: 12pt &quot;Sans Serif&quot;;</string>
      <string notr="true">background-color: a(0);</string>
     </property>
     <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Acquisition&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Aquisition&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_55">
@@ -69,15 +69,15 @@ font: 12pt &quot;Sans Serif&quot;;</string>
      <rect>
       <x>10</x>
       <y>40</y>
-      <width>121</width>
-      <height>16</height>
+      <width>141</width>
+      <height>21</height>
      </rect>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color: a(0);</string>
     </property>
     <property name="text">
-     <string>SamplinPeriod:</string>
+     <string>SamplingPeriod:</string>
     </property>
    </widget>
    <widget class="QDoubleSpinBox" name="samplinperiod">

@@ -29,7 +29,7 @@ class Ui_Tercera(object):
         self.label_54.setStyleSheet("background-color: a(0);")
         self.label_54.setObjectName("label_54")
         self.label_55 = QtWidgets.QLabel(self.frame_5)
-        self.label_55.setGeometry(QtCore.QRect(10, 40, 121, 16))
+        self.label_55.setGeometry(QtCore.QRect(10, 40, 141, 21))
         self.label_55.setStyleSheet("background-color: a(0);")
         self.label_55.setObjectName("label_55")
         self.samplinperiod = QtWidgets.QDoubleSpinBox(self.frame_5)
@@ -207,8 +207,8 @@ class Ui_Tercera(object):
     def retranslateUi(self, Tercera):
         _translate = QtCore.QCoreApplication.translate
         Tercera.setWindowTitle(_translate("Tercera", "Dialog"))
-        self.label_54.setText(_translate("Tercera", "<html><head/><body><p align=\"center\"><span style=\" font-weight:600;\">Acquisition</span></p></body></html>"))
-        self.label_55.setText(_translate("Tercera", "SamplinPeriod:"))
+        self.label_54.setText(_translate("Tercera", "<html><head/><body><p align=\"center\"><span style=\" font-weight:600;\">Aquisition</span></p></body></html>"))
+        self.label_55.setText(_translate("Tercera", "SamplingPeriod:"))
         self.label_52.setText(_translate("Tercera", "<html><head/><body><p align=\"center\"><span style=\" font-weight:600;\">Storage</span></p></body></html>"))
         self.label_53.setText(_translate("Tercera", "<html><head/><body><p align=\"center\">Average:</p></body></html>"))
         self.sensor1_on.setText(_translate("Tercera", "Sensor 1"))
