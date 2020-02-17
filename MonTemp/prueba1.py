@@ -11,6 +11,10 @@ from MonTemp.segunda_ui import Ui_Segunda
 from MonTemp.tercera_ui import Ui_Tercera
 from MonTemp.help_218_ui import Ui_help_218
 from MonTemp.help_335_ui import Ui_help_335
+from MonTemp.plot_file import Ui_plot_file
+from MonTemp.fit_218_ui import Ui_fit_218
+from MonTemp.fit import Ui_fit
+from MonTemp.fit_335_ui import Ui_fit_335
 from PyQt5 import QtWidgets,QtGui,QtCore
 import pyqtgraph as pg
 from numpy import append
@@ -20,6 +24,50 @@ from matplotlib.backends.backend_qt5agg \
 from matplotlib.backends.backend_qt5agg \
   import NavigationToolbar2QT as NavigationToolbar
 import matplotlib.pyplot as plt
+
+class Plot_File(QtWidgets.QDialog,Ui_plot_file):
+    def __init__(self, *args, **kwargs):
+        try:
+            QtWidgets.QDialog.__init__(self, *args, **kwargs)
+            self.setupUi(self)
+            self.setWindowTitle("Plot File")
+        except KeyboardInterrupt as KBI:
+            pass
+
+class Fit_of_data(QtWidgets.QDialog,Ui_fit):
+    def __init__(self, *args, **kwargs):
+        try:
+            QtWidgets.QDialog.__init__(self, *args, **kwargs)
+            self.setupUi(self)
+            self.setWindowTitle("Fit of Data")
+            self.CA.setDecimals(4)
+            self.CB.setDecimals(4)
+            self.C5.setDecimals(4)
+            self.C6.setDecimals(4)
+            self.D1.setDecimals(4)
+            self.D2.setDecimals(4)
+            self.D3.setDecimals(4)
+            self.D4.setDecimals(4)
+        except KeyboardInterrupt as KBI:
+            pass
+
+class D218_Data(QtWidgets.QDialog,Ui_fit_218):
+    def __init__(self, *args, **kwargs):
+        try:
+            QtWidgets.QDialog.__init__(self, *args, **kwargs)
+            self.setupUi(self)
+            self.setWindowTitle("Fit Data Temperature Monitor 218")
+        except KeyboardInterrupt as KBI:
+            pass
+
+class D335_Data(QtWidgets.QDialog,Ui_fit_335):
+    def __init__(self, *args, **kwargs):
+        try:
+            QtWidgets.QDialog.__init__(self, *args, **kwargs)
+            self.setupUi(self)
+            self.setWindowTitle("Fit Data Temperature Control 335")
+        except KeyboardInterrupt as KBI:
+            pass
 
 class Help_218(QtWidgets.QDialog,Ui_help_218):
     def __init__(self, *args, **kwargs):
@@ -442,11 +490,15 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         filename = patch + "cfg/file_218.cfg"
         filename2 = patch + "cfg/file_335.cfg"
         filename_color = patch + "cfg/color.cfg"
+        filename_fit = patch + "cfg/sensores_fit.cfg"
         textDict = ConfigModule(filename,0,0)
         textDict2 = ConfigModule(filename2,0,0)
         textDict_color = ConfigModule(filename_color,0,0)
         for a in textDict_color.ConfigDict:
             textDict_color.ConfigDict[a]=textDict_color.ConfigDict[a].split(',')
+        textDict_fit = ConfigModule(filename_fit,0,0)
+        for a in textDict_fit.ConfigDict:
+            textDict_fit.ConfigDict[a]=textDict_fit.ConfigDict[a].split(',')
         DataTemp = TempClass(textDict.ConfigDict)
         DataTemp2 = TempClass(textDict2.ConfigDict,DataTemp.InitTime)
         self.setupUi(self)
@@ -489,6 +541,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.action335.triggered.connect(self.show_335)
         self.actionAbout_Temperature_Monitor_218.triggered.connect(self.show_help_218)
         self.actionAbout_Temperature_Control_335.triggered.connect(self.show_help_335)
+        self.action218_Data.triggered.connect(self.show_218_Data)
+        self.action335_Data.triggered.connect(self.show_335_Data)
+        self.actionFit_of_data.triggered.connect(self.show_Fit_of_data)
+        self.actionPlot_File.triggered.connect(self.show_Plot_File)
 
         self.setPoint_num_1.setRange(50,300)
         self.setPoint_num_2.setRange(50,300)
@@ -937,20 +993,32 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         except KeyboardInterrupt as KBI:
             pass
     def show_dialog(self):
-        dialog = Dialog(self)  # self hace referencia al padre
-        dialog.show()
+        dialog_1 = Dialog(self)  # self hace referencia al padre
+        dialog_1.show()
     def show_218(self):
-        dialog = Segunda(self)  # self hace referencia al padre
-        dialog.show()
+        dialog_2 = Segunda(self)  # self hace referencia al padre
+        dialog_2.show()
     def show_335(self):
-        dialog = Tercera(self)  # self hace referencia al padre
-        dialog.show()
+        dialog_3 = Tercera(self)  # self hace referencia al padre
+        dialog_3.show()
     def show_help_218(self):
-        dialog = Help_218(self)  # self hace referencia al padre
-        dialog.show()
+        dialog_4 = Help_218(self)  # self hace referencia al padre
+        dialog_4.show()
     def show_help_335(self):
-        dialog = Help_335(self)  # self hace referencia al padre
-        dialog.show()
+        dialog_5 = Help_335(self)  # self hace referencia al padre
+        dialog_5.show()
+    def show_218_Data(self):
+        dialog_6 = D218_Data(self)  # self hace referencia al padre
+        dialog_6.show()
+    def show_335_Data(self):
+        dialog_7 = D335_Data(self)  # self hace referencia al padre
+        dialog_7.show()
+    def show_Fit_of_data(self):
+        dialog_8 = Fit_of_data(self)  # self hace referencia al padre
+        dialog_8.show()
+    def show_Plot_File(self):
+        dialog_9 = Plot_File(self)  # self hace referencia al padre
+        dialog_9.show()
     def buscarDirectorio(self):
         global patch,label_scroll,filename,filename2
         label_scroll+='                           Wait a moment Please\n'

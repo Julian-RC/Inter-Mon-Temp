@@ -814,6 +814,8 @@ class Ui_MainWindow(object):
         self.menuHelp.setObjectName("menuHelp")
         self.menuSettings = QtWidgets.QMenu(self.menubar)
         self.menuSettings.setObjectName("menuSettings")
+        self.menuFit = QtWidgets.QMenu(self.menubar)
+        self.menuFit.setObjectName("menuFit")
         MainWindow.setMenuBar(self.menubar)
         self.actionInfo = QtWidgets.QAction(MainWindow)
         self.actionInfo.setObjectName("actionInfo")
@@ -841,6 +843,10 @@ class Ui_MainWindow(object):
         self.actionFit_of_data.setObjectName("actionFit_of_data")
         self.actionPlot_File = QtWidgets.QAction(MainWindow)
         self.actionPlot_File.setObjectName("actionPlot_File")
+        self.action218_Data = QtWidgets.QAction(MainWindow)
+        self.action218_Data.setObjectName("action218_Data")
+        self.action335_Data = QtWidgets.QAction(MainWindow)
+        self.action335_Data.setObjectName("action335_Data")
         self.menuHelp.addAction(self.actionAbout_Temperature)
         self.menuHelp.addSeparator()
         self.menuHelp.addAction(self.actionAbout_Temperature_Monitor_218)
@@ -861,6 +867,9 @@ class Ui_MainWindow(object):
         self.menuSettings.addSeparator()
         self.menuSettings.addAction(self.actionTerminal)
         self.menuSettings.addSeparator()
+        self.menuFit.addAction(self.action218_Data)
+        self.menuFit.addAction(self.action335_Data)
+        self.menubar.addAction(self.menuFit.menuAction())
         self.menubar.addAction(self.menuSettings.menuAction())
         self.menubar.addAction(self.menupl.menuAction())
 
@@ -960,6 +969,7 @@ class Ui_MainWindow(object):
         self.menupl.setTitle(_translate("MainWindow", "Help"))
         self.menuHelp.setTitle(_translate("MainWindow", "Help"))
         self.menuSettings.setTitle(_translate("MainWindow", "Settings"))
+        self.menuFit.setTitle(_translate("MainWindow", "Fit"))
         self.actionInfo.setText(_translate("MainWindow", "Info"))
         self.action218.setText(_translate("MainWindow", "Temperature Monitor 218"))
         self.action335.setText(_translate("MainWindow", "Temperature Control 335"))
@@ -973,6 +983,8 @@ class Ui_MainWindow(object):
         self.actionAbout_Temperature_Control_335.setText(_translate("MainWindow", "About Temperature Control 335"))
         self.actionFit_of_data.setText(_translate("MainWindow", "Fit of data"))
         self.actionPlot_File.setText(_translate("MainWindow", "Plot File"))
+        self.action218_Data.setText(_translate("MainWindow", "218 Data"))
+        self.action335_Data.setText(_translate("MainWindow", "335 Data"))
 
 
 if __name__ == "__main__":

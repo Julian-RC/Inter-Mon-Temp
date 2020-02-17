@@ -2539,6 +2539,14 @@ font: 10pt &quot;Sans Serif&quot;;</string>
     <addaction name="actionTerminal"/>
     <addaction name="separator"/>
    </widget>
+   <widget class="QMenu" name="menuFit">
+    <property name="title">
+     <string>Fit</string>
+    </property>
+    <addaction name="action218_Data"/>
+    <addaction name="action335_Data"/>
+   </widget>
+   <addaction name="menuFit"/>
    <addaction name="menuSettings"/>
    <addaction name="menupl"/>
   </widget>
@@ -2605,6 +2613,16 @@ font: 10pt &quot;Sans Serif&quot;;</string>
   <action name="actionPlot_File">
    <property name="text">
     <string>Plot File</string>
+   </property>
+  </action>
+  <action name="action218_Data">
+   <property name="text">
+    <string>218 Data</string>
+   </property>
+  </action>
+  <action name="action335_Data">
+   <property name="text">
+    <string>335 Data</string>
    </property>
   </action>
  </widget>
