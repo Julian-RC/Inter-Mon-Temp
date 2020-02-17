@@ -9,6 +9,8 @@ from MonTemp.prueba1_ui import Ui_MainWindow
 from MonTemp.info_ui import Ui_Dialog
 from MonTemp.segunda_ui import Ui_Segunda
 from MonTemp.tercera_ui import Ui_Tercera
+from MonTemp.help_218_ui import Ui_help_218
+from MonTemp.help_335_ui import Ui_help_335
 from PyQt5 import QtWidgets,QtGui,QtCore
 import pyqtgraph as pg
 from numpy import append
@@ -18,6 +20,24 @@ from matplotlib.backends.backend_qt5agg \
 from matplotlib.backends.backend_qt5agg \
   import NavigationToolbar2QT as NavigationToolbar
 import matplotlib.pyplot as plt
+
+class Help_218(QtWidgets.QDialog,Ui_help_218):
+    def __init__(self, *args, **kwargs):
+        try:
+            QtWidgets.QDialog.__init__(self, *args, **kwargs)
+            self.setupUi(self)
+            self.setWindowTitle("Help Temperature Monitor 218")
+        except KeyboardInterrupt as KBI:
+            pass
+
+class Help_335(QtWidgets.QDialog,Ui_help_335):
+    def __init__(self, *args, **kwargs):
+        try:
+            QtWidgets.QDialog.__init__(self, *args, **kwargs)
+            self.setupUi(self)
+            self.setWindowTitle("Help Temperature Monitor 335")
+        except KeyboardInterrupt as KBI:
+            pass
 
 class Dialog(QtWidgets.QDialog,Ui_Dialog):
     def __init__(self, *args, **kwargs):
@@ -306,7 +326,7 @@ class Segunda(QtWidgets.QDialog,Ui_Segunda):
                                     "Valor inválido TypeSensors8",
                                     self.box.Ok , self.box.Ok)
             pg.QtGui.QApplication.processEvents()
-            
+
 class Terminal(QtWidgets.QWidget):
     def __init__(self, parent=None):
         try:
@@ -415,8 +435,8 @@ class Tercera(QtWidgets.QDialog,Ui_Tercera):
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None,*args, **kwargs):
-        super(MainWindow, self).__init__(parent)
-        QtWidgets.QMainWindow.__init__(self, *args, **kwargs)
+        super(MainWindow, self).__init__()
+       # QtWidgets.QMainWindow.__init__(self, *args, **kwargs)
         global label_scroll, textDict, textDict2, patch,textDict_color
         patch = os.path.realpath(__file__).strip('prueba1.py')
         filename = patch + "cfg/file_218.cfg"
@@ -467,6 +487,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionInfo.triggered.connect(self.show_dialog)
         self.action218.triggered.connect(self.show_218)
         self.action335.triggered.connect(self.show_335)
+        self.actionAbout_Temperature_Monitor_218.triggered.connect(self.show_help_218)
+        self.actionAbout_Temperature_Control_335.triggered.connect(self.show_help_335)
 
         self.setPoint_num_1.setRange(50,300)
         self.setPoint_num_2.setRange(50,300)
@@ -924,6 +946,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         dialog.show()
     def show_335(self):
         dialog = Tercera(self)  # self hace referencia al padre
+        dialog.show()
+    def show_help_218(self):
+        dialog = Help_218(self)  # self hace referencia al padre
+        dialog.show()
+    def show_help_335(self):
+        dialog = Help_335(self)  # self hace referencia al padre
         dialog.show()
     def buscarDirectorio(self):
         global patch,label_scroll,filename,filename2
