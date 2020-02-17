@@ -23,6 +23,7 @@ class Ui_plot_file(object):
         self.control.setObjectName("control")
         self.monitor = QtWidgets.QLineEdit(plot_file)
         self.monitor.setGeometry(QtCore.QRect(260, 50, 281, 23))
+        self.monitor.setStyleSheet("font: 12pt \"Sans Serif\";")
         self.monitor.setObjectName("monitor")
         self.label = QtWidgets.QLabel(plot_file)
         self.label.setGeometry(QtCore.QRect(10, 20, 251, 21))

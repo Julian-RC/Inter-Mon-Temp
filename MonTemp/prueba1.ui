@@ -2527,6 +2527,7 @@ font: 10pt &quot;Sans Serif&quot;;</string>
      <string>Settings</string>
     </property>
     <addaction name="separator"/>
+    <addaction name="actionAdd_Icon"/>
     <addaction name="actionAquisition_2"/>
     <addaction name="separator"/>
     <addaction name="actionFit_of_data"/>
@@ -2623,6 +2624,11 @@ font: 10pt &quot;Sans Serif&quot;;</string>
   <action name="action335_Data">
    <property name="text">
     <string>335 Data</string>
+   </property>
+  </action>
+  <action name="actionAdd_Icon">
+   <property name="text">
+    <string>Add Icon</string>
    </property>
   </action>
  </widget>

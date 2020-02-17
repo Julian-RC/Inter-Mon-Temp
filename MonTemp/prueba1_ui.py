@@ -847,6 +847,8 @@ class Ui_MainWindow(object):
         self.action218_Data.setObjectName("action218_Data")
         self.action335_Data = QtWidgets.QAction(MainWindow)
         self.action335_Data.setObjectName("action335_Data")
+        self.actionAdd_Icon = QtWidgets.QAction(MainWindow)
+        self.actionAdd_Icon.setObjectName("actionAdd_Icon")
         self.menuHelp.addAction(self.actionAbout_Temperature)
         self.menuHelp.addSeparator()
         self.menuHelp.addAction(self.actionAbout_Temperature_Monitor_218)
@@ -856,6 +858,7 @@ class Ui_MainWindow(object):
         self.menupl.addAction(self.actionInfo)
         self.menupl.addSeparator()
         self.menuSettings.addSeparator()
+        self.menuSettings.addAction(self.actionAdd_Icon)
         self.menuSettings.addAction(self.actionAquisition_2)
         self.menuSettings.addSeparator()
         self.menuSettings.addAction(self.actionFit_of_data)
@@ -985,6 +988,7 @@ class Ui_MainWindow(object):
         self.actionPlot_File.setText(_translate("MainWindow", "Plot File"))
         self.action218_Data.setText(_translate("MainWindow", "218 Data"))
         self.action335_Data.setText(_translate("MainWindow", "335 Data"))
+        self.actionAdd_Icon.setText(_translate("MainWindow", "Add Icon"))
 
 
 if __name__ == "__main__":

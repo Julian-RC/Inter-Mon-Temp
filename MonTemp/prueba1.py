@@ -1,5 +1,4 @@
 import os, serial, sys, time, datetime, subprocess, pickle
-sudoPassword = 'rakshasadebian'
 command = 'sudo apt upgrade'
 #os.system('echo %s|sudo -S %s' % (sudoPassword, command))
 os.system("xrdb " +os.path.realpath(__file__).strip('prueba1.py') + "cfg/terminal.cfg")
@@ -26,49 +25,101 @@ from matplotlib.backends.backend_qt5agg \
 import matplotlib.pyplot as plt
 
 class Plot_File(QtWidgets.QDialog,Ui_plot_file):
+    global textDict,textDict2
     def __init__(self, *args, **kwargs):
         try:
             QtWidgets.QDialog.__init__(self, *args, **kwargs)
             self.setupUi(self)
             self.setWindowTitle("Plot File")
+            self.control.setText(textDict2.ConfigDict['Name'])
+            self.monitor.setText(textDict.ConfigDict['Name'])
         except KeyboardInterrupt as KBI:
             pass
 
 class Fit_of_data(QtWidgets.QDialog,Ui_fit):
+    global textDict_fit
     def __init__(self, *args, **kwargs):
         try:
             QtWidgets.QDialog.__init__(self, *args, **kwargs)
             self.setupUi(self)
             self.setWindowTitle("Fit of Data")
-            self.CA.setDecimals(4)
-            self.CB.setDecimals(4)
-            self.C5.setDecimals(4)
-            self.C6.setDecimals(4)
-            self.D1.setDecimals(4)
-            self.D2.setDecimals(4)
-            self.D3.setDecimals(4)
-            self.D4.setDecimals(4)
+            self.CA_M.setDecimals(4)
+            self.CB_M.setDecimals(4)
+            self.C5_M.setDecimals(4)
+            self.C6_M.setDecimals(4)
+            self.D1_M.setDecimals(4)
+            self.D2_M.setDecimals(4)
+            self.D3_M.setDecimals(4)
+            self.D4_M.setDecimals(4)
+            self.CA_I.setDecimals(4)
+            self.CB_I.setDecimals(4)
+            self.C5_I.setDecimals(4)
+            self.C6_I.setDecimals(4)
+            self.D1_I.setDecimals(4)
+            self.D2_I.setDecimals(4)
+            self.D3_I.setDecimals(4)
+            self.D4_I.setDecimals(4)
+            self.CA_M.setRange(-100,100)
+            self.CB_M.setRange(-100,100)
+            self.C5_M.setRange(-100,100)
+            self.C6_M.setRange(-100,100)
+            self.D1_M.setRange(-100,100)
+            self.D2_M.setRange(-100,100)
+            self.D3_M.setRange(-100,100)
+            self.D4_M.setRange(-100,100)
+            self.CA_I.setRange(-100,100)
+            self.CB_I.setRange(-100,100)
+            self.C5_I.setRange(-100,100)
+            self.C6_I.setRange(-100,100)
+            self.D1_I.setRange(-100,100)
+            self.D2_I.setRange(-100,100)
+            self.D3_I.setRange(-100,100)
+            self.D4_I.setRange(-100,100)
+            self.CA_M.setValue(float(textDict_fit.ConfigDict['CA'][0]))
+            self.CB_M.setValue(float(textDict_fit.ConfigDict['CB'][0]))
+            self.C5_M.setValue(float(textDict_fit.ConfigDict['C5'][0]))
+            self.C6_M.setValue(float(textDict_fit.ConfigDict['C6'][0]))
+            self.D1_M.setValue(float(textDict_fit.ConfigDict['D1'][0]))
+            self.D2_M.setValue(float(textDict_fit.ConfigDict['D2'][0]))
+            self.D3_M.setValue(float(textDict_fit.ConfigDict['D3'][0]))
+            self.D4_M.setValue(float(textDict_fit.ConfigDict['D4'][0]))
+            self.CA_I.setValue(float(textDict_fit.ConfigDict['CA'][1]))
+            self.CB_I.setValue(float(textDict_fit.ConfigDict['CB'][1]))
+            self.C5_I.setValue(float(textDict_fit.ConfigDict['C5'][1]))
+            self.C6_I.setValue(float(textDict_fit.ConfigDict['C6'][1]))
+            self.D1_I.setValue(float(textDict_fit.ConfigDict['D1'][1]))
+            self.D2_I.setValue(float(textDict_fit.ConfigDict['D2'][1]))
+            self.D3_I.setValue(float(textDict_fit.ConfigDict['D3'][1]))
+            self.D4_I.setValue(float(textDict_fit.ConfigDict['D4'][1]))
         except KeyboardInterrupt as KBI:
             pass
 
 class D218_Data(QtWidgets.QDialog,Ui_fit_218):
+    global patch
     def __init__(self, *args, **kwargs):
         try:
             QtWidgets.QDialog.__init__(self, *args, **kwargs)
             self.setupUi(self)
             self.setWindowTitle("Fit Data Temperature Monitor 218")
+            self.select.clicked.connect(self.buscarArchivo)
         except KeyboardInterrupt as KBI:
             pass
-
+    def buscarArchivo(self):
+        patch_file = QtWidgets.QFileDialog.getOpenFileName(self, 'Search file', patch)
+        self.file.setText(patch_file[0])
 class D335_Data(QtWidgets.QDialog,Ui_fit_335):
+    global patch
     def __init__(self, *args, **kwargs):
         try:
             QtWidgets.QDialog.__init__(self, *args, **kwargs)
             self.setupUi(self)
             self.setWindowTitle("Fit Data Temperature Control 335")
+            self.select.clicked.connect(self.buscarArchivo)
         except KeyboardInterrupt as KBI:
             pass
-
+    def buscarArchivo(self):
+        patch_file = QtWidgets.QFileDialog.getOpenFileName(self, 'Search file', patch)
+        self.file.setText(patch_file[0])
 class Help_218(QtWidgets.QDialog,Ui_help_218):
     def __init__(self, *args, **kwargs):
         try:
@@ -485,7 +536,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None,*args, **kwargs):
         super(MainWindow, self).__init__()
        # QtWidgets.QMainWindow.__init__(self, *args, **kwargs)
-        global label_scroll, textDict, textDict2, patch,textDict_color
+        global label_scroll, textDict, textDict2, patch,textDict_color,textDict_fit
         patch = os.path.realpath(__file__).strip('prueba1.py')
         filename = patch + "cfg/file_218.cfg"
         filename2 = patch + "cfg/file_335.cfg"
@@ -1155,7 +1206,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
     def buscarDirectorio_2(self):
         global patch
-        patch = QtWidgets.QFileDialog.getExistingDirectory(self, 'Search folder', QtCore.QDir.homePath())
+        patch = QtWidgets.QFileDialog.getExistingDirectory(self, 'Search folder', patch)
         self.setCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         pg.QtGui.QApplication.processEvents()
     def desbloquear_grafica2(self):

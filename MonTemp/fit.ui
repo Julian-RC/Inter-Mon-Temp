@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>352</width>
-    <height>424</height>
+    <height>434</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,7 +20,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>380</y>
+     <y>400</y>
      <width>331</width>
      <height>32</height>
     </rect>
@@ -38,7 +38,7 @@
      <x>10</x>
      <y>10</y>
      <width>331</width>
-     <height>111</height>
+     <height>121</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -50,12 +50,12 @@
    <property name="frameShadow">
     <enum>QFrame::Raised</enum>
    </property>
-   <widget class="QDoubleSpinBox" name="CB">
+   <widget class="QDoubleSpinBox" name="CB_M">
     <property name="geometry">
      <rect>
-      <x>140</x>
-      <y>80</y>
-      <width>151</width>
+      <x>110</x>
+      <y>90</y>
+      <width>91</width>
       <height>24</height>
      </rect>
     </property>
@@ -67,7 +67,7 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>10</y>
+      <y>0</y>
       <width>301</width>
       <height>31</height>
      </rect>
@@ -79,28 +79,12 @@
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt; font-weight:600; color:#ffffff;&quot;&gt;Temperature Control 335&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_2">
+   <widget class="QDoubleSpinBox" name="CA_M">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>50</y>
+      <x>110</x>
+      <y>60</y>
       <width>91</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: a(0);</string>
-    </property>
-    <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt; color:#ffffff;&quot;&gt;Cernox A:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-    </property>
-   </widget>
-   <widget class="QDoubleSpinBox" name="CA">
-    <property name="geometry">
-     <rect>
-      <x>140</x>
-      <y>50</y>
-      <width>151</width>
       <height>24</height>
      </rect>
     </property>
@@ -108,20 +92,103 @@
      <string notr="true">background-color: rgb(255, 255, 255);</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_3">
+   <widget class="QCheckBox" name="CB">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>80</y>
-      <width>91</width>
+      <x>10</x>
+      <y>60</y>
+      <width>131</width>
       <height>21</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: a(0);</string>
+     <string notr="true">background-color: a( 0);
+color: rgb(255, 255, 255);</string>
     </property>
     <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt; color:#ffffff;&quot;&gt;Cernox B:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>Cernox A</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="CA_2">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>90</y>
+      <width>131</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: a( 0);
+color: rgb(255, 255, 255);</string>
+    </property>
+    <property name="text">
+     <string>Cernox B</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>30</y>
+      <width>91</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; color:#55ff00;&quot;&gt;Slope&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_5">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>30</y>
+      <width>91</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; color:#55ff00;&quot;&gt;Intercept&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_6">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>30</y>
+      <width>91</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; color:#55ff00;&quot;&gt;Sensor&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="CA_I">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>60</y>
+      <width>91</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 255, 255);</string>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="CB_I">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>90</y>
+      <width>91</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 255, 255);</string>
     </property>
    </widget>
   </widget>
@@ -129,9 +196,9 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>130</y>
+     <y>140</y>
      <width>331</width>
-     <height>241</height>
+     <height>251</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -143,12 +210,12 @@
    <property name="frameShadow">
     <enum>QFrame::Raised</enum>
    </property>
-   <widget class="QDoubleSpinBox" name="D2">
+   <widget class="QDoubleSpinBox" name="D2_M">
     <property name="geometry">
      <rect>
-      <x>140</x>
-      <y>80</y>
-      <width>151</width>
+      <x>110</x>
+      <y>100</y>
+      <width>91</width>
       <height>24</height>
      </rect>
     </property>
@@ -161,7 +228,7 @@
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>301</width>
+      <width>311</width>
       <height>31</height>
      </rect>
     </property>
@@ -172,28 +239,12 @@
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt; font-weight:600; color:#ffffff;&quot;&gt;Temperature Monitor 218&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_5">
+   <widget class="QDoubleSpinBox" name="D1_M">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>50</y>
+      <x>110</x>
+      <y>70</y>
       <width>91</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: a(0);</string>
-    </property>
-    <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt; color:#ffffff;&quot;&gt;Diodo 1:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-    </property>
-   </widget>
-   <widget class="QDoubleSpinBox" name="D1">
-    <property name="geometry">
-     <rect>
-      <x>140</x>
-      <y>50</y>
-      <width>151</width>
       <height>24</height>
      </rect>
     </property>
@@ -201,92 +252,205 @@
      <string notr="true">background-color: rgb(255, 255, 255);</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_6">
+   <widget class="QDoubleSpinBox" name="D4_M">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>80</y>
+      <x>110</x>
+      <y>160</y>
       <width>91</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 255, 255);</string>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="C5_M">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>190</y>
+      <width>91</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 255, 255);</string>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="C6_M">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>220</y>
+      <width>91</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 255, 255);</string>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="D3_M">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>130</y>
+      <width>91</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 255, 255);</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="D1">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>70</y>
+      <width>131</width>
       <height>21</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: a(0);</string>
+     <string notr="true">background-color: a( 0);
+color: rgb(255, 255, 255);</string>
     </property>
     <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt; color:#ffffff;&quot;&gt;Diodo 2:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>Diodo 1</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="C6">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>220</y>
+      <width>131</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: a( 0);
+color: rgb(255, 255, 255);</string>
+    </property>
+    <property name="text">
+     <string>Cernox 6</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="C5">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>190</y>
+      <width>131</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: a( 0);
+color: rgb(255, 255, 255);</string>
+    </property>
+    <property name="text">
+     <string>Cernox 5</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="D4">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>160</y>
+      <width>131</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: a( 0);
+color: rgb(255, 255, 255);</string>
+    </property>
+    <property name="text">
+     <string>DIodo 4</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="D3">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>130</y>
+      <width>131</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: a( 0);
+color: rgb(255, 255, 255);</string>
+    </property>
+    <property name="text">
+     <string>Diodo 3</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="D2">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>100</y>
+      <width>131</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: a( 0);
+color: rgb(255, 255, 255);</string>
+    </property>
+    <property name="text">
+     <string>Diodo 2</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_7">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>40</y>
+      <width>91</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; color:#55ff00;&quot;&gt;Sensor&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>40</y>
+      <width>91</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; color:#55ff00;&quot;&gt;Slope&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_8">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>110</y>
+      <x>220</x>
+      <y>40</y>
       <width>91</width>
       <height>21</height>
      </rect>
     </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: a(0);</string>
-    </property>
     <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt; color:#ffffff;&quot;&gt;Diodo 3:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; color:#55ff00;&quot;&gt;Intercept&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_9">
+   <widget class="QDoubleSpinBox" name="D1_I">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>140</y>
+      <x>220</x>
+      <y>70</y>
       <width>91</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: a(0);</string>
-    </property>
-    <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt; color:#ffffff;&quot;&gt;Diodo 4:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_10">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>170</y>
-      <width>91</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: a(0);</string>
-    </property>
-    <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt; color:#ffffff;&quot;&gt;Cernox 5:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_11">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>200</y>
-      <width>91</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: a(0);</string>
-    </property>
-    <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt; color:#ffffff;&quot;&gt;Cernox 6:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-    </property>
-   </widget>
-   <widget class="QDoubleSpinBox" name="D4">
-    <property name="geometry">
-     <rect>
-      <x>140</x>
-      <y>140</y>
-      <width>151</width>
       <height>24</height>
      </rect>
     </property>
@@ -294,12 +458,12 @@
      <string notr="true">background-color: rgb(255, 255, 255);</string>
     </property>
    </widget>
-   <widget class="QDoubleSpinBox" name="C5">
+   <widget class="QDoubleSpinBox" name="D2_I">
     <property name="geometry">
      <rect>
-      <x>140</x>
-      <y>170</y>
-      <width>151</width>
+      <x>220</x>
+      <y>100</y>
+      <width>91</width>
       <height>24</height>
      </rect>
     </property>
@@ -307,12 +471,12 @@
      <string notr="true">background-color: rgb(255, 255, 255);</string>
     </property>
    </widget>
-   <widget class="QDoubleSpinBox" name="C6">
+   <widget class="QDoubleSpinBox" name="D3_I">
     <property name="geometry">
      <rect>
-      <x>140</x>
-      <y>200</y>
-      <width>151</width>
+      <x>220</x>
+      <y>130</y>
+      <width>91</width>
       <height>24</height>
      </rect>
     </property>
@@ -320,12 +484,38 @@
      <string notr="true">background-color: rgb(255, 255, 255);</string>
     </property>
    </widget>
-   <widget class="QDoubleSpinBox" name="D3">
+   <widget class="QDoubleSpinBox" name="D4_I">
     <property name="geometry">
      <rect>
-      <x>140</x>
-      <y>110</y>
-      <width>151</width>
+      <x>220</x>
+      <y>160</y>
+      <width>91</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 255, 255);</string>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="C5_I">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>190</y>
+      <width>91</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 255, 255);</string>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="C6_I">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>220</y>
+      <width>91</width>
       <height>24</height>
      </rect>
     </property>

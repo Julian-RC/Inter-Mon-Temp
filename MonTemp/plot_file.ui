@@ -51,6 +51,9 @@
      <height>23</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">font: 12pt &quot;Sans Serif&quot;;</string>
+   </property>
   </widget>
   <widget class="QLabel" name="label">
    <property name="geometry">
