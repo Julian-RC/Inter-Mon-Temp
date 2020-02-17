@@ -518,6 +518,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.color_C6.clicked.connect(self.change_color_C6)
         self.color_CA.clicked.connect(self.change_color_CA)
         self.color_CB.clicked.connect(self.change_color_CB)
+        self.update_graph.clicked.connect(self.update_plot)
 
 
 
@@ -771,7 +772,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             RANGE_2 = True
     def start_adquisition(self):
         global Start,actual, filename, label_scroll,status_heater_1,label_heater_1,ramp_stat
-        Start,actual = True,False
+        Start,actual,bt = True,False, True
         self.pushButton.setEnabled(True)
         DataTemp.Start()
         DataTemp2.Start()
@@ -788,7 +789,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.grafica1.setEnabled(True)
         self.start.setEnabled(False)
         self.stop.setEnabled(True)
-        self.linePatch.setEnabled(False)
         self.directorio.setEnabled(False)
         self.heater_1.setEnabled(True)
         self.heater_2.setEnabled(True)
@@ -898,10 +898,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                                     label_scroll+='                          '+'{:%d-%m-%Y %H:%M:%S}'.format(datetime.datetime.now())+'\n'
                                     label_scroll+='-------------------------------------------------------------------------\n'
                                     self.Update_label()
-
     def closeEvent(self, event):
         try:
-            global actual,Start,plt_mgr
+            global actual,Start,plt_mgr,bt,patch
             self.box = QtWidgets.QMessageBox()
             reply = self.box.question(self,
                                     'Exit',
@@ -923,17 +922,16 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                                 #self.off_heater_2()
                         else:
                                 event.ignore()
-                    else:
-                        event.accept()
-                    reply = self.box.question(self,
-                                                    'Bitácora',
-                                                    "¿Desea guardar la bitácora?",
-                                                    self.box.Yes | self.box.No, self.box.Yes)
-                    if reply == self.box.Yes:
-                        global label_scroll, patch
-                        f = open (patch+'/Temperature.bt','a')
-                        f.write(label_scroll)
-                        f.close()
+                    if bt == True:
+                        reply = self.box.question(self,
+                                                        'Bitácora',
+                                                        "¿Desea guardar la bitácora?\n(Se guardará en:  "+patch+")",
+                                                        self.box.Yes | self.box.No, self.box.Yes)
+                        if reply == self.box.Yes:
+                            global label_scroll
+                            f = open (patch+'/Temperature.bt','a')
+                            f.write(label_scroll)
+                            f.close()
             else:
                     event.ignore()
         except KeyboardInterrupt as KBI:
@@ -960,7 +958,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.Update_label()
         self.buscarDirectorio_2()
         if patch:
-            self.linePatch.setText(patch)
             global textDict,textDict2,DataTemp,DataTemp2
             ls = subprocess.getoutput("cd && cd " +patch+ "&&ls")
            # print(ls.strip('\n'))
@@ -995,21 +992,67 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.grafica2.setEnabled(True)
                     self.grafica2.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
                     self.radioButton_2.setEnabled(True)
+                    self.radioButton_2.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
                     self.Todos.setEnabled(True)
                     self.Todos.setChecked(True)
                     label_scroll+='               Push "Start" for begin adquisition\n'
                     label_scroll+='-------------------------------------------------------------------------\n'
+                    self.linePatch.setText(patch)
                     self.Update_label()
                     self.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
                     pg.QtGui.QApplication.processEvents()
+                    self.ramp_la.setStyleSheet("color:rgb(255,255,255);")
+                    self.graph_sensor.setStyleSheet("color:rgb(255,255,255);")
+                    self.color_sensor.setStyleSheet("color:rgb(255,255,255);")
                 except:
                     label_scroll += '       Error al cargar la configuración de los modulos\n'
                     label_scroll+='-------------------------------------------------------------------------\n'
                     self.Update_label()
                     self.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
+                    self.start.setEnabled(False)
+                    self.SeeData.setEnabled(False)
+                    self.grafica2.setEnabled(False)
+                    self.grafica2.setStyleSheet("background-color: a(0);")
+                    self.radioButton_2.setEnabled(False)
+                    self.radioButton_2.setStyleSheet("background-color: a(0);")
+                    self.Todos.setEnabled(False)
+                    self.Todos.setChecked(False)
+                    self.Todos.setStyleSheet("background-color: a(0);")
+                    self.D1.setEnabled(False)
+                    self.D1.setChecked(False)
+                    self.D1.setStyleSheet("background-color: a(0);")
+                    self.D2.setEnabled(False)
+                    self.D2.setChecked(False)
+                    self.D2.setStyleSheet("background-color: a(0);")
+                    self.D3.setEnabled(False)
+                    self.D3.setChecked(False)
+                    self.D3.setStyleSheet("background-color: a(0);")
+                    self.D4.setEnabled(False)
+                    self.D4.setChecked(False)
+                    self.D4.setStyleSheet("background-color: a(0);")
+                    self.C5.setEnabled(False)
+                    self.C5.setChecked(False)
+                    self.C5.setStyleSheet("background-color: a(0);")
+                    self.C6.setEnabled(False)
+                    self.C6.setChecked(False)
+                    self.C6.setStyleSheet("background-color: a(0);")
+                    self.CA.setEnabled(False)
+                    self.CA.setChecked(False)
+                    self.CA.setStyleSheet("background-color: a(0);")
+                    self.CB.setEnabled(False)
+                    self.CB.setChecked(False)
+                    self.CB.setStyleSheet("background-color: a(0);")
+                    self.Time.setStyleSheet(" ")
+                    self.Type.setStyleSheet(" ")
+                    self.ramp_la.setStyleSheet(" ")
+                    self.graph_sensor.setStyleSheet(" ")
+                    self.color_sensor.setStyleSheet(" ")
+                    self.pushButton.setEnabled(False)
+                    self.ramp.setEnabled(False)
             else:
                 label_scroll += '                         The folder contains files\n'
                 label_scroll+='-------------------------------------------------------------------------\n'
+                self.linePatch.setText(patch)
                 self.Update_label()
                 self.start.setEnabled(False)
                 self.SeeData.setEnabled(True)
@@ -1018,11 +1061,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.grafica2.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
                 self.Type.setStyleSheet("color:rgb(255,255,255);border: 0px solid black;background-color: a( 0);")
                 self.radioButton_2.setEnabled(True)
+                self.radioButton_2.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
                 self.color_sensor.setStyleSheet("color:rgb(255,255,255);")
                 self.pushButton.setEnabled(True)
                 self.Todos.setEnabled(True)
                 self.Todos.setChecked(True)
-                self.Todos.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
                 self.ramp.setEnabled(True)
                 self.ramp_la.setStyleSheet("color:rgb(255,255,255);")
                 self.graph_sensor.setStyleSheet("color:rgb(255,255,255);")
@@ -1066,6 +1109,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.SetPoint2.setStyleSheet("background-color: a(0);")
                 self.heater1.setStyleSheet("background-color: a(0);")
                 self.heater2.setStyleSheet("background-color: a(0);")
+                self.see_ramp.setEnabled(True)
+                self.ramp.setEnabled(False)
+                self.update_graph.setEnabled(True)
         else:
             self.grafica2.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.radioButton.setEnabled(True)
@@ -1084,6 +1130,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.color_heater.setStyleSheet("color:rgb(255,255,255);")
                 self.SetPoint2.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
                 self.heater2.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
+            self.see_ramp.setEnabled(False)
+            self.ramp.setEnabled(True)
+            self.update_graph.setEnabled(False)
     def desbloquear_grafica1(self):
         if self.grafica1.isChecked():
             self.grafica1.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
@@ -1493,8 +1542,56 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.SetPoint2.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.color_S2.setEnabled(False)
             self.color_S2.setStyleSheet("background-color: a(0);")
+    def update_plot(self):
+        global curvas, curvas_last, plt_mgr, textDict_color, color_last
+        if self.radioButton.isChecked():
+            horas = self.hh.value()
+            minutos = self.mm.value()
+            segundos = self.ss.value()
+            Time_graph = horas*3600 + minutos*60 + segundos
+        else:
+            Time_graph = float('inf')
+        if curvas == curvas_last:
+            if textDict_color == color_last:
+                pass
+            else:
+                color_last = textDict_color.ConfigDict
+                plt_mgr.update_curvas()  
+        else:
+            curvas_last = curvas
+            if self.Todos.isChecked():
+                    curvas[0] = 1
+            else:
+                    if self.CA.isChecked():
+                        curvas[1] = 1
+                        self.see_ramp.setEnabled(True)
+                    if self.CB.isChecked():
+                        curvas[2] = 1
+                    if self.D1.isChecked():
+                        curvas[3] = 1
+                    if self.D2.isChecked():
+                        curvas[4] = 1
+                    if self.D3.isChecked():
+                        curvas[5] = 1
+                    if self.D4.isChecked():
+                        curvas[6] = 1
+                    if self.C5.isChecked():
+                        curvas[7] = 1
+                    if self.C6.isChecked():
+                        curvas[8] = 1
+            if self.SetPoint1.isChecked():
+                    curvas[9] = 1
+            if self.heater1.isChecked():
+                    curvas[10] = 1
+            if self.SetPoint2.isChecked():
+                    curvas[11] = 1
+            if self.heater2.isChecked():
+                    curvas[12] = 1
+            if textDict_color == color_last:
+                color_last = textDict_color.ConfigDict
+            plt_mgr.update_curvas()
     def graficar(self):
-        global actual,close_plot,DataTemp, DataTemp2, curvas, curvas_last
+        global actual,close_plot,DataTemp, DataTemp2, curvas, curvas_last, textDict_color,color_last
         curvas = [0,0,0,0,0,0,0,0,0,0,0,0,0]
         if self.Todos.isChecked():
                 curvas[0] = 1
@@ -1527,19 +1624,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
            #     print(b)
         if self.grafica1.isChecked():
-            if curvas_last==[]:
-                pass
-            if curvas_last==curvas:
-                pass
-            else:
-                global plt_mgr,Time_graph
-                actual, close_plot = True, False
-                plt_mgr = LivePlotter()
-                curvas_last = curvas
-
+            global plt_mgr,Time_graph
+            actual, close_plot = True, False
+            plt_mgr = LivePlotter()
+            curvas_last = curvas
+            color_last = textDict_color.ConfigDict
         else:
             actual = False
-            self.see_ramp.setEnabled(False)
             self.matplotlib()
         if self.radioButton.isChecked():
             horas = self.hh.value()
@@ -1678,7 +1769,91 @@ class LivePlotter(object):
                                             name = 'Heater-2')
             self.Data_curva12,self.Time_curva12=[],[]
         self.p.setRange(yRange=[50, 300])
-
+    def update_curvas(self):
+            if curvas[1] == 1:
+                self.curva1=self.p.plot(pen=(int(textDict_color.ConfigDict['CA'][0]),\
+                                            int(textDict_color.ConfigDict['CA'][1]),\
+                                            int(textDict_color.ConfigDict['CA'][2])),\
+                                            name='CernoxA')
+            else:
+                self.Data_curva1,self.Time_curva1=[],[]
+            if curvas[2] == 1:
+                self.curva2=self.p.plot(pen=(int(textDict_color.ConfigDict['CB'][0]),\
+                                            int(textDict_color.ConfigDict['CB'][1]),\
+                                            int(textDict_color.ConfigDict['CB'][2])),\
+                                            name='CernoxB')
+            else:
+                self.Data_curva2,self.Time_curva2=[],[]
+            if curvas[3] == 1:
+                self.curva3=self.p.plot(pen=(int(textDict_color.ConfigDict['D1'][0]),\
+                                            int(textDict_color.ConfigDict['D1'][1]),\
+                                            int(textDict_color.ConfigDict['D1'][2])),\
+                                            name='Diodo1')
+            else:
+                self.Data_curva3,self.Time_curva3=[],[]
+            if curvas[4] == 1:
+                self.curva4=self.p.plot(pen=(int(textDict_color.ConfigDict['D2'][0]),\
+                                            int(textDict_color.ConfigDict['D2'][1]),\
+                                            int(textDict_color.ConfigDict['D2'][2])),\
+                                            name='Diodo2')
+            else:
+                self.Data_curva4,self.Time_curva4=[],[]
+            if curvas[5] == 1:
+                self.curva5=self.p.plot(pen=(int(textDict_color.ConfigDict['D3'][0]),\
+                                            int(textDict_color.ConfigDict['D3'][1]),\
+                                            int(textDict_color.ConfigDict['D3'][2])),\
+                                            name='Diodo3')
+            else:
+                self.Data_curva5,self.Time_curva5=[],[]
+            if curvas[6] == 1:
+                self.curva6=self.p.plot(pen=(int(textDict_color.ConfigDict['D4'][0]),\
+                                            int(textDict_color.ConfigDict['D4'][1]),\
+                                            int(textDict_color.ConfigDict['D4'][2])),\
+                                            name='Diodo4')
+            else:
+                self.Data_curva6,self.Time_curva6=[],[]
+            if curvas[7] == 1:
+                self.curva7=self.p.plot(pen=(int(textDict_color.ConfigDict['C5'][0]),\
+                                            int(textDict_color.ConfigDict['C5'][1]),\
+                                            int(textDict_color.ConfigDict['C5'][2])),\
+                                            name='Cernox5')
+            else:
+                self.Data_curva7,self.Time_curva7=[],[]
+            if curvas[8] == 1:
+                self.curva8=self.p.plot(pen=(int(textDict_color.ConfigDict['C6'][0]),\
+                                            int(textDict_color.ConfigDict['C6'][1]),\
+                                            int(textDict_color.ConfigDict['C6'][2])),\
+                                            name='Cernox6')
+            else:
+                self.Data_curva8,self.Time_curva8=[],[]
+            if curvas[9] == 1:
+                self.curva9 = self.p.plot(pen=(int(textDict_color.ConfigDict['S1'][0]),\
+                                                int(textDict_color.ConfigDict['S1'][1]),\
+                                                int(textDict_color.ConfigDict['S1'][2])),\
+                                                name='SetPoint-1')
+            else:
+                self.Data_curva9,self.Time_curva9=[],[]
+            if curvas[10] == 1:
+                self.curva10 = self.p.plot(pen=(int(textDict_color.ConfigDict['H1'][0]),\
+                                                int(textDict_color.ConfigDict['H1'][1]),\
+                                                int(textDict_color.ConfigDict['H1'][2])), \
+                                                name = 'Heater-1')
+            else:
+                self.Data_curva10,self.Time_curva10=[],[]
+            if curvas[11] == 1:
+                self.curva11 = self.p.plot(pen=(int(textDict_color.ConfigDict['S2'][0]),\
+                                                int(textDict_color.ConfigDict['S2'][1]),\
+                                                int(textDict_color.ConfigDict['S2'][2])),\
+                                                name = 'SetPoint-2')
+            else:
+                self.Data_curva11,self.Time_curva11=[],[]
+            if curvas[12] == 1:
+                self.curva12 = self.p.plot(pen=(int(textDict_color.ConfigDict['H2'][0]),\
+                                                int(textDict_color.ConfigDict['H2'][1]),\
+                                                int(textDict_color.ConfigDict['H2'][2])),\
+                                                name = 'Heater-2')
+            else:
+                self.Data_curva12,self.Time_curva12=[],[]
     def return_data(self):
         return self.Data_curva1,self.Time_curva1
 
