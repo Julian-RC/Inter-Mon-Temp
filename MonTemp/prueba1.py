@@ -25,14 +25,14 @@ from matplotlib.backends.backend_qt5agg \
 import matplotlib.pyplot as plt
 
 class Plot_File(QtWidgets.QDialog,Ui_plot_file):
-    global textDict,textDict2
+    global textDict,textDict2, file_plot_names
     def __init__(self, *args, **kwargs):
         try:
             QtWidgets.QDialog.__init__(self, *args, **kwargs)
             self.setupUi(self)
             self.setWindowTitle("Plot File")
-            self.control.setText(textDict2.ConfigDict['Name'])
-            self.monitor.setText(textDict.ConfigDict['Name'])
+            self.control.setText(file_plot_names[0])
+            self.monitor.setText(file_plot_names[1])
         except KeyboardInterrupt as KBI:
             pass
     def accept(self):
@@ -51,7 +51,6 @@ class Plot_File(QtWidgets.QDialog,Ui_plot_file):
                                     self.box.Ok , self.box.Ok)
             pg.QtGui.QApplication.processEvents()
         else:
-            global file_plot_names
             file_plot_names = [self.control.text(),self.monitor.text()]
             self.box = QtWidgets.QMessageBox()
             reply = self.box.question(self,
