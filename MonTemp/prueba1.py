@@ -95,31 +95,131 @@ class Fit_of_data(QtWidgets.QDialog,Ui_fit):
             pass
 
 class D218_Data(QtWidgets.QDialog,Ui_fit_218):
-    global patch
+    global patch,textDict_fit
     def __init__(self, *args, **kwargs):
         try:
             QtWidgets.QDialog.__init__(self, *args, **kwargs)
+            self.patch_last = patch
             self.setupUi(self)
             self.setWindowTitle("Fit Data Temperature Monitor 218")
             self.select.clicked.connect(self.buscarArchivo)
+            self.fit.clicked.connect(self.fit_file)
+            self.fit.setEnabled(False)
         except KeyboardInterrupt as KBI:
             pass
     def buscarArchivo(self):
-        patch_file = QtWidgets.QFileDialog.getOpenFileName(self, 'Search file', patch)
-        self.file.setText(patch_file[0])
+        patch_file = QtWidgets.QFileDialog.getOpenFileName(self, 'Search file', self.patch_last, "Text Files (*.txt)")
+        if patch_file:
+            self.patch_last = patch_file[0]
+            self.file.setText(self.patch_last)
+            self.fit.setEnabled(True)
+        else:
+            self.fit.setEnabled(False)
+            self.file.setText(' ')
+    def fit_file(self):
+        try:
+            myFile=self.patch_last
+            myNewFile=myFile.strip('.txt')+'_fit.txt'
+            for line in open(myFile,'r'):
+                if line[0] == '#' or line[0]=='\n':
+                    newLine=line
+                    if line=='#Type of file: Complete Data\n':
+                        newLine=line.strip('\n')+' '+'Fit'+'\n'
+                else:
+                    line = line.split('+')
+                    newLine = line[0] 
+                    newLine+='+'+str("{0:.2f}".format(float(line[1])*\
+                                float(textDict_fit.ConfigDict['D1'][0])+\
+                                float(textDict_fit.ConfigDict['D1'][1])))
+                    newLine+='+'+str("{0:.2f}".format(float(line[2])*\
+                                float(textDict_fit.ConfigDict['D2'][0])+\
+                                float(textDict_fit.ConfigDict['D2'][1])))
+                    newLine+='+'+str("{0:.2f}".format(float(line[3])*\
+                                float(textDict_fit.ConfigDict['D3'][0])+\
+                                float(textDict_fit.ConfigDict['D3'][1])))
+                    newLine+='+'+str("{0:.2f}".format(float(line[4])*\
+                                float(textDict_fit.ConfigDict['D4'][0])+\
+                                float(textDict_fit.ConfigDict['D4'][1])))
+                    newLine+='+'+str("{0:.2f}".format(float(line[5])*\
+                                float(textDict_fit.ConfigDict['C5'][0])+\
+                                float(textDict_fit.ConfigDict['C5'][1])))
+                    newLine+='+'+str("{0:.2f}".format(float(line[6])*\
+                                float(textDict_fit.ConfigDict['C6'][0])+\
+                                float(textDict_fit.ConfigDict['C6'][1])))
+                    newLine += '\n'
+                file=open(myNewFile,'a')  
+                file.write(newLine)
+                pg.QtGui.QApplication.processEvents()
+            self.box = QtWidgets.QMessageBox()
+            reply = self.box.question(self,
+                                        'Fit',
+                                        "The fit was successful",
+                                        self.box.Ok , self.box.Ok)
+            pg.QtGui.QApplication.processEvents()
+        except:
+            self.box = QtWidgets.QMessageBox()
+            reply = self.box.question(self,
+                                        'Error',
+                                        "Error fit",
+                                        self.box.Ok , self.box.Ok)
+            pg.QtGui.QApplication.processEvents()
 class D335_Data(QtWidgets.QDialog,Ui_fit_335):
     global patch
     def __init__(self, *args, **kwargs):
         try:
             QtWidgets.QDialog.__init__(self, *args, **kwargs)
             self.setupUi(self)
+            self.patch_last = patch
             self.setWindowTitle("Fit Data Temperature Control 335")
             self.select.clicked.connect(self.buscarArchivo)
+            self.fit.clicked.connect(self.fit_file)
+            self.fit.setEnabled(False)
         except KeyboardInterrupt as KBI:
             pass
     def buscarArchivo(self):
-        patch_file = QtWidgets.QFileDialog.getOpenFileName(self, 'Search file', patch)
-        self.file.setText(patch_file[0])
+        patch_file = QtWidgets.QFileDialog.getOpenFileName(self, 'Search file', self.patch_last, "Text Files (*.txt)")
+        if patch_file:
+            self.patch_last = patch_file[0]
+            self.file.setText(self.patch_last)
+            self.fit.setEnabled(True)
+        else:
+            self.fit.setEnabled(False)
+            self.file.setText(' ')
+    def fit_file(self):
+        try:
+            myFile=self.patch_last
+            myNewFile=myFile.strip('.txt')+'_fit.txt'
+            for line in open(myFile,'r'):
+                if line[0] == '#' or line[0]=='\n':
+                    newLine=line
+                    if line=='#Type of file: Complete Data\n':
+                        newLine=line.strip('\n')+' '+'Fit'+'\n'
+                else:
+                    line = line.split('+')
+                    newLine = line[0] 
+                    newLine+=' +'+str("{0:.2f}".format(float(line[1])*\
+                                float(textDict_fit.ConfigDict['CA'][0])+\
+                                float(textDict_fit.ConfigDict['CA'][1])))
+                    newLine+=' +'+str("{0:.2f}".format(float(line[2])*\
+                                float(textDict_fit.ConfigDict['CB'][0])+\
+                                float(textDict_fit.ConfigDict['CB'][1])))
+                    newLine += '\n'
+                pg.QtGui.QApplication.processEvents()
+                file=open(myNewFile,'a')  
+                file.write(newLine)
+            self.box = QtWidgets.QMessageBox()
+            reply = self.box.question(self,
+                                        'Fit',
+                                        "The fit was successful",
+                                        self.box.Ok , self.box.Ok)
+            pg.QtGui.QApplication.processEvents()
+        except:
+            self.box = QtWidgets.QMessageBox()
+            reply = self.box.question(self,
+                                        'Error',
+                                        "Error fit",
+                                        self.box.Ok , self.box.Ok)
+            pg.QtGui.QApplication.processEvents()
 class Help_218(QtWidgets.QDialog,Ui_help_218):
     def __init__(self, *args, **kwargs):
         try:
