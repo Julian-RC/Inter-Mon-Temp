@@ -1882,8 +1882,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             Time_graph = float('inf')
     def matplotlib(self):
-        mpl = Lienzo()
-        mpl.show()
+        try:
+            mpl = Lienzo()
+            mpl.show()
+        except:
+            pass
 
 class LivePlotter(object):
 
