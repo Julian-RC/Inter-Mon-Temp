@@ -25,14 +25,14 @@ from matplotlib.backends.backend_qt5agg \
 import matplotlib.pyplot as plt
 
 class Plot_File(QtWidgets.QDialog,Ui_plot_file):
-    global textDict,textDict2, file_plot_names
+    global textDict,textDict2,window
     def __init__(self, *args, **kwargs):
         try:
             QtWidgets.QDialog.__init__(self, *args, **kwargs)
             self.setupUi(self)
             self.setWindowTitle("Plot File")
-            self.control.setText(file_plot_names[0])
-            self.monitor.setText(file_plot_names[1])
+            self.control.setText(window.file_plot_names[0])
+            self.monitor.setText(window.file_plot_names[1])
         except KeyboardInterrupt as KBI:
             pass
     def accept(self):
@@ -51,7 +51,8 @@ class Plot_File(QtWidgets.QDialog,Ui_plot_file):
                                     self.box.Ok , self.box.Ok)
             pg.QtGui.QApplication.processEvents()
         else:
-            file_plot_names = [self.control.text(),self.monitor.text()]
+            window.file_plot_names = [self.control.text(),self.monitor.text()]
+            print(window.file_plot_names)
             self.box = QtWidgets.QMessageBox()
             reply = self.box.question(self,
                                     'Change Plot File',
@@ -658,7 +659,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None,*args, **kwargs):
         super(MainWindow, self).__init__()
        # QtWidgets.QMainWindow.__init__(self, *args, **kwargs)
-        global label_scroll, textDict, textDict2, patch,textDict_color,textDict_fit, file_plot_names
+        global label_scroll, textDict, textDict2, patch,textDict_color,textDict_fit
         patch = os.path.realpath(__file__).strip('prueba1.py')
         filename = patch + "cfg/file_218.cfg"
         filename2 = patch + "cfg/file_335.cfg"
@@ -666,7 +667,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         filename_fit = patch + "cfg/sensores_fit.cfg"
         textDict = ConfigModule(filename,0,0)
         textDict2 = ConfigModule(filename2,0,0)
-        file_plot_names = [textDict2.ConfigDict['Name'],textDict.ConfigDict['Name']]
+        self.file_plot_names = [textDict2.ConfigDict['Name'],textDict.ConfigDict['Name']]
         textDict_color = ConfigModule(filename_color,0,0)
         for a in textDict_color.ConfigDict:
             textDict_color.ConfigDict[a]=textDict_color.ConfigDict[a].split(',')
@@ -2309,14 +2310,14 @@ class Ramp(object):
 class Lienzo(FigureCanvas):
 
     def __init__(self):
-        global DataTemp,DataTemp2, file_plot_names
+        global DataTemp,DataTemp2,window
         self.figura = Figure()
         self.figura_2 = Figure()
         self.ejes = self.figura.add_subplot(111)
         b = []
         i = 0
         for name in [DataTemp2,DataTemp]:
-            a = name.Plot_inter(file_plot_names[i])
+            a = name.Plot_inter(window.file_plot_names[i])
             for c in a:
                 b.append(c)
             i += 1
@@ -3131,6 +3132,7 @@ label_scroll,Start,close_plot,status_heater_1,label_heater_1,heater_1_estatus,ra
 
 def launch():
     try:
+        global window
         app = QtWidgets.QApplication(['Temperature'])
         window = MainWindow()
         window.show()
