@@ -1804,31 +1804,55 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             if self.Todos.isChecked():
                     curvas[0] = 1
             else:
+                    curvas[0] = 0
                     if self.CA.isChecked():
                         curvas[1] = 1
-                        self.see_ramp.setEnabled(True)
+                    else:
+                        curvas[1] = 0
                     if self.CB.isChecked():
                         curvas[2] = 1
+                    else:
+                        curvas[2] = 0
                     if self.D1.isChecked():
                         curvas[3] = 1
+                    else:
+                        curvas[3] = 0
                     if self.D2.isChecked():
                         curvas[4] = 1
+                    else:
+                        curvas[4] = 0
                     if self.D3.isChecked():
                         curvas[5] = 1
+                    else:
+                        curvas[5] = 0
                     if self.D4.isChecked():
                         curvas[6] = 1
+                    else:
+                        curvas[6] = 0
                     if self.C5.isChecked():
                         curvas[7] = 1
+                    else:
+                        curvas[7] = 0
                     if self.C6.isChecked():
                         curvas[8] = 1
+                    else:
+                        curvas[8] = 0
             if self.SetPoint1.isChecked():
                     curvas[9] = 1
+            else:
+                    curvas[9] = 0
             if self.heater1.isChecked():
                     curvas[10] = 1
+            else:
+                    curvas[10] = 0
             if self.SetPoint2.isChecked():
                     curvas[11] = 1
+            else:
+                    curvas[11] = 0
             if self.heater2.isChecked():
                     curvas[12] = 1
+            else:
+                    curvas[12] = 0
             if textDict_color == color_last:
                 color_last = textDict_color.ConfigDict
             plt_mgr.update_curvas()
