@@ -1001,7 +1001,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             RANGE_2 = True
     def start_adquisition(self):
-        global Start,actual, filename, label_scroll,status_heater_1,label_heater_1,ramp_stat
+        global Start,actual, filename, label_scroll,status_heater_1,label_heater_1,ramp_stat,bt
         Start,actual,bt = True,False, True
         self.pushButton.setEnabled(True)
         DataTemp.Start()
@@ -1353,7 +1353,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.heater2.setStyleSheet("background-color: a(0);")
                 self.see_ramp.setEnabled(True)
                 self.ramp.setEnabled(False)
-                self.update_graph.setEnabled(True)
+                self.update_graph.setEnabled(False)
         else:
             self.grafica2.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.radioButton.setEnabled(True)
@@ -1374,7 +1374,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.heater2.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.see_ramp.setEnabled(False)
             self.ramp.setEnabled(True)
-            self.update_graph.setEnabled(False)
+            self.update_graph.setEnabled(True)
     def desbloquear_grafica1(self):
         if self.grafica1.isChecked():
             self.grafica1.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
@@ -1446,7 +1446,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         global label_scroll
         if self.heater_1.isChecked():
             try:
-                #self.On_335_1()
+                self.On_335_1()
                 self.heater_1.setStyleSheet("background-color: a(0);color: rgb(255, 240, 23);font: 15pt 'Sans Serif';")
                 self.label_7.setStyleSheet("background-color: a(0);color: rgb(255, 255, 255);")
                 self.label_13.setStyleSheet("background-color: a(0);color: rgb(255, 255, 255);")
