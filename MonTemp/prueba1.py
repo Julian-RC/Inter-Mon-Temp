@@ -35,7 +35,30 @@ class Plot_File(QtWidgets.QDialog,Ui_plot_file):
             self.monitor.setText(textDict.ConfigDict['Name'])
         except KeyboardInterrupt as KBI:
             pass
-
+    def accept(self):
+        if not self.control.text() or self.control.text().isspace():
+            self.box = QtWidgets.QMessageBox()
+            reply = self.box.question(self,
+                                    'Error',
+                                    "Valor inválido 335",
+                                    self.box.Ok , self.box.Ok)
+            pg.QtGui.QApplication.processEvents()
+        elif not self.monitor.text() or self.monitor.text().isspace():
+            self.box = QtWidgets.QMessageBox()
+            reply = self.box.question(self,
+                                    'Error',
+                                    "Valor inválido 335",
+                                    self.box.Ok , self.box.Ok)
+            pg.QtGui.QApplication.processEvents()
+        else:
+            global file_plot_names
+            file_plot_names = [self.control.text(),self.monitor.text()]
+            self.box = QtWidgets.QMessageBox()
+            reply = self.box.question(self,
+                                    'Change Plot File',
+                                    "Successful",
+                                    self.box.Ok , self.box.Ok)
+            pg.QtGui.QApplication.processEvents()
 class Fit_of_data(QtWidgets.QDialog,Ui_fit):
     global textDict_fit
     def __init__(self, *args, **kwargs):
@@ -126,24 +149,24 @@ class D218_Data(QtWidgets.QDialog,Ui_fit_218):
                     if line=='#Type of file: Complete Data\n':
                         newLine=line.strip('\n')+' '+'Fit'+'\n'
                 else:
-                    line = line.split('+')
+                    line = line.split('\t')
                     newLine = line[0] 
-                    newLine+='+'+str("{0:.2f}".format(float(line[1])*\
+                    newLine+='\t'+str("{0:.2f}".format(float(line[1])*\
                                 float(textDict_fit.ConfigDict['D1'][0])+\
                                 float(textDict_fit.ConfigDict['D1'][1])))
-                    newLine+='+'+str("{0:.2f}".format(float(line[2])*\
+                    newLine+='\t'+str("{0:.2f}".format(float(line[2])*\
                                 float(textDict_fit.ConfigDict['D2'][0])+\
                                 float(textDict_fit.ConfigDict['D2'][1])))
-                    newLine+='+'+str("{0:.2f}".format(float(line[3])*\
+                    newLine+='\t'+str("{0:.2f}".format(float(line[3])*\
                                 float(textDict_fit.ConfigDict['D3'][0])+\
                                 float(textDict_fit.ConfigDict['D3'][1])))
-                    newLine+='+'+str("{0:.2f}".format(float(line[4])*\
+                    newLine+='\t'+str("{0:.2f}".format(float(line[4])*\
                                 float(textDict_fit.ConfigDict['D4'][0])+\
                                 float(textDict_fit.ConfigDict['D4'][1])))
-                    newLine+='+'+str("{0:.2f}".format(float(line[5])*\
+                    newLine+='\t'+str("{0:.2f}".format(float(line[5])*\
                                 float(textDict_fit.ConfigDict['C5'][0])+\
                                 float(textDict_fit.ConfigDict['C5'][1])))
-                    newLine+='+'+str("{0:.2f}".format(float(line[6])*\
+                    newLine+='\t'+str("{0:.2f}".format(float(line[6])*\
                                 float(textDict_fit.ConfigDict['C6'][0])+\
                                 float(textDict_fit.ConfigDict['C6'][1])))
                     newLine += '\n'
@@ -195,12 +218,12 @@ class D335_Data(QtWidgets.QDialog,Ui_fit_335):
                     if line=='#Type of file: Complete Data\n':
                         newLine=line.strip('\n')+' '+'Fit'+'\n'
                 else:
-                    line = line.split('+')
+                    line = line.split('\t')
                     newLine = line[0] 
-                    newLine+=' +'+str("{0:.2f}".format(float(line[1])*\
+                    newLine+='\t'+str("{0:.2f}".format(float(line[1])*\
                                 float(textDict_fit.ConfigDict['CA'][0])+\
                                 float(textDict_fit.ConfigDict['CA'][1])))
-                    newLine+=' +'+str("{0:.2f}".format(float(line[2])*\
+                    newLine+='\t'+str("{0:.2f}".format(float(line[2])*\
                                 float(textDict_fit.ConfigDict['CB'][0])+\
                                 float(textDict_fit.ConfigDict['CB'][1])))
                     newLine += '\n'
@@ -636,7 +659,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None,*args, **kwargs):
         super(MainWindow, self).__init__()
        # QtWidgets.QMainWindow.__init__(self, *args, **kwargs)
-        global label_scroll, textDict, textDict2, patch,textDict_color,textDict_fit
+        global label_scroll, textDict, textDict2, patch,textDict_color,textDict_fit, file_plot_names
         patch = os.path.realpath(__file__).strip('prueba1.py')
         filename = patch + "cfg/file_218.cfg"
         filename2 = patch + "cfg/file_335.cfg"
@@ -644,6 +667,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         filename_fit = patch + "cfg/sensores_fit.cfg"
         textDict = ConfigModule(filename,0,0)
         textDict2 = ConfigModule(filename2,0,0)
+        file_plot_names = [textDict2.ConfigDict['Name'],textDict.ConfigDict['Name']]
         textDict_color = ConfigModule(filename_color,0,0)
         for a in textDict_color.ConfigDict:
             textDict_color.ConfigDict[a]=textDict_color.ConfigDict[a].split(',')
@@ -653,7 +677,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         DataTemp = TempClass(textDict.ConfigDict)
         DataTemp2 = TempClass(textDict2.ConfigDict,DataTemp.InitTime)
         self.setupUi(self)
-        self.setWindowTitle("Temperature Module")
+        self.setWindowTitle("Temperature 3.0")
         self.setWindowIcon(QtGui.QIcon(os.path.realpath(__file__).strip('prueba1.py')+'Temperature.png'))
         self.pushButton.clicked.connect(self.graficar)
         self.radioButton.toggled.connect(self.desbloquear_radioButton)
@@ -2259,15 +2283,17 @@ class Ramp(object):
 class Lienzo(FigureCanvas):
 
     def __init__(self):
-        global DataTemp,DataTemp2
+        global DataTemp,DataTemp2, file_plot_names
         self.figura = Figure()
         self.figura_2 = Figure()
         self.ejes = self.figura.add_subplot(111)
         b = []
+        i = 0
         for name in [DataTemp2,DataTemp]:
-            a = name.Plot_inter()
+            a = name.Plot_inter(file_plot_names[i])
             for c in a:
                 b.append(c)
+            i += 1
         if curvas[0] == 1:
             self.ejes.plot(b[0][0], b[0][1],label='Cernox A',color=[int(textDict_color.ConfigDict['CA'][0])/255,\
                                                                     int(textDict_color.ConfigDict['CA'][1])/255,\
@@ -2672,9 +2698,9 @@ def AverageFunction(Data,AverageStr,Sensors):
             TProm += AvgData[Num2+1][0] / LenSens
             pg.QtGui.QApplication.processEvents()
 
-        AvgDataStr += str(TProm) + '\t'
+        AvgDataStr += '{:10.2f}'.format(TProm)
         for Num2 in range(LenSens):
-            AvgDataStr += '{}'.format(float(AvgData[Num2+1][1])) + '\t'
+            AvgDataStr += '\t'+'{:10.2f}'.format(float(AvgData[Num2+1][1]))
             pg.QtGui.QApplication.processEvents()
         AvgDataStr += '\n'
         pg.QtGui.QApplication.processEvents()
@@ -2852,8 +2878,8 @@ class TempClass:
                 PlotData(self.DataRecovered)
             sys.exit()
 
-    def Plot_inter(self):
-        self.RemoveHeader()
+    def Plot_inter(self,file_name):
+        self.RemoveHeader(file_name)
         var = PlotData_Interface(self.DataRecovered)
          # var.append(PlotData_Interface(Obj.DataSerie)) #header
         return var
@@ -2919,8 +2945,8 @@ class TempClass:
             pg.QtGui.QApplication.processEvents()
         pg.QtGui.QApplication.processEvents()
 
-    def RemoveHeader(self):
-        self.DataRecovered = RemoveHeaderFunction(self.root,self.name)
+    def RemoveHeader(self,file_name):
+        self.DataRecovered = RemoveHeaderFunction(self.root,file_name)
 
     def ConfigurePlotMethod(self):
         ValidChar = False
