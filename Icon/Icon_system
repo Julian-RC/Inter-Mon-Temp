@@ -2,6 +2,6 @@
 Name=Temperature
 Comment=Interface Module Temperature
 Exec=/home/rakshasa/anaconda3/bin/Temperature
-Icon=/home/rakshasa/anaconda3/lib/python3.7/site-packages/Interfaz_MonitorTemperature-2.0.0-py3.7.egg/MonTemp/Temperature.png
+Icon=/home/rakshasa/anaconda3/lib/python3.7/site-packages/Interfaz_MonitorTemperature-3.0.0-py3.7.egg/MonTemp/Temperature.png
 Terminal=false
 Type=Application

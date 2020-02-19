@@ -1786,7 +1786,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.color_S2.setEnabled(False)
             self.color_S2.setStyleSheet("background-color: a(0);")
     def update_plot(self):
-        global curvas, curvas_last, plt_mgr, textDict_color, color_last
+        global curvas, curvas_last, plt_mgr, textDict_color, color_last, Time_graph
         if self.radioButton.isChecked():
             horas = self.hh.value()
             minutos = self.mm.value()
@@ -1794,6 +1794,35 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             Time_graph = horas*3600 + minutos*60 + segundos
         else:
             Time_graph = float('inf')
+        curvas = [0,0,0,0,0,0,0,0,0,0,0,0,0]
+        if self.Todos.isChecked():
+                curvas[0] = 1
+        else:
+                if self.CA.isChecked():
+                    curvas[1] = 1
+                    self.see_ramp.setEnabled(True)
+                if self.CB.isChecked():
+                    curvas[2] = 1
+                if self.D1.isChecked():
+                    curvas[3] = 1
+                if self.D2.isChecked():
+                    curvas[4] = 1
+                if self.D3.isChecked():
+                    curvas[5] = 1
+                if self.D4.isChecked():
+                    curvas[6] = 1
+                if self.C5.isChecked():
+                    curvas[7] = 1
+                if self.C6.isChecked():
+                    curvas[8] = 1
+        if self.SetPoint1.isChecked():
+                curvas[9] = 1
+        if self.heater1.isChecked():
+                curvas[10] = 1
+        if self.SetPoint2.isChecked():
+                curvas[11] = 1
+        if self.heater2.isChecked():
+                curvas[12] = 1
         if curvas == curvas_last:
             if textDict_color == color_last:
                 pass
@@ -1802,61 +1831,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 plt_mgr.update_curvas()  
         else:
             curvas_last = curvas
-            if self.Todos.isChecked():
-                    curvas[0] = 1
-            else:
-                    curvas[0] = 0
-                    if self.CA.isChecked():
-                        curvas[1] = 1
-                    else:
-                        curvas[1] = 0
-                    if self.CB.isChecked():
-                        curvas[2] = 1
-                    else:
-                        curvas[2] = 0
-                    if self.D1.isChecked():
-                        curvas[3] = 1
-                    else:
-                        curvas[3] = 0
-                    if self.D2.isChecked():
-                        curvas[4] = 1
-                    else:
-                        curvas[4] = 0
-                    if self.D3.isChecked():
-                        curvas[5] = 1
-                    else:
-                        curvas[5] = 0
-                    if self.D4.isChecked():
-                        curvas[6] = 1
-                    else:
-                        curvas[6] = 0
-                    if self.C5.isChecked():
-                        curvas[7] = 1
-                    else:
-                        curvas[7] = 0
-                    if self.C6.isChecked():
-                        curvas[8] = 1
-                    else:
-                        curvas[8] = 0
-            if self.SetPoint1.isChecked():
-                    curvas[9] = 1
-            else:
-                    curvas[9] = 0
-            if self.heater1.isChecked():
-                    curvas[10] = 1
-            else:
-                    curvas[10] = 0
-            if self.SetPoint2.isChecked():
-                    curvas[11] = 1
-            else:
-                    curvas[11] = 0
-            if self.heater2.isChecked():
-                    curvas[12] = 1
-            else:
-                    curvas[12] = 0
             if textDict_color == color_last:
+                pass
+            else:
                 color_last = textDict_color.ConfigDict
-            plt_mgr.update_curvas()
+            plt_mgr.update_curvas()  
     def graficar(self):
         global actual,close_plot,DataTemp, DataTemp2, curvas, curvas_last, textDict_color,color_last
         curvas = [0,0,0,0,0,0,0,0,0,0,0,0,0]
@@ -2045,6 +2024,11 @@ class LivePlotter(object):
                                             int(textDict_color.ConfigDict['CA'][1]),\
                                             int(textDict_color.ConfigDict['CA'][2])),\
                                             name='CernoxA')
+                try:
+                    if self.Data_curva1:
+                        pass
+                except:
+                    self.Data_curva1,self.Time_curva1=[],[] 
             else:
                 self.Data_curva1,self.Time_curva1=[],[]
             if curvas[2] == 1:
@@ -2052,6 +2036,11 @@ class LivePlotter(object):
                                             int(textDict_color.ConfigDict['CB'][1]),\
                                             int(textDict_color.ConfigDict['CB'][2])),\
                                             name='CernoxB')
+                try:
+                    if self.Data_curva2:
+                        pass
+                except:
+                    self.Data_curva2,self.Time_curva2=[],[] 
             else:
                 self.Data_curva2,self.Time_curva2=[],[]
             if curvas[3] == 1:
@@ -2059,6 +2048,11 @@ class LivePlotter(object):
                                             int(textDict_color.ConfigDict['D1'][1]),\
                                             int(textDict_color.ConfigDict['D1'][2])),\
                                             name='Diodo1')
+                try:
+                    if self.Data_curva3:
+                        pass
+                except:
+                    self.Data_curva3,self.Time_curva3=[],[] 
             else:
                 self.Data_curva3,self.Time_curva3=[],[]
             if curvas[4] == 1:
@@ -2066,6 +2060,11 @@ class LivePlotter(object):
                                             int(textDict_color.ConfigDict['D2'][1]),\
                                             int(textDict_color.ConfigDict['D2'][2])),\
                                             name='Diodo2')
+                try:
+                    if self.Data_curva4:
+                        pass
+                except:
+                    self.Data_curva4,self.Time_curva4=[],[] 
             else:
                 self.Data_curva4,self.Time_curva4=[],[]
             if curvas[5] == 1:
@@ -2073,6 +2072,11 @@ class LivePlotter(object):
                                             int(textDict_color.ConfigDict['D3'][1]),\
                                             int(textDict_color.ConfigDict['D3'][2])),\
                                             name='Diodo3')
+                try:
+                    if self.Data_curva5:
+                        pass
+                except:
+                    self.Data_curva5,self.Time_curva5=[],[] 
             else:
                 self.Data_curva5,self.Time_curva5=[],[]
             if curvas[6] == 1:
@@ -2080,6 +2084,11 @@ class LivePlotter(object):
                                             int(textDict_color.ConfigDict['D4'][1]),\
                                             int(textDict_color.ConfigDict['D4'][2])),\
                                             name='Diodo4')
+                try:
+                    if self.Data_curva6:
+                        pass
+                except:
+                    self.Data_curva6,self.Time_curva6=[],[]
             else:
                 self.Data_curva6,self.Time_curva6=[],[]
             if curvas[7] == 1:
@@ -2087,6 +2096,11 @@ class LivePlotter(object):
                                             int(textDict_color.ConfigDict['C5'][1]),\
                                             int(textDict_color.ConfigDict['C5'][2])),\
                                             name='Cernox5')
+                try:
+                    if self.Data_curva7:
+                        pass
+                except:
+                    self.Data_curva7,self.Time_curva7=[],[]
             else:
                 self.Data_curva7,self.Time_curva7=[],[]
             if curvas[8] == 1:
@@ -2094,6 +2108,11 @@ class LivePlotter(object):
                                             int(textDict_color.ConfigDict['C6'][1]),\
                                             int(textDict_color.ConfigDict['C6'][2])),\
                                             name='Cernox6')
+                try:
+                    if self.Data_curva8:
+                        pass
+                except:
+                    self.Data_curva8,self.Time_curva8=[],[]
             else:
                 self.Data_curva8,self.Time_curva8=[],[]
             if curvas[9] == 1:
@@ -2101,6 +2120,11 @@ class LivePlotter(object):
                                                 int(textDict_color.ConfigDict['S1'][1]),\
                                                 int(textDict_color.ConfigDict['S1'][2])),\
                                                 name='SetPoint-1')
+                try:
+                    if self.Data_curva9:
+                        pass
+                except:
+                    self.Data_curva9,self.Time_curva9=[],[]
             else:
                 self.Data_curva9,self.Time_curva9=[],[]
             if curvas[10] == 1:
@@ -2108,6 +2132,11 @@ class LivePlotter(object):
                                                 int(textDict_color.ConfigDict['H1'][1]),\
                                                 int(textDict_color.ConfigDict['H1'][2])), \
                                                 name = 'Heater-1')
+                try:
+                    if self.Data_curva10:
+                        pass
+                except:
+                    self.Data_curva10,self.Time_curva10=[],[]
             else:
                 self.Data_curva10,self.Time_curva10=[],[]
             if curvas[11] == 1:
@@ -2115,6 +2144,11 @@ class LivePlotter(object):
                                                 int(textDict_color.ConfigDict['S2'][1]),\
                                                 int(textDict_color.ConfigDict['S2'][2])),\
                                                 name = 'SetPoint-2')
+                try:
+                    if self.Data_curva11:
+                        pass
+                except:
+                    self.Data_curva11,self.Time_curva11=[],[]
             else:
                 self.Data_curva11,self.Time_curva11=[],[]
             if curvas[12] == 1:
@@ -2122,6 +2156,11 @@ class LivePlotter(object):
                                                 int(textDict_color.ConfigDict['H2'][1]),\
                                                 int(textDict_color.ConfigDict['H2'][2])),\
                                                 name = 'Heater-2')
+                try:
+                    if self.Data_curva12:
+                        pass
+                except:
+                    self.Data_curva12,self.Time_curva12=[],[]
             else:
                 self.Data_curva12,self.Time_curva12=[],[]
     def return_data(self):
