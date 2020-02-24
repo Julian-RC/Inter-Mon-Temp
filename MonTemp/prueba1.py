@@ -671,11 +671,29 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         textDict_color = ConfigModule(filename_color,0,0)
         for a in textDict_color.ConfigDict:
             textDict_color.ConfigDict[a]=textDict_color.ConfigDict[a].split(',')
+        self.color=[0]*12
+        for a in textDict_color.ConfigDict:
+            for i in range(len(self.color)):
+                self.color[i]=[int(textDict_color.ConfigDict[a][0]),\
+                                int(textDict_color.ConfigDict[a][1]),\
+                                int(textDict_color.ConfigDict[a][2])]
+        print(self.color)
         textDict_fit = ConfigModule(filename_fit,0,0)
         for a in textDict_fit.ConfigDict:
             textDict_fit.ConfigDict[a]=textDict_fit.ConfigDict[a].split(',')
+        self.fit_number=[0]*(len(textDict_fit.ConfigDict)+1)
+        for a in textDict_fit.ConfigDict:
+            self.fit_number[self.fit_number[len(textDict_fit.ConfigDict)]]=[float(textDict_fit.ConfigDict[a][0])\
+                                                                            ,float(textDict_fit.ConfigDict[a][1])]
+            self.fit_number[len(textDict_fit.ConfigDict)] += 1
+        print(self.fit_number)
         DataTemp = TempClass(textDict.ConfigDict)
         DataTemp2 = TempClass(textDict2.ConfigDict,DataTemp.InitTime)
+        self.names_sensor=[]
+        for a in [textDict2,textDict]:
+            for b in a.ConfigDict['Sensor Type']:
+                self.names_sensor.append(b)
+        print(self.names_sensor)
         self.setupUi(self)
         self.setWindowTitle("Temperature 3.0")
         self.setWindowIcon(QtGui.QIcon(os.path.realpath(__file__).strip('prueba1.py')+'Temperature.png'))
@@ -1902,341 +1920,69 @@ class LivePlotter(object):
         self.p.setLabel('left', 'Temperature ',units= 'K')
         self.p.setLabel('bottom', 'Time ',units='s')
         self.p.showGrid(x=False,y=True,alpha=0.3)
+        self.names_curves = window.names_sensor
+        for a in ['SetPoint 1','Heater 1','SetPoint 2','Heater 2']:
+            self.names_curves.append(a)
+        self.c=[0]*12
+        self.d=[0]*12
+        self.t=[0]*12
         self.p.addLegend()
         if curvas[0] == 1:
-            self.curva1=self.p.plot(pen=(int(textDict_color.ConfigDict['CA'][0]),\
-                                         int(textDict_color.ConfigDict['CA'][1]),\
-                                         int(textDict_color.ConfigDict['CA'][2])),\
-                                         name='CernoxA')
-            self.curva2=self.p.plot(pen=(int(textDict_color.ConfigDict['CB'][0]),\
-                                        int(textDict_color.ConfigDict['CB'][1]),\
-                                        int(textDict_color.ConfigDict['CB'][2])),\
-                                        name='CernoxB')
-            self.curva3=self.p.plot(pen=(int(textDict_color.ConfigDict['D1'][0]),\
-                                        int(textDict_color.ConfigDict['D1'][1]),\
-                                        int(textDict_color.ConfigDict['D1'][2])),\
-                                        name='Diodo1')
-            self.curva4=self.p.plot(pen=(int(textDict_color.ConfigDict['D2'][0]),\
-                                        int(textDict_color.ConfigDict['D2'][1]),\
-                                        int(textDict_color.ConfigDict['D2'][2])),\
-                                        name='Diodo2')
-            self.curva5=self.p.plot(pen=(int(textDict_color.ConfigDict['D3'][0]),\
-                                        int(textDict_color.ConfigDict['D3'][1]),\
-                                        int(textDict_color.ConfigDict['D3'][2])),\
-                                        name='Diodo3')
-            self.curva6=self.p.plot(pen=(int(textDict_color.ConfigDict['D4'][0]),\
-                                        int(textDict_color.ConfigDict['D4'][1]),\
-                                        int(textDict_color.ConfigDict['D4'][2])),\
-                                        name='Diodo4')
-            self.curva7=self.p.plot(pen=(int(textDict_color.ConfigDict['C5'][0]),\
-                                        int(textDict_color.ConfigDict['C5'][1]),\
-                                        int(textDict_color.ConfigDict['C5'][2])),\
-                                        name='Cernox5')
-            self.curva8=self.p.plot(pen=(int(textDict_color.ConfigDict['C6'][0]),\
-                                        int(textDict_color.ConfigDict['C6'][1]),\
-                                        int(textDict_color.ConfigDict['C6'][2])),\
-                                        name='Cernox6')
-            self.Data_curva1,self.Time_curva1=[],[]
-            self.Data_curva2,self.Time_curva2=[],[]
-            self.Data_curva3,self.Time_curva3=[],[]
-            self.Data_curva4,self.Time_curva4=[],[]
-            self.Data_curva5,self.Time_curva5=[],[]
-            self.Data_curva6,self.Time_curva6=[],[]
-            self.Data_curva7,self.Time_curva7=[],[]
-            self.Data_curva8,self.Time_curva8=[],[]
+            for i in range(len(window.names_sensor)):
+                self.c[i]=self.p.plot(pen=window.color[i],name=self.names_sensor[i])
         else:
-            if curvas[1] == 1:
-                self.curva1=self.p.plot(pen=(int(textDict_color.ConfigDict['CA'][0]),\
-                                            int(textDict_color.ConfigDict['CA'][1]),\
-                                            int(textDict_color.ConfigDict['CA'][2])),\
-                                            name='CernoxA')
-                self.Data_curva1,self.Time_curva1=[],[]
-            if curvas[2] == 1:
-                self.curva2=self.p.plot(pen=(int(textDict_color.ConfigDict['CB'][0]),\
-                                            int(textDict_color.ConfigDict['CB'][1]),\
-                                            int(textDict_color.ConfigDict['CB'][2])),\
-                                            name='CernoxB')
-                self.Data_curva2,self.Time_curva2=[],[]
-            if curvas[3] == 1:
-                self.curva3=self.p.plot(pen=(int(textDict_color.ConfigDict['D1'][0]),\
-                                            int(textDict_color.ConfigDict['D1'][1]),\
-                                            int(textDict_color.ConfigDict['D1'][2])),\
-                                            name='Diodo1')
-                self.Data_curva3,self.Time_curva3=[],[]
-            if curvas[4] == 1:
-                self.curva4=self.p.plot(pen=(int(textDict_color.ConfigDict['D2'][0]),\
-                                            int(textDict_color.ConfigDict['D2'][1]),\
-                                            int(textDict_color.ConfigDict['D2'][2])),\
-                                            name='Diodo2')
-                self.Data_curva4,self.Time_curva4=[],[]
-            if curvas[5] == 1:
-                self.curva5=self.p.plot(pen=(int(textDict_color.ConfigDict['D3'][0]),\
-                                            int(textDict_color.ConfigDict['D3'][1]),\
-                                            int(textDict_color.ConfigDict['D3'][2])),\
-                                            name='Diodo3')
-                self.Data_curva5,self.Time_curva5=[],[]
-            if curvas[6] == 1:
-                self.curva6=self.p.plot(pen=(int(textDict_color.ConfigDict['D4'][0]),\
-                                            int(textDict_color.ConfigDict['D4'][1]),\
-                                            int(textDict_color.ConfigDict['D4'][2])),\
-                                            name='Diodo4')
-                self.Data_curva6,self.Time_curva6=[],[]
-            if curvas[7] == 1:
-                self.curva7=self.p.plot(pen=(int(textDict_color.ConfigDict['C5'][0]),\
-                                            int(textDict_color.ConfigDict['C5'][1]),\
-                                            int(textDict_color.ConfigDict['C5'][2])),\
-                                            name='Cernox5')
-                self.Data_curva7,self.Time_curva7=[],[]
-            if curvas[8] == 1:
-                self.curva8=self.p.plot(pen=(int(textDict_color.ConfigDict['C6'][0]),\
-                                            int(textDict_color.ConfigDict['C6'][1]),\
-                                            int(textDict_color.ConfigDict['C6'][2])),\
-                                            name='Cernox6')
-                self.Data_curva8,self.Time_curva8=[],[]
-        if curvas[9] == 1:
-            self.curva9 = self.p.plot(pen=(int(textDict_color.ConfigDict['S1'][0]),\
-                                            int(textDict_color.ConfigDict['S1'][1]),\
-                                            int(textDict_color.ConfigDict['S1'][2])),\
-                                            name='SetPoint-1')
-            self.Data_curva9,self.Time_curva9=[],[]
-        if curvas[10] == 1:
-            self.curva10 = self.p.plot(pen=(int(textDict_color.ConfigDict['H1'][0]),\
-                                            int(textDict_color.ConfigDict['H1'][1]),\
-                                            int(textDict_color.ConfigDict['H1'][2])), \
-                                            name = 'Heater-1')
-            self.Data_curva10,self.Time_curva10=[],[]
-        if curvas[11] == 1:
-            self.curva11 = self.p.plot(pen=(int(textDict_color.ConfigDict['S2'][0]),\
-                                            int(textDict_color.ConfigDict['S2'][1]),\
-                                            int(textDict_color.ConfigDict['S2'][2])),\
-                                            name = 'SetPoint-2')
-            self.Data_curva11,self.Time_curva11=[],[]
-        if curvas[12] == 1:
-            self.curva12 = self.p.plot(pen=(int(textDict_color.ConfigDict['H2'][0]),\
-                                            int(textDict_color.ConfigDict['H2'][1]),\
-                                            int(textDict_color.ConfigDict['H2'][2])),\
-                                            name = 'Heater-2')
-            self.Data_curva12,self.Time_curva12=[],[]
+            for i in range(len(window.names_sensor)):
+                if curvas[1+i] == 1:
+                    self.c[i]=self.p.plot(pen=window.color[i],name=self.names_sensor[i])
+        for i in [len(window.names_sensor),len(self.names_sensor)-1]:
+                if curvas[1+i] == 1:
+                    self.c[i]=self.p.plot(pen=window.color[i],name=self.names_sensor[i])
         self.p.setRange(yRange=[50, 300])
     def update_curvas(self):
-            if curvas[1] == 1:
-                self.curva1=self.p.plot(pen=(int(textDict_color.ConfigDict['CA'][0]),\
-                                            int(textDict_color.ConfigDict['CA'][1]),\
-                                            int(textDict_color.ConfigDict['CA'][2])),\
-                                            name='CernoxA')
-                try:
-                    if self.Data_curva1:
-                        pass
-                except:
-                    self.Data_curva1,self.Time_curva1=[],[] 
+        for i in range(len(self.names_sensor)):
+            if curvas[i+1] == 1:
+                self.c[i]=self.p.plot(pen=window.color[i],name=self.names_sensor[i])
             else:
-                self.Data_curva1,self.Time_curva1=[],[]
-            if curvas[2] == 1:
-                self.curva2=self.p.plot(pen=(int(textDict_color.ConfigDict['CB'][0]),\
-                                            int(textDict_color.ConfigDict['CB'][1]),\
-                                            int(textDict_color.ConfigDict['CB'][2])),\
-                                            name='CernoxB')
-                try:
-                    if self.Data_curva2:
-                        pass
-                except:
-                    self.Data_curva2,self.Time_curva2=[],[] 
-            else:
-                self.Data_curva2,self.Time_curva2=[],[]
-            if curvas[3] == 1:
-                self.curva3=self.p.plot(pen=(int(textDict_color.ConfigDict['D1'][0]),\
-                                            int(textDict_color.ConfigDict['D1'][1]),\
-                                            int(textDict_color.ConfigDict['D1'][2])),\
-                                            name='Diodo1')
-                try:
-                    if self.Data_curva3:
-                        pass
-                except:
-                    self.Data_curva3,self.Time_curva3=[],[] 
-            else:
-                self.Data_curva3,self.Time_curva3=[],[]
-            if curvas[4] == 1:
-                self.curva4=self.p.plot(pen=(int(textDict_color.ConfigDict['D2'][0]),\
-                                            int(textDict_color.ConfigDict['D2'][1]),\
-                                            int(textDict_color.ConfigDict['D2'][2])),\
-                                            name='Diodo2')
-                try:
-                    if self.Data_curva4:
-                        pass
-                except:
-                    self.Data_curva4,self.Time_curva4=[],[] 
-            else:
-                self.Data_curva4,self.Time_curva4=[],[]
-            if curvas[5] == 1:
-                self.curva5=self.p.plot(pen=(int(textDict_color.ConfigDict['D3'][0]),\
-                                            int(textDict_color.ConfigDict['D3'][1]),\
-                                            int(textDict_color.ConfigDict['D3'][2])),\
-                                            name='Diodo3')
-                try:
-                    if self.Data_curva5:
-                        pass
-                except:
-                    self.Data_curva5,self.Time_curva5=[],[] 
-            else:
-                self.Data_curva5,self.Time_curva5=[],[]
-            if curvas[6] == 1:
-                self.curva6=self.p.plot(pen=(int(textDict_color.ConfigDict['D4'][0]),\
-                                            int(textDict_color.ConfigDict['D4'][1]),\
-                                            int(textDict_color.ConfigDict['D4'][2])),\
-                                            name='Diodo4')
-                try:
-                    if self.Data_curva6:
-                        pass
-                except:
-                    self.Data_curva6,self.Time_curva6=[],[]
-            else:
-                self.Data_curva6,self.Time_curva6=[],[]
-            if curvas[7] == 1:
-                self.curva7=self.p.plot(pen=(int(textDict_color.ConfigDict['C5'][0]),\
-                                            int(textDict_color.ConfigDict['C5'][1]),\
-                                            int(textDict_color.ConfigDict['C5'][2])),\
-                                            name='Cernox5')
-                try:
-                    if self.Data_curva7:
-                        pass
-                except:
-                    self.Data_curva7,self.Time_curva7=[],[]
-            else:
-                self.Data_curva7,self.Time_curva7=[],[]
-            if curvas[8] == 1:
-                self.curva8=self.p.plot(pen=(int(textDict_color.ConfigDict['C6'][0]),\
-                                            int(textDict_color.ConfigDict['C6'][1]),\
-                                            int(textDict_color.ConfigDict['C6'][2])),\
-                                            name='Cernox6')
-                try:
-                    if self.Data_curva8:
-                        pass
-                except:
-                    self.Data_curva8,self.Time_curva8=[],[]
-            else:
-                self.Data_curva8,self.Time_curva8=[],[]
-            if curvas[9] == 1:
-                self.curva9 = self.p.plot(pen=(int(textDict_color.ConfigDict['S1'][0]),\
-                                                int(textDict_color.ConfigDict['S1'][1]),\
-                                                int(textDict_color.ConfigDict['S1'][2])),\
-                                                name='SetPoint-1')
-                try:
-                    if self.Data_curva9:
-                        pass
-                except:
-                    self.Data_curva9,self.Time_curva9=[],[]
-            else:
-                self.Data_curva9,self.Time_curva9=[],[]
-            if curvas[10] == 1:
-                self.curva10 = self.p.plot(pen=(int(textDict_color.ConfigDict['H1'][0]),\
-                                                int(textDict_color.ConfigDict['H1'][1]),\
-                                                int(textDict_color.ConfigDict['H1'][2])), \
-                                                name = 'Heater-1')
-                try:
-                    if self.Data_curva10:
-                        pass
-                except:
-                    self.Data_curva10,self.Time_curva10=[],[]
-            else:
-                self.Data_curva10,self.Time_curva10=[],[]
-            if curvas[11] == 1:
-                self.curva11 = self.p.plot(pen=(int(textDict_color.ConfigDict['S2'][0]),\
-                                                int(textDict_color.ConfigDict['S2'][1]),\
-                                                int(textDict_color.ConfigDict['S2'][2])),\
-                                                name = 'SetPoint-2')
-                try:
-                    if self.Data_curva11:
-                        pass
-                except:
-                    self.Data_curva11,self.Time_curva11=[],[]
-            else:
-                self.Data_curva11,self.Time_curva11=[],[]
-            if curvas[12] == 1:
-                self.curva12 = self.p.plot(pen=(int(textDict_color.ConfigDict['H2'][0]),\
-                                                int(textDict_color.ConfigDict['H2'][1]),\
-                                                int(textDict_color.ConfigDict['H2'][2])),\
-                                                name = 'Heater-2')
-                try:
-                    if self.Data_curva12:
-                        pass
-                except:
-                    self.Data_curva12,self.Time_curva12=[],[]
-            else:
-                self.Data_curva12,self.Time_curva12=[],[]
-    def return_data(self):
-        return self.Data_curva1,self.Time_curva1
-
+                self.c[i].clear()
+                self.d[i]=0
+                self.t[i]=0
+    def return_data(self,i):
+        return self.d[i],self.t[i]
     def add(self, x):
             global Time_graph
             if curvas[0] == 1:
-                self.Data_curva1,self.Time_curva1 = self.Curvas_add(self.Data_curva1,\
-                                                    self.Time_curva1,float(x[0][2]),x[0][1])
-                self.Data_curva2,self.Time_curva2 = self.Curvas_add(self.Data_curva2, \
-                                                    self.Time_curva2,float(x[1][2]),x[1][1])
-                self.Data_curva3,self.Time_curva3 = self.Curvas_add(self.Data_curva3, \
-                                                    self.Time_curva3,float(x[2][2]),x[2][1])
-                self.Data_curva4,self.Time_curva4 = self.Curvas_add(self.Data_curva4, \
-                                                    self.Time_curva4,float(x[3][2]),x[3][1])
-                self.Data_curva5,self.Time_curva5 = self.Curvas_add(self.Data_curva5, \
-                                                    self.Time_curva5,float(x[4][2]),x[4][1])
-                self.Data_curva6,self.Time_curva6 = self.Curvas_add(self.Data_curva6, \
-                                                    self.Time_curva6,float(x[5][2]),x[5][1])
-                self.Data_curva7,self.Time_curva7 = self.Curvas_add(self.Data_curva7, \
-                                                    self.Time_curva7,float(x[6][2])*1.0257-2.1852,x[6][1])
-                self.Data_curva8,self.Time_curva8 = self.Curvas_add(self.Data_curva8, \
-                                                    self.Time_curva8,float(x[7][2])*1.0151-0.7786,x[7][1])
+                for i in range(len(window.names_sensor)):
+                    self.d[i],self.t[i] = self.Curvas_add(float(x[i][2])*window.fit_number[i][0]\
+                                                                        +window.fit_number[i][1]\
+                                                                        ,x[i][1])
             else:
-                if curvas[1] == 1:
-                    self.Data_curva1,self.Time_curva1 = self.Curvas_add(self.Data_curva1,\
-                                                        self.Time_curva1,float(x[0][2]),x[0][1])
-                if curvas[2] == 1:
-                    self.Data_curva2,self.Time_curva2 = self.Curvas_add(self.Data_curva2,\
-                                                        self.Time_curva2,float(x[1][2]),x[1][1])
-                if curvas[3] == 1:
-                    self.Data_curva3,self.Time_curva3 = self.Curvas_add(self.Data_curva3,\
-                                                        self.Time_curva3,float(x[2][2]),x[2][1])
-                if curvas[4] == 1:
-                    self.Data_curva4,self.Time_curva4 = self.Curvas_add(self.Data_curva4, \
-                                                        self.Time_curva4,float(x[3][2]),x[3][1])
-                if curvas[5] == 1:
-                    self.Data_curva5,self.Time_curva5 = self.Curvas_add(self.Data_curva5, \
-                                                        self.Time_curva5,float(x[4][2]),x[4][1])
-                if curvas[6] == 1:
-                    self.Data_curva6,self.Time_curva6 = self.Curvas_add(self.Data_curva6, \
-                                                        self.Time_curva6,float(x[5][2]),x[5][1])
-                if curvas[7] == 1:
-                    self.Data_curva7,self.Time_curva7 = self.Curvas_add(self.Data_curva7, \
-                                                        self.Time_curva7,float(x[6][2])*1.0257-2.1852,x[6][1])
-
-                if curvas[8] == 1:
-                    self.Data_curva8,self.Time_curva8 = self.Curvas_add(self.Data_curva8, \
-                                                        self.Time_curva8,float(x[7][2])*1.0151-0.7786,x[7][1])
-
+                for i in range(len(window.names_sensor)):
+                    if curvas[i+1] ==1:
+                        self.d[i],self.t[i] = self.Curvas_add(float(x[i][2])*window.fit_number[i][0]\
+                                                                        +window.fit_number[i][1]\
+                                                                        ,x[i][1])
             if curvas[9] == 1:
-                self.Data_curva9,self.Time_curva9 = self.Curvas_add(self.Data_curva9, \
-                                                    self.Time_curva9,SP_1,x[7][1])
+                self.d[8],self.t[8] = self.Curvas_add(SP_1,x[7][1])
 
             if curvas[10] == 1:
                 HTR_1 = float(DataTemp2.Read_335('SETP?','1'))
-                self.Data_curva10,self.Time_curva10 = self.Curvas_add(self.Data_curva10, \
-                                                      self.Time_curva10,HTR_1,x[7][1])
+                self.d[9],self.t[9] = self.Curvas_add(HTR_1,x[7][1])
                 time.sleep(0.05)
 
             if curvas[11] == 1:
-                self.Data_curva11,self.Time_curva11 = self.Curvas_add(self.Data_curva11, \
-                                                      self.Time_curva11,SP_2,x[7][1])
+                self.d[10],self.t[10] = self.Curvas_add(SP_2,x[7][1])
 
             if curvas[12] == 1:
                 HTR_2 = float(DataTemp2.Read_335('SETP?','2'))
-                self.Data_curva12,self.Time_curva12 = self.Curvas_add(self.Data_curva12,\
-                                                      self.Time_curva12,HTR_2,x[7][1])
+                self.d[11],self.t[11] = self.Curvas_add(HTR_2,x[7][1])
                 time.sleep(0.05)
 
             global actual
            # actual = False
             pg.QtGui.QApplication.processEvents()
 
-    def Curvas_add(self,Datos_curvas,Tiempo_curvas,datos,tiempos):
+    def Curvas_add(self,datos,tiempos):
+        Datos_curvas, Tiempo_curvas =[],[]
         Datos_curvas.append(datos)
         Tiempo_curvas.append(tiempos)
         for i in range(len(Tiempo_curvas)):
