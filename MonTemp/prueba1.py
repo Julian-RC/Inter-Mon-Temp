@@ -660,7 +660,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         super(MainWindow, self).__init__()
        # QtWidgets.QMainWindow.__init__(self, *args, **kwargs)
         global label_scroll, textDict, textDict2, patch,textDict_color,textDict_fit
-        self.num_matplotlib = 0
+        self.num_matplotlib,self.num_ramp = 0,0
         patch = os.path.realpath(__file__).strip('prueba1.py')
         filename = patch + "cfg/file_218.cfg"
         filename2 = patch + "cfg/file_335.cfg"
@@ -678,7 +678,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                                 int(textDict_color.ConfigDict[a][1]),\
                                 int(textDict_color.ConfigDict[a][2])])
             self.color[len(textDict_color.ConfigDict)] += 1
-        print(self.color)
+        self.color[len(textDict_color.ConfigDict)]=0
         textDict_fit = ConfigModule(filename_fit,0,0)
         for a in textDict_fit.ConfigDict:
             textDict_fit.ConfigDict[a]=textDict_fit.ConfigDict[a].split(',')
@@ -687,15 +687,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.fit_number[self.fit_number[len(textDict_fit.ConfigDict)]]=[float(textDict_fit.ConfigDict[a][0])\
                                                                             ,float(textDict_fit.ConfigDict[a][1])]
             self.fit_number[len(textDict_fit.ConfigDict)] += 1
-        print(self.fit_number)
-        print(self.fit_number)
         DataTemp = TempClass(textDict.ConfigDict)
         DataTemp2 = TempClass(textDict2.ConfigDict,DataTemp.InitTime)
         self.names_sensor=[]
         for a in [textDict2,textDict]:
             for b in a.ConfigDict['Sensor Type']:
                 self.names_sensor.append(b)
-        print(self.names_sensor)
         self.setupUi(self)
         self.setWindowTitle("Temperature 3.0")
         self.setWindowIcon(QtGui.QIcon(os.path.realpath(__file__).strip('prueba1.py')+'Temperature.png'))
@@ -730,6 +727,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.start.clicked.connect(self.start_adquisition)
         self.stop.clicked.connect(self.stop_adquisition)
         self.see_ramp.clicked.connect(self.rampa)
+        self.ramp.clicked.connect(self.rampa_matplotlib)
 
         self.actionInfo.triggered.connect(self.show_dialog)
         self.action218.triggered.connect(self.show_218)
@@ -798,6 +796,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.color_H1.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','\
                                         +str(color_rgb[2])+");border: 1px solid black;")
             pg.QtGui.QApplication.processEvents()
+        for a in textDict_color.ConfigDict:
+            self.color[self.color[len(textDict_color.ConfigDict)]]=array([int(textDict_color.ConfigDict[a][0]),\
+                                int(textDict_color.ConfigDict[a][1]),\
+                                int(textDict_color.ConfigDict[a][2])])
+            self.color[len(textDict_color.ConfigDict)] += 1
+        self.color[len(textDict_color.ConfigDict)]=0
     def change_color_S1(self):
         global textDict_color
         color_rgb = textDict_color.ConfigDict['S1']
@@ -809,6 +813,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.color_S1.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','\
                                         +str(color_rgb[2])+");border: 1px solid black;")
             pg.QtGui.QApplication.processEvents()
+        for a in textDict_color.ConfigDict:
+            self.color[self.color[len(textDict_color.ConfigDict)]]=array([int(textDict_color.ConfigDict[a][0]),\
+                                int(textDict_color.ConfigDict[a][1]),\
+                                int(textDict_color.ConfigDict[a][2])])
+            self.color[len(textDict_color.ConfigDict)] += 1
+        self.color[len(textDict_color.ConfigDict)]=0
     def change_color_H2(self):
         global textDict_color
         color_rgb = textDict_color.ConfigDict['H2']
@@ -820,6 +830,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.color_H2.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','\
                                         +str(color_rgb[2])+");border: 1px solid black;")
             pg.QtGui.QApplication.processEvents()
+        for a in textDict_color.ConfigDict:
+            self.color[self.color[len(textDict_color.ConfigDict)]]=array([int(textDict_color.ConfigDict[a][0]),\
+                                int(textDict_color.ConfigDict[a][1]),\
+                                int(textDict_color.ConfigDict[a][2])])
+            self.color[len(textDict_color.ConfigDict)] += 1
+        self.color[len(textDict_color.ConfigDict)]=0
     def change_color_S2(self):
         global textDict_color
         color_rgb = textDict_color.ConfigDict['S2']
@@ -830,6 +846,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.color_S2.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','\
                                         +str(color_rgb[2])+");border: 1px solid black;")
             pg.QtGui.QApplication.processEvents()
+        for a in textDict_color.ConfigDict:
+            self.color[self.color[len(textDict_color.ConfigDict)]]=array([int(textDict_color.ConfigDict[a][0]),\
+                                int(textDict_color.ConfigDict[a][1]),\
+                                int(textDict_color.ConfigDict[a][2])])
+            self.color[len(textDict_color.ConfigDict)] += 1
+        self.color[len(textDict_color.ConfigDict)]=0
     def change_color_CA(self):
         global textDict_color
         color_rgb = textDict_color.ConfigDict['CA']
@@ -841,6 +863,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.color_CA.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','\
                                         +str(color_rgb[2])+");border: 1px solid black;")
             pg.QtGui.QApplication.processEvents()
+        for a in textDict_color.ConfigDict:
+            self.color[self.color[len(textDict_color.ConfigDict)]]=array([int(textDict_color.ConfigDict[a][0]),\
+                                int(textDict_color.ConfigDict[a][1]),\
+                                int(textDict_color.ConfigDict[a][2])])
+            self.color[len(textDict_color.ConfigDict)] += 1
+        self.color[len(textDict_color.ConfigDict)]=0
     def change_color_CB(self):
         global textDict_color
         color_rgb = textDict_color.ConfigDict['CB']
@@ -852,6 +880,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.color_CB.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','\
                                         +str(color_rgb[2])+");border: 1px solid black;")
             pg.QtGui.QApplication.processEvents()
+        for a in textDict_color.ConfigDict:
+            self.color[self.color[len(textDict_color.ConfigDict)]]=array([int(textDict_color.ConfigDict[a][0]),\
+                                int(textDict_color.ConfigDict[a][1]),\
+                                int(textDict_color.ConfigDict[a][2])])
+            self.color[len(textDict_color.ConfigDict)] += 1
+        self.color[len(textDict_color.ConfigDict)]=0
     def change_color_D1(self):
         global textDict_color
         color_rgb = textDict_color.ConfigDict['D1']
@@ -863,6 +897,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.color_D1.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','\
                                         +str(color_rgb[2])+");border: 1px solid black;")
             pg.QtGui.QApplication.processEvents()
+        for a in textDict_color.ConfigDict:
+            self.color[self.color[len(textDict_color.ConfigDict)]]=array([int(textDict_color.ConfigDict[a][0]),\
+                                int(textDict_color.ConfigDict[a][1]),\
+                                int(textDict_color.ConfigDict[a][2])])
+            self.color[len(textDict_color.ConfigDict)] += 1
+        self.color[len(textDict_color.ConfigDict)]=0
     def change_color_D2(self):
         global textDict_color
         color_rgb = textDict_color.ConfigDict['D2']
@@ -874,6 +914,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.color_D2.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','\
                                         +str(color_rgb[2])+");border: 1px solid black;")
             pg.QtGui.QApplication.processEvents()
+        for a in textDict_color.ConfigDict:
+            self.color[self.color[len(textDict_color.ConfigDict)]]=array([int(textDict_color.ConfigDict[a][0]),\
+                                int(textDict_color.ConfigDict[a][1]),\
+                                int(textDict_color.ConfigDict[a][2])])
+            self.color[len(textDict_color.ConfigDict)] += 1
+        self.color[len(textDict_color.ConfigDict)]=0
     def change_color_D3(self):
         global textDict_color
         color_rgb = textDict_color.ConfigDict['D3']
@@ -885,6 +931,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.color_D3.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','\
                                         +str(color_rgb[2])+");border: 1px solid black;")
             pg.QtGui.QApplication.processEvents()
+        for a in textDict_color.ConfigDict:
+            self.color[self.color[len(textDict_color.ConfigDict)]]=array([int(textDict_color.ConfigDict[a][0]),\
+                                int(textDict_color.ConfigDict[a][1]),\
+                                int(textDict_color.ConfigDict[a][2])])
+            self.color[len(textDict_color.ConfigDict)] += 1
+        self.color[len(textDict_color.ConfigDict)]=0
     def change_color_D4(self):
         global textDict_color
         color_rgb = textDict_color.ConfigDict['D4']
@@ -896,6 +948,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.color_D4.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','\
                                         +str(color_rgb[2])+");border: 1px solid black;")
             pg.QtGui.QApplication.processEvents()
+        for a in textDict_color.ConfigDict:
+            self.color[self.color[len(textDict_color.ConfigDict)]]=array([int(textDict_color.ConfigDict[a][0]),\
+                                int(textDict_color.ConfigDict[a][1]),\
+                                int(textDict_color.ConfigDict[a][2])])
+            self.color[len(textDict_color.ConfigDict)] += 1
+        self.color[len(textDict_color.ConfigDict)]=0
     def change_color_C5(self):
         global textDict_color
         color_rgb = textDict_color.ConfigDict['C5']
@@ -907,6 +965,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.color_C5.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','\
                                         +str(color_rgb[2])+");border: 1px solid black;")
             pg.QtGui.QApplication.processEvents()
+        for a in textDict_color.ConfigDict:
+            self.color[self.color[len(textDict_color.ConfigDict)]]=array([int(textDict_color.ConfigDict[a][0]),\
+                                int(textDict_color.ConfigDict[a][1]),\
+                                int(textDict_color.ConfigDict[a][2])])
+            self.color[len(textDict_color.ConfigDict)] += 1
+        self.color[len(textDict_color.ConfigDict)]=0
     def change_color_C6(self):
         global textDict_color
         color_rgb = textDict_color.ConfigDict['C6']
@@ -918,7 +982,33 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.color_C6.setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','\
                                         +str(color_rgb[2])+");border: 1px solid black;")
             pg.QtGui.QApplication.processEvents()
-    
+        for a in textDict_color.ConfigDict:
+            self.color[self.color[len(textDict_color.ConfigDict)]]=array([int(textDict_color.ConfigDict[a][0]),\
+                                int(textDict_color.ConfigDict[a][1]),\
+                                int(textDict_color.ConfigDict[a][2])])
+            self.color[len(textDict_color.ConfigDict)] += 1
+        self.color[len(textDict_color.ConfigDict)]=0
+    def rampa_matplotlib(self):
+        Flag = 0
+        self.curvas_ramp=[0,0,0,0,0,0,0,0]
+        sensor_ramp = [self.ramp_CA,self.ramp_CB,self.ramp_D1,self.ramp_D2,\
+                        self.ramp_D3,self.ramp_D4,self.ramp_C5,self.ramp_C6]
+        for i in range(8):
+            if sensor_ramp[i].isChecked():
+                self.curvas_ramp[i] = 1
+                Flag = 1
+        if Flag ==1: 
+            try:
+                if self.num_ramp==0:
+                    self.mpl_ramp=[]
+                    self.mpl_ramp.append(Lienzo_ramp())
+                    self.mpl_ramp[0].show()
+                else:
+                    self.mpl_ramp.append(Lienzo_ramp())
+                    self.mpl_ramp[self.num_ramp].show()
+                self.num_ramp += 1
+            except:
+                pass
     def rampa(self):
         global ramp_stat,rampa_true
         ramp_stat = True
@@ -1038,6 +1128,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         DataTemp2.Read_335('RANGE?','1')
         DataTemp2.Read_335('RANGE?','2')
         self.grafica1.setEnabled(True)
+        self.grafica1.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
         self.start.setEnabled(False)
         self.stop.setEnabled(True)
         self.directorio.setEnabled(False)
@@ -1188,6 +1279,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                             self.mpl[i].close()
                     except:
                         pass
+                    try:
+                        for i in range(len(self.mpl_ramp)):
+                            self.mpl_ramp[i].close()
+                    except:
+                        pass
             else:
                     event.ignore()
         except KeyboardInterrupt as KBI:
@@ -1228,7 +1324,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if patch:
             global textDict,textDict2,DataTemp,DataTemp2
             ls = subprocess.getoutput("cd && cd " +patch+ "&&ls")
-           # print(ls.strip('\n'))
             if len(ls)<150:
                 label_scroll+='                               Selected folder\n'
                 label_scroll+='-------------------------------------------------------------------------\n'
@@ -1342,8 +1437,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 filename2 = path + "cfg/file_335.cfg"
                 textDict = ConfigModule(filename,0,0)
                 textDict2 = ConfigModule(filename2,0,0)
-                print(textDict.ConfigDict)
-                print(textDict2.ConfigDict)
                 DataTemp = TempClass(textDict.ConfigDict)
                 DataTemp2 = TempClass(textDict2.ConfigDict,DataTemp.InitTime)
                 self.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
@@ -1895,8 +1988,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 curvas[11] = 1
         if self.heater2.isChecked():
                 curvas[12] = 1
-
-           #     print(b)
         if self.grafica1.isChecked():
             global plt_mgr,Time_graph
             actual, close_plot = True, False
@@ -1931,7 +2022,6 @@ class LivePlotter(object):
     global curvas, textDict_color
 
     def __init__(self):
-        print(len(window.names_sensor))
         self.win = pg.GraphicsWindow(title='Data')
         self.p = self.win.addPlot(title='Sensores')
         self.p.setLabel('left', 'Temperature ',units= 'K')
@@ -1970,12 +2060,10 @@ class LivePlotter(object):
             global Time_graph
             if curvas[0] == 1:
                 for i in range(len(window.names_sensor)-4):
-                    print(i)
                     self.d[i],self.t[i] = self.Curvas_add(self.d[i],self.t[i],\
                                                             float(x[i][2])*window.fit_number[i][0]\
                                                                         +window.fit_number[i][1]\
                                                                         ,x[i][1])
-                    print(i)
             else:
                 for i in range(len(window.names_sensor)-4):
                     if curvas[i+1] ==1:
@@ -2002,7 +2090,6 @@ class LivePlotter(object):
             global actual
            # actual = False
             pg.QtGui.QApplication.processEvents()
-
     def Curvas_add(self, Datos_curvas, Tiempo_curvas,datos,tiempos):
        
         Datos_curvas.append(datos)
@@ -2014,16 +2101,11 @@ class LivePlotter(object):
                 break
             pg.QtGui.QApplication.processEvents()
         return Datos_curvas,Tiempo_curvas
-
-
     def Quitar_datos(self, Arreglo_curvas,Arreglo_tiempo):
         Arreglo_curvas = Arreglo_curvas[-(len(Arreglo_curvas)-1):]
         Arreglo_tiempo = Arreglo_tiempo[-(len(Arreglo_tiempo)-1):]
         return Arreglo_curvas,Arreglo_tiempo
-
-
     def update(self):
-            print(curvas)
             if curvas[0] == 1:
                 for i in range(len(self.names_curves)-4):
                     self.c[i].setData(self.t[i],self.d[i])
@@ -2034,7 +2116,6 @@ class LivePlotter(object):
             for i in [8,9,10,11]:
                 if curvas[i+1] == 1:
                     self.c[i].setData(self.t[i],self.d[i])
-
     def close(self):
         try:
             self.win.close()
@@ -2097,18 +2178,17 @@ class Lienzo(FigureCanvas):
         b = []
         i_cnt = 0
         for name in [DataTemp2,DataTemp]:
-            a = name.Plot_inter(window.names_curves[i_cnt])
+            a = name.Plot_inter(window.file_plot_names[i_cnt])
             for c in a:
                 b.append(c)
             i_cnt += 1
         if curvas[0] == 1:
             for i in range(8):
-                self.ejes.plot(b[i][0], b[i][1],label=window.names_curves[i],color=window.color[i]/255)
-                print(window.color[i]/255)
+                self.ejes.plot(b[i][0], b[i][1],label=window.names_sensor[i],color=window.color[i]/255)
         else:
             for i in range(8):
                 if curvas[i+1]==1:
-                    self.ejes.plot(b[i][0], b[i][1],label=window.names_curves[i],color=window.color[i]/255)
+                    self.ejes.plot(b[i][0], b[i][1],label=window.names_sensor[i],color=window.color[i]/255)
         self.ejes.title.set_text("Plot of Data")
         self.ejes.set_xlabel("t [s]")
         self.ejes.set_ylabel("T [K]")
@@ -2123,6 +2203,56 @@ class Lienzo(FigureCanvas):
 
         self.setLayout(self.vbox)
 
+class Lienzo_ramp(FigureCanvas):
+    def __init__(self):
+        global DataTemp,DataTemp2,window
+        self.figura = Figure()
+        self.figura_2 = Figure()
+        self.ejes = self.figura.add_subplot(111)
+        b = []
+        i_cnt = 0
+        for name in [DataTemp2,DataTemp]:
+            a = name.Plot_inter(window.file_plot_names[i_cnt])
+            for c in a:
+                b.append(c)
+            i_cnt += 1
+        for i in range(8):
+                if window.curvas_ramp[i]==1:
+                    b[i][1] = array(self.deriv_h4_no_uniforme(b[i][1],b[i][0]))*60
+                    self.ejes.plot(b[i][0], b[i][1],label = 'Ramp ' + window.names_sensor[i],\
+                        color=window.color[i]/255)
+
+        self.ejes.title.set_text("Plot Ramp of Data")
+        self.ejes.set_xlabel("t [s]")
+        self.ejes.set_ylabel("T [K]")
+        self.ejes.grid(),self.ejes.legend()
+        FigureCanvas.__init__(self,self.figura_2)
+        self.canvas = FigureCanvas(self.figura)
+        self.canvas.setParent(self)
+        self.toolbar = NavigationToolbar(self.canvas, self)
+        self.vbox = QtGui.QVBoxLayout()
+        self.vbox.addWidget(self.toolbar)
+        self.vbox.addWidget(self.canvas)
+
+        self.setLayout(self.vbox)
+    def deriv_h4_no_uniforme(self,f,x):
+        f_prima = [0]*len(f)  #definimos la longitud de la funcion f
+        for i in range(2,len(f)-2): #tomamos un intervalo despreciando el primero, segundo, penúltimo y último término
+            hi_2,hi_1,hi1, hi2 = x[i]-x[i-2],x[i]-x[i-1],x[i+1]-x[i],x[i+2]-x[i] # definimos las h utilizadas
+            a,b,c,d=hi_2*hi1,hi2*hi_1,hi_1*hi1,hi2*hi_2 #definimos terminos que aparecen constantemente en la formula
+            #implementamos la derivada
+            f_prima[i] = ((1/(a)+1/(b)-1/(c)-1/(d))**-1)\
+                       *(f[i] \
+                       *((hi2-hi_1)/((b)**2) \
+                       +(hi1-hi_2)/((a)**2)\
+                       -(hi1-hi_1)/((c)**2)\
+                       -(hi2-hi_2)/((d)**2))\
+                       -(hi_1**2*f[i+1]-hi1**2*f[i-1])/((hi_1+hi1)*(c)**2)\
+                       -(hi_2**2*f[i+2]-hi2**2*f[i-2])/((hi_2+hi2)*(d)**2)\
+                       +(hi_1**2*f[i+2]-hi2**2*f[i-1])/((hi_1+hi2)*(b)**2)\
+                       +(hi_2**2*f[i+1]-hi1**2*f[i-2])/((hi_2+hi1)*(a)**2))
+            pg.QtGui.QApplication.processEvents()
+        return f_prima
 #################################################################################################################
 
 
