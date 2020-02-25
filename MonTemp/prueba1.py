@@ -16,7 +16,7 @@ from MonTemp.fit import Ui_fit
 from MonTemp.fit_335_ui import Ui_fit_335
 from PyQt5 import QtWidgets,QtGui,QtCore
 import pyqtgraph as pg
-from numpy import append
+from numpy import append,array
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_qt5agg \
   import FigureCanvasQTAgg as FigureCanvas
@@ -660,6 +660,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         super(MainWindow, self).__init__()
        # QtWidgets.QMainWindow.__init__(self, *args, **kwargs)
         global label_scroll, textDict, textDict2, patch,textDict_color,textDict_fit
+        self.num_matplotlib = 0
         patch = os.path.realpath(__file__).strip('prueba1.py')
         filename = patch + "cfg/file_218.cfg"
         filename2 = patch + "cfg/file_335.cfg"
@@ -671,12 +672,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         textDict_color = ConfigModule(filename_color,0,0)
         for a in textDict_color.ConfigDict:
             textDict_color.ConfigDict[a]=textDict_color.ConfigDict[a].split(',')
-        self.color=[0]*12
+        self.color=[0]*(len(textDict_color.ConfigDict)+1)
         for a in textDict_color.ConfigDict:
-            for i in range(len(self.color)):
-                self.color[i]=[int(textDict_color.ConfigDict[a][0]),\
+            self.color[self.color[len(textDict_color.ConfigDict)]]=array([int(textDict_color.ConfigDict[a][0]),\
                                 int(textDict_color.ConfigDict[a][1]),\
-                                int(textDict_color.ConfigDict[a][2])]
+                                int(textDict_color.ConfigDict[a][2])])
+            self.color[len(textDict_color.ConfigDict)] += 1
         print(self.color)
         textDict_fit = ConfigModule(filename_fit,0,0)
         for a in textDict_fit.ConfigDict:
@@ -686,6 +687,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.fit_number[self.fit_number[len(textDict_fit.ConfigDict)]]=[float(textDict_fit.ConfigDict[a][0])\
                                                                             ,float(textDict_fit.ConfigDict[a][1])]
             self.fit_number[len(textDict_fit.ConfigDict)] += 1
+        print(self.fit_number)
         print(self.fit_number)
         DataTemp = TempClass(textDict.ConfigDict)
         DataTemp2 = TempClass(textDict2.ConfigDict,DataTemp.InitTime)
@@ -1181,6 +1183,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                             f = open (patch+'/Temperature.bt','a')
                             f.write(label_scroll)
                             f.close()
+                    try:
+                        for i in range(len(self.mpl)):
+                            self.mpl[i].close()
+                    except:
+                        pass
             else:
                     event.ignore()
         except KeyboardInterrupt as KBI:
@@ -1814,7 +1821,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             Time_graph = float('inf')
         curvas = [0,0,0,0,0,0,0,0,0,0,0,0,0]
         if self.Todos.isChecked():
-                curvas[0] = 1
+                for i in range(9):
+                    curvas[i]=1
         else:
                 if self.CA.isChecked():
                     curvas[1] = 1
@@ -1846,19 +1854,21 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 pass
             else:
                 color_last = textDict_color.ConfigDict
-                plt_mgr.update_curvas()  
+            plt_mgr.update_curvas()  
         else:
             curvas_last = curvas
             if textDict_color == color_last:
                 pass
             else:
                 color_last = textDict_color.ConfigDict
-            plt_mgr.update_curvas()  
+                plt_mgr.update_curvas()  
     def graficar(self):
         global actual,close_plot,DataTemp, DataTemp2, curvas, curvas_last, textDict_color,color_last
         curvas = [0,0,0,0,0,0,0,0,0,0,0,0,0]
         if self.Todos.isChecked():
-                curvas[0] = 1
+                for i in range(9):
+                    curvas[i]=1
+
         else:
                 if self.CA.isChecked():
                     curvas[1] = 1
@@ -1905,8 +1915,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             Time_graph = float('inf')
     def matplotlib(self):
         try:
-            mpl = Lienzo()
-            mpl.show()
+            if self.num_matplotlib==0:
+                self.mpl=[]
+                self.mpl.append(Lienzo())
+                self.mpl[0].show()
+            else:
+                self.mpl.append(Lienzo())
+                self.mpl[self.num_matplotlib].show()
+            self.num_matplotlib += 1
         except:
             pass
 
@@ -1915,6 +1931,7 @@ class LivePlotter(object):
     global curvas, textDict_color
 
     def __init__(self):
+        print(len(window.names_sensor))
         self.win = pg.GraphicsWindow(title='Data')
         self.p = self.win.addPlot(title='Sensores')
         self.p.setLabel('left', 'Temperature ',units= 'K')
@@ -1923,66 +1940,71 @@ class LivePlotter(object):
         self.names_curves = window.names_sensor
         for a in ['SetPoint 1','Heater 1','SetPoint 2','Heater 2']:
             self.names_curves.append(a)
-        self.c=[0]*12
-        self.d=[0]*12
-        self.t=[0]*12
+        self.c=[[],[],[],[],[],[],[],[],[],[],[],[]]
+        self.d=[[],[],[],[],[],[],[],[],[],[],[],[]]
+        self.t=[[],[],[],[],[],[],[],[],[],[],[],[]]
         self.p.addLegend()
         if curvas[0] == 1:
-            for i in range(len(window.names_sensor)):
-                self.c[i]=self.p.plot(pen=window.color[i],name=self.names_sensor[i])
+            for i in range(len(window.names_sensor)-4):
+                self.c[i]=self.p.plot(pen=window.color[i],name=self.names_curves[i])
         else:
-            for i in range(len(window.names_sensor)):
+            for i in range(len(window.names_sensor)-4):
                 if curvas[1+i] == 1:
-                    self.c[i]=self.p.plot(pen=window.color[i],name=self.names_sensor[i])
-        for i in [len(window.names_sensor),len(self.names_sensor)-1]:
+                    self.c[i]=self.p.plot(pen=window.color[i],name=self.names_curves[i])
+        for i in [8,9,10,11]:
                 if curvas[1+i] == 1:
-                    self.c[i]=self.p.plot(pen=window.color[i],name=self.names_sensor[i])
+                    self.c[i]=self.p.plot(pen=window.color[i],name=self.names_curves[i])
         self.p.setRange(yRange=[50, 300])
     def update_curvas(self):
-        for i in range(len(self.names_sensor)):
-            if curvas[i+1] == 1:
-                self.c[i]=self.p.plot(pen=window.color[i],name=self.names_sensor[i])
-            else:
+        for i in range(len(self.names_curves)):
+            for i in range(len(self.c)):
                 self.c[i].clear()
-                self.d[i]=0
-                self.t[i]=0
+            if curvas[i+1] == 1:
+                self.c[i]=self.p.plot(pen=window.color[i],name=self.names_curves[i])
+            else:
+                self.d[i]=[]
+                self.t[i]=[]
     def return_data(self,i):
         return self.d[i],self.t[i]
     def add(self, x):
             global Time_graph
             if curvas[0] == 1:
-                for i in range(len(window.names_sensor)):
-                    self.d[i],self.t[i] = self.Curvas_add(float(x[i][2])*window.fit_number[i][0]\
+                for i in range(len(window.names_sensor)-4):
+                    print(i)
+                    self.d[i],self.t[i] = self.Curvas_add(self.d[i],self.t[i],\
+                                                            float(x[i][2])*window.fit_number[i][0]\
                                                                         +window.fit_number[i][1]\
                                                                         ,x[i][1])
+                    print(i)
             else:
-                for i in range(len(window.names_sensor)):
+                for i in range(len(window.names_sensor)-4):
                     if curvas[i+1] ==1:
-                        self.d[i],self.t[i] = self.Curvas_add(float(x[i][2])*window.fit_number[i][0]\
+                        self.d[i],self.t[i] = self.Curvas_add(self.d[i],self.t[i],\
+                                                            float(x[i][2])*window.fit_number[i][0]\
                                                                         +window.fit_number[i][1]\
                                                                         ,x[i][1])
             if curvas[9] == 1:
-                self.d[8],self.t[8] = self.Curvas_add(SP_1,x[7][1])
+                self.d[8],self.t[8] = self.Curvas_add(self.d[8],self.t[8],SP_1,x[7][1])
 
             if curvas[10] == 1:
                 HTR_1 = float(DataTemp2.Read_335('SETP?','1'))
-                self.d[9],self.t[9] = self.Curvas_add(HTR_1,x[7][1])
+                self.d[9],self.t[9] = self.Curvas_add(self.d[9],self.t[9],HTR_1,x[7][1])
                 time.sleep(0.05)
 
             if curvas[11] == 1:
-                self.d[10],self.t[10] = self.Curvas_add(SP_2,x[7][1])
+                self.d[10],self.t[10] = self.Curvas_add(self.d[10],self.t[10],SP_2,x[7][1])
 
             if curvas[12] == 1:
                 HTR_2 = float(DataTemp2.Read_335('SETP?','2'))
-                self.d[11],self.t[11] = self.Curvas_add(HTR_2,x[7][1])
+                self.d[11],self.t[11] = self.Curvas_add(self.d[11],self.t[11],HTR_2,x[7][1])
                 time.sleep(0.05)
 
             global actual
            # actual = False
             pg.QtGui.QApplication.processEvents()
 
-    def Curvas_add(self,datos,tiempos):
-        Datos_curvas, Tiempo_curvas =[],[]
+    def Curvas_add(self, Datos_curvas, Tiempo_curvas,datos,tiempos):
+       
         Datos_curvas.append(datos)
         Tiempo_curvas.append(tiempos)
         for i in range(len(Tiempo_curvas)):
@@ -2001,44 +2023,17 @@ class LivePlotter(object):
 
 
     def update(self):
-        #try:
+            print(curvas)
             if curvas[0] == 1:
-                self.curva1.setData(self.Time_curva1,self.Data_curva1)
-                self.curva2.setData(self.Time_curva2,self.Data_curva2)
-                self.curva3.setData(self.Time_curva3,self.Data_curva3)
-                self.curva4.setData(self.Time_curva4,self.Data_curva4)
-                self.curva5.setData(self.Time_curva5,self.Data_curva5)
-                self.curva6.setData(self.Time_curva6,self.Data_curva6)
-                self.curva7.setData(self.Time_curva7,self.Data_curva7)
-                self.curva8.setData(self.Time_curva8,self.Data_curva8)
+                for i in range(len(self.names_curves)-4):
+                    self.c[i].setData(self.t[i],self.d[i])
             else:
-                if curvas[1] == 1:
-                    self.curva1.setData(self.Time_curva1,self.Data_curva1)
-                if curvas[2] == 1:
-                    self.curva2.setData(self.Time_curva2,self.Data_curva2)
-                if curvas[3] == 1:
-                    self.curva3.setData(self.Time_curva3,self.Data_curva3)
-                if curvas[4] == 1:
-                    self.curva4.setData(self.Time_curva4,self.Data_curva4)
-                if curvas[5] == 1:
-                    self.curva5.setData(self.Time_curva5,self.Data_curva5)
-                if curvas[6] == 1:
-                    self.curva6.setData(self.Time_curva6,self.Data_curva6)
-                if curvas[7] == 1:
-                    self.curva7.setData(self.Time_curva7,self.Data_curva7)
-                if curvas[8] == 1:
-                    self.curva8.setData(self.Time_curva8,self.Data_curva8)
-            if curvas[9] == 1:
-                self.curva9.setData(self.Time_curva9,self.Data_curva9)
-            if curvas[10] == 1:
-                self.curva10.setData(self.Time_curva10,self.Data_curva10)
-            if curvas[11] == 1:
-                self.curva11.setData(self.Time_curva11,self.Data_curva11)
-            if curvas[12] == 1:
-                self.curva12.setData(self.Time_curva12,self.Data_curva12)
-     #   except Exception as e:
-
-      #pass
+                for i in range(len(self.names_curves)-4):
+                    if curvas[1] == 1:
+                        self.c[i].setData(self.t[i],self.d[i])
+            for i in [8,9,10,11]:
+                if curvas[i+1] == 1:
+                    self.c[i].setData(self.t[i],self.d[i])
 
     def close(self):
         try:
@@ -2100,71 +2095,20 @@ class Lienzo(FigureCanvas):
         self.figura_2 = Figure()
         self.ejes = self.figura.add_subplot(111)
         b = []
-        i = 0
+        i_cnt = 0
         for name in [DataTemp2,DataTemp]:
-            a = name.Plot_inter(window.file_plot_names[i])
+            a = name.Plot_inter(window.names_curves[i_cnt])
             for c in a:
                 b.append(c)
-            i += 1
+            i_cnt += 1
         if curvas[0] == 1:
-            self.ejes.plot(b[0][0], b[0][1],label='Cernox A',color=[int(textDict_color.ConfigDict['CA'][0])/255,\
-                                                                    int(textDict_color.ConfigDict['CA'][1])/255,\
-                                                                    int(textDict_color.ConfigDict['CA'][2])/255])
-            self.ejes.plot(b[1][0], b[1][1],label='Cernox B',color=[int(textDict_color.ConfigDict['CB'][0])/255,\
-                                                                    int(textDict_color.ConfigDict['CB'][1])/255,\
-                                                                    int(textDict_color.ConfigDict['CB'][2])/255])
-            self.ejes.plot(b[2][0],  b[2][1],label='Diodo 1',color=[int(textDict_color.ConfigDict['D1'][0])/255,\
-                                                                    int(textDict_color.ConfigDict['D1'][1])/255,\
-                                                                    int(textDict_color.ConfigDict['D1'][2])/255])
-            self.ejes.plot(b[3][0],  b[3][1],label='Diodo 2',color=[int(textDict_color.ConfigDict['D2'][0])/255,\
-                                                                    int(textDict_color.ConfigDict['D2'][1])/255,\
-                                                                    int(textDict_color.ConfigDict['D2'][2])/255])
-            self.ejes.plot(b[4][0],  b[4][1],label='Diodo 3',color=[int(textDict_color.ConfigDict['D3'][0])/255,\
-                                                                    int(textDict_color.ConfigDict['D3'][1])/255,\
-                                                                    int(textDict_color.ConfigDict['D3'][2])/255])
-            self.ejes.plot(b[5][0],  b[5][1],label='Diodo 4',color=[int(textDict_color.ConfigDict['D4'][0])/255,\
-                                                                    int(textDict_color.ConfigDict['D4'][1])/255,\
-                                                                    int(textDict_color.ConfigDict['D4'][2])/255])
-            self.ejes.plot(b[6][0], b[6][1],label='Cernox 5',color=[int(textDict_color.ConfigDict['C5'][0])/255,\
-                                                                    int(textDict_color.ConfigDict['C5'][1])/255,\
-                                                                    int(textDict_color.ConfigDict['C5'][2])/255])
-            self.ejes.plot(b[7][0], b[7][1],label='Cernox 6',color=[int(textDict_color.ConfigDict['C6'][0])/255,\
-                                                                    int(textDict_color.ConfigDict['C6'][1])/255,\
-                                                                    int(textDict_color.ConfigDict['C6'][2])/255])
-
+            for i in range(8):
+                self.ejes.plot(b[i][0], b[i][1],label=window.names_curves[i],color=window.color[i]/255)
+                print(window.color[i]/255)
         else:
-            if curvas[1] == 1:
-                self.ejes.plot(b[0][0], b[0][1],label='Cernox A',color=[int(textDict_color.ConfigDict['CA'][0])/255,\
-                                                                        int(textDict_color.ConfigDict['CA'][1])/255,
-                                                                        int(textDict_color.ConfigDict['CA'][2])/255])
-            if curvas[2] == 1:
-                self.ejes.plot(b[1][0], b[1][1],label='Cernox B',color=[int(textDict_color.ConfigDict['CB'][0])/255,\
-                                                                        int(textDict_color.ConfigDict['CB'][1])/255,\
-                                                                        int(textDict_color.ConfigDict['CB'][2])/255])
-            if curvas[3] == 1:
-                self.ejes.plot(b[2][0],  b[2][1],label='Diodo 1',color=[int(textDict_color.ConfigDict['D1'][0])/255,\
-                                                                        int(textDict_color.ConfigDict['D1'][1])/255,\
-                                                                        int(textDict_color.ConfigDict['D1'][2])/255])
-            if curvas[4] == 1:
-                self.ejes.plot(b[3][0],  b[3][1],label='Diodo 2',color=[int(textDict_color.ConfigDict['D2'][0])/255,\
-                                                                        int(textDict_color.ConfigDict['D2'][1])/255,\
-                                                                        int(textDict_color.ConfigDict['D2'][2])/255])
-            if curvas[5] == 1:
-                self.ejes.plot(b[4][0],  b[4][1],label='Diodo 3',color=[int(textDict_color.ConfigDict['D3'][0])/255,\
-                                                                        int(textDict_color.ConfigDict['D3'][1])/255,\
-                                                                        int(textDict_color.ConfigDict['D3'][2])/255])
-            if curvas[6] == 1:
-                self.ejes.plot(b[5][0],  b[5][1],label='Diodo 4',color=[int(textDict_color.ConfigDict['D4'][0])/255,\
-                                                                        int(textDict_color.ConfigDict['D4'][1])/255,\
-                                                                        int(textDict_color.ConfigDict['D4'][2])/255])
-            if curvas[7] == 1:
-                self.ejes.plot(b[6][0], b[6][1],label='Cernox 5',color=[int(textDict_color.ConfigDict['C5'][0])/255,\
-                                                                        int(textDict_color.ConfigDict['C5'][1])/255,\
-                                                                        int(textDict_color.ConfigDict['C5'][2])/255])
-            if curvas[8] == 1:
-                self.ejes.plot(b[7][0], b[7][1],label='Cernox 6',color=[int(textDict_color.ConfigDict['C6'][0])/255,\
-                                                                        int(textDict_color.ConfigDict['C6'][1])/255,\
-                                                                        int(textDict_color.ConfigDict['C6'][2])/255])
+            for i in range(8):
+                if curvas[i+1]==1:
+                    self.ejes.plot(b[i][0], b[i][1],label=window.names_curves[i],color=window.color[i]/255)
         self.ejes.title.set_text("Plot of Data")
         self.ejes.set_xlabel("t [s]")
         self.ejes.set_ylabel("T [K]")
