@@ -2094,6 +2094,7 @@ class LivePlotter(object):
         self.names_curves_heater = []
         for a in ['SetPoint 1','Heater 1','SetPoint 2','Heater 2']:
             self.names_curves_heater.append(a)
+            pg.QtGui.QApplication.processEvents()
         self.c=[[],[],[],[],[],[],[],[],[],[],[],[]]
         self.d=[[],[],[],[],[],[],[],[],[],[],[],[]]
         self.t=[[],[],[],[],[],[],[],[],[],[],[],[]]
@@ -2102,17 +2103,21 @@ class LivePlotter(object):
         if curvas[0] == 1:
             for i in range(len(window.names_sensor)):
                 self.c[i]=self.p.plot(pen=window.color[i],name=self.names_curves[i])
+                pg.QtGui.QApplication.processEvents()
         else:
             for i in range(len(window.names_sensor)):
                 if curvas[1+i] == 1:
                     self.c[i]=self.p.plot(pen=window.color[i],name=self.names_curves[i])
+                pg.QtGui.QApplication.processEvents()
         try:
             i_cnt = 0
             for name in [DataTemp2,DataTemp]:
                 a = name.Plot_inter(window.file_plot_names[i_cnt])
                 for c in a:
                     b.append(c)
+                    pg.QtGui.QApplication.processEvents()
                 i_cnt += 1
+                pg.QtGui.QApplication.processEvents()
         except:
             pass
         i_cnt = 0
@@ -2120,7 +2125,9 @@ class LivePlotter(object):
             a = name.Plot_inter_header(window.file_plot_names[i_cnt])
             for c in a:
                 b.append(c)
+                pg.QtGui.QApplication.processEvents()
             i_cnt += 1
+            pg.QtGui.QApplication.processEvents()
         if curvas[0] == 1:
             for i in range(len(window.names_sensor)):
                 for inte in range(len(b[i][0])):
@@ -2128,6 +2135,7 @@ class LivePlotter(object):
                                                             b[i][1][inte]*window.fit_number[i][0]\
                                                                         +window.fit_number[i][1]\
                                                                         ,b[i][0][inte])
+                    pg.QtGui.QApplication.processEvents()
         else:
             for i in range(len(window.names_sensor)):
                 for inte in range(len(b[i][0])):
@@ -2136,9 +2144,11 @@ class LivePlotter(object):
                                                             b[i][1][inte]*window.fit_number[i][0]\
                                                                         +window.fit_number[i][1]\
                                                                         ,b[i][0][inte])
+                    pg.QtGui.QApplication.processEvents()
         for i in [8,9,10,11]:
                 if curvas[1+i] == 1:
                     self.c[i]=self.p.plot(pen=window.color[i],name=self.names_curves_heater[i-8])
+                pg.QtGui.QApplication.processEvents()
         self.p.setRange(yRange=[50, 300])
     def add(self, x):
             global Time_graph
