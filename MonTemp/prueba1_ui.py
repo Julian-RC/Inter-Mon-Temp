@@ -110,7 +110,8 @@ class Ui_MainWindow(object):
         self.grafica2.setStyleSheet("background-color: a(0);\n"
 "font: 11pt \"Sans Serif\";\n"
 "")
-        self.grafica2.setChecked(True)
+        self.grafica2.setCheckable(True)
+        self.grafica2.setChecked(False)
         self.grafica2.setObjectName("grafica2")
         self.grafica1 = QtWidgets.QRadioButton(self.frame_7)
         self.grafica1.setEnabled(False)
@@ -335,7 +336,6 @@ class Ui_MainWindow(object):
         self.ramp_CA.setText("")
         self.ramp_CA.setObjectName("ramp_CA")
         self.ramp_C5 = QtWidgets.QCheckBox(self.frame_3)
-        self.ramp_C5.setEnabled(False)
         self.ramp_C5.setGeometry(QtCore.QRect(190, 170, 16, 21))
         self.ramp_C5.setStyleSheet("background-color: a(0);\n"
 "color: rgb( 255, 0, 0);")
@@ -349,7 +349,6 @@ class Ui_MainWindow(object):
         self.ramp_D1.setText("")
         self.ramp_D1.setObjectName("ramp_D1")
         self.ramp_C6 = QtWidgets.QCheckBox(self.frame_3)
-        self.ramp_C6.setEnabled(False)
         self.ramp_C6.setGeometry(QtCore.QRect(190, 190, 16, 21))
         self.ramp_C6.setStyleSheet("background-color: a(0);\n"
 "color: rgb( 255, 0, 0);")
