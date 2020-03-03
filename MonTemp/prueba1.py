@@ -718,6 +718,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.D2.toggled.connect(self.desbloquear_sensores_D2)
         self.D3.toggled.connect(self.desbloquear_sensores_D3)
         self.D4.toggled.connect(self.desbloquear_sensores_D4)
+        self.ramp_CA.toggled.connect(self.desbloquear_sensores_ramp_CA)
+        self.ramp_CB.toggled.connect(self.desbloquear_sensores_ramp_CB)
+        self.ramp_C5.toggled.connect(self.desbloquear_sensores_ramp_C5)
+        self.ramp_C6.toggled.connect(self.desbloquear_sensores_ramp_C6)
+        self.ramp_D1.toggled.connect(self.desbloquear_sensores_ramp_D1)
+        self.ramp_D2.toggled.connect(self.desbloquear_sensores_ramp_D2)
+        self.ramp_D3.toggled.connect(self.desbloquear_sensores_ramp_D3)
+        self.ramp_D4.toggled.connect(self.desbloquear_sensores_ramp_D4)
         self.heater1.toggled.connect(self.desbloquear_heater1)
         self.heater2.toggled.connect(self.desbloquear_heater2)
         self.SetPoint1.toggled.connect(self.desbloquear_SetPoint1)
@@ -767,7 +775,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.color_C6.clicked.connect(self.change_color_C6)
         self.color_CA.clicked.connect(self.change_color_CA)
         self.color_CB.clicked.connect(self.change_color_CB)
-        self.update_graph.clicked.connect(self.update_plot)
 
 
 
@@ -1358,6 +1365,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.radioButton_2.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
                     self.Todos.setEnabled(True)
                     self.Todos.setChecked(True)
+                    self.ramp_CA.setEnabled(True)
+                    self.ramp_CB.setEnabled(True)
+                    self.ramp_C5.setEnabled(True)
+                    self.ramp_C6.setEnabled(True)
+                    self.ramp_D1.setEnabled(True)
+                    self.ramp_D2.setEnabled(True)
+                    self.ramp_D3.setEnabled(True)
+                    self.ramp_D4.setEnabled(True)
                     label_scroll+='               Push "Start" for begin adquisition\n'
                     label_scroll+='-------------------------------------------------------------------------\n'
                     self.linePatch.setText(patch)
@@ -1367,7 +1382,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.ramp_la.setStyleSheet("color:rgb(255,255,255);")
                     self.graph_sensor.setStyleSheet("color:rgb(255,255,255);")
                     self.color_sensor.setStyleSheet("color:rgb(255,255,255);")
-                except:
+                except Exception as e:
+                    print(e)
                     label_scroll += '       Error al cargar la configuración de los modulos\n'
                     label_scroll+='-------------------------------------------------------------------------\n'
                     self.Update_label()
@@ -1429,6 +1445,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.pushButton.setEnabled(True)
                 self.Todos.setEnabled(True)
                 self.Todos.setChecked(True)
+                self.ramp_CA.setEnabled(True)
+                self.ramp_CB.setEnabled(True)
+                self.ramp_C5.setEnabled(True)
+                self.ramp_C6.setEnabled(True)
+                self.ramp_D1.setEnabled(True)
+                self.ramp_D2.setEnabled(True)
+                self.ramp_D3.setEnabled(True)
+                self.ramp_D4.setEnabled(True)
                 self.ramp.setEnabled(True)
                 self.ramp_la.setStyleSheet("color:rgb(255,255,255);")
                 self.graph_sensor.setStyleSheet("color:rgb(255,255,255);")
@@ -1472,7 +1496,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.heater2.setStyleSheet("background-color: a(0);")
                 self.see_ramp.setEnabled(True)
                 self.ramp.setEnabled(False)
-                self.update_graph.setEnabled(False)
         else:
             self.grafica2.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.radioButton.setEnabled(True)
@@ -1493,7 +1516,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.heater2.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.see_ramp.setEnabled(False)
             self.ramp.setEnabled(True)
-            self.update_graph.setEnabled(True)
     def desbloquear_grafica1(self):
         if self.grafica1.isChecked():
             self.grafica1.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
@@ -1741,119 +1763,192 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if self.CA.isChecked():
             self.CA.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
             self.color_CA.setEnabled(True)
-            self.ramp_CA.setEnabled(True)
             color_rgb = textDict_color.ConfigDict['CA']
             self.color_CA.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+\
                                         ");border: 1px solid black;")
         else:
             self.CA.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.color_CA.setEnabled(False)
-            self.ramp_CA.setEnabled(False)
-            self.ramp_CA.setChecked(False)
             self.color_CA.setStyleSheet("background-color: a(0);")
     def desbloquear_sensores_CB(self):
         global textDict_color
         if self.CB.isChecked():
             self.CB.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
             self.color_CB.setEnabled(True)
-            self.ramp_CB.setEnabled(True)
             color_rgb = textDict_color.ConfigDict['CB']
             self.color_CB.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+\
                                         ");border: 1px solid black;")
         else:
             self.CB.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.color_CB.setEnabled(False)
-            self.ramp_CB.setEnabled(False)
-            self.ramp_CB.setChecked(False)
             self.color_CB.setStyleSheet("background-color: a(0);")
     def desbloquear_sensores_C5(self):
         global textDict_color
         if self.C5.isChecked():
             self.C5.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
             self.color_C5.setEnabled(True)
-            self.ramp_C5.setEnabled(True)
             color_rgb = textDict_color.ConfigDict['C5']
             self.color_C5.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+\
                                         ");border: 1px solid black;")
         else:
             self.C5.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.color_C5.setEnabled(False)
-            self.ramp_C5.setEnabled(False)
-            self.ramp_C5.setChecked(False)
             self.color_C5.setStyleSheet("background-color: a(0);")
     def desbloquear_sensores_C6(self):
         global textDict_color
         if self.C6.isChecked():
             self.C6.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
             self.color_C6.setEnabled(True)
-            self.ramp_C6.setEnabled(True)
             color_rgb = textDict_color.ConfigDict['C6']
             self.color_C6.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+\
                                         ");border: 1px solid black;")
         else:
             self.C6.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.color_C6.setEnabled(False)
-            self.ramp_C6.setEnabled(False)
-            self.ramp_C6.setChecked(False)
             self.color_C6.setStyleSheet("background-color: a(0);")
     def desbloquear_sensores_D1(self):
         global textDict_color
         if self.D1.isChecked():
             self.D1.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
             self.color_D1.setEnabled(True)
-            self.ramp_D1.setEnabled(True)
             color_rgb = textDict_color.ConfigDict['D1']
             self.color_D1.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+\
                                         ");border: 1px solid black;")
         else:
             self.D1.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.color_D1.setEnabled(False)
-            self.ramp_D1.setEnabled(False)
-            self.ramp_D1.setChecked(False)
             self.color_D1.setStyleSheet("background-color: a(0);")
     def desbloquear_sensores_D2(self):
         global textDict_color
         if self.D2.isChecked():
             self.D2.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
             self.color_D2.setEnabled(True)
-            self.ramp_D2.setEnabled(True)
             color_rgb = textDict_color.ConfigDict['D2']
             self.color_D2.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+\
                                         ");border: 1px solid black;")
         else:
             self.D2.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.color_D2.setEnabled(False)
-            self.ramp_D2.setEnabled(False)
             self.color_D2.setStyleSheet("background-color: a(0);")
     def desbloquear_sensores_D3(self):
         global textDict_color
         if self.D3.isChecked():
             self.D3.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
             self.color_D3.setEnabled(True)
-            self.ramp_D3.setEnabled(True)
             color_rgb = textDict_color.ConfigDict['D3']
             self.color_D3.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+\
                                         ");border: 1px solid black;")
         else:
             self.D3.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.color_D3.setEnabled(False)
-            self.ramp_D3.setEnabled(False)
-            self.ramp_D3.setChecked(False)
             self.color_D3.setStyleSheet("background-color: a(0);")
     def desbloquear_sensores_D4(self):
         global textDict_color
         if self.D4.isChecked():
             self.D4.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
             self.color_D4.setEnabled(True)
-            self.ramp_D4.setEnabled(True)
             color_rgb = textDict_color.ConfigDict['D4']
             self.color_D4.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+\
                                         ");border: 1px solid black;")
         else:
             self.D4.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.color_D4.setEnabled(False)
-            self.ramp_D4.setEnabled(False)
-            self.ramp_D4.setChecked(False)
+            self.color_D4.setStyleSheet("background-color: a(0);")
+    def desbloquear_sensores_ramp_CA(self):
+        global textDict_color
+        if self.CA.isChecked():
+            self.CA.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
+            self.color_CA.setEnabled(True)
+            color_rgb = textDict_color.ConfigDict['CA']
+            self.color_CA.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+\
+                                        ");border: 1px solid black;")
+        else:
+            self.CA.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
+            self.color_CA.setEnabled(False)
+            self.color_CA.setStyleSheet("background-color: a(0);")
+    def desbloquear_sensores_ramp_CB(self):
+        global textDict_color
+        if self.CB.isChecked():
+            self.CB.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
+            self.color_CB.setEnabled(True)
+            color_rgb = textDict_color.ConfigDict['CB']
+            self.color_CB.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+\
+                                        ");border: 1px solid black;")
+        else:
+            self.CB.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
+            self.color_CB.setEnabled(False)
+            self.color_CB.setStyleSheet("background-color: a(0);")
+    def desbloquear_sensores_ramp_C5(self):
+        global textDict_color
+        if self.C5.isChecked():
+            self.C5.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
+            self.color_C5.setEnabled(True)
+            color_rgb = textDict_color.ConfigDict['C5']
+            self.color_C5.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+\
+                                        ");border: 1px solid black;")
+        else:
+            self.C5.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
+            self.color_C5.setEnabled(False)
+            self.color_C5.setStyleSheet("background-color: a(0);")
+    def desbloquear_sensores_ramp_C6(self):
+        global textDict_color
+        if self.C6.isChecked():
+            self.C6.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
+            self.color_C6.setEnabled(True)
+            color_rgb = textDict_color.ConfigDict['C6']
+            self.color_C6.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+\
+                                        ");border: 1px solid black;")
+        else:
+            self.C6.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
+            self.color_C6.setEnabled(False)
+            self.color_C6.setStyleSheet("background-color: a(0);")
+    def desbloquear_sensores_ramp_D1(self):
+        global textDict_color
+        if self.D1.isChecked():
+            self.D1.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
+            self.color_D1.setEnabled(True)
+            color_rgb = textDict_color.ConfigDict['D1']
+            self.color_D1.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+\
+                                        ");border: 1px solid black;")
+        else:
+            self.D1.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
+            self.color_D1.setEnabled(False)
+            self.color_D1.setStyleSheet("background-color: a(0);")
+    def desbloquear_sensores_ramp_D2(self):
+        global textDict_color
+        if self.D2.isChecked():
+            self.D2.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
+            self.color_D2.setEnabled(True)
+            color_rgb = textDict_color.ConfigDict['D2']
+            self.color_D2.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+\
+                                        ");border: 1px solid black;")
+        else:
+            self.D2.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
+            self.color_D2.setEnabled(False)
+            self.color_D2.setStyleSheet("background-color: a(0);")
+    def desbloquear_sensores_ramp_D3(self):
+        global textDict_color
+        if self.D3.isChecked():
+            self.D3.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
+            self.color_D3.setEnabled(True)
+            color_rgb = textDict_color.ConfigDict['D3']
+            self.color_D3.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+\
+                                        ");border: 1px solid black;")
+        else:
+            self.D3.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
+            self.color_D3.setEnabled(False)
+            self.color_D3.setStyleSheet("background-color: a(0);")
+    def desbloquear_sensores_ramp_D4(self):
+        global textDict_color
+        if self.D4.isChecked():
+            self.D4.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
+            self.color_D4.setEnabled(True)
+            color_rgb = textDict_color.ConfigDict['D4']
+            self.color_D4.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+\
+                                        ");border: 1px solid black;")
+        else:
+            self.D4.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
+            self.color_D4.setEnabled(False)
             self.color_D4.setStyleSheet("background-color: a(0);")
     def desbloquear_heater1(self):
         global textDict_color
@@ -1902,61 +1997,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             self.SetPoint2.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.color_S2.setEnabled(False)
-            self.color_S2.setStyleSheet("background-color: a(0);")
-    def update_plot(self):
-        global curvas, curvas_last, plt_mgr, textDict_color, color_last, Time_graph
-        if self.radioButton.isChecked():
-            horas = self.hh.value()
-            minutos = self.mm.value()
-            segundos = self.ss.value()
-            Time_graph = horas*3600 + minutos*60 + segundos
-        else:
-            Time_graph = float('inf')
-        curvas = [0,0,0,0,0,0,0,0,0,0,0,0,0]
-        if self.Todos.isChecked():
-                for i in range(9):
-                    curvas[i]=1
-        else:
-                if self.CA.isChecked():
-                    curvas[1] = 1
-                    self.see_ramp.setEnabled(True)
-                if self.CB.isChecked():
-                    curvas[2] = 1
-                if self.D1.isChecked():
-                    curvas[3] = 1
-                if self.D2.isChecked():
-                    curvas[4] = 1
-                if self.D3.isChecked():
-                    curvas[5] = 1
-                if self.D4.isChecked():
-                    curvas[6] = 1
-                if self.C5.isChecked():
-                    curvas[7] = 1
-                if self.C6.isChecked():
-                    curvas[8] = 1
-        if self.SetPoint1.isChecked():
-                curvas[9] = 1
-        if self.heater1.isChecked():
-                curvas[10] = 1
-        if self.SetPoint2.isChecked():
-                curvas[11] = 1
-        if self.heater2.isChecked():
-                curvas[12] = 1
-        if curvas == curvas_last:
-            if textDict_color == color_last:
-                pass
-            else:
-                color_last = textDict_color.ConfigDict
-            plt_mgr.update_curvas()  
-        else:
-            curvas_last = curvas
-            if textDict_color == color_last:
-                pass
-            else:
-                color_last = textDict_color.ConfigDict
-                plt_mgr.update_curvas()  
+            self.color_S2.setStyleSheet("background-color: a(0);") 
     def graficar(self):
-        global actual,close_plot,DataTemp, DataTemp2, curvas, curvas_last, textDict_color,color_last
+        global actual,close_plot,DataTemp, DataTemp2, \
+            curvas, curvas_last, textDict_color,color_last, Time_graph
         curvas = [0,0,0,0,0,0,0,0,0,0,0,0,0]
         if self.Todos.isChecked():
                 for i in range(9):
@@ -1988,15 +2032,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 curvas[11] = 1
         if self.heater2.isChecked():
                 curvas[12] = 1
-        if self.grafica1.isChecked():
-            global plt_mgr,Time_graph
-            actual, close_plot = True, False
-            plt_mgr = LivePlotter()
-            curvas_last = curvas
-            color_last = textDict_color.ConfigDict
-        else:
-            actual = False
-            self.matplotlib()
         if self.radioButton.isChecked():
             horas = self.hh.value()
             minutos = self.mm.value()
@@ -2004,6 +2039,18 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             Time_graph = horas*3600 + minutos*60 + segundos
         else:
             Time_graph = float('inf')
+        if self.grafica1.isChecked():
+            global plt_mgr
+            if actual:
+                plt_mgr.close()
+            actual, close_plot = True, False
+            plt_mgr = LivePlotter()
+            curvas_last = curvas
+            color_last = textDict_color.ConfigDict
+        else:
+            actual = False
+            self.matplotlib()
+        
     def matplotlib(self):
         try:
             if self.num_matplotlib==0:
@@ -2019,7 +2066,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
 class LivePlotter(object):
 
-    global curvas, textDict_color
+    global curvas, textDict_color,Time_graph
 
     def __init__(self):
         self.win = pg.GraphicsWindow(title='Data')
@@ -2028,44 +2075,65 @@ class LivePlotter(object):
         self.p.setLabel('bottom', 'Time ',units='s')
         self.p.showGrid(x=False,y=True,alpha=0.3)
         self.names_curves = window.names_sensor
+        self.names_curves_heater = []
         for a in ['SetPoint 1','Heater 1','SetPoint 2','Heater 2']:
-            self.names_curves.append(a)
+            self.names_curves_heater.append(a)
         self.c=[[],[],[],[],[],[],[],[],[],[],[],[]]
         self.d=[[],[],[],[],[],[],[],[],[],[],[],[]]
         self.t=[[],[],[],[],[],[],[],[],[],[],[],[]]
         self.p.addLegend()
+        b = []
         if curvas[0] == 1:
-            for i in range(len(window.names_sensor)-4):
+            for i in range(len(window.names_sensor)):
                 self.c[i]=self.p.plot(pen=window.color[i],name=self.names_curves[i])
         else:
-            for i in range(len(window.names_sensor)-4):
+            for i in range(len(window.names_sensor)):
                 if curvas[1+i] == 1:
                     self.c[i]=self.p.plot(pen=window.color[i],name=self.names_curves[i])
+        try:
+            i_cnt = 0
+            for name in [DataTemp2,DataTemp]:
+                a = name.Plot_inter(window.file_plot_names[i_cnt])
+                for c in a:
+                    b.append(c)
+                i_cnt += 1
+        except:
+            pass
+        i_cnt = 0
+        for name in [DataTemp2,DataTemp]:
+            a = name.Plot_inter_header(window.file_plot_names[i_cnt])
+            for c in a:
+                b.append(c)
+            i_cnt += 1
+        if curvas[0] == 1:
+            for i in range(len(window.names_sensor)):
+                for inte in range(len(b[i][0])):
+                    self.d[i],self.t[i] = self.Curvas_add(self.d[i],self.t[i],\
+                                                            b[i][1][inte]*window.fit_number[i][0]\
+                                                                        +window.fit_number[i][1]\
+                                                                        ,b[i][0][inte])
+        else:
+            for i in range(len(window.names_sensor)):
+                for inte in range(len(b[i][0])):
+                    if curvas[i+1] ==1:
+                        self.d[i],self.t[i] = self.Curvas_add(self.d[i],self.t[i],\
+                                                            b[i][1][inte]*window.fit_number[i][0]\
+                                                                        +window.fit_number[i][1]\
+                                                                        ,b[i][0][inte])
         for i in [8,9,10,11]:
                 if curvas[1+i] == 1:
-                    self.c[i]=self.p.plot(pen=window.color[i],name=self.names_curves[i])
+                    self.c[i]=self.p.plot(pen=window.color[i],name=self.names_curves_heater[i-8])
         self.p.setRange(yRange=[50, 300])
-    def update_curvas(self):
-        for i in range(len(self.names_curves)):
-            for i in range(len(self.c)):
-                self.c[i].clear()
-            if curvas[i+1] == 1:
-                self.c[i]=self.p.plot(pen=window.color[i],name=self.names_curves[i])
-            else:
-                self.d[i]=[]
-                self.t[i]=[]
-    def return_data(self,i):
-        return self.d[i],self.t[i]
     def add(self, x):
             global Time_graph
             if curvas[0] == 1:
-                for i in range(len(window.names_sensor)-4):
+                for i in range(len(window.names_sensor)):
                     self.d[i],self.t[i] = self.Curvas_add(self.d[i],self.t[i],\
                                                             float(x[i][2])*window.fit_number[i][0]\
                                                                         +window.fit_number[i][1]\
                                                                         ,x[i][1])
             else:
-                for i in range(len(window.names_sensor)-4):
+                for i in range(len(window.names_sensor)):
                     if curvas[i+1] ==1:
                         self.d[i],self.t[i] = self.Curvas_add(self.d[i],self.t[i],\
                                                             float(x[i][2])*window.fit_number[i][0]\
@@ -2088,7 +2156,6 @@ class LivePlotter(object):
                 time.sleep(0.05)
 
             global actual
-           # actual = False
             pg.QtGui.QApplication.processEvents()
     def Curvas_add(self, Datos_curvas, Tiempo_curvas,datos,tiempos):
        
@@ -2107,11 +2174,11 @@ class LivePlotter(object):
         return Arreglo_curvas,Arreglo_tiempo
     def update(self):
             if curvas[0] == 1:
-                for i in range(len(self.names_curves)-4):
+                for i in range(len(self.names_curves)):
                     self.c[i].setData(self.t[i],self.d[i])
             else:
-                for i in range(len(self.names_curves)-4):
-                    if curvas[1] == 1:
+                for i in range(len(self.names_curves)):
+                    if curvas[i+1] == 1:
                         self.c[i].setData(self.t[i],self.d[i])
             for i in [8,9,10,11]:
                 if curvas[i+1] == 1:
@@ -2224,7 +2291,7 @@ class Lienzo_ramp(FigureCanvas):
 
         self.ejes.title.set_text("Plot Ramp of Data")
         self.ejes.set_xlabel("t [s]")
-        self.ejes.set_ylabel("T [K]")
+        self.ejes.set_ylabel("Ramp [K/min]")
         self.ejes.grid(),self.ejes.legend()
         FigureCanvas.__init__(self,self.figura_2)
         self.canvas = FigureCanvas(self.figura)
@@ -2253,8 +2320,6 @@ class Lienzo_ramp(FigureCanvas):
                        +(hi_2**2*f[i+1]-hi1**2*f[i-2])/((hi_2+hi1)*(a)**2))
             pg.QtGui.QApplication.processEvents()
         return f_prima
-#################################################################################################################
-
 
 
 #----------------------------------------------------------
@@ -2767,7 +2832,10 @@ class TempClass:
     def Plot_inter(self,file_name):
         self.RemoveHeader(file_name)
         var = PlotData_Interface(self.DataRecovered)
-         # var.append(PlotData_Interface(Obj.DataSerie)) #header
+        return var
+
+    def Plot_inter_header(self,file_name):
+        var = PlotData_Interface(self.DataSerie)
         return var
 
     def GetData(self):
@@ -2943,7 +3011,7 @@ class ConfigModule:
                 label_scroll += '\n'
                 i = 0
         label_scroll+='-------------------------------------------------------------------------\n'
-        #return 'Done\r\n'
+
 
     def setCurves(self):
         global label_scroll
@@ -2974,7 +3042,6 @@ class ConfigModule:
                 label_scroll += '\n'
                 i=0
         label_scroll+='-------------------------------------------------------------------------\n'
-        #return   'Done\r\n'
 
     def ConfigPort(self):
         return serial.Serial(self.ConfigDict['Port'], self.ConfigDict['BaudRate'], serial.SEVENBITS,\
