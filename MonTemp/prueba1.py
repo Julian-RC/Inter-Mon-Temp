@@ -1098,7 +1098,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         label_scroll +='                            Update Heater 1\n                          '+\
                         '{:%d-%m-%Y %H:%M:%S}'.format(datetime.datetime.now())+'\n'+\
                         '-------------------------------------------------------------------------\n'
-        label_scroll +='Ramp= '+Ramp_1+' k/min SetPoint= '+SetP_1+' k  Range= '+ Range +\
+        label_scroll +='    Ramp= '+Ramp_1+' k/min SetPoint= '+SetP_1+' k  Range= '+ Range +\
                         '\n-------------------------------------------------------------------------\n'
         self.Update_label()
     def Update_2(self):
@@ -1360,6 +1360,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.start.setEnabled(True)
                     self.SeeData.setEnabled(True)
                     self.grafica2.setEnabled(True)
+                    self.grafica2.setChecked(True)
                     self.grafica2.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
                     self.radioButton_2.setEnabled(True)
                     self.radioButton_2.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
@@ -1391,6 +1392,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.start.setEnabled(False)
                     self.SeeData.setEnabled(False)
                     self.grafica2.setEnabled(False)
+                    self.grafica2.setChecked(False)
                     self.grafica2.setStyleSheet("background-color: a(0);")
                     self.radioButton_2.setEnabled(False)
                     self.radioButton_2.setStyleSheet("background-color: a(0);")
@@ -1437,6 +1439,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.SeeData.setEnabled(True)
                 self.Time.setStyleSheet("color:rgb(255,255,255);border: 0px solid black;background-color: a( 0);")
                 self.grafica2.setEnabled(True)
+                self.grafica2.setChecked(True)
                 self.grafica2.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
                 self.Type.setStyleSheet("color:rgb(255,255,255);border: 0px solid black;background-color: a( 0);")
                 self.radioButton_2.setEnabled(True)
@@ -1453,7 +1456,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.ramp_D2.setEnabled(True)
                 self.ramp_D3.setEnabled(True)
                 self.ramp_D4.setEnabled(True)
-                self.ramp.setEnabled(True)
                 self.ramp_la.setStyleSheet("color:rgb(255,255,255);")
                 self.graph_sensor.setStyleSheet("color:rgb(255,255,255);")
                 path = os.path.realpath(__file__).strip('prueba1.py')
@@ -1494,8 +1496,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.SetPoint2.setStyleSheet("background-color: a(0);")
                 self.heater1.setStyleSheet("background-color: a(0);")
                 self.heater2.setStyleSheet("background-color: a(0);")
-                self.see_ramp.setEnabled(True)
-                self.ramp.setEnabled(False)
+                self.ramp.setEnabled(True)
         else:
             self.grafica2.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.radioButton.setEnabled(True)
@@ -1514,8 +1515,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.color_heater.setStyleSheet("color:rgb(255,255,255);")
                 self.SetPoint2.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
                 self.heater2.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
-            self.see_ramp.setEnabled(False)
-            self.ramp.setEnabled(True)
+            self.ramp.setEnabled(False)
     def desbloquear_grafica1(self):
         if self.grafica1.isChecked():
             self.grafica1.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
@@ -1766,6 +1766,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             color_rgb = textDict_color.ConfigDict['CA']
             self.color_CA.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+\
                                         ");border: 1px solid black;")
+        elif self.ramp_CA.isChecked():
+            self.CA.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
         else:
             self.CA.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.color_CA.setEnabled(False)
@@ -1778,6 +1780,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             color_rgb = textDict_color.ConfigDict['CB']
             self.color_CB.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+\
                                         ");border: 1px solid black;")
+        elif self.ramp_CB.isChecked():
+            self.CB.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
         else:
             self.CB.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.color_CB.setEnabled(False)
@@ -1790,6 +1794,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             color_rgb = textDict_color.ConfigDict['C5']
             self.color_C5.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+\
                                         ");border: 1px solid black;")
+        elif self.ramp_C5.isChecked():
+            self.C5.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
         else:
             self.C5.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.color_C5.setEnabled(False)
@@ -1802,6 +1808,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             color_rgb = textDict_color.ConfigDict['C6']
             self.color_C6.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+\
                                         ");border: 1px solid black;")
+        elif self.ramp_C6.isChecked():
+            self.C6.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
         else:
             self.C6.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.color_C6.setEnabled(False)
@@ -1814,6 +1822,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             color_rgb = textDict_color.ConfigDict['D1']
             self.color_D1.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+\
                                         ");border: 1px solid black;")
+        elif self.ramp_D1.isChecked():
+            self.D1.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
         else:
             self.D1.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.color_D1.setEnabled(False)
@@ -1826,6 +1836,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             color_rgb = textDict_color.ConfigDict['D2']
             self.color_D2.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+\
                                         ");border: 1px solid black;")
+        elif self.ramp_D2.isChecked():
+            self.D2.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
         else:
             self.D2.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.color_D2.setEnabled(False)
@@ -1838,6 +1850,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             color_rgb = textDict_color.ConfigDict['D3']
             self.color_D3.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+\
                                         ");border: 1px solid black;")
+        elif self.ramp_D3.isChecked():
+            self.D3.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
         else:
             self.D3.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.color_D3.setEnabled(False)
@@ -1850,104 +1864,106 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             color_rgb = textDict_color.ConfigDict['D4']
             self.color_D4.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+\
                                         ");border: 1px solid black;")
+        elif self.ramp_D4.isChecked():
+            self.D4.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
         else:
             self.D4.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.color_D4.setEnabled(False)
             self.color_D4.setStyleSheet("background-color: a(0);")
     def desbloquear_sensores_ramp_CA(self):
         global textDict_color
-        if self.CA.isChecked():
-            self.CA.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
+        if self.ramp_CA.isChecked():
             self.color_CA.setEnabled(True)
             color_rgb = textDict_color.ConfigDict['CA']
             self.color_CA.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+\
                                         ");border: 1px solid black;")
+        elif self.CA.isChecked():
+            pass
         else:
-            self.CA.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.color_CA.setEnabled(False)
             self.color_CA.setStyleSheet("background-color: a(0);")
     def desbloquear_sensores_ramp_CB(self):
         global textDict_color
-        if self.CB.isChecked():
-            self.CB.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
+        if self.ramp_CB.isChecked():
             self.color_CB.setEnabled(True)
             color_rgb = textDict_color.ConfigDict['CB']
             self.color_CB.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+\
                                         ");border: 1px solid black;")
+        elif self.CB.isChecked():
+            pass
         else:
-            self.CB.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.color_CB.setEnabled(False)
             self.color_CB.setStyleSheet("background-color: a(0);")
     def desbloquear_sensores_ramp_C5(self):
         global textDict_color
-        if self.C5.isChecked():
-            self.C5.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
+        if self.ramp_C5.isChecked():
             self.color_C5.setEnabled(True)
             color_rgb = textDict_color.ConfigDict['C5']
             self.color_C5.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+\
-                                        ");border: 1px solid black;")
+                                        ");border: 1px solid black;" )   
+        elif self.C5.isChecked():
+            pass
         else:
-            self.C5.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.color_C5.setEnabled(False)
             self.color_C5.setStyleSheet("background-color: a(0);")
     def desbloquear_sensores_ramp_C6(self):
         global textDict_color
-        if self.C6.isChecked():
-            self.C6.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
+        if self.ramp_C6.isChecked():
             self.color_C6.setEnabled(True)
             color_rgb = textDict_color.ConfigDict['C6']
             self.color_C6.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+\
                                         ");border: 1px solid black;")
+        elif self.C6.isChecked():
+            pass
         else:
-            self.C6.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.color_C6.setEnabled(False)
             self.color_C6.setStyleSheet("background-color: a(0);")
     def desbloquear_sensores_ramp_D1(self):
         global textDict_color
-        if self.D1.isChecked():
-            self.D1.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
+        if self.ramp_D1.isChecked():
             self.color_D1.setEnabled(True)
             color_rgb = textDict_color.ConfigDict['D1']
             self.color_D1.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+\
                                         ");border: 1px solid black;")
+        elif self.D1.isChecked():
+            pass
         else:
-            self.D1.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.color_D1.setEnabled(False)
             self.color_D1.setStyleSheet("background-color: a(0);")
     def desbloquear_sensores_ramp_D2(self):
         global textDict_color
-        if self.D2.isChecked():
-            self.D2.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
+        if self.ramp_D2.isChecked():
             self.color_D2.setEnabled(True)
             color_rgb = textDict_color.ConfigDict['D2']
             self.color_D2.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+\
                                         ");border: 1px solid black;")
+        elif self.D2.isChecked():
+            pass
         else:
-            self.D2.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.color_D2.setEnabled(False)
             self.color_D2.setStyleSheet("background-color: a(0);")
     def desbloquear_sensores_ramp_D3(self):
         global textDict_color
-        if self.D3.isChecked():
-            self.D3.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
+        if self.ramp_D3.isChecked():
             self.color_D3.setEnabled(True)
             color_rgb = textDict_color.ConfigDict['D3']
             self.color_D3.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+\
                                         ");border: 1px solid black;")
+        elif self.D3.isChecked():
+            pass
         else:
-            self.D3.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.color_D3.setEnabled(False)
             self.color_D3.setStyleSheet("background-color: a(0);")
     def desbloquear_sensores_ramp_D4(self):
         global textDict_color
-        if self.D4.isChecked():
-            self.D4.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
+        if self.ramp_D4.isChecked():
             self.color_D4.setEnabled(True)
             color_rgb = textDict_color.ConfigDict['D4']
             self.color_D4.setStyleSheet("background-color: rgb("+color_rgb[0]+','+color_rgb[1]+','+color_rgb[2]+\
                                         ");border: 1px solid black;")
+        elif self.D4.isChecked():
+            pass
         else:
-            self.D4.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.color_D4.setEnabled(False)
             self.color_D4.setStyleSheet("background-color: a(0);")
     def desbloquear_heater1(self):

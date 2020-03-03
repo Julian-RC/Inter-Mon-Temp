@@ -330,8 +330,11 @@ font: 11pt &quot;Sans Serif&quot;;
        <property name="text">
         <string>Plot </string>
        </property>
-       <property name="checked">
+       <property name="checkable">
         <bool>true</bool>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
        </property>
       </widget>
       <widget class="QRadioButton" name="grafica1">
@@ -1079,9 +1082,6 @@ color: rgb( 255, 0, 0);
       </property>
      </widget>
      <widget class="QCheckBox" name="ramp_C5">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
       <property name="geometry">
        <rect>
         <x>190</x>
@@ -1119,9 +1119,6 @@ color: rgb( 255, 0, 0);</string>
       </property>
      </widget>
      <widget class="QCheckBox" name="ramp_C6">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
       <property name="geometry">
        <rect>
         <x>190</x>
