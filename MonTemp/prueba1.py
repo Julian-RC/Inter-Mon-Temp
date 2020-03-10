@@ -154,7 +154,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.tabWidget.clear()
         self.tabWidget.addTab(Terminal(),"Terminal")
         self.names_sensor_color = ['CA','CB','D1','D2','D3','D4','C5','C6']
+        self.Action_button(0)
         pg.QtGui.QApplication.processEvents()
+    def Action_button(self,Status):
+        if Status == 1:
+            self.action_flag = True
+        else:
+            self.action_flag = False
     def Update_label(self):
         self.scrollArea.setWidget(QtWidgets.QLabel(self.label_scroll))
         self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
@@ -321,6 +327,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             self.RANGE_2 = True
     def start_adquisition(self):
+        self.Action_button(0)
         self.Start,self.actual,self.bt = True,False, True
         self.pushButton.setEnabled(True)
         self.Data_218.Start()
@@ -584,6 +591,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     os.path.isfile( self.patch +'/'+self.textDict_335.ConfigDict['NameAverage']) :
                     self.label_scroll += '                         The folder contains data\n'
                     self.label_scroll+='-------------------------------------------------------------------------\n'
+                    self.Action_button(0)
                     self.Data_218 = TempClass(self.textDict_218.ConfigDict,patch=self.patch)
                     self.Data_335 = TempClass(self.textDict_335.ConfigDict,self.Data_218.InitTime,patch=self.patch)
                     self.linePatch.setText(self.patch)
@@ -611,6 +619,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.label_scroll+='                               Data no found\n'
                     self.label_scroll+='-------------------------------------------------------------------------\n'
                     self.Update_label()
+                    self.Action_button(0)
             else:
                     self.label_scroll+='                               Selected folder\n'
                     self.label_scroll+='-------------------------------------------------------------------------\n'
@@ -653,6 +662,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                         self.ramp_la.setStyleSheet("color:rgb(255,255,255);")
                         self.graph_sensor.setStyleSheet("color:rgb(255,255,255);")
                         self.color_sensor.setStyleSheet("color:rgb(255,255,255);")
+                        self.Action_button(1)
                     except Exception as e:
                         self.label_scroll += '       Error al cargar la configuración de los modulos\n'
                         self.label_scroll+='-------------------------------------------------------------------------\n'
@@ -682,10 +692,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                         self.color_sensor.setStyleSheet(" ")
                         self.pushButton.setEnabled(False)
                         self.ramp.setEnabled(False)
+                        self.Action_button(0)
         else:
             self.label_scroll+='                               No selected folder\n'
             self.label_scroll+='-------------------------------------------------------------------------\n'
             self.Update_label()
+            self.Action_button(0)
         self.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
     def buscarDirectorio_2(self):
         self.patch_2 = QtWidgets.QFileDialog.getExistingDirectory(self, 'Search folder', self.patch)
@@ -1185,14 +1197,14 @@ class Tercera(QtWidgets.QDialog,Ui_Tercera):
                                     self.box.Yes | self.box.No, self.box.No)
         pg.QtGui.QApplication.processEvents()
         if reply == self.box.Yes:
-            window.textDict_335.ConfigDict['Model'] = self.model.text()
-            window.textDict_335.ConfigDict['Name'] = self.name.text()
-            window.textDict_335.ConfigDict['NameAverage'] = self.nameAverage.text()
-            window.textDict_335.ConfigDict['SaveData'] = self.savedata.value()
-            window.textDict_335.ConfigDict['TimeOut'] = self.timeOut.value()
-            window.textDict_335.ConfigDict['Port'] = self.port.text()
-            window.textDict_335.ConfigDict['Average'] = self.average.value()
-            window.textDict_335.ConfigDict['SamplingPeriod'] = self.samplinperiod.value()
+            Change(window.filename_335,self.model.text(),'Model',window.textDict_218.ConfigDict) 
+            Change(window.filename_335,self.name.text(),'Name',window.textDict_218.ConfigDict)
+            Change(window.filename_335,self.nameAverage.text(),'NameAverage',window.textDict_218.ConfigDict)
+            Change(window.filename_335,self.savedata.value(),'SaveData',window.textDict_218.ConfigDict)
+            Change(window.filename_335,self.timeOut.value(),'TimeOut',window.textDict_218.ConfigDict)
+            Change(window.filename_335,self.port.text(),'Port',window.textDict_218.ConfigDict)
+            Change(window.filename_335,self.average.value(),'Average',window.textDict_218.ConfigDict)
+            Change(window.filename_335,self.samplinperiod.value(),'SamplingPeriod',window.textDict_218.ConfigDict)
         self.close()
 class Rampa_live(QtWidgets.QDialog,Ui_ramp):
     def __init__(self, *args, **kwargs):
@@ -1666,20 +1678,19 @@ class Segunda(QtWidgets.QDialog,Ui_Segunda):
                                     self.box.Yes | self.box.No, self.box.No)
         pg.QtGui.QApplication.processEvents()
         if reply == self.box.Yes:
-            window.textDict_218.ConfigDict['Model'] = self.model.text()
-            window.textDict_218.ConfigDict['Name'] = self.name.text()
-            window.textDict_218.ConfigDict['NameAverage'] = self.nameaverage.text()
-            window.textDict_218.ConfigDict['SaveData'] = str(self.savedata.value())
-            window.textDict_218.ConfigDict['TimeOut'] = str(self.timeOut.value())
-            window.textDict_218.ConfigDict['Port'] = self.port.text()
-            window.textDict_218.ConfigDict['Average'] = self.average.value()
-            window.textDict_218.ConfigDict['SamplingPeriod'] = str(self.samplinperiod.value())
-            window.textDict_218.ConfigDict['Sensor Type'] = []
-            window.textDict_218.ConfigDict['Sensors'] = []
-            window.textDict_218.ConfigDict['Channels'] = []
+            Change(window.filename_218,self.model.text(),'Model',window.textDict_218.ConfigDict) 
+            Change(window.filename_218,self.name.text(),'Name',window.textDict_218.ConfigDict)
+            Change(window.filename_218,self.nameaverage.text(),'NameAverage',window.textDict_218.ConfigDict)
+            Change(window.filename_218,self.savedata.value(),'SaveData',window.textDict_218.ConfigDict)
+            Change(window.filename_218,self.timeOut.value(),'TimeOut',window.textDict_218.ConfigDict)
+            Change(window.filename_218,self.port.text(),'Port',window.textDict_218.ConfigDict)
+            Change(window.filename_218,self.average.value(),'Average',window.textDict_218.ConfigDict)
+            Change(window.filename_218,self.samplinperiod.value(),'SamplingPeriod',window.textDict_218.ConfigDict)
             i = 0
             while i < 8:
                 if self.sensors_on[i].isChecked():
+                    Change(window.filename_218,self.sensors[i].text(),'Sensor Type',window.textDict_218.ConfigDict)
+                    Change(window.filename_218,'Sensor '+str(i+1),'',window.textDict_218.ConfigDict)
                     window.textDict_218.ConfigDict['Sensor Type'].append(self.sensors[i].text())
                     window.textDict_218.ConfigDict['Sensors'].append('Sensor '+str(i+1))
                     window.textDict_218.ConfigDict['Channels'].append(i+1)
@@ -1688,7 +1699,7 @@ class Segunda(QtWidgets.QDialog,Ui_Segunda):
                 else:
                     window.textDict_218.ConfigDict['Sensor Status '+str(i+1)] = str(0)
                     window.textDict_218.ConfigDict['CP'+str(i+1)] = str(0)
-                i += 1
+
         self.close()
 class Terminal(QtWidgets.QWidget):
     def __init__(self, parent=None):
@@ -2261,48 +2272,20 @@ def AverageFunction(Data,AverageStr,Sensors):
 def StrFunction(Data,Address):
     try:
         subprocess.Popen(['gedit', Address])
-
     except:
         print('El editor de texto "gedit" no se encuentra en sus sistema. /rInstalelo para habilitar esta función')
-        #print(Data)
+        
+#------
+#
+#------
 
-#----------------------------------------------------------
-#Esta función se encarga de terminar con la ejecución
-#del programa
-#----------------------------------------------------------
-
-def TerminateFunction(ObjArray):
-
-    print('\n------------------------------------------------------------')
-    print('Are you sure you want to end the data aquisition?')
-    print('------------------------------------------------------------\n')
-    ValidChar = False
-    MenuKey = YesOrNo(ValidChar)
-    ValidChar == False
-    if MenuKey == 'y':
-        for Obj in ObjArray:
-            Obj.Save()
-            print('\n------------------------------------------------------------')
-            print('Do you want to open the txt file of ' + Obj.name +'?')
-            print('------------------------------------------------------------\n')
-            StrKey = YesOrNo(ValidChar)
-            if StrKey == 'y':
-                Obj.__str__()
-
-        for Obj in ObjArray:
-            print('\n------------------------------------------------------------')
-            print('Do you want to plot the data of ' + Obj.name +'?')
-            print('------------------------------------------------------------\n')
-            PlotKey = YesOrNo(ValidChar)
-            if PlotKey == 'y':
-                Obj.Plot(Obj.DataSerieOld)
-
-        sys.exit()
-
-    elif MenuKey == 'n':
-        print('\n------------------------------------------------------------')
-        print('The aquisition is in process again.')
-        print('------------------------------------------------------------\n')
+def Change(file,new,name,textDict):
+        with open(file, "r") as f:
+            lines = (line.rstrip() for line in f)
+            altered_lines = [name+':'+new+'/' if line==name+':'+textDict[name] \
+                            else line for line in lines]
+        with open(file, "w") as f:
+            f.write('\n'.join(altered_lines) + '\n')
 
 #----------------------------------------------------------
 #Esta clase contendrá toda la información de las mediciones
@@ -2484,13 +2467,7 @@ class TempClass:
                 Return.append(Vect)
         return Return
 
-    def Change_root(self,file,new,string_file):
-        with open(file, "r") as f:
-            lines = (line.rstrip() for line in f)
-            altered_lines = [string_file+': '+new+'/' if line== string_file+':'+textDict[string_file] \
-                            else line for line in lines]
-        with open(file, "w") as f:
-            f.write('\n'.join(altered_lines) + '\n')
+ 
 
 #----------------------------------------------------------
 #Esta clase contiene toda la información y métodos para
