@@ -131,51 +131,51 @@ class Ui_Segunda(object):
         self.sensor1 = QtWidgets.QLineEdit(self.frame_2)
         self.sensor1.setGeometry(QtCore.QRect(120, 30, 201, 23))
         self.sensor1.setStyleSheet("background-color: rgb(255, 255, 255);\n"
-"font: 10pt \"Sans Serif\";")
+"font: 12pt \"Sans Serif\";")
         self.sensor1.setText("")
         self.sensor1.setObjectName("sensor1")
         self.sensor2 = QtWidgets.QLineEdit(self.frame_2)
         self.sensor2.setGeometry(QtCore.QRect(120, 50, 201, 23))
         self.sensor2.setStyleSheet("background-color: rgb(255, 255, 255);\n"
-"font: 10pt \"Sans Serif\";")
+"font: 12pt \"Sans Serif\";")
         self.sensor2.setText("")
         self.sensor2.setObjectName("sensor2")
         self.sensor3 = QtWidgets.QLineEdit(self.frame_2)
         self.sensor3.setGeometry(QtCore.QRect(120, 70, 201, 23))
         self.sensor3.setStyleSheet("background-color: rgb(255, 255, 255);\n"
-"font: 10pt \"Sans Serif\";")
+"font: 12pt \"Sans Serif\";")
         self.sensor3.setText("")
         self.sensor3.setObjectName("sensor3")
         self.sensor4 = QtWidgets.QLineEdit(self.frame_2)
         self.sensor4.setGeometry(QtCore.QRect(120, 90, 201, 23))
         self.sensor4.setStyleSheet("background-color: rgb(255, 255, 255);\n"
-"font: 10pt \"Sans Serif\";")
+"font: 12pt \"Sans Serif\";")
         self.sensor4.setText("")
         self.sensor4.setObjectName("sensor4")
         self.sensor5 = QtWidgets.QLineEdit(self.frame_2)
         self.sensor5.setGeometry(QtCore.QRect(120, 110, 201, 23))
         self.sensor5.setStyleSheet("background-color: rgb(255, 255, 255);\n"
-"font: 10pt \"Sans Serif\";\n"
+"font: 12pt \"Sans Serif\";\n"
 "")
         self.sensor5.setText("")
         self.sensor5.setObjectName("sensor5")
         self.sensor6 = QtWidgets.QLineEdit(self.frame_2)
         self.sensor6.setGeometry(QtCore.QRect(120, 130, 201, 23))
         self.sensor6.setStyleSheet("background-color: rgb(255, 255, 255);\n"
-"font: 10pt \"Sans Serif\";")
+"font: 12pt \"Sans Serif\";")
         self.sensor6.setText("")
         self.sensor6.setObjectName("sensor6")
         self.sensor7 = QtWidgets.QLineEdit(self.frame_2)
         self.sensor7.setEnabled(False)
         self.sensor7.setGeometry(QtCore.QRect(120, 150, 201, 23))
         self.sensor7.setStyleSheet("background-color: rgb(255, 255, 255);\n"
-"font: 10pt \"Sans Serif\";")
+"font: 12pt \"Sans Serif\";")
         self.sensor7.setObjectName("sensor7")
         self.sensor8 = QtWidgets.QLineEdit(self.frame_2)
         self.sensor8.setEnabled(False)
         self.sensor8.setGeometry(QtCore.QRect(120, 170, 201, 23))
         self.sensor8.setStyleSheet("background-color: rgb(255, 255, 255);\n"
-"font: 10pt \"Sans Serif\";")
+"font: 12pt \"Sans Serif\";")
         self.sensor8.setObjectName("sensor8")
         self.sensor1_on.raise_()
         self.sensor8_on.raise_()
@@ -266,7 +266,8 @@ class Ui_Segunda(object):
         self.label_12.setObjectName("label_12")
         self.port = QtWidgets.QLineEdit(self.frame_4)
         self.port.setGeometry(QtCore.QRect(60, 30, 211, 21))
-        self.port.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.port.setStyleSheet("background-color: rgb(255, 255, 255);\n"
+"font: 12pt \"Sans Serif\";")
         self.port.setText("")
         self.port.setObjectName("port")
         self.timeOut = QtWidgets.QDoubleSpinBox(self.frame_4)
@@ -329,7 +330,7 @@ class Ui_Segunda(object):
         self.model = QtWidgets.QLineEdit(self.frame_7)
         self.model.setGeometry(QtCore.QRect(70, 40, 201, 21))
         self.model.setStyleSheet("background-color: rgb(255, 255, 255);\n"
-"font: 10pt \"Sans Serif\";")
+"font: 12pt \"Sans Serif\";")
         self.model.setText("")
         self.model.setObjectName("model")
 

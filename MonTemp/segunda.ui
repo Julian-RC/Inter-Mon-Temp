@@ -424,7 +424,7 @@ font: 12pt &quot;Sans Serif&quot;;</string>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(255, 255, 255);
-font: 10pt &quot;Sans Serif&quot;;</string>
+font: 12pt &quot;Sans Serif&quot;;</string>
     </property>
     <property name="text">
      <string/>
@@ -441,7 +441,7 @@ font: 10pt &quot;Sans Serif&quot;;</string>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(255, 255, 255);
-font: 10pt &quot;Sans Serif&quot;;</string>
+font: 12pt &quot;Sans Serif&quot;;</string>
     </property>
     <property name="text">
      <string/>
@@ -458,7 +458,7 @@ font: 10pt &quot;Sans Serif&quot;;</string>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(255, 255, 255);
-font: 10pt &quot;Sans Serif&quot;;</string>
+font: 12pt &quot;Sans Serif&quot;;</string>
     </property>
     <property name="text">
      <string/>
@@ -475,7 +475,7 @@ font: 10pt &quot;Sans Serif&quot;;</string>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(255, 255, 255);
-font: 10pt &quot;Sans Serif&quot;;</string>
+font: 12pt &quot;Sans Serif&quot;;</string>
     </property>
     <property name="text">
      <string/>
@@ -492,7 +492,7 @@ font: 10pt &quot;Sans Serif&quot;;</string>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(255, 255, 255);
-font: 10pt &quot;Sans Serif&quot;;
+font: 12pt &quot;Sans Serif&quot;;
 </string>
     </property>
     <property name="text">
@@ -510,7 +510,7 @@ font: 10pt &quot;Sans Serif&quot;;
     </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(255, 255, 255);
-font: 10pt &quot;Sans Serif&quot;;</string>
+font: 12pt &quot;Sans Serif&quot;;</string>
     </property>
     <property name="text">
      <string/>
@@ -530,7 +530,7 @@ font: 10pt &quot;Sans Serif&quot;;</string>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(255, 255, 255);
-font: 10pt &quot;Sans Serif&quot;;</string>
+font: 12pt &quot;Sans Serif&quot;;</string>
     </property>
     <property name="text">
      <string>New</string>
@@ -550,7 +550,7 @@ font: 10pt &quot;Sans Serif&quot;;</string>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(255, 255, 255);
-font: 10pt &quot;Sans Serif&quot;;</string>
+font: 12pt &quot;Sans Serif&quot;;</string>
     </property>
     <property name="text">
      <string>New</string>
@@ -806,7 +806,8 @@ font: 12pt &quot;Sans Serif&quot;;</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(255, 255, 255);</string>
+     <string notr="true">background-color: rgb(255, 255, 255);
+font: 12pt &quot;Sans Serif&quot;;</string>
     </property>
     <property name="text">
      <string/>
@@ -1018,7 +1019,7 @@ font: 12pt &quot;Sans Serif&quot;;</string>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(255, 255, 255);
-font: 10pt &quot;Sans Serif&quot;;</string>
+font: 12pt &quot;Sans Serif&quot;;</string>
     </property>
     <property name="text">
      <string/>
