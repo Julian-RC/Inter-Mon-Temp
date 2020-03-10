@@ -23,9 +23,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None,*args, **kwargs):
         self.ramp_stat,self.Start,self.close_plot,self.status_heater_1,self.heater_1_estatus,self.cfg,self.bt\
              = False,False,False,False,True,False,False
+        self.ramp_count = 0
         super(MainWindow, self).__init__()
         self.num_matplotlib,self.num_ramp = 0,0
         self.patch = os.path.realpath(__file__).strip('prueba1.py')
+        self.patch_cfg = self.patch +'cfg'
         os.system("xrdb " + self.patch + "cfg/terminal.cfg")
         self.filename_218 = self.patch + "cfg/file_218.cfg"
         self.filename_335 = self.patch + "cfg/file_335.cfg"
@@ -302,7 +304,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 Range_print='Off'
         else:
             self.RANGE_1 = True
-            Range = 'Auto'
+            Range_print = 'Auto'
 
         self.label_scroll +='                            Update Heater 1\n                          '+\
                         '{:%d-%m-%Y %H:%M:%S}'.format(datetime.datetime.now())+'\n'+\
@@ -395,25 +397,30 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                         for algo in a:
                             x.append(algo)
                             pg.QtGui.QApplication.processEvents()
-                    if x == []:
-                        pass
+                if x == []:
+                    pass
+                else:
+                    self.value_actual,self.time_actual=float(x[self.ramp_sensor][2]),x[self.ramp_sensor][1]
+                    if self.ramp_count == 3:
+                        self.ramp_value.append((self.value_actual-self.value_last)/((self.time_actual-self.time_last)/60.0))
+                        rampa = 0
+                        for a in self.ramp_value:
+                            rampa += a
+                        self.ramp_live.charges(float(rampa/len(self.ramp_value)))
+                        self.ramp_count = 0
+                        self.ramp_value = []
+                    elif self.ramp_count == 0:
+                        self.ramp_count += 1
                     else:
-                        self.value_actual=self.float(x[self.ramp_sensor][2])
-                        if self.ramp_count == 3:
-                            self.ramp_value.append((self.value_actual-self.value_last)/(x[self.ramp_sensor][1]*60))
-                            for a in ramp_value:
-                                rampa += a
-                            self.ramp_live.ramp_live.charge(rampa/len(ramp_value))
-                            self.ramp_count = 0
-                        elif self.ramp_count == 0:
-                            pass
-                        else:
-                            self.ramp_value.append((self.value_actual-self.value_last)/(x[self.ramp_sensor][1]*60))
-                            self.ramp_count += 1
-                        self.value_last = self.value_actual
+                        self.ramp_value.append((self.value_actual-self.value_last)/((self.time_actual-self.time_last)/60.0))
+                        self.ramp_count += 1
+                    self.value_last,self.time_last = self.value_actual,self.time_actual
 
             else:
-                self.ramp_live.close()
+                try:
+                    self.ramp_live.close()
+                except:
+                    pass
             if self.status_heater_1:
                             Ramp_1 = str(self.Data_335.Read_335('HTR?','1'))
                             time.sleep(0.05)
@@ -574,27 +581,25 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.label_scroll+='                           Wait a moment Please\n'
         self.label_scroll+='-------------------------------------------------------------------------\n'
         self.Update_label()
-        config_filename = self.patch + "cfg/file_218.cfg"
-        config_filename2 = self.patch + "cfg/file_335.cfg"
+        config_filename = self.patch_cfg + "/file_218.cfg"
+        config_filename2 = self.patch_cfg + "/file_335.cfg"
         self.buscarDirectorio_2()
-        if self.patch_2:
-            self.patch = self.patch_2
-            self.filename_218 = self.patch + '/file_218.cfg'
-            self.filename_335 = self.patch + '/file_335.cfg'
-            if os.path.isfile( self.patch +'/file_218.cfg') and\
-                os.path.isfile( self.patch +'/file_335.cfg') :
+        if self.patch2:
+            self.filename_218 = self.patch2 + '/file_218.cfg'
+            self.filename_335 = self.patch2 + '/file_335.cfg'
+            if os.path.isfile( self.patch2 +'/file_218.cfg') and\
+                os.path.isfile( self.patch2 +'/file_335.cfg') :
                 self.textDict_218 = ConfigModule(self.filename_218,0,0)
                 self.textDict_335 = ConfigModule(self.filename_335,0,0)
-                if os.path.isfile( self.patch +'/'+self.textDict_218.ConfigDict['Name']) and\
-                    os.path.isfile( self.patch +'/'+self.textDict_218.ConfigDict['NameAverage']) and\
-                    os.path.isfile( self.patch +'/'+self.textDict_335.ConfigDict['Name']) and\
-                    os.path.isfile( self.patch +'/'+self.textDict_335.ConfigDict['NameAverage']) :
+                if os.path.isfile( self.patch2 +'/'+self.textDict_218.ConfigDict['Name']) and\
+                    os.path.isfile( self.patch2 +'/'+self.textDict_218.ConfigDict['NameAverage']) and\
+                    os.path.isfile( self.patch2 +'/'+self.textDict_335.ConfigDict['Name']) and\
+                    os.path.isfile( self.patch2 +'/'+self.textDict_335.ConfigDict['NameAverage']) :
                     self.label_scroll += '                         The folder contains data\n'
                     self.label_scroll+='-------------------------------------------------------------------------\n'
                     self.Action_button(0)
-                    self.Data_218 = TempClass(self.textDict_218.ConfigDict,patch=self.patch)
-                    self.Data_335 = TempClass(self.textDict_335.ConfigDict,self.Data_218.InitTime,patch=self.patch)
-                    self.linePatch.setText(self.patch)
+                    self.Data_218 = TempClass(self.textDict_218.ConfigDict,patch=self.patch2)
+                    self.Data_335 = TempClass(self.textDict_335.ConfigDict,self.Data_218.InitTime,patch=self.patch2)
                     self.Update_label()
                     self.start.setEnabled(False)
                     self.SeeData.setEnabled(True)
@@ -615,6 +620,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                         i += 1
                     self.ramp_la.setStyleSheet("color:rgb(255,255,255);")
                     self.graph_sensor.setStyleSheet("color:rgb(255,255,255);")
+                    self.patch = self.patch2
+                    self.patch_cfg = self.patch + '/'
+                    self.linePatch.setText(self.patch)
                 else:
                     self.label_scroll+='                               Data no found\n'
                     self.label_scroll+='-------------------------------------------------------------------------\n'
@@ -625,19 +633,20 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.label_scroll+='-------------------------------------------------------------------------\n'
                     self.Update_label()
                     try:
-                        os.system('cp ' + config_filename + ' ' + self.patch)
-                        os.system('cp ' + config_filename2 + ' ' + self.patch)
-                        os.system('cd && cd ' + self.patch+' && chmod =r file_218.cfg')
-                        os.system('cd && cd ' + self.patch+' && chmod =r file_335.cfg')
+                        print(config_filename+self.patch2)
+                        os.system('cp ' + config_filename + ' ' + self.patch2)
+                        os.system('cp ' + config_filename2 + ' ' + self.patch2)
+                        os.system('cd && cd ' + self.patch2+' && chmod =r file_218.cfg')
+                        os.system('cd && cd ' + self.patch2+' && chmod =r file_335.cfg')
                         self.textDict_218 = ConfigModule(self.filename_218,1,1)
                         self.Update_label()
                         pg.QtGui.QApplication.processEvents()
                         self.textDict_335 = ConfigModule(self.filename_335,0,1)
                         pg.QtGui.QApplication.processEvents()
-                        self.Data_218 = TempClass(self.textDict_218.ConfigDict,patch=self.patch)
+                        self.Data_218 = TempClass(self.textDict_218.ConfigDict,patch=self.patch2)
                         pg.QtGui.QApplication.processEvents()
                         self.Update_label()
-                        self.Data_335 = TempClass(self.textDict_335.ConfigDict,self.Data_218.InitTime,patch=self.patch)
+                        self.Data_335 = TempClass(self.textDict_335.ConfigDict,self.Data_218.InitTime,patch=self.patch2)
                         pg.QtGui.QApplication.processEvents()
                         self.Update_label()
                         self.label_scroll+='                               Config File Ok\n'
@@ -656,18 +665,20 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                             i += 1
                         self.label_scroll+='               Push "Start" for begin adquisition\n'
                         self.label_scroll+='-------------------------------------------------------------------------\n'
-                        self.linePatch.setText(self.patch)
                         self.Update_label()
                         pg.QtGui.QApplication.processEvents()
                         self.ramp_la.setStyleSheet("color:rgb(255,255,255);")
                         self.graph_sensor.setStyleSheet("color:rgb(255,255,255);")
                         self.color_sensor.setStyleSheet("color:rgb(255,255,255);")
                         self.Action_button(1)
+                        self.patch = self.patch2
+                        self.patch_cfg = self.patch+'/'
+                        self.linePatch.setText(self.patch)
                     except Exception as e:
                         self.label_scroll += '       Error al cargar la configuración de los modulos\n'
                         self.label_scroll+='-------------------------------------------------------------------------\n'
-                        os.system('cd && cd ' + self.patch+' && rm file_218.cfg')
-                        os.system('cd && cd ' + self.patch+' && rm file_335.cfg')
+                        os.system('cd && cd ' + self.patch2+' && rm file_218.cfg')
+                        os.system('cd && cd ' + self.patch2+' && rm file_335.cfg')
                         self.Update_label()
                         self.start.setEnabled(False)
                         self.SeeData.setEnabled(False)
@@ -700,7 +711,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.Action_button(0)
         self.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
     def buscarDirectorio_2(self):
-        self.patch_2 = QtWidgets.QFileDialog.getExistingDirectory(self, 'Search folder', self.patch)
+        self.patch2 = QtWidgets.QFileDialog.getExistingDirectory(self, 'Search folder', self.patch)
         self.setCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         pg.QtGui.QApplication.processEvents()
     def desbloquear_grafica2(self):
@@ -940,7 +951,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.status_1.setEnabled(True)
             self.status_heater_1 = True
             if self.heater_1_estatus:
-                self.label_heater_1 += '--------------------------------------\n'
+                self.label_heater_1 = '--------------------------------------\n'
                 self.label_heater_1 += '       Status Heater 1      \n'
                 self.label_heater_1 += '--------------------------------------\n'
                 self.heater_1_estatus = False
@@ -1223,10 +1234,11 @@ class Rampa_live(QtWidgets.QDialog,Ui_ramp):
                     break
             self.ramp_live = Dashboard(window.names_sensor[i], "K/min", 0, 5)
             layout.addWidget(self.ramp_live)
-            self.ramp_live.charge(4.89)
             pg.QtGui.QApplication.processEvents()
         except KeyboardInterrupt as KBI:
             pass
+    def charges(self,num):
+        self.ramp_live.charge(num)
     def closeEvent(self, event):
         window.ramp_stat = False
 class Plot_File(QtWidgets.QDialog,Ui_plot_file):
@@ -1533,7 +1545,6 @@ class Icon(QtWidgets.QDialog,Ui_Icon):
     def accept(self):
         password = self.passwo.text()
         which_Te = subprocess.getoutput('which Temperature')
-        print(password)
         patch = os.path.realpath(__file__).strip('prueba1.py') + 'Temperature.png'
         command = 'sudo echo "[Desktop Entry]\nName=Temperature\nComment=Temperature\n\
                             Exec=' + which_Te + '\nIcon=' + patch + '\nTerminal=false\n\
@@ -1731,7 +1742,10 @@ class Dashboard(QtWidgets.QWidget):
         self.gradient.setColorAt(0.5, QtCore.Qt.green)
         self.unit = unit
     def charge(self, value):
+        print(value)
         self.value = abs(value)
+        if self.value < 0.0049:
+            self.value = 0
         self.ramp_angle = 100.0 * (self.value-self.min)/(self.max-self.min)
         self.update()
     def paintEvent(self, event):
@@ -1740,10 +1754,7 @@ class Dashboard(QtWidgets.QWidget):
         extRect = QtCore.QRectF(-90,-90,180,180)
         intRect = QtCore.QRectF(-70,-70,140,140)
         unitRect = QtCore.QRectF(-54,60,110,50)
-        if self.value > 10:
-            labelvalue = self.value.__str__()[0:4]
-        else:
-            labelvalue = self.value.__str__()[0:3]
+        labelvalue = self.value.__str__()[0:4]
         angle = self.ramp_angle * 270.0 / 100.0
         line = QtGui.QPainterPath()
         line.moveTo(pos_1)
@@ -1819,7 +1830,7 @@ class Live_plot(object):
         except:
             pass
         i_cnt = 0
-        if window.curvas[0] == 1:
+        if window.curvas[0] == 1 and len(b)>0:
             for i in range(len(window.names_sensor)):
                 for inte in range(len(b[i][0])):
                     self.d[i],self.t[i] = self.Curvas_add(self.d[i],self.t[i],\
@@ -1827,7 +1838,7 @@ class Live_plot(object):
                                                                         +window.fit_number[i][1]\
                                                                         ,b[i][0][inte])
                     pg.QtGui.QApplication.processEvents()
-        else:
+        elif len(b)>0:
             for i in range(len(window.names_sensor)):
                 for inte in range(len(b[i][0])):
                     if window.curvas[i+1] ==1:
@@ -1927,33 +1938,6 @@ class Live_plot(object):
             self.win.close()
         except Exception as e:
             pass
-class Ramp(object):
-    def __init__(self):
-        self.win = pg.GraphicsWindow(title='Data')
-        self.p = self.win.addPlot(title='RAMP')
-        self.p.setLabel('left', 'RAMP ',units= 'K/min')
-        self.p.setLabel('bottom', 'Time ',units='s')
-        self.p.showGrid(x=False,y=True,alpha=0.3)
-        self.p.addLegend()
-        self.curva1=self.p.plot(pen=(255,255,255),width=10,name='Rampa-CernoxB')
-    def deriv_h4_no_uniforme(self,f,x):
-        f_prima = [0]*len(f)  #definimos la longitud de la funcion f
-        for i in range(2,len(f)-2): #tomamos un intervalo despreciando el primero, segundo, penúltimo y último término
-            hi_2,hi_1,hi1, hi2 = x[i]-x[i-2],x[i]-x[i-1],x[i+1]-x[i],x[i+2]-x[i] # definimos las h utilizadas
-            a,b,c,d=hi_2*hi1,hi2*hi_1,hi_1*hi1,hi2*hi_2 #definimos terminos que aparecen constantemente en la formula
-            #implementamos la derivada
-            f_prima[i] = ((1/(a)+1/(b)-1/(c)-1/(d))**-1)\
-                       *(f[i] \
-                       *((hi2-hi_1)/((b)**2) \
-                       +(hi1-hi_2)/((a)**2)\
-                       -(hi1-hi_1)/((c)**2)\
-                       -(hi2-hi_2)/((d)**2))\
-                       -(hi_1**2*f[i+1]-hi1**2*f[i-1])/((hi_1+hi1)*(c)**2)\
-                       -(hi_2**2*f[i+2]-hi2**2*f[i-2])/((hi_2+hi2)*(d)**2)\
-                       +(hi_1**2*f[i+2]-hi2**2*f[i-1])/((hi_1+hi2)*(b)**2)\
-                       +(hi_2**2*f[i+1]-hi1**2*f[i-2])/((hi_2+hi1)*(a)**2))
-            pg.QtGui.QApplication.processEvents()
-        return f_prima
 class Plot_matplotlib(FigureCanvas):
     def __init__(self):
         from matplotlib.figure import Figure
