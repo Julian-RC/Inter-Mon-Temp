@@ -1148,64 +1148,67 @@ class Tercera(QtWidgets.QDialog,Ui_Tercera):
         else:
             self.sensor2.setEnabled(False)
     def accept(self):
-        if not self.name.text() or self.name.text().isspace():
+        if window.action_flag:
+            if not self.name.text() or self.name.text().isspace():
+                self.box = QtWidgets.QMessageBox()
+                reply = self.box.question(self,
+                                        'Error',
+                                        "Valor inválido Name",
+                                        self.box.Ok , self.box.Ok)
+                pg.QtGui.QApplication.processEvents()
+            elif not self.nameAverage.text() or self.nameAverage.text().isspace():
+                self.box = QtWidgets.QMessageBox()
+                reply = self.box.question(self,
+                                        'Error',
+                                        "Valor inválido Name Average",
+                                        self.box.Ok , self.box.Ok)
+                pg.QtGui.QApplication.processEvents()
+            elif not self.model.text() or self.model.text().isspace():
+                self.box = QtWidgets.QMessageBox()
+                reply = self.box.question(self,
+                                        'Error',
+                                        "Valor inválido Model",
+                                        self.box.Ok , self.box.Ok)
+                pg.QtGui.QApplication.processEvents()
+            elif not self.port.text() or self.port.text().isspace():
+                self.box = QtWidgets.QMessageBox()
+                reply = self.box.question(self,
+                                        'Error',
+                                        "Valor inválido Port",
+                                        self.box.Ok , self.box.Ok)
+                pg.QtGui.QApplication.processEvents()
+            elif not self.sensor1.text() or self.sensor1.text().isspace():
+                self.box = QtWidgets.QMessageBox()
+                reply = self.box.question(self,
+                                        'Error',
+                                        "Valor inválido TypeSensor 1",
+                                        self.box.Ok , self.box.Ok)
+                pg.QtGui.QApplication.processEvents()
+            elif not self.sensor2.text() or self.sensor2.text().isspace():
+                self.box = QtWidgets.QMessageBox()
+                reply = self.box.question(self,
+                                        'Error',
+                                        "Valor inválido TypeSensors 2",
+                                        self.box.Ok , self.box.Ok)
+                pg.QtGui.QApplication.processEvents()
             self.box = QtWidgets.QMessageBox()
             reply = self.box.question(self,
-                                    'Error',
-                                    "Valor inválido Name",
-                                    self.box.Ok , self.box.Ok)
+                                        'Settings',
+                                        "Are you sure you want to change the settings?",
+                                        self.box.Yes | self.box.No, self.box.No)
             pg.QtGui.QApplication.processEvents()
-        elif not self.nameAverage.text() or self.nameAverage.text().isspace():
-            self.box = QtWidgets.QMessageBox()
-            reply = self.box.question(self,
-                                    'Error',
-                                    "Valor inválido Name Average",
-                                    self.box.Ok , self.box.Ok)
-            pg.QtGui.QApplication.processEvents()
-        elif not self.model.text() or self.model.text().isspace():
-            self.box = QtWidgets.QMessageBox()
-            reply = self.box.question(self,
-                                    'Error',
-                                    "Valor inválido Model",
-                                    self.box.Ok , self.box.Ok)
-            pg.QtGui.QApplication.processEvents()
-        elif not self.port.text() or self.port.text().isspace():
-            self.box = QtWidgets.QMessageBox()
-            reply = self.box.question(self,
-                                    'Error',
-                                    "Valor inválido Port",
-                                    self.box.Ok , self.box.Ok)
-            pg.QtGui.QApplication.processEvents()
-        elif not self.sensor1.text() or self.sensor1.text().isspace():
-            self.box = QtWidgets.QMessageBox()
-            reply = self.box.question(self,
-                                    'Error',
-                                    "Valor inválido TypeSensor 1",
-                                    self.box.Ok , self.box.Ok)
-            pg.QtGui.QApplication.processEvents()
-        elif not self.sensor2.text() or self.sensor2.text().isspace():
-            self.box = QtWidgets.QMessageBox()
-            reply = self.box.question(self,
-                                    'Error',
-                                    "Valor inválido TypeSensors 2",
-                                    self.box.Ok , self.box.Ok)
-            pg.QtGui.QApplication.processEvents()
-        self.box = QtWidgets.QMessageBox()
-        reply = self.box.question(self,
-                                    'Settings',
-                                    "Are you sure you want to change the settings?",
-                                    self.box.Yes | self.box.No, self.box.No)
-        pg.QtGui.QApplication.processEvents()
-        if reply == self.box.Yes:
-            Change(window.filename_335,self.model.text(),'Model',window.textDict_218.ConfigDict) 
-            Change(window.filename_335,self.name.text(),'Name',window.textDict_218.ConfigDict)
-            Change(window.filename_335,self.nameAverage.text(),'NameAverage',window.textDict_218.ConfigDict)
-            Change(window.filename_335,self.savedata.value(),'SaveData',window.textDict_218.ConfigDict)
-            Change(window.filename_335,self.timeOut.value(),'TimeOut',window.textDict_218.ConfigDict)
-            Change(window.filename_335,self.port.text(),'Port',window.textDict_218.ConfigDict)
-            Change(window.filename_335,self.average.value(),'Average',window.textDict_218.ConfigDict)
-            Change(window.filename_335,self.samplinperiod.value(),'SamplingPeriod',window.textDict_218.ConfigDict)
-        self.close()
+            if reply == self.box.Yes:
+                Change(window.filename_335,self.model.text(),'Model',window.textDict_218.ConfigDict) 
+                Change(window.filename_335,self.name.text(),'Name',window.textDict_218.ConfigDict)
+                Change(window.filename_335,self.nameAverage.text(),'NameAverage',window.textDict_218.ConfigDict)
+                Change(window.filename_335,self.savedata.value(),'SaveData',window.textDict_218.ConfigDict)
+                Change(window.filename_335,self.timeOut.value(),'TimeOut',window.textDict_218.ConfigDict)
+                Change(window.filename_335,self.port.text(),'Port',window.textDict_218.ConfigDict)
+                Change(window.filename_335,self.average.value(),'Average',window.textDict_218.ConfigDict)
+                Change(window.filename_335,self.samplinperiod.value(),'SamplingPeriod',window.textDict_218.ConfigDict)
+            self.close()
+        else:
+            self.close
 class Rampa_live(QtWidgets.QDialog,Ui_ramp):
     def __init__(self, *args, **kwargs):
         try:
