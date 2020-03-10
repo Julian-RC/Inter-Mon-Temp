@@ -330,6 +330,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.RANGE_2 = True
     def start_adquisition(self):
         self.Action_button(0)
+        self.ramp.setEnabled(True)
         self.Start,self.actual,self.bt = True,False, True
         self.pushButton.setEnabled(True)
         self.Data_218.Start()
@@ -577,6 +578,82 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             self.dialogs.append(Icon(self)) 
             self.dialogs[-1].show()
+    def charge_modulos(self):
+        #try:           
+                        config_filename = self.patch_cfg + "/file_218.cfg"
+                        config_filename2 = self.patch_cfg + "/file_335.cfg"
+                        os.system('cp ' + config_filename + ' ' + self.patch2)
+                        os.system('cp ' + config_filename2 + ' ' + self.patch2)
+                        self.textDict_218 = ConfigModule(self.filename_218,1,1)
+                        self.Update_label()
+                        pg.QtGui.QApplication.processEvents()
+                        self.textDict_335 = ConfigModule(self.filename_335,0,1)
+                        pg.QtGui.QApplication.processEvents()
+                        self.Data_218 = TempClass(self.textDict_218.ConfigDict,patch=self.patch2)
+                        pg.QtGui.QApplication.processEvents()
+                        self.Update_label()
+                        self.Data_335 = TempClass(self.textDict_335.ConfigDict,self.Data_218.InitTime,patch=self.patch2)
+                        pg.QtGui.QApplication.processEvents()
+                        self.Update_label()
+                        self.label_scroll+='                               Config File loaded\n'
+                        self.start.setEnabled(True)
+                        self.SeeData.setEnabled(True)
+                        self.grafica2.setEnabled(True)
+                        self.grafica2.setChecked(True)
+                        self.grafica2.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
+                        self.radioButton_2.setEnabled(True)
+                        self.radioButton_2.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
+                        self.Todos.setEnabled(True)
+                        self.Todos.setChecked(True)
+                        i = 0
+                        while i < len(self.sensor_ramp):
+                            self.sensor_ramp[i].setEnabled(True)
+                            i += 1
+                        self.label_scroll+='               Push "Start" for begin adquisition\n'
+                        self.label_scroll+='-------------------------------------------------------------------------\n'
+                        self.Update_label()
+                        pg.QtGui.QApplication.processEvents()
+                        self.ramp_la.setStyleSheet("color:rgb(255,255,255);")
+                        self.graph_sensor.setStyleSheet("color:rgb(255,255,255);")
+                        self.color_sensor.setStyleSheet("color:rgb(255,255,255);")
+                        self.Action_button(1)
+                        self.patch = self.patch2
+                        self.patch_cfg = self.patch+'/'
+                        self.linePatch.setText(self.patch)
+                        os.system('cd && cd ' + self.patch2+' && chmod =r file_218.cfg')
+                        os.system('cd && cd ' + self.patch2+' && chmod =r file_335.cfg')
+                        '''
+                        #except Exception as e: 
+                        self.label_scroll += '       Error al cargar la configuración de los modulos\n'
+                        self.label_scroll+='-------------------------------------------------------------------------\n'
+                        os.system('cd && cd ' + self.patch2+' && rm file_218.cfg')
+                        os.system('cd && cd ' + self.patch2+' && rm file_335.cfg')
+                        self.Update_label()
+                        self.start.setEnabled(False)
+                        self.SeeData.setEnabled(False)
+                        self.grafica2.setEnabled(False)
+                        self.grafica2.setChecked(False)
+                        self.grafica2.setStyleSheet("background-color: a(0);")
+                        self.radioButton_2.setEnabled(False)
+                        self.radioButton_2.setStyleSheet("background-color: a(0);")
+                        self.Todos.setEnabled(False)
+                        self.Todos.setChecked(False)
+                        self.Todos.setStyleSheet("background-color: a(0);")
+                        i = 0
+                        while i < 8:
+                            self.plot_checkbox[i].setEnabled(False)
+                            self.plot_checkbox[i].setChecked(False)
+                            self.plot_checkbox[i].setStyleSheet("background-color: a(0);")
+                            i += 1
+                        self.Time.setStyleSheet(" ")
+                        self.Type.setStyleSheet(" ")
+                        self.ramp_la.setStyleSheet(" ")
+                        self.graph_sensor.setStyleSheet(" ")
+                        self.color_sensor.setStyleSheet(" ")
+                        self.pushButton.setEnabled(False)
+                        self.ramp.setEnabled(False)
+                        self.Action_button(0)
+                        '''
     def buscarDirectorio(self):
         self.label_scroll+='                           Wait a moment Please\n'
         self.label_scroll+='-------------------------------------------------------------------------\n'
@@ -601,6 +678,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.Data_218 = TempClass(self.textDict_218.ConfigDict,patch=self.patch2)
                     self.Data_335 = TempClass(self.textDict_335.ConfigDict,self.Data_218.InitTime,patch=self.patch2)
                     self.Update_label()
+                    self.ramp.setEnabled(True)
                     self.start.setEnabled(False)
                     self.SeeData.setEnabled(True)
                     self.Time.setStyleSheet("color:rgb(255,255,255);border: 0px solid black;background-color: a( 0);")
@@ -632,78 +710,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.label_scroll+='                               Selected folder\n'
                     self.label_scroll+='-------------------------------------------------------------------------\n'
                     self.Update_label()
-                    try:
-                        print(config_filename+self.patch2)
-                        os.system('cp ' + config_filename + ' ' + self.patch2)
-                        os.system('cp ' + config_filename2 + ' ' + self.patch2)
-                        os.system('cd && cd ' + self.patch2+' && chmod =r file_218.cfg')
-                        os.system('cd && cd ' + self.patch2+' && chmod =r file_335.cfg')
-                        self.textDict_218 = ConfigModule(self.filename_218,1,1)
-                        self.Update_label()
-                        pg.QtGui.QApplication.processEvents()
-                        self.textDict_335 = ConfigModule(self.filename_335,0,1)
-                        pg.QtGui.QApplication.processEvents()
-                        self.Data_218 = TempClass(self.textDict_218.ConfigDict,patch=self.patch2)
-                        pg.QtGui.QApplication.processEvents()
-                        self.Update_label()
-                        self.Data_335 = TempClass(self.textDict_335.ConfigDict,self.Data_218.InitTime,patch=self.patch2)
-                        pg.QtGui.QApplication.processEvents()
-                        self.Update_label()
-                        self.label_scroll+='                               Config File Ok\n'
-                        self.start.setEnabled(True)
-                        self.SeeData.setEnabled(True)
-                        self.grafica2.setEnabled(True)
-                        self.grafica2.setChecked(True)
-                        self.grafica2.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
-                        self.radioButton_2.setEnabled(True)
-                        self.radioButton_2.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
-                        self.Todos.setEnabled(True)
-                        self.Todos.setChecked(True)
-                        i = 0
-                        while i < len(self.sensor_ramp):
-                            self.sensor_ramp[i].setEnabled(True)
-                            i += 1
-                        self.label_scroll+='               Push "Start" for begin adquisition\n'
-                        self.label_scroll+='-------------------------------------------------------------------------\n'
-                        self.Update_label()
-                        pg.QtGui.QApplication.processEvents()
-                        self.ramp_la.setStyleSheet("color:rgb(255,255,255);")
-                        self.graph_sensor.setStyleSheet("color:rgb(255,255,255);")
-                        self.color_sensor.setStyleSheet("color:rgb(255,255,255);")
-                        self.Action_button(1)
-                        self.patch = self.patch2
-                        self.patch_cfg = self.patch+'/'
-                        self.linePatch.setText(self.patch)
-                    except Exception as e:
-                        self.label_scroll += '       Error al cargar la configuración de los modulos\n'
-                        self.label_scroll+='-------------------------------------------------------------------------\n'
-                        os.system('cd && cd ' + self.patch2+' && rm file_218.cfg')
-                        os.system('cd && cd ' + self.patch2+' && rm file_335.cfg')
-                        self.Update_label()
-                        self.start.setEnabled(False)
-                        self.SeeData.setEnabled(False)
-                        self.grafica2.setEnabled(False)
-                        self.grafica2.setChecked(False)
-                        self.grafica2.setStyleSheet("background-color: a(0);")
-                        self.radioButton_2.setEnabled(False)
-                        self.radioButton_2.setStyleSheet("background-color: a(0);")
-                        self.Todos.setEnabled(False)
-                        self.Todos.setChecked(False)
-                        self.Todos.setStyleSheet("background-color: a(0);")
-                        i = 0
-                        while i < 8:
-                            self.plot_checkbox[i].setEnabled(False)
-                            self.plot_checkbox[i].setChecked(False)
-                            self.plot_checkbox[i].setStyleSheet("background-color: a(0);")
-                            i += 1
-                        self.Time.setStyleSheet(" ")
-                        self.Type.setStyleSheet(" ")
-                        self.ramp_la.setStyleSheet(" ")
-                        self.graph_sensor.setStyleSheet(" ")
-                        self.color_sensor.setStyleSheet(" ")
-                        self.pushButton.setEnabled(False)
-                        self.ramp.setEnabled(False)
-                        self.Action_button(0)
+                    self.charge_modulos()
         else:
             self.label_scroll+='                               No selected folder\n'
             self.label_scroll+='-------------------------------------------------------------------------\n'
@@ -733,7 +740,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.SetPoint2.setStyleSheet("background-color: a(0);")
                 self.heater1.setStyleSheet("background-color: a(0);")
                 self.heater2.setStyleSheet("background-color: a(0);")
-                self.ramp.setEnabled(True)
         else:
             self.grafica2.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.radioButton.setEnabled(True)
@@ -1209,6 +1215,7 @@ class Tercera(QtWidgets.QDialog,Ui_Tercera):
                                         self.box.Yes | self.box.No, self.box.No)
             pg.QtGui.QApplication.processEvents()
             if reply == self.box.Yes:
+                os.system('cd && cd ' + window.patch+' && chmod 777 file_335.cfg')
                 Change(window.filename_335,self.model.text(),'Model',window.textDict_218.ConfigDict) 
                 Change(window.filename_335,self.name.text(),'Name',window.textDict_218.ConfigDict)
                 Change(window.filename_335,self.nameAverage.text(),'NameAverage',window.textDict_218.ConfigDict)
@@ -1217,6 +1224,7 @@ class Tercera(QtWidgets.QDialog,Ui_Tercera):
                 Change(window.filename_335,self.port.text(),'Port',window.textDict_218.ConfigDict)
                 Change(window.filename_335,self.average.value(),'Average',window.textDict_218.ConfigDict)
                 Change(window.filename_335,self.samplinperiod.value(),'SamplingPeriod',window.textDict_218.ConfigDict)
+                window.charge_modulos()
             self.close()
         else:
             self.close
@@ -1497,7 +1505,7 @@ class Terminal_settings(QtWidgets.QDialog,Ui_Terminal):
                 try:
                     password = self.passwo.text()
                     patch = os.path.realpath(__file__).strip('prueba1.py') + 'cfg/terminal.cfg'
-                    command = 'sudo rm '+patch+' && sudo echo "'+self.textEdit.toPlainText()+'">> ' +patch
+                    command = 'sudo rm '+patch+' && sudo echo -r "'+self.textEdit.toPlainText()+'">> ' +patch
                     os.system('cd && ' + 'echo %s|sudo -S %s' % (password, command))
                     os.system("xrdb " + patch )
                     self.box = QtWidgets.QMessageBox()
@@ -1633,88 +1641,94 @@ class Segunda(QtWidgets.QDialog,Ui_Segunda):
             self.sensors[num].setEnabled(False)
             self.curves[num].setEnabled(False)
     def accept(self): 
-        i = 0
-        flag = False
-        while i < 8 :
-            if self.sensors_on[i].isChecked():
-                if 9 < self.curves[i].value() < 21:
-                    self.box = QtWidgets.QMessageBox()
-                    reply = self.box.question(self,
-                                            'Error',
-                                            "Invalid Curve Sensor "+str(i+1)+" value",
-                                            self.box.Ok , self.box.Ok)
-                    flag = True
-                    break
-                elif not self.sensors[i].text() or self.sensors[i].text().isspace():
-                    self.box = QtWidgets.QMessageBox()
-                    reply = self.box.question(self,
-                                            'Error',
-                                            "Valor inválido TypeSensor "+str(i+1),
-                                            self.box.Ok , self.box.Ok)
-                    flag = True 
-                    break
-            i += 1
-            pg.QtGui.QApplication.processEvents()
-        if flag:
-            pass
-        elif not self.name.text() or self.name.text().isspace():
-            self.box = QtWidgets.QMessageBox()
-            reply = self.box.question(self,
-                                    'Error',
-                                    "Valor inválido Name",
-                                    self.box.Ok , self.box.Ok)
-            pg.QtGui.QApplication.processEvents()
-        elif not self.nameaverage.text() or self.nameaverage.text().isspace():
-            self.box = QtWidgets.QMessageBox()
-            reply = self.box.question(self,
-                                    'Error',
-                                    "Valor inválido Name Average",
-                                    self.box.Ok , self.box.Ok)
-            pg.QtGui.QApplication.processEvents()
-        elif not self.model.text() or self.model.text().isspace():
-            self.box = QtWidgets.QMessageBox()
-            reply = self.box.question(self,
-                                    'Error',
-                                    "Valor inválido Model",
-                                    self.box.Ok , self.box.Ok)
-            pg.QtGui.QApplication.processEvents()
-        elif not self.port.text() or self.port.text().isspace():
-            self.box = QtWidgets.QMessageBox()
-            reply = self.box.question(self,
-                                    'Error',
-                                    "Valor inválido Port",
-                                    self.box.Ok , self.box.Ok)
-            pg.QtGui.QApplication.processEvents()
-        self.box = QtWidgets.QMessageBox()
-        reply = self.box.question(self,
-                                    'Settings',
-                                    "Are you sure you want to change the settings?",
-                                    self.box.Yes | self.box.No, self.box.No)
-        pg.QtGui.QApplication.processEvents()
-        if reply == self.box.Yes:
-            Change(window.filename_218,self.model.text(),'Model',window.textDict_218.ConfigDict) 
-            Change(window.filename_218,self.name.text(),'Name',window.textDict_218.ConfigDict)
-            Change(window.filename_218,self.nameaverage.text(),'NameAverage',window.textDict_218.ConfigDict)
-            Change(window.filename_218,self.savedata.value(),'SaveData',window.textDict_218.ConfigDict)
-            Change(window.filename_218,self.timeOut.value(),'TimeOut',window.textDict_218.ConfigDict)
-            Change(window.filename_218,self.port.text(),'Port',window.textDict_218.ConfigDict)
-            Change(window.filename_218,self.average.value(),'Average',window.textDict_218.ConfigDict)
-            Change(window.filename_218,self.samplinperiod.value(),'SamplingPeriod',window.textDict_218.ConfigDict)
+        if window.action_flag:
             i = 0
-            while i < 8:
+            flag = False
+            while i < 8 :
                 if self.sensors_on[i].isChecked():
-                    Change(window.filename_218,self.sensors[i].text(),'Sensor Type',window.textDict_218.ConfigDict)
-                    Change(window.filename_218,'Sensor '+str(i+1),'',window.textDict_218.ConfigDict)
-                    window.textDict_218.ConfigDict['Sensor Type'].append(self.sensors[i].text())
-                    window.textDict_218.ConfigDict['Sensors'].append('Sensor '+str(i+1))
-                    window.textDict_218.ConfigDict['Channels'].append(i+1)
-                    window.textDict_218.ConfigDict['Sensor Status '+str(i+1)] = str(1)
-                    window.textDict_218.ConfigDict['CP'+str(i+1)] = str(self.curves[i].value())
-                else:
-                    window.textDict_218.ConfigDict['Sensor Status '+str(i+1)] = str(0)
-                    window.textDict_218.ConfigDict['CP'+str(i+1)] = str(0)
-
-        self.close()
+                    if 9 < self.curves[i].value() < 21:
+                        self.box = QtWidgets.QMessageBox()
+                        reply = self.box.question(self,
+                                                'Error',
+                                                "Invalid Curve Sensor "+str(i+1)+" value",
+                                                self.box.Ok , self.box.Ok)
+                        flag = True
+                        break
+                    elif not self.sensors[i].text() or self.sensors[i].text().isspace():
+                        self.box = QtWidgets.QMessageBox()
+                        reply = self.box.question(self,
+                                                'Error',
+                                                "Valor inválido TypeSensor "+str(i+1),
+                                                self.box.Ok , self.box.Ok)
+                        flag = True 
+                        break
+                i += 1
+                pg.QtGui.QApplication.processEvents()
+            if flag:
+                pass
+            elif not self.name.text() or self.name.text().isspace():
+                self.box = QtWidgets.QMessageBox()
+                reply = self.box.question(self,
+                                        'Error',
+                                        "Valor inválido Name",
+                                        self.box.Ok , self.box.Ok)
+                pg.QtGui.QApplication.processEvents()
+            elif not self.nameaverage.text() or self.nameaverage.text().isspace():
+                self.box = QtWidgets.QMessageBox()
+                reply = self.box.question(self,
+                                        'Error',
+                                        "Valor inválido Name Average",
+                                        self.box.Ok , self.box.Ok)
+                pg.QtGui.QApplication.processEvents()
+            elif not self.model.text() or self.model.text().isspace():
+                self.box = QtWidgets.QMessageBox()
+                reply = self.box.question(self,
+                                        'Error',
+                                        "Valor inválido Model",
+                                        self.box.Ok , self.box.Ok)
+                pg.QtGui.QApplication.processEvents()
+            elif not self.port.text() or self.port.text().isspace():
+                self.box = QtWidgets.QMessageBox()
+                reply = self.box.question(self,
+                                        'Error',
+                                        "Valor inválido Port",
+                                        self.box.Ok , self.box.Ok)
+                pg.QtGui.QApplication.processEvents()
+            self.box = QtWidgets.QMessageBox()
+            reply = self.box.question(self,
+                                        'Settings',
+                                        "Are you sure you want to change the settings?",
+                                        self.box.Yes | self.box.No, self.box.No)
+            pg.QtGui.QApplication.processEvents()
+            if reply == self.box.Yes:
+                os.system('cd && cd ' + window.patch+' && chmod 777 file_218.cfg')
+                Change(window.filename_218,self.model.text(),'Model',window.textDict_218.ConfigDict) 
+                Change(window.filename_218,self.name.text(),'Name',window.textDict_218.ConfigDict)
+                Change(window.filename_218,self.nameaverage.text(),'NameAverage',window.textDict_218.ConfigDict)
+                Change(window.filename_218,self.savedata.value(),'SaveData',window.textDict_218.ConfigDict)
+                Change(window.filename_218,self.timeOut.value(),'TimeOut',window.textDict_218.ConfigDict)
+                Change(window.filename_218,self.port.text(),'Port',window.textDict_218.ConfigDict)
+                Change(window.filename_218,self.average.value(),'Average',window.textDict_218.ConfigDict)
+                Change(window.filename_218,self.samplinperiod.value(),'SamplingPeriod',window.textDict_218.ConfigDict)
+                '''
+                i = 0
+                while i < 8:
+                    if self.sensors_on[i].isChecked():
+                        Change(window.filename_218,self.sensors[i].text(),'Sensor Type',window.textDict_218.ConfigDict)
+                        Change(window.filename_218,'Sensor '+str(i+1),'',window.textDict_218.ConfigDict)
+                        window.textDict_218.ConfigDict['Sensor Type'].append(self.sensors[i].text())
+                        window.textDict_218.ConfigDict['Sensors'].append('Sensor '+str(i+1))
+                        window.textDict_218.ConfigDict['Channels'].append(i+1)
+                        window.textDict_218.ConfigDict['Sensor Status '+str(i+1)] = str(1)
+                        window.textDict_218.ConfigDict['CP'+str(i+1)] = str(self.curves[i].value())
+                    else:
+                        window.textDict_218.ConfigDict['Sensor Status '+str(i+1)] = str(0)
+                        window.textDict_218.ConfigDict['CP'+str(i+1)] = str(0)
+                window.charge_modulos()
+                '''
+            self.close()
+        else:
+            self.close()
 class Terminal(QtWidgets.QWidget):
     def __init__(self, parent=None):
         try:
@@ -1892,7 +1906,7 @@ class Live_plot(object):
                                                                         +window.fit_number[i][1]\
                                                                         ,x[i][1])
             if window.curvas[9] == 1:
-                self.d[8],self.t[8] = self.Curvas_add(self.d[8],self.t[8],self.SP_1,x[7][1])
+                self.d[8],self.t[8] = self.Curvas_add(self.d[8],self.t[8],window.SP_1,x[7][1])
 
             if window.curvas[10] == 1:
                 HTR_1 = float(window.Data_335.Read_335('SETP?','1'))
@@ -1900,7 +1914,7 @@ class Live_plot(object):
                 time.sleep(0.05)
 
             if window.curvas[11] == 1:
-                self.d[10],self.t[10] = self.Curvas_add(self.d[10],self.t[10],self.SP_2,x[7][1])
+                self.d[10],self.t[10] = self.Curvas_add(self.d[10],self.t[10],window.SP_2,x[7][1])
 
             if window.curvas[12] == 1:
                 HTR_2 = float(window.Data_335.Read_335('SETP?','2'))
