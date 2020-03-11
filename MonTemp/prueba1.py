@@ -1227,7 +1227,7 @@ class Tercera(QtWidgets.QDialog,Ui_Tercera):
                 window.charge_modulos()
             self.close()
         else:
-            self.close
+            self.close()
 class Rampa_live(QtWidgets.QDialog,Ui_ramp):
     def __init__(self, *args, **kwargs):
         try:
@@ -1554,10 +1554,15 @@ class Icon(QtWidgets.QDialog,Ui_Icon):
         password = self.passwo.text()
         which_Te = subprocess.getoutput('which Temperature')
         patch = os.path.realpath(__file__).strip('prueba1.py') + 'Temperature.png'
-        command = 'sudo echo "[Desktop Entry]\nName=Temperature\nComment=Temperature\n\
-                            Exec=' + which_Te + '\nIcon=' + patch + '\nTerminal=false\n\
-                            Type=Application">>/usr/share/applications/Temperature.desktop'
+        texto = '[Desktop Entry]\nName=Temperature\nComment=Temperature\nExec=' + which_Te + '\nIcon=' + patch + '\nTerminal=false\n\
+            Type=Application'
+        command = 'sudo touch /usr/share/applications/Temperature.desktop'
         os.system('cd && ' + 'echo %s|sudo -S %s' % (password, command))
+        command = 'sudo chmod 777 /usr/share/applications/Temperature.desktop'
+        os.system('echo %s|sudo -S %s' % (password, command))
+        os.system('echo "'+texto+'" >> /usr/share/applications/Temperature.desktop')
+        command = 'sudo chmod 644 /usr/share/applications/Temperature.desktop'
+        os.system('echo %s|sudo -S %s' % (password, command))
         if os.path.isfile('/usr/share/applications/Temperature.desktop'):
             self.box = QtWidgets.QMessageBox()
             reply = self.box.question(self,
