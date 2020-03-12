@@ -607,9 +607,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.linePatch.setText(self.patch)
             os.system('cd && cd ' + self.patch2+' && chmod =r file_218.cfg')
             os.system('cd && cd ' + self.patch2+' && chmod =r file_335.cfg')
+        '''
         except Exception as e: 
-            self.label_scroll += '                     Error, please: \n run "sudo chmod 777 /dev/ttyUSB*"\n \
-                                         -Check connections\n       -Loaded configuration\n'\
+            self.label_scroll += '                        Error\n\t -run "sudo chmod 777 /dev/ttyUSB*"\n \
+                \t-Check connections\n\t-Loaded configuration\n'\
                                 '-------------------------------------------------------------------------\n'
             self.Update_label()
             self.textDict_218 = ConfigModule(self.filename_218,0,0)
@@ -645,6 +646,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.linePatch.setText(self.patch)
             os.system('cd && cd ' + self.patch2+' && chmod =r file_218.cfg')
             os.system('cd && cd ' + self.patch2+' && chmod =r file_335.cfg')
+        '''
     def buscarDirectorio(self):
         self.label_scroll+='                           Wait a moment Please\n'
         self.label_scroll+='-------------------------------------------------------------------------\n'
