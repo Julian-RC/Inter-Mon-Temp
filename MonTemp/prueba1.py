@@ -260,7 +260,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def off_heater_1(self):
         self.On_335_1()
         time.sleep(0.05)
-        self.Update_1()
+        Ramp_1 = str(self.ramp_1.value())
+        self.Data_335.Update_335('RAMP','1','1,'+Ramp_1)
+        time.sleep(0.05)
+        SetP_1 = str(self.setPoint_num_1.value())
+        self.SP_1 = float(SetP_1)
+        self.Data_335.Update_335('SETP','1',SetP_1)
     def off_heater_2(self):
         self.On_335_2()
         time.sleep(0.05)
@@ -442,14 +447,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.label_heater_1 += '--------------------------------------\n'
                 self.status_1.setWidget(QtWidgets.QLabel(self.label_heater_1))
                 self.status_1.verticalScrollBar().setValue(self.status_1.verticalScrollBar().maximum())
-                if self.RANGE_1:
-                    self.heater1_auto(Ran_1,Ramp_1)
-            elif self.RANGE_1:
+            if self.RANGE_1:
                 Ramp_1 = float(self.Data_335.Read_335('HTR?','1'))
                 time.sleep(0.05)
                 Ran_1 = int(self.Data_335.Read_335('RANGE?','1'))
                 time.sleep(0.05)
                 self.heater1_auto(Ran_1,Ramp_1)
+                time.sleep(0.05)
     def heater1_auto(self,Ran_1,Ramp_1):
         if Ran_1 == 0:
             self.Data_335.Update_335('RANGE','1','1')
@@ -486,11 +490,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.grafica2.setChecked(True)
                     self.grafica1.setChecked(False)
                     self.grafica1.setEnabled(False)
+                    self.grafica1.setStyleSheet("background-color: a(0);")
                     self.start.setEnabled(True)
                     self.stop.setEnabled(False)
                     #self.linePatch.setEnabled(True)
                     self.directorio.setEnabled(True)
+                    self.heater_1.setChecked(False)
                     self.heater_1.setEnabled(False)
+                    self.heater_1.setStyleSheet("background-color: a(0);font: 15pt 'Sans Serif';")
                     self.heater_2.setEnabled(False)
                     self.range_automatic_1.setChecked(True)
                     self.range_manual_1.setChecked(False)
@@ -498,7 +505,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.range_automatic_2.setChecked(True)
                     self.range_manual_2.setChecked(False)
                     self.seeStatus_2.setChecked(False)
-                    self.heater_1.setChecked(False)
                     self.heater_2.setChecked(False)
                     self.off_heater_1()
                     #self.off_heater_2()
@@ -623,12 +629,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.grafica2.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
             self.radioButton_2.setEnabled(True)
             self.radioButton_2.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
+            self.conflict_sensors_quit()
             self.Todos.setEnabled(True)
             self.Todos.setChecked(True)
-            i = 0
-            while i < len(self.sensor_ramp):
-                self.sensor_ramp[i].setEnabled(True)
-                i += 1
             self.label_scroll+='               Push "Start" for begin adquisition\n'
             self.label_scroll+='-------------------------------------------------------------------------\n'
             self.Update_label()
@@ -647,8 +650,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 for b in a.ConfigDict['Sensor Type']:
                     self.names_sensor.append(b)
         except Exception as e: 
-            self.label_scroll += '                                    Error\n   -Run "sudo chmod 777 /dev/ttyUSB*"\n\
-                   -Check connections\n   -Loaded configuration\n'\
+            self.label_scroll += '                                    Error\
+                                \n     -Run "sudo chmod 777 /dev/ttyUSB*"\n     -Check connections\n     -Change settings\n'\
                                 '-------------------------------------------------------------------------\n'
             self.Update_label()
             self.textDict_218 = ConfigModule(self.filename_218,0,0)
@@ -685,6 +688,30 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             os.system('cd && cd ' + self.patch2+' && chmod =r file_218.cfg')
             os.system('cd && cd ' + self.patch2+' && chmod =r file_335.cfg')
         self.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
+    def conflict_sensors_quit(self):
+        self.confict_enable = [0,0,0,0,0,0,0,0]
+        if len(self.textDict_335.ConfigDict['Channels'])==2:
+            self.confict_enable[0],self.confict_enable[1] = 1,1
+        elif self.textDict_335.ConfigDict['Channels'][0]=='A':
+            self.confict_enable[0] = 1
+        elif self.textDict_335.ConfigDict['Channels'][0]=='B':
+            self.confict_enable[1] = 1
+        i = 0
+        while i < 8:
+            if self.textDict_218.ConfigDict['Sensor Status '+str(i+1)]=='1':
+                self.confict_enable[i+2] = 1
+            i += 1
+        i = 0
+        while i < len(self.confict_enable):
+            if self.confict_enable[i] == 1:
+                self.sensor_ramp[i].setEnabled(True)
+                self.plot_checkbox[i].setChecked(True)
+                self.plot_checkbox[i].setStyleSheet("background-color: a(0);")
+            else:
+                self.sensor_ramp[i].setEnabled(False)
+                self.plot_checkbox[i].setChecked(False)
+                self.plot_checkbox[i].setStyleSheet("background-color: a(0);")
+            i += 1
     def buscarDirectorio(self):
         self.label_scroll+='                           Wait a moment Please\n'
         self.label_scroll+='-------------------------------------------------------------------------\n'
@@ -719,6 +746,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.radioButton_2.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
                     self.color_sensor.setStyleSheet("color:rgb(255,255,255);")
                     self.pushButton.setEnabled(True)
+                    self.conflict_sensors_quit()
                     self.Todos.setEnabled(True)
                     self.Todos.setChecked(True)
                     i = 0
@@ -814,17 +842,19 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if self.Todos.isChecked():
             self.Todos.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
             i = 0
-            while i < 8:
-                self.plot_checkbox[i].setEnabled(False)
-                self.plot_checkbox[i].setChecked(True)
-                self.plot_checkbox[i].setStyleSheet("background-color: a(0);")
+            while i < len(self.confict_enable):
+                if self.confict_enable[i] == 1:
+                    self.plot_checkbox[i].setEnabled(False)
+                    self.plot_checkbox[i].setChecked(True)
+                    self.plot_checkbox[i].setStyleSheet("background-color: a(0);")
                 i += 1
         else:
             self.Todos.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             i = 0
-            while i < 8:
-                self.plot_checkbox[i].setEnabled(True)
-                self.plot_checkbox[i].setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
+            while i < len(self.confict_enable):
+                if self.confict_enable[i] == 1:
+                    self.plot_checkbox[i].setEnabled(True)
+                    self.plot_checkbox[i].setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
                 i += 1
     def desbloquear_heater_1(self):
         if self.heater_1.isChecked():
@@ -1404,6 +1434,20 @@ class Fit_of_data(QtWidgets.QDialog,Ui_fit):
             self.sensor_fit_M[num].setEnabled(False)
             self.sensor[num].setStyleSheet("background-color: a(0);\
                 color: rgb(85, 0, 127);")
+    def accept(self):
+        self.box = QtWidgets.QMessageBox()
+        reply = self.box.question(self,
+                                    'Settings',
+                                    "Are you sure you want to change the settings?",
+                                    self.box.Yes | self.box.No, self.box.No)
+        pg.QtGui.QApplication.processEvents()
+        if reply == self.box.Yes:
+            i = 0
+            while i < 8:
+                window.textDict_fit.ConfigDict[window.names_sensor_color[i]][0] =  self.sensor_fit_M[i].value()
+                window.textDict_fit.ConfigDict[window.names_sensor_color[i]][1] =  self.sensor_fit_I[i].value()
+                i += 1
+            self.close()
 class D218_Data(QtWidgets.QDialog,Ui_fit_218):
     def __init__(self, *args, **kwargs):
         try:
@@ -1541,6 +1585,10 @@ class Terminal_settings(QtWidgets.QDialog,Ui_Terminal):
         try:
             QtWidgets.QDialog.__init__(self, *args, **kwargs)
             self.setupUi(self)
+            line_html = ''
+            for line in open(os.path.realpath(__file__).strip('prueba1.py') + 'cfg/terminal.cfg'):
+                line_html += line
+            self.textEdit.setPlainText(line_html)
             self.setWindowTitle("Settings Terminal")
             self.passwo.setEchoMode(QtWidgets.QLineEdit.Password)
         except KeyboardInterrupt as KBI:
