@@ -60,7 +60,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         for a in [self.textDict_335,self.textDict_218]:
             for b in a.ConfigDict['Sensor Type']:
                 self.names_sensor.append(b)
-        
         self.setupUi(self)
         self.setWindowTitle("Temperature 4.0")
         self.sensor_ramp = [self.ramp_CA,self.ramp_CB,self.ramp_D1,self.ramp_D2,\
@@ -579,87 +578,93 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.dialogs.append(Icon(self)) 
             self.dialogs[-1].show()
     def charge_modulos(self):
-        #try:           
-                        config_filename = self.patch_cfg + "/file_218.cfg"
-                        config_filename2 = self.patch_cfg + "/file_335.cfg"
-                        os.system('cp ' + config_filename + ' ' + self.patch2)
-                        os.system('cp ' + config_filename2 + ' ' + self.patch2)
-                        self.textDict_218 = ConfigModule(self.filename_218,1,1)
-                        self.Update_label()
-                        pg.QtGui.QApplication.processEvents()
-                        self.textDict_335 = ConfigModule(self.filename_335,0,1)
-                        pg.QtGui.QApplication.processEvents()
-                        self.Data_218 = TempClass(self.textDict_218.ConfigDict,patch=self.patch2)
-                        pg.QtGui.QApplication.processEvents()
-                        self.Update_label()
-                        self.Data_335 = TempClass(self.textDict_335.ConfigDict,self.Data_218.InitTime,patch=self.patch2)
-                        pg.QtGui.QApplication.processEvents()
-                        self.Update_label()
-                        self.label_scroll+='                               Config File loaded\n'
-                        self.start.setEnabled(True)
-                        self.SeeData.setEnabled(True)
-                        self.grafica2.setEnabled(True)
-                        self.grafica2.setChecked(True)
-                        self.grafica2.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
-                        self.radioButton_2.setEnabled(True)
-                        self.radioButton_2.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
-                        self.Todos.setEnabled(True)
-                        self.Todos.setChecked(True)
-                        i = 0
-                        while i < len(self.sensor_ramp):
-                            self.sensor_ramp[i].setEnabled(True)
-                            i += 1
-                        self.label_scroll+='               Push "Start" for begin adquisition\n'
-                        self.label_scroll+='-------------------------------------------------------------------------\n'
-                        self.Update_label()
-                        pg.QtGui.QApplication.processEvents()
-                        self.ramp_la.setStyleSheet("color:rgb(255,255,255);")
-                        self.graph_sensor.setStyleSheet("color:rgb(255,255,255);")
-                        self.color_sensor.setStyleSheet("color:rgb(255,255,255);")
-                        self.Action_button(1)
-                        self.patch = self.patch2
-                        self.patch_cfg = self.patch+'/'
-                        self.linePatch.setText(self.patch)
-                        os.system('cd && cd ' + self.patch2+' && chmod =r file_218.cfg')
-                        os.system('cd && cd ' + self.patch2+' && chmod =r file_335.cfg')
-                        '''
-                        #except Exception as e: 
-                        self.label_scroll += '       Error al cargar la configuración de los modulos\n'
-                        self.label_scroll+='-------------------------------------------------------------------------\n'
-                        os.system('cd && cd ' + self.patch2+' && rm file_218.cfg')
-                        os.system('cd && cd ' + self.patch2+' && rm file_335.cfg')
-                        self.Update_label()
-                        self.start.setEnabled(False)
-                        self.SeeData.setEnabled(False)
-                        self.grafica2.setEnabled(False)
-                        self.grafica2.setChecked(False)
-                        self.grafica2.setStyleSheet("background-color: a(0);")
-                        self.radioButton_2.setEnabled(False)
-                        self.radioButton_2.setStyleSheet("background-color: a(0);")
-                        self.Todos.setEnabled(False)
-                        self.Todos.setChecked(False)
-                        self.Todos.setStyleSheet("background-color: a(0);")
-                        i = 0
-                        while i < 8:
-                            self.plot_checkbox[i].setEnabled(False)
-                            self.plot_checkbox[i].setChecked(False)
-                            self.plot_checkbox[i].setStyleSheet("background-color: a(0);")
-                            i += 1
-                        self.Time.setStyleSheet(" ")
-                        self.Type.setStyleSheet(" ")
-                        self.ramp_la.setStyleSheet(" ")
-                        self.graph_sensor.setStyleSheet(" ")
-                        self.color_sensor.setStyleSheet(" ")
-                        self.pushButton.setEnabled(False)
-                        self.ramp.setEnabled(False)
-                        self.Action_button(0)
-                        '''
+        config_filename = self.patch_cfg + "/file_218.cfg"
+        config_filename2 = self.patch_cfg + "/file_335.cfg"
+        print(self.patch2)
+        os.system('cp ' + config_filename + ' ' + self.patch2)
+        os.system('cp ' + config_filename2 + ' ' + self.patch2)
+        try:           
+            self.textDict_218 = ConfigModule(self.filename_218,1,1)
+            self.Update_label()
+            pg.QtGui.QApplication.processEvents()
+            self.textDict_335 = ConfigModule(self.filename_335,0,1)
+            pg.QtGui.QApplication.processEvents()
+            self.Data_218 = TempClass(self.textDict_218.ConfigDict,patch=self.patch2)
+            pg.QtGui.QApplication.processEvents()
+            self.Update_label()
+            self.Data_335 = TempClass(self.textDict_335.ConfigDict,self.Data_218.InitTime,patch=self.patch2)
+            pg.QtGui.QApplication.processEvents()
+            self.Update_label()
+            self.label_scroll+='                               Config File loaded\n'
+            self.start.setEnabled(True)
+            self.SeeData.setEnabled(True)
+            self.grafica2.setEnabled(True)
+            self.grafica2.setChecked(True)
+            self.grafica2.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
+            self.radioButton_2.setEnabled(True)
+            self.radioButton_2.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
+            self.Todos.setEnabled(True)
+            self.Todos.setChecked(True)
+            i = 0
+            while i < len(self.sensor_ramp):
+                self.sensor_ramp[i].setEnabled(True)
+                i += 1
+            self.label_scroll+='               Push "Start" for begin adquisition\n'
+            self.label_scroll+='-------------------------------------------------------------------------\n'
+            self.Update_label()
+            pg.QtGui.QApplication.processEvents()
+            self.ramp_la.setStyleSheet("color:rgb(255,255,255);")
+            self.graph_sensor.setStyleSheet("color:rgb(255,255,255);")
+            self.color_sensor.setStyleSheet("color:rgb(255,255,255);")
+            self.Action_button(1)
+            self.patch = self.patch2
+            self.patch_cfg = self.patch+'/'
+            self.linePatch.setText(self.patch)
+            os.system('cd && cd ' + self.patch2+' && chmod =r file_218.cfg')
+            os.system('cd && cd ' + self.patch2+' && chmod =r file_335.cfg')
+        except Exception as e: 
+            self.label_scroll += '       Error al cargar la configuración de los modulos\n'\
+                                'Loaded configuration or run "sudo chmod 777 \dev\ttyUSB*"\n'\
+                                '-------------------------------------------------------------------------\n'
+            self.Update_label()
+            self.textDict_218 = ConfigModule(self.filename_218,0,0)
+            self.textDict_335 = ConfigModule(self.filename_335,0,0)
+            self.Data_218 = TempClass(self.textDict_218.ConfigDict,patch=self.patch2)
+            self.Data_335 = TempClass(self.textDict_335.ConfigDict,self.Data_218.InitTime,patch=self.patch2)
+            self.start.setEnabled(False)
+            self.SeeData.setEnabled(False)
+            self.grafica2.setEnabled(False)
+            self.grafica2.setChecked(False)
+            self.grafica2.setStyleSheet("background-color: a(0);")
+            self.radioButton_2.setEnabled(False)
+            self.radioButton_2.setStyleSheet("background-color: a(0);")
+            self.Todos.setEnabled(False)
+            self.Todos.setChecked(False)
+            self.Todos.setStyleSheet("background-color: a(0);")
+            i = 0
+            while i < 8:
+                self.plot_checkbox[i].setEnabled(False)
+                self.plot_checkbox[i].setChecked(False)
+                self.plot_checkbox[i].setStyleSheet("background-color: a(0);")
+                i += 1
+            self.Time.setStyleSheet(" ")
+            self.Type.setStyleSheet(" ")
+            self.ramp_la.setStyleSheet(" ")
+            self.graph_sensor.setStyleSheet(" ")
+            self.color_sensor.setStyleSheet(" ")
+            self.pushButton.setEnabled(False)
+            self.ramp.setEnabled(False)
+            self.Action_button(1)
+            self.patch = self.patch2
+            self.patch_cfg = self.patch
+            self.linePatch.setText(self.patch)
+            os.system('cd && cd ' + self.patch2+' && chmod =r file_218.cfg')
+            os.system('cd && cd ' + self.patch2+' && chmod =r file_335.cfg')
+        print(self.textDict_218.ConfigDict)
     def buscarDirectorio(self):
         self.label_scroll+='                           Wait a moment Please\n'
         self.label_scroll+='-------------------------------------------------------------------------\n'
         self.Update_label()
-        config_filename = self.patch_cfg + "/file_218.cfg"
-        config_filename2 = self.patch_cfg + "/file_335.cfg"
         self.buscarDirectorio_2()
         if self.patch2:
             self.filename_218 = self.patch2 + '/file_218.cfg'
@@ -715,7 +720,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.label_scroll+='                               No selected folder\n'
             self.label_scroll+='-------------------------------------------------------------------------\n'
             self.Update_label()
-            self.Action_button(0)
         self.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
     def buscarDirectorio_2(self):
         self.patch2 = QtWidgets.QFileDialog.getExistingDirectory(self, 'Search folder', self.patch)
@@ -1166,6 +1170,7 @@ class Tercera(QtWidgets.QDialog,Ui_Tercera):
             self.sensor2.setEnabled(False)
     def accept(self):
         if window.action_flag:
+            flag = False
             if not self.name.text() or self.name.text().isspace():
                 self.box = QtWidgets.QMessageBox()
                 reply = self.box.question(self,
@@ -1173,6 +1178,15 @@ class Tercera(QtWidgets.QDialog,Ui_Tercera):
                                         "Valor inválido Name",
                                         self.box.Ok , self.box.Ok)
                 pg.QtGui.QApplication.processEvents()
+                flag == True
+            elif self.name.text() == self.nameAverage.text():
+                self.box = QtWidgets.QMessageBox()
+                reply = self.box.question(self,
+                                        'Error',
+                                        "Name is same Name Average",
+                                        self.box.Ok , self.box.Ok)
+                pg.QtGui.QApplication.processEvents()
+                flag = True 
             elif not self.nameAverage.text() or self.nameAverage.text().isspace():
                 self.box = QtWidgets.QMessageBox()
                 reply = self.box.question(self,
@@ -1180,6 +1194,7 @@ class Tercera(QtWidgets.QDialog,Ui_Tercera):
                                         "Valor inválido Name Average",
                                         self.box.Ok , self.box.Ok)
                 pg.QtGui.QApplication.processEvents()
+                flag = True
             elif not self.model.text() or self.model.text().isspace():
                 self.box = QtWidgets.QMessageBox()
                 reply = self.box.question(self,
@@ -1187,6 +1202,7 @@ class Tercera(QtWidgets.QDialog,Ui_Tercera):
                                         "Valor inválido Model",
                                         self.box.Ok , self.box.Ok)
                 pg.QtGui.QApplication.processEvents()
+                flag = True
             elif not self.port.text() or self.port.text().isspace():
                 self.box = QtWidgets.QMessageBox()
                 reply = self.box.question(self,
@@ -1194,6 +1210,7 @@ class Tercera(QtWidgets.QDialog,Ui_Tercera):
                                         "Valor inválido Port",
                                         self.box.Ok , self.box.Ok)
                 pg.QtGui.QApplication.processEvents()
+                flag = True
             elif not self.sensor1.text() or self.sensor1.text().isspace():
                 self.box = QtWidgets.QMessageBox()
                 reply = self.box.question(self,
@@ -1201,6 +1218,7 @@ class Tercera(QtWidgets.QDialog,Ui_Tercera):
                                         "Valor inválido TypeSensor 1",
                                         self.box.Ok , self.box.Ok)
                 pg.QtGui.QApplication.processEvents()
+                flag = True
             elif not self.sensor2.text() or self.sensor2.text().isspace():
                 self.box = QtWidgets.QMessageBox()
                 reply = self.box.question(self,
@@ -1208,24 +1226,43 @@ class Tercera(QtWidgets.QDialog,Ui_Tercera):
                                         "Valor inválido TypeSensors 2",
                                         self.box.Ok , self.box.Ok)
                 pg.QtGui.QApplication.processEvents()
-            self.box = QtWidgets.QMessageBox()
-            reply = self.box.question(self,
-                                        'Settings',
-                                        "Are you sure you want to change the settings?",
-                                        self.box.Yes | self.box.No, self.box.No)
-            pg.QtGui.QApplication.processEvents()
-            if reply == self.box.Yes:
-                os.system('cd && cd ' + window.patch+' && chmod 777 file_335.cfg')
-                Change(window.filename_335,self.model.text(),'Model',window.textDict_218.ConfigDict) 
-                Change(window.filename_335,self.name.text(),'Name',window.textDict_218.ConfigDict)
-                Change(window.filename_335,self.nameAverage.text(),'NameAverage',window.textDict_218.ConfigDict)
-                Change(window.filename_335,self.savedata.value(),'SaveData',window.textDict_218.ConfigDict)
-                Change(window.filename_335,self.timeOut.value(),'TimeOut',window.textDict_218.ConfigDict)
-                Change(window.filename_335,self.port.text(),'Port',window.textDict_218.ConfigDict)
-                Change(window.filename_335,self.average.value(),'Average',window.textDict_218.ConfigDict)
-                Change(window.filename_335,self.samplinperiod.value(),'SamplingPeriod',window.textDict_218.ConfigDict)
-                window.charge_modulos()
-            self.close()
+                flag = True
+            if flag:
+                pass
+            else:
+                self.box = QtWidgets.QMessageBox()
+                reply = self.box.question(self,
+                                            'Settings',
+                                            "Are you sure you want to change the settings?",
+                                            self.box.Yes | self.box.No, self.box.No)
+                pg.QtGui.QApplication.processEvents()
+                if reply == self.box.Yes:
+                    os.system('cd && cd ' + window.patch+' && chmod 777 file_335.cfg')
+                    Change(window.filename_335,self.model.text(),'Model',window.textDict_335.ConfigDict) 
+                    Change(window.filename_335,self.name.text(),'Name',window.textDict_335.ConfigDict)
+                    Change(window.filename_335,self.nameAverage.text(),'NameAverage',window.textDict_335.ConfigDict)
+                    Change(window.filename_335,str(self.savedata.value()),'SaveData',window.textDict_335.ConfigDict)
+                    Change(window.filename_335,str(self.timeOut.value()),'TimeOut',window.textDict_335.ConfigDict)
+                    Change(window.filename_335,self.port.text(),'Port',window.textDict_335.ConfigDict)
+                    Change(window.filename_335,str(self.average.value()),'Average',window.textDict_335.ConfigDict)
+                    Change(window.filename_335,str(self.samplinperiod.value()),'SamplingPeriod',window.textDict_335.ConfigDict)
+                    sensor_type_last = Concatenador(window.textDict_335.ConfigDict,'Sensor Type')
+                    sensors_last = Concatenador(window.textDict_335.ConfigDict,'Sensors')
+                    channels_last = Concatenador(window.textDict_335.ConfigDict,'Channels')
+                    sensor_type_actual, sensors_actual, channels_actual = '','',''
+                    if self.sensor1_on.isChecked():
+                        sensor_type_actual += self.sensor1.text() + ','
+                        sensors_actual += 'Sensor 1'
+                        channels_actual += 'A,'
+                    if self.sensor2_on.isChecked():
+                        sensor_type_actual += self.sensor2.text() + ','
+                        sensors_actual += 'Sensor 2'
+                        channels_actual += 'B,'
+                    Change_v2(window.filename_335,sensor_type_actual,sensor_type_last,'Sensor Type')
+                    Change_v2(window.filename_335,sensors_actual,sensors_last,'Sensors')
+                    Change_v2(window.filename_335,channels_actual,channels_last,'Channels')
+                    window.charge_modulos()
+                self.close()
         else:
             self.close()
 class Rampa_live(QtWidgets.QDialog,Ui_ramp):
@@ -1600,20 +1637,22 @@ class Segunda(QtWidgets.QDialog,Ui_Segunda):
                                 self.desbloquear_sensor3,self.desbloquear_sensor4,\
                                 self.desbloquear_sensor5,self.desbloquear_sensor6,\
                                 self.desbloquear_sensor7,self.desbloquear_sensor8]
-            print(window.textDict_218.ConfigDict)
             for a in self.curves:
                 a.setRange(0,28)
             self.setWindowTitle("218 TemperatureMonitor")
             self.name.setText(window.textDict_218.ConfigDict['Name'])
             self.nameaverage.setText(window.textDict_218.ConfigDict['NameAverage'])
             self.model.setText(window.textDict_218.ConfigDict['Model'])
-            i = 0
-            while i < len(window.textDict_218.ConfigDict['Sensor Type']):
+            i , a = 0 , 0
+            while i < 8:
+                self.sensors_on[i].toggled.connect(self.desbloquear[i])
                 if window.textDict_218.ConfigDict['Sensor Status '+str(i+1)]=='1':
-                    self.sensors[i].setText(window.textDict_218.ConfigDict['Sensor Type'][i])
+                    self.sensors[i].setText(window.textDict_218.ConfigDict['Sensor Type'][a])
                     self.sensors_on[i].setChecked(True)
                     self.curves[i].setValue(int(window.textDict_218.ConfigDict['CP'+str(i+1)]))
-                self.sensors_on[i].toggled.connect(self.desbloquear[i])
+                    a += 1
+                else:
+                    self.sensors_on[i].setChecked(False)
                 i += 1
             self.port.setText(window.textDict_218.ConfigDict['Port'])
             self.savedata.setValue(int(window.textDict_218.ConfigDict['SaveData']))
@@ -1678,6 +1717,15 @@ class Segunda(QtWidgets.QDialog,Ui_Segunda):
                                         "Valor inválido Name",
                                         self.box.Ok , self.box.Ok)
                 pg.QtGui.QApplication.processEvents()
+                flag = True 
+            elif self.name.text() == self.nameaverage.text():
+                self.box = QtWidgets.QMessageBox()
+                reply = self.box.question(self,
+                                        'Error',
+                                        "Name is same Name Average",
+                                        self.box.Ok , self.box.Ok)
+                pg.QtGui.QApplication.processEvents()
+                flag = True 
             elif not self.nameaverage.text() or self.nameaverage.text().isspace():
                 self.box = QtWidgets.QMessageBox()
                 reply = self.box.question(self,
@@ -1685,6 +1733,7 @@ class Segunda(QtWidgets.QDialog,Ui_Segunda):
                                         "Valor inválido Name Average",
                                         self.box.Ok , self.box.Ok)
                 pg.QtGui.QApplication.processEvents()
+                flag = True 
             elif not self.model.text() or self.model.text().isspace():
                 self.box = QtWidgets.QMessageBox()
                 reply = self.box.question(self,
@@ -1692,6 +1741,7 @@ class Segunda(QtWidgets.QDialog,Ui_Segunda):
                                         "Valor inválido Model",
                                         self.box.Ok , self.box.Ok)
                 pg.QtGui.QApplication.processEvents()
+                flag = True 
             elif not self.port.text() or self.port.text().isspace():
                 self.box = QtWidgets.QMessageBox()
                 reply = self.box.question(self,
@@ -1699,41 +1749,50 @@ class Segunda(QtWidgets.QDialog,Ui_Segunda):
                                         "Valor inválido Port",
                                         self.box.Ok , self.box.Ok)
                 pg.QtGui.QApplication.processEvents()
-            self.box = QtWidgets.QMessageBox()
-            reply = self.box.question(self,
-                                        'Settings',
-                                        "Are you sure you want to change the settings?",
-                                        self.box.Yes | self.box.No, self.box.No)
-            pg.QtGui.QApplication.processEvents()
-            if reply == self.box.Yes:
-                os.system('cd && cd ' + window.patch+' && chmod 777 file_218.cfg')
-                Change(window.filename_218,self.model.text(),'Model',window.textDict_218.ConfigDict) 
-                Change(window.filename_218,self.name.text(),'Name',window.textDict_218.ConfigDict)
-                Change(window.filename_218,self.nameaverage.text(),'NameAverage',window.textDict_218.ConfigDict)
-                Change(window.filename_218,self.savedata.value(),'SaveData',window.textDict_218.ConfigDict)
-                Change(window.filename_218,self.timeOut.value(),'TimeOut',window.textDict_218.ConfigDict)
-                Change(window.filename_218,self.port.text(),'Port',window.textDict_218.ConfigDict)
-                Change(window.filename_218,self.average.value(),'Average',window.textDict_218.ConfigDict)
-                Change(window.filename_218,self.samplinperiod.value(),'SamplingPeriod',window.textDict_218.ConfigDict)
-                '''
-                i = 0
-                while i < 8:
-                    if self.sensors_on[i].isChecked():
-                        Change(window.filename_218,self.sensors[i].text(),'Sensor Type',window.textDict_218.ConfigDict)
-                        Change(window.filename_218,'Sensor '+str(i+1),'',window.textDict_218.ConfigDict)
-                        window.textDict_218.ConfigDict['Sensor Type'].append(self.sensors[i].text())
-                        window.textDict_218.ConfigDict['Sensors'].append('Sensor '+str(i+1))
-                        window.textDict_218.ConfigDict['Channels'].append(i+1)
-                        window.textDict_218.ConfigDict['Sensor Status '+str(i+1)] = str(1)
-                        window.textDict_218.ConfigDict['CP'+str(i+1)] = str(self.curves[i].value())
-                    else:
-                        window.textDict_218.ConfigDict['Sensor Status '+str(i+1)] = str(0)
-                        window.textDict_218.ConfigDict['CP'+str(i+1)] = str(0)
-                window.charge_modulos()
-                '''
-            self.close()
+                flag = True 
+            if flag:
+                pass
+            else:
+                self.box = QtWidgets.QMessageBox()
+                reply = self.box.question(self,
+                                            'Settings',
+                                            "Are you sure you want to change the settings?",
+                                            self.box.Yes | self.box.No, self.box.No)
+                pg.QtGui.QApplication.processEvents()
+                if reply == self.box.Yes:
+                    os.system('cd && cd ' + window.patch+' && chmod 777 file_218.cfg')
+                    Change(window.filename_218,self.model.text(),'Model',window.textDict_218.ConfigDict) 
+                    Change(window.filename_218,self.name.text(),'Name',window.textDict_218.ConfigDict)
+                    Change(window.filename_218,self.nameaverage.text(),'NameAverage',window.textDict_218.ConfigDict)
+                    Change(window.filename_218,str(self.savedata.value()),'SaveData',window.textDict_218.ConfigDict)
+                    Change(window.filename_218,str(self.timeOut.value()),'TimeOut',window.textDict_218.ConfigDict)
+                    Change(window.filename_218,self.port.text(),'Port',window.textDict_218.ConfigDict)
+                    Change(window.filename_218,str(self.average.value()),'Average',window.textDict_218.ConfigDict)
+                    Change(window.filename_218,str(self.samplinperiod.value()),'SamplingPeriod',window.textDict_218.ConfigDict)
+                    sensor_type_last = Concatenador(window.textDict_218.ConfigDict,'Sensor Type')
+                    sensors_last = Concatenador(window.textDict_218.ConfigDict,'Sensors')
+                    channels_last = Concatenador(window.textDict_218.ConfigDict,'Channels')
+                    sensor_type_actual, sensors_actual, channels_actual = '','',''
+                    i = 0
+                    while i < 8:
+                        if self.sensors_on[i].isChecked():
+                            sensor_type_actual += self.sensors[i].text() + ','
+                            sensors_actual += 'Sensor '+ str(i+1) + ','
+                            channels_actual += str(i+1) + ','
+                            Change(window.filename_218,str(1),'Sensor Status '+str(i+1),window.textDict_218.ConfigDict)
+                            Change(window.filename_218,str(self.curves[i].value()),'CP'+str(i+1),window.textDict_218.ConfigDict)
+                        else:
+                            Change(window.filename_218,str(0),'Sensor Status '+str(i+1),window.textDict_218.ConfigDict)
+                            Change(window.filename_218,str(0),'CP'+str(i+1),window.textDict_218.ConfigDict)
+                        i += 1
+                    Change_v2(window.filename_218,sensor_type_actual,sensor_type_last,'Sensor Type')
+                    Change_v2(window.filename_218,sensors_actual,sensors_last,'Sensors')
+                    Change_v2(window.filename_218,channels_actual,channels_last,'Channels')
+                    window.charge_modulos()
+                self.close()
         else:
             self.close()
+
 class Terminal(QtWidgets.QWidget):
     def __init__(self, parent=None):
         try:
@@ -2285,10 +2344,26 @@ def StrFunction(Data,Address):
 #
 #------
 
+def Concatenador(lista,name):
+    i = 0
+    a = name + ':'
+    while i < len(lista[name]):
+        a += str(lista[name][i]) + ','
+        i += 1
+    return a
+
+def Change_v2(file,new,last,name):
+        with open(file, "r") as f:
+            lines = (line.rstrip() for line in f)
+            altered_lines = [name+':'+new[0:-1] + '\n' if line == last[0:-1] \
+                            else line for line in lines]
+        with open(file, "w") as f:
+            f.write('\n'.join(altered_lines) + '\n')
+
 def Change(file,new,name,textDict):
         with open(file, "r") as f:
             lines = (line.rstrip() for line in f)
-            altered_lines = [name+':'+new+'/' if line==name+':'+textDict[name] \
+            altered_lines = [name+':' + new + '\n' if line==name+':'+str(textDict[name]) \
                             else line for line in lines]
         with open(file, "w") as f:
             f.write('\n'.join(altered_lines) + '\n')
