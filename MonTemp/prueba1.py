@@ -23,6 +23,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.ramp_stat,self.Start,self.close_plot,self.status_heater_1,self.heater_1_estatus,self.cfg,self.bt\
              = False,False,False,False,True,False,False
         self.ramp_count = 0
+        self.RANGE_1 = False
         super(MainWindow, self).__init__()
         self.num_matplotlib,self.num_ramp = 0,0
         self.patch = os.path.realpath(__file__).strip('prueba1.py')
@@ -304,7 +305,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.label_scroll +='                            Update Heater 1\n                          '+\
                         '{:%d-%m-%Y %H:%M:%S}'.format(datetime.datetime.now())+'\n'+\
                         '-------------------------------------------------------------------------\n'
-        self.label_scroll +=' Ramp= '+Ramp_1+' k/min SetPoint= '+SetP_1+' k  Range= '+ Range_print +\
+        self.label_scroll +='Ramp= '+Ramp_1+' k/min SetPoint= '+SetP_1+' k  Range= '+ Range_print +\
                         '\n-------------------------------------------------------------------------\n'
         self.Update_label()
     def Update_2(self):
@@ -345,8 +346,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.start.setEnabled(False)
         self.stop.setEnabled(True)
         self.directorio.setEnabled(False)
+        self.heater_1.setStyleSheet('background-color: a(0);color: rgb(88, 160, 255);font:15pt"Sans Serif"')
         self.heater_1.setEnabled(True)
-        self.heater_2.setEnabled(True)
+        #self.heater_2.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
+        #self.heater_2.setEnabled(True)
         self.lastdata.setEnabled(True)
 
         while self.Start:
@@ -418,29 +421,52 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 except:
                     pass
             if self.status_heater_1:
-                            Ramp_1 = str(self.Data_335.Read_335('HTR?','1'))
-                            time.sleep(0.05)
-                            self.label_heater_1 +=str(Ramp_1)+'%'
-                            SetP_1 = str(self.Data_335.Read_335('SETP?','1'))
-                            time.sleep(0.05)
-                            self.label_heater_1 +='   '+str(SetP_1)+'K'
-                            Ran_1 = str(self.Data_335.Read_335('RANGE?','1'))
-                            time.sleep(0.05)
-                            Range = ''
-                            if int(Ran_1)==0:
-                                Range = 'Off'
-                            elif int(Ran_1)==1:
-                                Range = 'Low'
-                            elif int(Ran_1)==2:
-                                Range = 'Med'
-                            elif int(Ran_1)==3:
-                                Range = 'High'
-                            self.label_heater_1 += '   '+Range+'\n'
-                            self.label_heater_1 += '--------------------------------------\n'
-                            self.status_1.setWidget(QtWidgets.QLabel(self.label_heater_1))
-                            self.status_1.verticalScrollBar().setValue(self.status_1.verticalScrollBar().maximum())
+                Ramp_1 = float(self.Data_335.Read_335('HTR?','1'))
+                time.sleep(0.05)
+                self.label_heater_1 +=str(Ramp_1)+'%'
+                SetP_1 = str(self.Data_335.Read_335('SETP?','1'))
+                time.sleep(0.05)
+                self.label_heater_1 +='   '+str(SetP_1)+'K'
+                Ran_1 = int(self.Data_335.Read_335('RANGE?','1'))
+                time.sleep(0.05)
+                Range = ''
+                if Ran_1 == 0:
+                    Range = 'Off'
+                elif Ran_1 == 1:
+                    Range = 'Low'
+                elif Ran_1 == 2:
+                    Range = 'Med'
+                elif Ran_1 == 3:
+                    Range = 'High'
+                self.label_heater_1 += '   '+Range+'\n'
+                self.label_heater_1 += '--------------------------------------\n'
+                self.status_1.setWidget(QtWidgets.QLabel(self.label_heater_1))
+                self.status_1.verticalScrollBar().setValue(self.status_1.verticalScrollBar().maximum())
+                if self.RANGE_1:
+                    self.heater1_auto(Ran_1,Ramp_1)
+            elif self.RANGE_1:
+                Ramp_1 = float(self.Data_335.Read_335('HTR?','1'))
+                time.sleep(0.05)
+                Ran_1 = int(self.Data_335.Read_335('RANGE?','1'))
+                time.sleep(0.05)
+                self.heater1_auto(Ran_1,Ramp_1)
+    def heater1_auto(self,Ran_1,Ramp_1):
+        if Ran_1 == 0:
+            self.Data_335.Update_335('RANGE','1','1')
+        elif Ran_1 == 1:
+            if Ramp_1 > 70:
+                self.Data_335.Update_335('RANGE','1','2')
+        elif Ran_1 == 2:
+            if Ramp_1 < 40:
+                self.Data_335.Update_335('RANGE','1','1')
+            elif Ramp_1 > 70:
+                self.Data_335.Update_335('RANGE','1','3')
+        elif Ran_1 == 3:
+            if Ramp_1 < 40:
+                self.Data_335.Update_335('RANGE','1','2')
     def stop_adquisition(self):
         self.Start = False
+        self.RANGE_1 = False
         self.box = QtWidgets.QMessageBox()
         reply = self.box.question(self,
                                  'Stop',
@@ -497,6 +523,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                         if reply == self.box.Yes:
                                 for a in [self.Data_218,self.Data_335]:
                                     a.Save()
+                                self.label_scroll+='                        Acquisition has stopped\n'
+                                self.label_scroll+='                          '+'{:%d-%m-%Y %H:%M:%S}'.format(datetime.datetime.now())+'\n'
+                                self.label_scroll+='-------------------------------------------------------------------------\n'
                                 self.Start = False
                                 if self.actual:
                                             self.plot_pyqt.close()
@@ -511,9 +540,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                                                         "¿Desea guardar la bitácora?\n(Se guardará en:  "+self.patch+")",
                                                         self.box.Yes | self.box.No, self.box.Yes)
                         if reply == self.box.Yes:
+                            self.label_scroll+='                        Temperature has closed\n'
+                            self.label_scroll+='                          '+'{:%d-%m-%Y %H:%M:%S}'.format(datetime.datetime.now())+'\n'
+                            self.label_scroll+='-------------------------------------------------------------------------\n'
+                            self.Start = False
                             f = open (self.patch+'/Temperature.bt','a')
                             f.write(self.label_scroll)
                             f.close()
+                            os.system('cd && cd ' + self.patch+' && chmod =r Temperature.bt')
                     try:
                         for i in range(len(self.mpl)):
                             self.mpl[i].close()
@@ -564,6 +598,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.dialogs.append(Terminal_settings(self)) 
         self.dialogs[-1].show()
     def charge_modulos(self):
+        self.setCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         config_filename = self.patch_cfg + "/file_218.cfg"
         config_filename2 = self.patch_cfg + "/file_335.cfg"
         os.system('cp ' + config_filename + ' ' + self.patch2)
@@ -607,10 +642,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.linePatch.setText(self.patch)
             os.system('cd && cd ' + self.patch2+' && chmod =r file_218.cfg')
             os.system('cd && cd ' + self.patch2+' && chmod =r file_335.cfg')
-        '''
+            self.names_sensor = []
+            for a in [self.textDict_335,self.textDict_218]:
+                for b in a.ConfigDict['Sensor Type']:
+                    self.names_sensor.append(b)
         except Exception as e: 
-            self.label_scroll += '                        Error\n\t -run "sudo chmod 777 /dev/ttyUSB*"\n \
-                \t-Check connections\n\t-Loaded configuration\n'\
+            self.label_scroll += '                                    Error\n   -Run "sudo chmod 777 /dev/ttyUSB*"\n\
+                   -Check connections\n   -Loaded configuration\n'\
                                 '-------------------------------------------------------------------------\n'
             self.Update_label()
             self.textDict_218 = ConfigModule(self.filename_218,0,0)
@@ -646,7 +684,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.linePatch.setText(self.patch)
             os.system('cd && cd ' + self.patch2+' && chmod =r file_218.cfg')
             os.system('cd && cd ' + self.patch2+' && chmod =r file_335.cfg')
-        '''
+        self.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
     def buscarDirectorio(self):
         self.label_scroll+='                           Wait a moment Please\n'
         self.label_scroll+='-------------------------------------------------------------------------\n'
@@ -706,10 +744,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.label_scroll+='                               No selected folder\n'
             self.label_scroll+='-------------------------------------------------------------------------\n'
             self.Update_label()
-        self.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
     def buscarDirectorio_2(self):
         self.patch2 = QtWidgets.QFileDialog.getExistingDirectory(self, 'Search folder', self.patch)
-        self.setCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         pg.QtGui.QApplication.processEvents()
     def desbloquear_grafica2(self):
         if self.grafica2.isChecked():
@@ -1239,8 +1275,8 @@ class Tercera(QtWidgets.QDialog,Ui_Tercera):
                     Change_v2(window.filename_335,sensor_type_actual,sensor_type_last,'Sensor Type')
                     Change_v2(window.filename_335,sensors_actual,sensors_last,'Sensors')
                     Change_v2(window.filename_335,channels_actual,channels_last,'Channels')
+                    self.close()
                     window.charge_modulos()
-                self.close()
         else:
             self.close()
 class Rampa_live(QtWidgets.QDialog,Ui_ramp):
@@ -1731,8 +1767,8 @@ class Segunda(QtWidgets.QDialog,Ui_Segunda):
                     Change_v2(window.filename_218,sensor_type_actual,sensor_type_last,'Sensor Type')
                     Change_v2(window.filename_218,sensors_actual,sensors_last,'Sensors')
                     Change_v2(window.filename_218,channels_actual,channels_last,'Channels')
-                    window.charge_modulos()
-                self.close()
+                    self.close()
+                    window.charge_modulos()              
         else:
             self.close()
 class Terminal(QtWidgets.QWidget):
@@ -1826,14 +1862,19 @@ class Live_plot(object):
         self.c=[[],[],[],[],[],[],[],[],[],[],[],[]]
         self.d=[[],[],[],[],[],[],[],[],[],[],[],[]]
         self.t=[[],[],[],[],[],[],[],[],[],[],[],[]]
+        self.num_sensores = 0
+        for a in window.curvas[1:8]:
+            self.num_sensores += 1
         self.p.addLegend()
         b = []
         if window.curvas[0] == 1:
+            print(len(window.names_sensor))
             for i in range(len(window.names_sensor)):
+                print(i)
                 self.c[i]=self.p.plot(pen=window.color[i],name=self.names_curves[i])
                 pg.QtGui.QApplication.processEvents()
         else:
-            for i in range(len(window.names_sensor)):
+            for i in range(self.num_sensores):
                 if window.curvas[1+i] == 1:
                     self.c[i]=self.p.plot(pen=window.color[i],name=self.names_curves[i])
                 pg.QtGui.QApplication.processEvents()
@@ -1883,7 +1924,9 @@ class Live_plot(object):
                                                                         ,b[i][0][inte])
                     pg.QtGui.QApplication.processEvents()
         else:
-            for i in range(len(window.names_sensor)):
+            for i in range(self.num_sensores):
+                print(len(b))
+                print(len(window.names_sensor))
                 for inte in range(len(b[i][0])):
                     if window.curvas[i+1] ==1:
                         self.d[i],self.t[i] = self.Curvas_add(self.d[i],self.t[i],\
@@ -1904,7 +1947,7 @@ class Live_plot(object):
                                                                         +window.fit_number[i][1]\
                                                                         ,x[i][1])
             else:
-                for i in range(len(window.names_sensor)):
+                for i in range(self.num_sensores):
                     if window.curvas[i+1] ==1:
                         self.d[i],self.t[i] = self.Curvas_add(self.d[i],self.t[i],\
                                                             float(x[i][2])*window.fit_number[i][0]\
@@ -1946,7 +1989,7 @@ class Live_plot(object):
                 for i in range(len(self.names_curves)):
                     self.c[i].setData(self.t[i],self.d[i])
             else:
-                for i in range(len(self.names_curves)):
+                for i in range(self.num_sensores):
                     if window.curvas[i+1] == 1:
                         self.c[i].setData(self.t[i],self.d[i])
             for i in [8,9,10,11]:
