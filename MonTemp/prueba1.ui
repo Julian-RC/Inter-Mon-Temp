@@ -2499,8 +2499,6 @@ font: 10pt &quot;Sans Serif&quot;;</string>
      <string>Settings</string>
     </property>
     <addaction name="separator"/>
-    <addaction name="actionAdd_Icon"/>
-    <addaction name="separator"/>
     <addaction name="actionFit_of_data"/>
     <addaction name="separator"/>
     <addaction name="actionPlot_File"/>

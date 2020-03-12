@@ -850,8 +850,6 @@ class Ui_MainWindow(object):
         self.menupl.addAction(self.actionInfo)
         self.menupl.addSeparator()
         self.menuSettings.addSeparator()
-        self.menuSettings.addAction(self.actionAdd_Icon)
-        self.menuSettings.addSeparator()
         self.menuSettings.addAction(self.actionFit_of_data)
         self.menuSettings.addSeparator()
         self.menuSettings.addAction(self.actionPlot_File)

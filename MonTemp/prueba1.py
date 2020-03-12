@@ -12,7 +12,6 @@ from MonTemp.fit import Ui_fit
 from MonTemp.fit_335_ui import Ui_fit_335
 from MonTemp.ramp_ui import Ui_ramp
 from MonTemp.terminal_ui import Ui_Terminal
-from MonTemp.icon_ui import Ui_Icon
 from PyQt5 import QtWidgets,QtGui,QtCore
 import pyqtgraph as pg
 from numpy import append,array
@@ -117,7 +116,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionFit_of_data.triggered.connect(self.show_Fit_of_data)
         self.actionPlot_File.triggered.connect(self.show_Plot_File)
         self.actionTerminal.triggered.connect(self.show_Terminal)
-        self.actionAdd_Icon.triggered.connect(self.show_Icon)
         self.dialogs = []
 
         self.setPoint_num_1.setRange(50,300)
@@ -259,12 +257,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
            self.label_scroll += '   ERROR: Text file cannot be shown.\n'
         self.Update_label()
     def off_heater_1(self):
-
         self.On_335_1()
         time.sleep(0.05)
         self.Update_1()
     def off_heater_2(self):
-
         self.On_335_2()
         time.sleep(0.05)
         self.Update_2()
@@ -567,20 +563,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def show_Terminal(self):
         self.dialogs.append(Terminal_settings(self)) 
         self.dialogs[-1].show()
-    def show_Icon(self):
-        if os.path.isfile('/usr/share/applications/Temperature.desktop'):
-            self.box = QtWidgets.QMessageBox()
-            reply = self.box.question(self,
-                    'Icon',
-                    "Icon already exists",
-                    self.box.Ok , self.box.Ok)
-        else:
-            self.dialogs.append(Icon(self)) 
-            self.dialogs[-1].show()
     def charge_modulos(self):
         config_filename = self.patch_cfg + "/file_218.cfg"
         config_filename2 = self.patch_cfg + "/file_335.cfg"
-        print(self.patch2)
         os.system('cp ' + config_filename + ' ' + self.patch2)
         os.system('cp ' + config_filename2 + ' ' + self.patch2)
         try:           
@@ -623,8 +608,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             os.system('cd && cd ' + self.patch2+' && chmod =r file_218.cfg')
             os.system('cd && cd ' + self.patch2+' && chmod =r file_335.cfg')
         except Exception as e: 
-            self.label_scroll += '       Error al cargar la configuración de los modulos\n'\
-                                'Loaded configuration or run "sudo chmod 777 \dev\ttyUSB*"\n'\
+            self.label_scroll += '                     Error, please: \n run "sudo chmod 777 /dev/ttyUSB*"\n \
+                                         -Check connections\n       -Loaded configuration\n'\
                                 '-------------------------------------------------------------------------\n'
             self.Update_label()
             self.textDict_218 = ConfigModule(self.filename_218,0,0)
@@ -660,7 +645,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.linePatch.setText(self.patch)
             os.system('cd && cd ' + self.patch2+' && chmod =r file_218.cfg')
             os.system('cd && cd ' + self.patch2+' && chmod =r file_335.cfg')
-        print(self.textDict_218.ConfigDict)
     def buscarDirectorio(self):
         self.label_scroll+='                           Wait a moment Please\n'
         self.label_scroll+='-------------------------------------------------------------------------\n'
@@ -1071,30 +1055,16 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.curvas[i]=1
 
         else:
-                if self.CA.isChecked():
-                    self.curvas[1] = 1
-                if self.CB.isChecked():
-                    self.curvas[2] = 1
-                if self.D1.isChecked():
-                    self.curvas[3] = 1
-                if self.D2.isChecked():
-                    self.curvas[4] = 1
-                if self.D3.isChecked():
-                    self.curvas[5] = 1
-                if self.D4.isChecked():
-                    self.curvas[6] = 1
-                if self.C5.isChecked():
-                    self.curvas[7] = 1
-                if self.C6.isChecked():
-                    self.curvas[8] = 1
-        if self.SetPoint1.isChecked():
-                self.curvas[9] = 1
-        if self.heater1.isChecked():
-                self.curvas[10] = 1
-        if self.SetPoint2.isChecked():
-                self.curvas[11] = 1
-        if self.heater2.isChecked():
-                self.curvas[12] = 1
+            i = 0
+            while i < 8:
+                if self.plot_checkbox[i].isChecked():
+                    self.curvas[i+1] = 1
+                i += 1
+        i = 7
+        while i < 12:
+            if self.plot_checkbox[i].isChecked():
+                self.curvas[i+1] = 1
+            i +=1
         if self.radioButton.isChecked():
             horas = self.hh.value()
             minutos = self.mm.value()
@@ -1137,19 +1107,19 @@ class Tercera(QtWidgets.QDialog,Ui_Tercera):
             self.name.setText(window.textDict_335.ConfigDict['Name'])
             self.nameAverage.setText(window.textDict_335.ConfigDict['NameAverage'])
             self.model.setText(window.textDict_335.ConfigDict['Model'])
+            self.sensor1_on.toggled.connect(self.desbloquear_sensor1)
+            self.sensor2_on.toggled.connect(self.desbloquear_sensor2)
             if len(window.textDict_335.ConfigDict['Channels'])==2:
                 self.sensor1.setText(window.textDict_335.ConfigDict['Sensor Type'][0])
                 self.sensor2.setText(window.textDict_335.ConfigDict['Sensor Type'][1])
                 self.sensor1_on.setChecked(True)
                 self.sensor2_on.setChecked(True)
-            elif window.textDict_335.ConfigDict['Channels']=='A':
-                self.sensor1.setText(window.textDict_335.ConfigDict['Sensor Type'])
+            elif window.textDict_335.ConfigDict['Channels'][0]=='A':
+                self.sensor1.setText(window.textDict_335.ConfigDict['Sensor Type'][0])
                 self.sensor1_on.setChecked(True)
-            elif window.textDict_335.ConfigDict['Channels']=='B':
-                self.sensor2.setText(window.textDict_335.ConfigDict['Sensor Type'])
+            elif window.textDict_335.ConfigDict['Channels'][0]=='B':
+                self.sensor2.setText(window.textDict_335.ConfigDict['Sensor Type'][0])
                 self.sensor2_on.setChecked(True)
-            self.sensor1_on.toggled.connect(self.desbloquear_sensor1)
-            self.sensor2_on.toggled.connect(self.desbloquear_sensor2)
             self.port.setText(window.textDict_335.ConfigDict['Port'])
             self.savedata.setValue(int(window.textDict_335.ConfigDict['SaveData']))
             self.average.setValue(int(window.textDict_335.ConfigDict['Average']))
@@ -1161,13 +1131,19 @@ class Tercera(QtWidgets.QDialog,Ui_Tercera):
     def desbloquear_sensor1(self):
         if self.sensor1_on.isChecked():
             self.sensor1.setEnabled(True)
+            self.sensor1_on.setStyleSheet("background-color: a(0);")
         else:
             self.sensor1.setEnabled(False)
+            self.sensor1_on.setStyleSheet("background-color: a(0);\
+                                                color: rgb(0, 255, 155);")
     def desbloquear_sensor2(self):
         if self.sensor2_on.isChecked():
             self.sensor2.setEnabled(True)
+            self.sensor2_on.setStyleSheet("background-color: a(0);")
         else:
             self.sensor2.setEnabled(False)
+            self.sensor2_on.setStyleSheet("background-color: a(0);\
+                                                color: rgb(0, 255, 155);")
     def accept(self):
         if window.action_flag:
             flag = False
@@ -1252,11 +1228,11 @@ class Tercera(QtWidgets.QDialog,Ui_Tercera):
                     sensor_type_actual, sensors_actual, channels_actual = '','',''
                     if self.sensor1_on.isChecked():
                         sensor_type_actual += self.sensor1.text() + ','
-                        sensors_actual += 'Sensor 1'
+                        sensors_actual += 'Sensor 1,'
                         channels_actual += 'A,'
                     if self.sensor2_on.isChecked():
                         sensor_type_actual += self.sensor2.text() + ','
-                        sensors_actual += 'Sensor 2'
+                        sensors_actual += 'Sensor 2,'
                         channels_actual += 'B,'
                     Change_v2(window.filename_335,sensor_type_actual,sensor_type_last,'Sensor Type')
                     Change_v2(window.filename_335,sensors_actual,sensors_last,'Sensors')
@@ -1578,44 +1554,6 @@ class Dialog(QtWidgets.QDialog,Ui_Dialog):
             self.setWindowTitle("About Temperature")
         except KeyboardInterrupt as KBI:
             pass
-class Icon(QtWidgets.QDialog,Ui_Icon):
-    def __init__(self, *args, **kwargs):
-        try:
-            QtWidgets.QDialog.__init__(self, *args, **kwargs)
-            self.setupUi(self)
-            self.setWindowTitle("Add Icon")
-            self.passwo.setEchoMode(QtWidgets.QLineEdit.Password)
-        except KeyboardInterrupt as KBI:
-            pass
-    def accept(self):
-        password = self.passwo.text()
-        which_Te = subprocess.getoutput('which Temperature')
-        patch = os.path.realpath(__file__).strip('prueba1.py') + 'Temperature.png'
-        texto = '[Desktop Entry]\nName=Temperature\nComment=Temperature\nExec=' + which_Te + '\nIcon=' + patch + '\nTerminal=false\n\
-            Type=Application'
-        command = 'sudo touch /usr/share/applications/Temperature.desktop'
-        os.system('cd && ' + 'echo %s|sudo -S %s' % (password, command))
-        command = 'sudo chmod 777 /usr/share/applications/Temperature.desktop'
-        os.system('echo %s|sudo -S %s' % (password, command))
-        os.system('echo "'+texto+'" >> /usr/share/applications/Temperature.desktop')
-        command = 'sudo chmod 644 /usr/share/applications/Temperature.desktop'
-        os.system('echo %s|sudo -S %s' % (password, command))
-        if os.path.isfile('/usr/share/applications/Temperature.desktop'):
-            self.box = QtWidgets.QMessageBox()
-            reply = self.box.question(self,
-                                    'Change Plot File',
-                                    "Successful",
-                                    self.box.Ok , self.box.Ok)
-            pg.QtGui.QApplication.processEvents()
-            if reply == self.box.Ok:
-                self.close()
-        else:
-            self.box = QtWidgets.QMessageBox()
-            reply = self.box.question(self,
-                                    'Error',
-                                    "Password Incorrect",
-                                    self.box.Ok , self.box.Ok)
-            pg.QtGui.QApplication.processEvents()
 class Segunda(QtWidgets.QDialog,Ui_Segunda):
     def __init__(self, *args, **kwargs):
         try:
@@ -1681,9 +1619,12 @@ class Segunda(QtWidgets.QDialog,Ui_Segunda):
         if self.sensors_on[num].isChecked():
             self.sensors[num].setEnabled(True)
             self.curves[num].setEnabled(True)
+            self.sensors_on[num].setStyleSheet("background-color: a(0);")
         else:
             self.sensors[num].setEnabled(False)
             self.curves[num].setEnabled(False)
+            self.sensors_on[num].setStyleSheet("background-color: a(0);\
+                color:rgb(0,255,255);")
     def accept(self): 
         if window.action_flag:
             i = 0
@@ -1792,7 +1733,6 @@ class Segunda(QtWidgets.QDialog,Ui_Segunda):
                 self.close()
         else:
             self.close()
-
 class Terminal(QtWidgets.QWidget):
     def __init__(self, parent=None):
         try:
@@ -1820,7 +1760,6 @@ class Dashboard(QtWidgets.QWidget):
         self.gradient.setColorAt(0.5, QtCore.Qt.green)
         self.unit = unit
     def charge(self, value):
-        print(value)
         self.value = abs(value)
         if self.value < 0.0049:
             self.value = 0
@@ -2145,7 +2084,9 @@ def WriteToFile(root,name,Text):
         File.close()
         return Text
     except:
-        print('ERROR: Cannot write in '+ root + name + ' file.')
+        window.label_scroll += 'ERROR: Cannot write in '+ root + name + ' file.'+\
+            '-------------------------------------------------------------------------\n'
+        window.Update_label()
 
 #----------------------------------------------------------
 #Esta función adjunta datos a archivos pickle
@@ -2168,7 +2109,6 @@ def FileHeader(root,name,textDict,MeasureType):
                     textDict['Device'],textDict['Model'])
     HeaderText += "#Type of file: " + MeasureType +"\n"
     HeaderText += "#Sensors: "
-    #HeaderText += "Sensors: {} \n".format(textDict['Sensor type'])
     ListaSensores = textDict['Sensors']
     TipoSensores = textDict['Sensor Type']
 
@@ -2193,7 +2133,9 @@ def ColumnText(ListaSensores):
 
         ColumnText += "\n"
     except:
-        print('ERROR: El encabezado no pudo ser escrito.')
+        window.label_scroll += 'ERROR: El encabezado no pudo ser escrito.\n\
+            -------------------------------------------------------------------------\n'
+        window.Update_label()
 
     return ColumnText
 
@@ -2204,7 +2146,6 @@ def ColumnText(ListaSensores):
 def ColumnNames(root,name,ColumnNames):
 
     ColumnNames = WriteToFile(root,name,ColumnNames)
-    #return ColumnNames
 
 #----------------------------------------------------------
 #Esta función guarda los datos obtenidos de las mediciones
@@ -2325,7 +2266,9 @@ def AverageFunction(Data,AverageStr,Sensors):
         pg.QtGui.QApplication.processEvents()
 
     except:
-        print('ERROR: "Average" of the configuration file must be an integer.')
+        window.label_scroll += 'ERROR: "Average" of the configuration file must be an integer.\n\
+            -------------------------------------------------------------------------\n'
+        window.Update_label()
         pg.QtGui.QApplication.processEvents()
 
     return AvgData, AvgDataStr
@@ -2338,7 +2281,9 @@ def StrFunction(Data,Address):
     try:
         subprocess.Popen(['gedit', Address])
     except:
-        print('El editor de texto "gedit" no se encuentra en sus sistema. /rInstalelo para habilitar esta función')
+        window.label_scroll += 'El editor de texto "gedit" no se encuentra en sus sistema. \n\
+                Instalelo para habilitar esta función\n\
+                -------------------------------------------------------------------------\n'
         
 #------
 #
@@ -2573,10 +2518,8 @@ class ConfigModule:
 
         for line in open(self.configFileName):
             if line[0] == "#" :
-                #print("skipping comment")
                 continue
             if line[0] == "\n" :
-                #print("skipping comment")
                 continue
             List=line.split(":")
             self.ConfigDict.setdefault(List[0],List[1].strip()) #strip() quita espacios
@@ -2658,6 +2601,7 @@ class ConfigModule:
 #Main code --- MAIN
 #----------------------------------------------------------
 
+
 def launch():
     try:
         global window
@@ -2667,6 +2611,8 @@ def launch():
         sys.exit(app.exec_())
     except KeyboardInterrupt as KBI:
         pass
-
+if not os.path.isfile('/usr/share/applications/Temperature.desktop'):
+    os.system('echo '+os.path.realpath(__file__).strip('prueba1.py') + 'Temperature.png')
+    sys.exit()
 if __name__ == "__main__":
       launch()
