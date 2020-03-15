@@ -25,7 +25,7 @@ try:
                   altered_lines.append(line)
       with open('/usr/share/applications/Temperature.desktop', "w") as f:
               f.write('\n'.join(altered_lines) + '\n')
-      command = 'sudo chmod 644 /usr/share/applications/Temperature.desktop'
+      command = 'sudo chmod =r /usr/share/applications/Temperature.desktop'
       os.system(command)
 except:
   print('Error de instalación de Paquetes')
