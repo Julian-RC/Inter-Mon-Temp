@@ -1,5 +1,4 @@
 import os, serial, sys, time, datetime, subprocess, pickle
-#os.system('cd '++'cfg && sudo chmod 777 /dev/ttyUSB*')
 from MonTemp.Temperature_ui import Ui_MainWindow
 from MonTemp.info_ui import Ui_Dialog
 from MonTemp.segunda_ui import Ui_Segunda
@@ -18,73 +17,75 @@ from numpy import append,array
 from matplotlib.backends.backend_qt5agg \
   import FigureCanvasQTAgg as FigureCanvas
 
+
+#-----------------------------------------------------------------
+#Esta clase contiene toda la información de la ventana principal
+#-----------------------------------------------------------------
+
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
+
     def __init__(self, parent=None,*args, **kwargs):
+        '''
+        Esta función incia las variables principales así como enlaza cada widget con su función
+        '''
         super(MainWindow, self).__init__()
-        self.setupUi(self)
-        self.setWindowTitle("Temperature 4.0")
+        self.setupUi(self)#Aqui se importan los widgets
+        self.setWindowTitle("Temperature 4.0")#titulo de ventana
+        self.setCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+        #aqui se inician las variables y se definen los diccionarios
         self.ramp_stat, self.Start, self.close_plot, self.status_heater_1, self.heater_1_estatus, self.cfg, self.bt,\
-            self.patch2, self.ramp_count, self.RANGE_1, self.num_matplotlib, self.num_ramp, self.patch \
+            self.patch2, self.ramp_count, self.RANGE_1, self.num_matplotlib, self.num_ramp, self.patch,\
+            self.names_sensor_color, self.sensor_ramp_desbloquear, self.dialogs, self.sensor_ramp, \
+            self.plot_desbloquear, self.names_sensor, self.plot_checkbox, self.color_button, self.color_change \
             = False, False, False, False, True, False, False, '/home', 0, False, 0, 0, \
-            os.path.realpath(__file__).strip('Temperature.py') 
+            os.path.realpath(__file__).strip('Temperature.py'), ['CA','CB','D1','D2','D3','D4','C5','C6'],\
+            [self.desbloquear_sensores_ramp_CA, self.desbloquear_sensores_ramp_CB, self.desbloquear_sensores_ramp_D1,\
+            self.desbloquear_sensores_ramp_D2, self.desbloquear_sensores_ramp_D3, self.desbloquear_sensores_ramp_D4,\
+            self.desbloquear_sensores_ramp_C5, self.desbloquear_sensores_ramp_C6], [], [self.ramp_CA, self.ramp_CB,\
+            self.ramp_D1, self.ramp_D2, self.ramp_D3, self.ramp_D4, self.ramp_C5, self.ramp_C6], \
+            [self.desbloquear_sensores_CA, self.desbloquear_sensores_CB, self.desbloquear_sensores_D1, \
+            self.desbloquear_sensores_D2, self.desbloquear_sensores_D3, self.desbloquear_sensores_D4,\
+            self.desbloquear_sensores_C5, self.desbloquear_sensores_C6, self.desbloquear_SetPoint1, \
+            self.desbloquear_heater1, self.desbloquear_SetPoint2, self.desbloquear_heater2], [], [self.CA, self.CB, \
+            self.D1, self.D2, self.D3, self.D4, self.C5, self.C6, self.SetPoint1, self.heater1, self.SetPoint2, \
+            self.heater2], [self.color_H1, self.color_H2, self.color_S1, self.color_S2, self.color_D1, self.color_D2, \
+            self.color_D3, self.color_D4, self.color_C5, self.color_C6, self.color_CA, self.color_CB], \
+            [self.change_color_H1, self.change_color_H2, self.change_color_S1, self.change_color_S2, \
+            self.change_color_D1, self.change_color_D2, self.change_color_D3, self.change_color_D4, \
+            self.change_color_C5, self.change_color_C6, self.change_color_CA, self.change_color_CB]
         self.patch_cfg = self.patch +'cfg' 
-        os.system("xrdb " + self.patch_cfg + "/terminal.cfg")
-        self.filename_218 = self.patch_cfg + "/file_218.cfg"
-        self.filename_335 = self.patch_cfg + "/file_335.cfg"
-        filename_color = self.patch_cfg + "/color.cfg"
-        self.filename_fit = self.patch_cfg + "/sensores_fit.cfg"
-        self.textDict_218, self.textDict_335 = ConfigModule(self.filename_218,0,0), ConfigModule(self.filename_335,0,0)
+        self.filename_218, self.filename_335, filename_color, self.filename_fit = \
+            self.patch_cfg + "/file_218.cfg", self.patch_cfg + "/file_335.cfg", self.patch_cfg + "/color.cfg", \
+            self.patch_cfg + "/sensores_fit.cfg"
+        self.textDict_218, self.textDict_335, self.textDict_color, self.textDict_fit =\
+            ConfigModule(self.filename_218,0,0), ConfigModule(self.filename_335,0,0), ConfigModule(filename_color,0,0), \
+            ConfigModule(self.filename_fit,0,0)
         self.file_plot_names = [self.textDict_335.ConfigDict['Name'],self.textDict_218.ConfigDict['Name'],'Plot of data']
-        self.textDict_color = ConfigModule(filename_color,0,0)
-        for a in self.textDict_color.ConfigDict:
-            self.textDict_color.ConfigDict[a]=self.textDict_color.ConfigDict[a].split(',')
+        for a in [self.textDict_color.ConfigDict, self.textDict_fit.ConfigDict]:
+            for b in a:
+                a[b] = a[b].split(',')
         self.color=[0]*(len(self.textDict_color.ConfigDict)+1)
         for a in self.textDict_color.ConfigDict:
             self.color[self.color[len(self.textDict_color.ConfigDict)]]=array([int(self.textDict_color.ConfigDict[a][0]),\
                                 int(self.textDict_color.ConfigDict[a][1]),\
                                 int(self.textDict_color.ConfigDict[a][2])])
             self.color[len(self.textDict_color.ConfigDict)] += 1
-        self.color[len(self.textDict_color.ConfigDict)]=0
-        self.textDict_fit = ConfigModule(self.filename_fit,0,0)
+        self.fit_number = [0]*(len(self.textDict_fit.ConfigDict)+1)
         for a in self.textDict_fit.ConfigDict:
-            self.textDict_fit.ConfigDict[a]=self.textDict_fit.ConfigDict[a].split(',')
-        self.fit_number=[0]*(len(self.textDict_fit.ConfigDict)+1)
-        for a in self.textDict_fit.ConfigDict:
-            self.fit_number[self.fit_number[len(self.textDict_fit.ConfigDict)]]=[float(self.textDict_fit.ConfigDict[a][0])\
-                                                                            ,float(self.textDict_fit.ConfigDict[a][1])]
+            self.fit_number[self.fit_number[len(self.textDict_fit.ConfigDict)]]=\
+                [float(self.textDict_fit.ConfigDict[a][0]), float(self.textDict_fit.ConfigDict[a][1])]
             self.fit_number[len(self.textDict_fit.ConfigDict)] += 1
         self.Data_218 = TempClass(self.textDict_218.ConfigDict,patch=self.patch)
         self.Data_335 = TempClass(self.textDict_335.ConfigDict,self.Data_218.InitTime,patch=self.patch)
-        self.names_sensor=[]
         for a in [self.textDict_335,self.textDict_218]:
             for b in a.ConfigDict['Sensor Type']:
                 self.names_sensor.append(b)
-        self.plot_checkbox = [self.CA,self.CB,self.D1,self.D2,self.D3,self.D4,\
-            self.C5,self.C6,self.SetPoint1,self.heater1,\
-            self.SetPoint2,self.heater2]
-        self.color_button = [self.color_H1,self.color_H2,self.color_S1,self.color_S2,self.color_D1,self.color_D2\
-            ,self.color_D3,self.color_D4,self.color_C5,self.color_C6,self.color_CA,self.color_CB]
-        self.color_change = [self.change_color_H1,self.change_color_H2,self.change_color_S1,self.change_color_S2\
-            ,self.change_color_D1,self.change_color_D2,self.change_color_D3,self.change_color_D4\
-            ,self.change_color_C5,self.change_color_C6,self.change_color_CA,self.change_color_CB]
-        self.plot_desbloquear = [self.desbloquear_sensores_CA,self.desbloquear_sensores_CB,\
-            self.desbloquear_sensores_D1,self.desbloquear_sensores_D2,\
-            self.desbloquear_sensores_D3,self.desbloquear_sensores_D4,\
-            self.desbloquear_sensores_C5,self.desbloquear_sensores_C6,\
-            self.desbloquear_SetPoint1,self.desbloquear_heater1,\
-            self.desbloquear_SetPoint2,self.desbloquear_heater2]
-        self.sensor_ramp = [self.ramp_CA,self.ramp_CB,self.ramp_D1,self.ramp_D2,\
-            self.ramp_D3,self.ramp_D4,self.ramp_C5,self.ramp_C6]
-        self.sensor_ramp_desbloquear = [self.desbloquear_sensores_ramp_CA,\
-            self.desbloquear_sensores_ramp_CB, self.desbloquear_sensores_ramp_D1,\
-            self.desbloquear_sensores_ramp_D2, self.desbloquear_sensores_ramp_D3,\
-            self.desbloquear_sensores_ramp_D4, self.desbloquear_sensores_ramp_C5,\
-            self.desbloquear_sensores_ramp_C6]
+        #Aquí se introducen las funciones desbloquear que se encargan de cambiar el estado del MainWindow
+        #en función de los radioButton seleccionados
         i = 0
         while i < 8:
             self.sensor_ramp[i].toggled.connect(self.sensor_ramp_desbloquear[i])
             i += 1
-        self.pushButton.clicked.connect(self.graficar)
         self.radioButton.toggled.connect(self.desbloquear_radioButton)
         self.radioButton_2.toggled.connect(self.desbloquear_radioButton_2)
         self.Todos.toggled.connect(self.desbloquear_Todos)
@@ -102,7 +103,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         while i < len(self.plot_checkbox):
             self.plot_checkbox[i].toggled.connect(self.plot_desbloquear[i])
             i += 1
-
+        #Aquí se enlaza la barra de herramientas con las funciones que abren los dialogos
         self.actionInfo.triggered.connect(self.show_dialog)
         self.action218.triggered.connect(self.show_218)
         self.action335.triggered.connect(self.show_335)
@@ -113,8 +114,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionFit_of_data.triggered.connect(self.show_Fit_of_data)
         self.actionPlot_File.triggered.connect(self.show_Plot_File)
         self.actionTerminal.triggered.connect(self.show_Terminal)
-        self.dialogs = []
-
+        self.actionAbout_Temperature.triggered.connect(self.show_Temperature)
+        #Aquí se introducen los formatos de los QSpinBox
         self.ramp_1.setDecimals(1)
         self.ramp_2.setDecimals(1)
         self.ramp_1.setRange(0,5)
@@ -123,7 +124,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.mm.setRange(0,59)
         self.setPoint_num_1.setRange(50,300)
         self.setPoint_num_2.setRange(50,300)
-
+        #Aquí se enlaza cada pushbutton con su función al realizar al ser presionado
+        self.pushButton.clicked.connect(self.graficar)
         self.update_1.clicked.connect(self.Update_1)
         self.update_2.clicked.connect(self.Update_2)
         self.Off_1.clicked.connect(self.off_heater_1)
@@ -138,121 +140,222 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         while i < 12:
             self.color_button[i].clicked.connect(self.color_change[i])
             i += 1
-        self.label_scroll='-------------------------------------------------------------------------\n'+\
+        #Aquí se agrega la terminal
+        os.system("xrdb " + self.patch_cfg + "/terminal.cfg")
+        self.tabWidget.clear()
+        self.tabWidget.addTab(Terminal(),"Terminal")
+        
+        self.label_scroll = '-------------------------------------------------------------------------\n'+\
                      '               Welcome, Temperature has begun\n                          '+\
                      '{:%d-%m-%Y %H:%M:%S}\n'.format(datetime.datetime.now())+\
                      '-------------------------------------------------------------------------\n '+\
                      '                   Please select a folder to start\n'\
                      '-------------------------------------------------------------------------\n'
         self.Update_label()
-        self.tabWidget.clear()
-        self.tabWidget.addTab(Terminal(),"Terminal")
-        self.names_sensor_color = ['CA','CB','D1','D2','D3','D4','C5','C6']
         self.Action_button(0)
-        pg.QtGui.QApplication.processEvents()
+        self.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
+    
     def Action_button(self,Status):
+        '''
+        Esta función define la variable que permite cambiar la configuración de los módulos
+        '''
         if Status == 1:
             self.action_flag = True
         else:
             self.action_flag = False
+    
     def Update_label(self):
+        '''
+        Esta función actualiza el Status
+        '''
         self.scrollArea.setWidget(QtWidgets.QLabel(self.label_scroll))
         self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
         pg.QtGui.QApplication.processEvents()
+    
+    def closeEvent(self, event):
+        '''
+        Esta función realiza las acciones para cerrar las ventanas correctamente, así
+        como guardar datos al finalizar la aplicación.
+        '''
+        try:
+            print(self.textDict_color.ConfigDict)
+            self.box = QtWidgets.QMessageBox()
+            reply = self.box.question(self,
+                'Exit',
+                "You really want to close the application?",
+                self.box.Yes | self.box.No, self.box.No)
+            pg.QtGui.QApplication.processEvents()
+            if reply == self.box.Yes:
+                if self.Start:
+                    reply = self.box.question(self,
+                        'Stop',
+                        "An aquisition is in progress, do you want to stop it?",
+                        self.box.Yes | self.box.No, self.box.No)
+                    if reply == self.box.Yes:
+                        for a in [self.Data_218,self.Data_335]:
+                            a.Save()
+                        self.label_scroll += '                        Acquisition has stopped\n'\
+                            +'                          ' + \
+                            '{:%d-%m-%Y %H:%M:%S}'.format(datetime.datetime.now()) + '\n'\
+                            +'-------------------------------------------------------------------------\n'
+                        self.Start = False
+                        if self.actual:
+                                    self.plot_pyqt.close()
+                                    self.actual = False
+                        #self.off_heater_1()
+                        #self.off_heater_2()
+                    else:
+                        event.ignore()
+                if not self.Start:
+                    if self.bt:
+                        reply = self.box.question(self,
+                            'History',
+                            "Do you want to save the history?\n(It will be saved in: "+self.patch+")",
+                            self.box.Yes | self.box.No, self.box.Yes)
+                        if reply == self.box.Yes:
+                            self.label_scroll += '                        Temperature has closed\n'\
+                                + '                          ' \
+                                + '{:%d-%m-%Y %H:%M:%S}'.format(datetime.datetime.now())+'\n'\
+                                + '-------------------------------------------------------------------------\n'
+                            f = open (self.patch+'/Temperature.bt','a')
+                            f.write(self.label_scroll)
+                            f.close()
+                            os.system('cd && cd ' + self.patch+' && chmod =r Temperature.bt')
+                    t
+                    try:
+                        for i in range(len(self.mpl)):
+                            self.mpl[i].close()
+                    
+                    except:
+                        pass
+                    
+                    try:
+                        for i in range(len(self.mpl_ramp)):
+                            self.mpl_ramp[i].close()
+                    
+                    except:
+                        pass
+                    
+                    try:
+                        for i in range(len(self.dialogs)):
+                            self.dialogs[i].close()
+                    
+                    except:
+                        pass
+            else:
+                    event.ignore()
+        
+        except KeyboardInterrupt as KBI:
+            pass 
+    
+    '''
+    Estas funciones cambian el textDict de los colores
+    '''
+
     def change_color(self,name_dat,num):
+
         color_rgb = self.textDict_color.ConfigDict[name_dat]
         color = QtWidgets.QColorDialog.getColor(QtGui.QColor(int(color_rgb[0]),int(color_rgb[1]),int(color_rgb[2])))
-        pg.QtGui.QApplication.processEvents()
         if color.isValid():
             color_rgb = color.getRgb()
             self.textDict_color.ConfigDict[name_dat]=[str(color_rgb[0]),str(color_rgb[1]),str(color_rgb[2])]
             self.color_button[num].setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','\
                                         +str(color_rgb[2])+");border: 1px solid black;")
-            pg.QtGui.QApplication.processEvents()
         for a in self.textDict_color.ConfigDict:
-            self.color[self.color[len(self.textDict_color.ConfigDict)]]=array([int(self.textDict_color.ConfigDict[a][0]),\
-                                int(self.textDict_color.ConfigDict[a][1]),\
-                                int(self.textDict_color.ConfigDict[a][2])])
+            self.color[self.color[len(self.textDict_color.ConfigDict)]] = array([\
+                int(self.textDict_color.ConfigDict[a][0]),\
+                int(self.textDict_color.ConfigDict[a][1]),\
+                int(self.textDict_color.ConfigDict[a][2])])
             self.color[len(self.textDict_color.ConfigDict)] += 1
-        self.color[len(self.textDict_color.ConfigDict)]=0
+            pg.QtGui.QApplication.processEvents()
+        self.color[len(self.textDict_color.ConfigDict)] = 0
+
     def change_color_H1(self):
+
         self.change_color('H1',0)
+    
     def change_color_S1(self):
-        self.change_color('s1',2)
+
+        self.change_color('S1',2)
+
     def change_color_H2(self):
+    
         self.change_color('H2',1)
+    
     def change_color_S2(self):
+    
         self.change_color('S2',3)
+    
     def change_color_CA(self):
+    
         self.change_color('CA',10)
+    
     def change_color_CB(self):
+    
         self.change_color('CB',11)
+    
     def change_color_D1(self):
+    
         self.change_color('D1',4)
+    
     def change_color_D2(self):
+    
         self.change_color('D2',5)
+    
     def change_color_D3(self):
+    
         self.change_color('D3',6)
+    
     def change_color_D4(self):
+    
         self.change_color('D4',7)
+    
     def change_color_C5(self):
+    
         self.change_color('C5',8)
+    
     def change_color_C6(self):
+    
         self.change_color('C6',9)
-    def rampa_matplotlib(self):
-            try:
-                if self.num_ramp==0:
-                    self.mpl_ramp=[]
-                    self.mpl_ramp.append(Plot_ramp())
-                    self.mpl_ramp[0].show()
-                else:
-                    self.mpl_ramp.append(Plot_ramp())
-                    self.mpl_ramp[self.num_ramp].show()
-                self.num_ramp += 1
-            except:
-                pass
-    def rampa(self):
-        Flag = 0
-        self.curvas_ramp=[0,0,0,0,0,0,0,0]
-        for i in range(8):
-            if self.sensor_ramp[i].isChecked():
-                self.curvas_ramp[i] = 1
-                Flag = 1
-                self.ramp_sensor = self.ctn[i]
-        if Flag == 1: 
-            if self.grafica2.isChecked():
-                if self.ramp_stat:
-                    self.ramp_stat = False
-                    self.ramp_live.close()
-                self.rampa_matplotlib()
-            else:
-                self.ramp_count = 0
-                self.ramp_value = []
-                if self.ramp_stat:
-                    self.ramp_live.close()
-                    self.ramp_live = Rampa_live(self)
-                    self.ramp_live.show()
-                else:
-                    self.ramp_stat = True
-                    self.ramp_live = Rampa_live(self)
-                    self.ramp_live.show()
+    
+    '''
+    Estas funciones se encargan de visualizar datos
+    '''
+
     def last(self):
+        '''
+        Esta función imprime el último dato guardado en el status
+        '''
         self.label_scroll +='                              See Last Data\n                           '+\
                        '{:%d-%m-%Y %H:%M:%S}'.format(datetime.datetime.now())+\
                        '\n-------------------------------------------------------------------------\n'
         self.Update_label()
-        self.label_scroll +='               ' + 'Sensor'+'           '+'Time[s]'+ '        ' +'Data[K]\n'
+        self.label_scroll += '               ' + 'Sensor' + '           ' + 'Time[s]' + '        ' + 'Data[K]\n'
         for Obj in [self.Data_335,self.Data_218]:
                self.label_scroll += Obj.PrintValue()
+               pg.QtGui.QApplication.processEvents()
         self.Update_label()
+
     def see_data(self):
+        '''
+        Esta función abre los Complete Data en formato .txt
+        '''
         try:
             for Obj in [self.Data_218,self.Data_335]:
                 Obj.__str__()
+                pg.QtGui.QApplication.processEvents()
         except:
            self.label_scroll += '   ERROR: Text file cannot be shown.\n'
         self.Update_label()
+
+    '''
+    Estas funciones trabajan con el Heater 1
+    '''
+
     def off_heater_1(self):
+        '''
+        Esta funcion detiene al Heater en el punto donde se encuentra
+        '''    
         self.On_335_1()
         time.sleep(0.05)
         Ramp_1 = str(self.ramp_1.value())
@@ -261,23 +364,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         SetP_1 = str(self.setPoint_num_1.value())
         self.SP_1 = float(SetP_1)
         self.Data_335.Update_335('SETP','1',SetP_1)
-    def off_heater_2(self):
-        self.On_335_2()
-        time.sleep(0.05)
-        self.Update_2()
-    def On_335_1(self):
-        Ramp_1 = str(self.Data_335.Read_335('RAMP?','1')[2:7])
-        self.ramp_1.setValue(float(Ramp_1))
-        SetP_1 = str(self.Data_335.Read_335('SETP?','1'))
-        self.SP_1 = float(SetP_1)
-        self.setPoint_num_1.setValue(self.SP_1)
-    def On_335_2(self):
-        Ramp_2 = str(self.Data_335.Read_335('RAMP?','2')[2:7])
-        self.ramp_2.setValue(float(Ramp_2))
-        SetP_2 = self.Data_335.Read_335('SETP?','2')
-        self.SP_2 = float(SetP_2)
-        self.setPoint_num_2.setValue(self.SP_2)
+
     def Update_1(self):
+        '''
+        Esta función lee y actualiza el estado del Heater
+        '''
         Ramp_1 = str(self.ramp_1.value())
         self.Data_335.Update_335('RAMP','1','1,'+Ramp_1)
         time.sleep(0.05)
@@ -301,13 +392,67 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.RANGE_1 = True
             Range_print = 'Auto'
 
-        self.label_scroll +='                            Update Heater 1\n                          '+\
+        self.label_scroll += '                            Update Heater 1\n                          '+\
                         '{:%d-%m-%Y %H:%M:%S}'.format(datetime.datetime.now())+'\n'+\
                         '-------------------------------------------------------------------------\n'
-        self.label_scroll +='Ramp= '+Ramp_1+' k/min SetPoint= '+SetP_1+' k  Range= '+ Range_print +\
+        self.label_scroll += 'Ramp= '+Ramp_1+' k/min SetPoint= '+SetP_1+' k  Range= '+ Range_print +\
                         '\n-------------------------------------------------------------------------\n'
         self.Update_label()
+
+    def On_335_1(self):
+        '''
+        Esta función lee y completa los datos del Heater en pantalla
+        '''
+        Ramp_1 = str(self.Data_335.Read_335('RAMP?','1')[2:7])
+        self.ramp_1.setValue(float(Ramp_1))
+        SetP_1 = str(self.Data_335.Read_335('SETP?','1'))
+        self.SP_1 = float(SetP_1)
+        self.setPoint_num_1.setValue(self.SP_1)
+
+    def heater1_auto(self,Ran_1,Ramp_1):
+        '''
+        Esta funcion controla el Rango del heater en un intervalo <20 >70
+        '''
+        if Ran_1 == 0:
+            self.Data_335.Update_335('RANGE','1','1')
+        elif Ran_1 == 1:
+            if Ramp_1 > 70:
+                self.Data_335.Update_335('RANGE','1','2')
+        elif Ran_1 == 2:
+            if Ramp_1 < 20:
+                self.Data_335.Update_335('RANGE','1','1')
+            elif Ramp_1 > 70:
+                self.Data_335.Update_335('RANGE','1','3')
+        elif Ran_1 == 3:
+            if Ramp_1 < 20:
+                self.Data_335.Update_335('RANGE','1','2')
+
+    '''
+    Estas funciones trabajan con el Heater 2 (no estan completas)
+    '''
+
+    def off_heater_2(self):
+        '''
+        Esta funcion detiene al Heater en el punto donde se encuentra
+        '''    
+        self.On_335_2()
+        time.sleep(0.05)
+        self.Update_2()
+
+    def On_335_2(self):
+        '''
+        Esta función lee y completa los datos del Heater en pantalla
+        '''
+        Ramp_2 = str(self.Data_335.Read_335('RAMP?','2')[2:7])
+        self.ramp_2.setValue(float(Ramp_2))
+        SetP_2 = self.Data_335.Read_335('SETP?','2')
+        self.SP_2 = float(SetP_2)
+        self.setPoint_num_2.setValue(self.SP_2) 
+
     def Update_2(self):
+        '''
+        Esta función lee y actualiza el estado del Heater
+        '''
         self.Data_335.Update_335('RANGE','2','1')
         time.sleep(0.05)
         Ramp_2 = str(self.ramp_2.value())
@@ -323,14 +468,23 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.Data_335.Update_335('RANGE','2',Range)
         else:
             self.RANGE_2 = True
+    
+    '''
+    Estas funciones estan realcionadas con el inicio y fin de la
+    adquision de datos
+    '''
+
     def start_adquisition(self):
+        '''
+        Esta función está destinada a adquirir datos
+        '''
         self.Action_button(0)
         self.ramp.setEnabled(True)
         self.Start,self.actual,self.bt = True,False, True
         self.pushButton.setEnabled(True)
         self.Data_218.Start()
         self.Data_335.Start()
-        self.label_scroll+='                          Aquisition has begun\n'\
+        self.label_scroll += '                          Aquisition has begun\n'\
                         '                          '+'{:%d-%m-%Y %H:%M:%S}'.format(datetime.datetime.now())+'\n'\
                         '-------------------------------------------------------------------------\n'
         self.Update_label()
@@ -350,45 +504,44 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         #self.heater_2.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
         #self.heater_2.setEnabled(True)
         self.lastdata.setEnabled(True)
-
         while self.Start:
+
             try:
                     self.Data_218.GetData()
                     pg.QtGui.QApplication.processEvents()
                     if self.Data_218.InitTime != 0: self.Data_335.InitTime = self.Data_218.InitTime
                     self.Data_335.GetData()
                     pg.QtGui.QApplication.processEvents()
+
             except:
                     self.label_scroll += '                             Error en la adquisición\n'
-                    self.label_scroll+='-------------------------------------------------------------------------\n'
+                    self.label_scroll += '-------------------------------------------------------------------------\n'
                     self.Update_label()
+                    self.stop_adquisition_yes()
             if self.actual:
                           Data_2 = []
                           for Obj in [self.Data_335,self.Data_218]:
-                              a=Obj.Last_data()
-                              if a==[]:
+                              a = Obj.Last_data()
+                              if a == []:
                                   pass
                               else:
                                   for algo in a:
                                       Data_2.append(algo)
                                       pg.QtGui.QApplication.processEvents()
-                              pg.QtGui.QApplication.processEvents()
                           if Data_2 == []:
                               pass
                           else:
                               self.plot_pyqt.add(Data_2)
                               self.plot_pyqt.update()
-                              pg.QtGui.QApplication.processEvents()
                           self.close_plot = True
-                          pg.QtGui.QApplication.processEvents()
             elif self.close_plot:
                             self.plot_pyqt.close()
                             self.close_plot = False
             if self.ramp_stat:
                 x = []
                 for Obj in [self.Data_335,self.Data_218]:
-                    a=Obj.Last_data()
-                    if a==[]:
+                    a = Obj.Last_data()
+                    if a == []:
                         pass
                     else:
                         for algo in a:
@@ -416,8 +569,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.value_last,self.time_last = self.value_actual,self.time_actual
 
             else:
+
                 try:
                     self.ramp_live.close()
+
                 except:
                     pass
             if self.status_heater_1:
@@ -449,184 +604,154 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 time.sleep(0.05)
                 self.heater1_auto(Ran_1,Ramp_1)
                 time.sleep(0.05)
-    def heater1_auto(self,Ran_1,Ramp_1):
-        if Ran_1 == 0:
-            self.Data_335.Update_335('RANGE','1','1')
-        elif Ran_1 == 1:
-            if Ramp_1 > 70:
-                self.Data_335.Update_335('RANGE','1','2')
-        elif Ran_1 == 2:
-            if Ramp_1 < 20:
-                self.Data_335.Update_335('RANGE','1','1')
-            elif Ramp_1 > 70:
-                self.Data_335.Update_335('RANGE','1','3')
-        elif Ran_1 == 3:
-            if Ramp_1 < 20:
-                self.Data_335.Update_335('RANGE','1','2')
+
     def stop_adquisition(self):
-        self.Start = False
-        self.RANGE_1 = False
+        '''
+        Esta función está destinada para detener la adquisición correctamente
+        '''
         self.box = QtWidgets.QMessageBox()
         reply = self.box.question(self,
                                  'Stop',
-                                 "¿Realmente desea detener la adquision?",
+                                 "Do you really want to stop the aquisition?",
                                   self.box.Yes | self.box.No, self.box.No)
         if reply == self.box.Yes:
                 reply = self.box.question(self,
                                  'Stop',
-                                 "¿Está seguro?",
+                                 "Really?",
                                   self.box.Yes | self.box.No, self.box.No)
                 if reply == self.box.Yes:
-                    for a in [self.Data_218,self.Data_335]:
-                        a.Save()
-                    if self.actual:
-                        self.plot_pyqt.close()
-                        self.actual = False
-                    self.grafica2.setChecked(True)
-                    self.grafica1.setChecked(False)
-                    self.grafica1.setEnabled(False)
-                    self.grafica1.setStyleSheet("background-color: a(0);")
-                    self.start.setEnabled(True)
-                    self.stop.setEnabled(False)
-                    #self.linePatch.setEnabled(True)
-                    self.directorio.setEnabled(True)
-                    self.heater_1.setChecked(False)
-                    self.heater_1.setEnabled(False)
-                    self.heater_1.setStyleSheet("background-color: a(0);font: 15pt 'Sans Serif';")
-                    self.heater_2.setEnabled(False)
-                    self.range_automatic_1.setChecked(True)
-                    self.range_manual_1.setChecked(False)
-                    self.seeStatus_1.setChecked(False)
-                    self.range_automatic_2.setChecked(True)
-                    self.range_manual_2.setChecked(False)
-                    self.seeStatus_2.setChecked(False)
-                    self.heater_2.setChecked(False)
-                    self.off_heater_1()
-                    #self.off_heater_2()
-                    self.label_scroll+='                        Acquisition has stopped\n'
-                    self.label_scroll+='                          '+'{:%d-%m-%Y %H:%M:%S}'.format(datetime.datetime.now())+'\n'
-                    self.label_scroll+='-------------------------------------------------------------------------\n'
-                    self.Update_label()
-                    Ran_1 = int(self.Data_335.Read_335('RANGE?','1'))
-                    time.sleep(0.05)
-                    if not Ran_1 == 0:
-                        self.box = QtWidgets.QMessageBox()
-                        reply = self.box.question(self,
-                                 'Heater 1',
-                                 "¿Desea apagar el Heater 1?",
-                                  self.box.Yes | self.box.No, self.box.No)
-                        if reply == self.box.Yes:
-                            self.Data_335.Update_335('RANGE','1','0')
-    def closeEvent(self, event):
-        try:
-            print(self.textDict_color.ConfigDict)
+                    self.stop_adquisition_yes() 
+
+    def stop_adquisition_yes(self):
+        self.Start = False
+        self.RANGE_1 = False
+        for a in [self.Data_218,self.Data_335]:
+            a.Save()
+        if self.actual:
+            self.plot_pyqt.close()
+            self.actual = False
+        self.grafica2.setChecked(True)
+        self.grafica1.setChecked(False)
+        self.grafica1.setEnabled(False)
+        self.grafica1.setStyleSheet("background-color: a(0);")
+        self.start.setEnabled(True)
+        self.stop.setEnabled(False)
+        #self.linePatch.setEnabled(True)
+        self.directorio.setEnabled(True)
+        self.heater_1.setChecked(False)
+        self.heater_1.setEnabled(False)
+        self.heater_1.setStyleSheet("background-color: a(0);font: 15pt 'Sans Serif';")
+        self.heater_2.setEnabled(False)
+        self.range_automatic_1.setChecked(True)
+        self.range_manual_1.setChecked(False)
+        self.seeStatus_1.setChecked(False)
+        self.range_automatic_2.setChecked(True)
+        self.range_manual_2.setChecked(False)
+        self.seeStatus_2.setChecked(False)
+        self.heater_2.setChecked(False)
+        self.off_heater_1()
+        #self.off_heater_2()
+        self.label_scroll += '                        Acquisition has stopped\n'\
+            + '                          '+'{:%d-%m-%Y %H:%M:%S}'.format(datetime.datetime.now())+'\n'\
+            + '-------------------------------------------------------------------------\n'
+        Ran_1 = int(self.Data_335.Read_335('RANGE?','1'))
+        time.sleep(0.05)
+        if not Ran_1 == 0:
             self.box = QtWidgets.QMessageBox()
             reply = self.box.question(self,
-                'Exit',
-                "¿Realmente desea cerrar la aplicacion?",
-                self.box.Yes | self.box.No, self.box.No)
-            pg.QtGui.QApplication.processEvents()
+                     'Heater 1',
+                     "Do you want turned off of heater 1?",
+                      self.box.Yes | self.box.No, self.box.No)
             if reply == self.box.Yes:
-                if self.Start:
-                    reply = self.box.question(self,
-                        'Stop',
-                        "Hay una adquisición en proceso, ¿Desea detenerla?",
-                        self.box.Yes | self.box.No, self.box.No)
-                    if reply == self.box.Yes:
-                        for a in [self.Data_218,self.Data_335]:
-                            a.Save()
-                        self.label_scroll+='                        Acquisition has stopped\n'\
-                            +'                          '+'{:%d-%m-%Y %H:%M:%S}'.format(datetime.datetime.now())+'\n'\
-                            +'-------------------------------------------------------------------------\n'
-                        self.Start = False
-                        if self.actual:
-                                    self.plot_pyqt.close()
-                                    self.actual = False
-                        #self.off_heater_1()
-                        #self.off_heater_2()
-                    else:
-                        event.ignore()
-                if self.bt == True and self.Start == False:
-                    reply = self.box.question(self,
-                        'Bitácora',
-                        "¿Desea guardar la bitácora?\n(Se guardará en:  "+self.patch+")",
-                        self.box.Yes | self.box.No, self.box.Yes)
-                    if reply == self.box.Yes:
-                        self.label_scroll += '                        Temperature has closed\n'\
-                            + '                          '+'{:%d-%m-%Y %H:%M:%S}'.format(datetime.datetime.now())+'\n'\
-                            + '-------------------------------------------------------------------------\n'
-                        f = open (self.patch+'/Temperature.bt','a')
-                        f.write(self.label_scroll)
-                        f.close()
-                        os.system('cd && cd ' + self.patch+' && chmod 644 Temperature.bt')
-                try:
-                    for i in range(len(self.mpl)):
-                        self.mpl[i].close()
-                except:
-                    pass
-                try:
-                    for i in range(len(self.mpl_ramp)):
-                        self.mpl_ramp[i].close()
-                except:
-                    pass
-                try:
-                    for i in range(len(self.dialogs)):
-                        self.dialogs[i].close()
-                except:
-                    pass
-            else:
-                    event.ignore()
-        except KeyboardInterrupt as KBI:
-            pass
+                self.Data_335.Update_335('RANGE','1','0')
+                self.label_scroll += '                             Heater 1 off\n'\
+            + '                          '+'{:%d-%m-%Y %H:%M:%S}'.format(datetime.datetime.now())+'\n'\
+            + '-------------------------------------------------------------------------\n'
+        self.Update_label()
+    
+    '''
+    Estas funciones abren los dialogos de la barra de herramientas
+    '''
+
     def show_dialog(self):
         self.dialogs.append(Dialog(self)) 
         self.dialogs[-1].show()
+
     def show_218(self):
+    
         self.dialogs.append(Segunda(self)) 
         self.dialogs[-1].show()
+    
     def show_335(self):
+    
         self.dialogs.append(Tercera(self)) 
         self.dialogs[-1].show()
+    
     def show_help_218(self):
+    
         self.dialogs.append(Help_218(self)) 
         self.dialogs[-1].show()
+    
     def show_help_335(self):
+    
         self.dialogs.append(Help_335(self)) 
         self.dialogs[-1].show()
+    
     def show_218_Data(self):
+    
         self.dialogs.append(D218_Data(self)) 
         self.dialogs[-1].show()
+    
     def show_335_Data(self):
+    
         self.dialogs.append(D335_Data(self)) 
         self.dialogs[-1].show()
+    
     def show_Fit_of_data(self):
+    
         self.dialogs.append(Fit_of_data(self)) 
         self.dialogs[-1].show()
+    
     def show_Plot_File(self):
+    
         self.dialogs.append(Plot_File(self)) 
         self.dialogs[-1].show()
+    
     def show_Terminal(self):
+    
         self.dialogs.append(Terminal_settings(self)) 
         self.dialogs[-1].show()
+    
+    def show_Temperature(self):
+
+        self.dialogs.append(Help_Temperature(self)) 
+        self.dialogs[-1].show()        
+
+    '''
+    Estas funciones se encargan de los procesos que se llevan a cabo 
+    cuando se selecciona una carpeta
+    '''
+
     def charge_modulos(self):
+        '''
+        Esta función carga lla configuración cunado en la carpeta no se detectan
+        config file
+        '''
         self.setCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         config_filename = self.patch_cfg + "/file_218.cfg"
         config_filename2 = self.patch_cfg + "/file_335.cfg"
         os.system('cp ' + config_filename + ' ' + self.patch2)
         os.system('cp ' + config_filename2 + ' ' + self.patch2)
+
         try:           
             self.textDict_218 = ConfigModule(self.filename_218,1,1)
             self.Update_label()
-            pg.QtGui.QApplication.processEvents()
             self.textDict_335 = ConfigModule(self.filename_335,0,1)
-            pg.QtGui.QApplication.processEvents()
             self.Data_218 = TempClass(self.textDict_218.ConfigDict,patch=self.patch2)
-            pg.QtGui.QApplication.processEvents()
             self.Update_label()
             self.Data_335 = TempClass(self.textDict_335.ConfigDict,self.Data_218.InitTime,patch=self.patch2)
-            pg.QtGui.QApplication.processEvents()
             self.Update_label()
-            self.label_scroll+='                               Config File loaded\n'
+            self.label_scroll += '                               Config File loaded\n'
             self.start.setEnabled(True)
             self.SeeData.setEnabled(True)
             self.grafica2.setEnabled(True)
@@ -637,10 +762,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.conflict_sensors_quit()
             self.Todos.setEnabled(True)
             self.Todos.setChecked(True)
-            self.label_scroll+='               Push "Start" for begin adquisition\n'
-            self.label_scroll+='-------------------------------------------------------------------------\n'
+            self.label_scroll = '               Push "Start" for begin adquisition\n'\
+                + '-------------------------------------------------------------------------\n'
             self.Update_label()
-            pg.QtGui.QApplication.processEvents()
             self.ramp_la.setStyleSheet("color:rgb(255,255,255);")
             self.graph_sensor.setStyleSheet("color:rgb(255,255,255);")
             self.color_sensor.setStyleSheet("color:rgb(255,255,255);")
@@ -654,14 +778,20 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             for a in [self.textDict_335,self.textDict_218]:
                 for b in a.ConfigDict['Sensor Type']:
                     self.names_sensor.append(b)
+                    pg.QtGui.QApplication.processEvents()
+                    
             i = 0
             while i < 8:
                 self.plot_checkbox[i].setText(QtCore.QCoreApplication.translate\
                     ("MainWindow", self.names_sensor[self.ctn[i]]))
                 i += 1
+                pg.QtGui.QApplication.processEvents()
+
         except Exception as e: 
-            self.label_scroll += '                                    Error\
-                                \n     -Run "sudo chmod 777 /dev/ttyUSB*"\n     -Check connections\n     -Change settings\n'\
+            self.label_scroll += '                                    Error' + \
+                                '-------------------------------------------------------------------------\n' + \
+                                '\n     -Run "sudo chmod 777 /dev/ttyUSB*"\n      -Check connections\n' + \
+                                '      -Change settings\n'\
                                 '-------------------------------------------------------------------------\n'
             self.Update_label()
             self.textDict_218 = ConfigModule(self.filename_218,0,0)
@@ -686,6 +816,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.sensor_ramp[i].setEnabled(False)
                 self.sensor_ramp[i].setChecked(False)
                 i += 1
+                pg.QtGui.QApplication.processEvents()
             self.Time.setStyleSheet(" ")
             self.Type.setStyleSheet(" ")
             self.ramp_la.setStyleSheet(" ")
@@ -694,6 +825,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.pushButton.setEnabled(False)
             self.ramp.setEnabled(False)
             self.Action_button(1)
+            self.conflict_sensors_quit()
             self.patch = self.patch2
             self.patch_cfg = self.patch
             self.linePatch.setText(self.patch)
@@ -703,13 +835,20 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             for a in [self.textDict_335,self.textDict_218]:
                 for b in a.ConfigDict['Sensor Type']:
                     self.names_sensor.append(b)
+                    pg.QtGui.QApplication.processEvents()
             i = 0
             while i < 8:
                 self.plot_checkbox[i].setText(QtCore.QCoreApplication.translate\
                     ("MainWindow", self.names_sensor[self.ctn[i]]))
                 i += 1
+                pg.QtGui.QApplication.processEvents()
         self.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
+
     def conflict_sensors_quit(self):
+        '''
+        Esta funcion se encarga de resolver los conflictos al quitar sensores de 
+        la configuración
+        '''
         self.confict_enable = [0,0,0,0,0,0,0,0]
         if len(self.textDict_335.ConfigDict['Channels'])==2:
             self.confict_enable[0],self.confict_enable[1] = 1,1
@@ -722,6 +861,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             if self.textDict_218.ConfigDict['Sensor Status '+str(i+1)]=='1':
                 self.confict_enable[i+2] = 1
             i += 1
+            pg.QtGui.QApplication.processEvents()
         i, b = 0, 0
         self.ctn = [0,0,0,0,0,0,0,0]
         while i < len(self.confict_enable):
@@ -736,7 +876,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.plot_checkbox[i].setChecked(False)
                 self.plot_checkbox[i].setStyleSheet("background-color: a(0);")
             i += 1
+            pg.QtGui.QApplication.processEvents()
+
     def buscarDirectorio(self):
+        '''
+        Esta función carga la configuración al seleccionar una carpeta
+        '''
         self.label_scroll+='                           Wait a moment Please\n'
         self.label_scroll+='-------------------------------------------------------------------------\n'
         self.Update_label()
@@ -777,6 +922,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     while i < len(self.sensor_ramp):
                         self.sensor_ramp[i].setEnabled(True)
                         i += 1
+                        pg.QtGui.QApplication.processEvents()
                     self.ramp_la.setStyleSheet("color:rgb(255,255,255);")
                     self.graph_sensor.setStyleSheet("color:rgb(255,255,255);")
                     self.patch = self.patch2
@@ -786,11 +932,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     for a in [self.textDict_335,self.textDict_218]:
                         for b in a.ConfigDict['Sensor Type']:
                             self.names_sensor.append(b)
+                            pg.QtGui.QApplication.processEvents()
                     i = 0
                     while i < 8:
                         self.plot_checkbox[i].setText(QtCore.QCoreApplication.translate\
                             ("MainWindow", self.names_sensor[self.ctn[i]]))
                         i += 1
+                        pg.QtGui.QApplication.processEvents()
                 else:
                     self.label_scroll+='                               Data no found\n'
                     self.label_scroll+='-------------------------------------------------------------------------\n'
@@ -805,28 +953,31 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.label_scroll+='                               No selected folder\n'
             self.label_scroll+='-------------------------------------------------------------------------\n'
             self.Update_label()
+
     def buscarDirectorio_2(self):
+
         self.patch2 = QtWidgets.QFileDialog.getExistingDirectory(self, 'Search folder', self.patch2)
         pg.QtGui.QApplication.processEvents()
+
+    '''
+    Estas funciones abren los dialogos de la barra de herramientas
+    '''
+
     def desbloquear_grafica2(self):
+
         if self.grafica2.isChecked():
                 self.grafica2.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
                 self.radioButton.setEnabled(False)
                 self.radioButton.setStyleSheet("background-color: a(0);")
-                self.SetPoint1.setEnabled(False)
-                self.heater1.setEnabled(False)
-                self.SetPoint1.setChecked(False)
-                self.heater1.setChecked(False)
-                self.SetPoint2.setEnabled(False)
-                self.heater2.setEnabled(False)
-                self.SetPoint2.setChecked(False)
-                self.heater2.setChecked(False)
+                i = 8
+                while i < 12:
+                    self.plot_checkbox[i].setEnabled(False)
+                    self.plot_checkbox[i].setChecked(False)
+                    self.plot_checkbox[i].setStyleSheet("background-color: a(0);")
+                    pg.QtGui.QApplication.processEvents()
+                    i += 1
                 self.graph_heater_la.setStyleSheet(" ")
                 self.color_heater.setStyleSheet(" ")
-                self.SetPoint1.setStyleSheet("background-color: a(0);")
-                self.SetPoint2.setStyleSheet("background-color: a(0);")
-                self.heater1.setStyleSheet("background-color: a(0);")
-                self.heater2.setStyleSheet("background-color: a(0);")
         else:
             self.grafica2.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.radioButton.setEnabled(True)
@@ -850,12 +1001,17 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     a.setChecked(True)
                 else:
                     a.setChecked(False)
+                pg.QtGui.QApplication.processEvents()
+
     def desbloquear_grafica1(self):
+
         if self.grafica1.isChecked():
             self.grafica1.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
         else:
             self.grafica1.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
+    
     def desbloquear_radioButton(self):
+
         if self.radioButton.isChecked():
             self.radioButton.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
             self.hh.setEnabled(True)
@@ -866,12 +1022,16 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.hh.setEnabled(False)
             self.mm.setEnabled(False)
             self.ss.setEnabled(False)
+
     def desbloquear_radioButton_2(self):
+
         if self.radioButton_2.isChecked():
             self.radioButton_2.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
         else:
             self.radioButton_2.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
+
     def desbloquear_Todos(self):
+
         if self.Todos.isChecked():
             self.Todos.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
             i = 0
@@ -881,6 +1041,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.plot_checkbox[i].setChecked(True)
                     self.plot_checkbox[i].setStyleSheet("background-color: a(0);")
                 i += 1
+                pg.QtGui.QApplication.processEvents()
         else:
             self.Todos.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             i = 0
@@ -889,8 +1050,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.plot_checkbox[i].setEnabled(True)
                     self.plot_checkbox[i].setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
                 i += 1
+                pg.QtGui.QApplication.processEvents()
+
     def desbloquear_heater_1(self):
+
         if self.heater_1.isChecked():
+
             try:
                 self.On_335_1()
                 self.heater_1.setStyleSheet("background-color: a(0);color: rgb(255, 240, 23);font: 15pt 'Sans Serif';")
@@ -925,6 +1090,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.color_heater.setStyleSheet("color:rgb(255,255,255);")
                     self.SetPoint1.setStyleSheet("background-color: a(0);color:rgb(88, 160, 255);")
                     self.heater1.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
+
             except:
                 self.label_scroll += '                     Error al cargar Heater 1'
                 self.heater_1.setStyleSheet("background-color: a(0);color: rgb(0,255, 0);font: 15pt 'Sans Serif';")
@@ -954,7 +1120,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.color_heater.setStyleSheet(" ")
                 self.SetPoint1.setStyleSheet("background-color: a(0);")
                 self.heater1.setStyleSheet("background-color: a(0);")
-            
         else:
             self.heater_1.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);font: 15pt 'Sans Serif';")
             self.label_13.setStyleSheet("background-color: a(0);")
@@ -983,10 +1148,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.SetPoint1.setStyleSheet("background-color: a(0);")
             self.heater1.setStyleSheet("background-color: a(0);")
             #self.off_heater_1()
+
     def desbloquear_heater_2(self):
+
         if self.heater_2.isChecked():
+
             try:
                 self.On_335_2()
+
             except:
                 self.label_scroll += '                                   Error al cargar Heater 2'
                 self.Update_label()
@@ -1016,31 +1185,41 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.Off_2.setEnabled(False)
             self.SetPoint2.setEnabled(False)
             self.heater2.setEnabled(False)
+
     def desbloquear_range_manual_1(self):
+
         if self.range_manual_1.isChecked():
             self.range_manual_1.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
             self.range_1.setEnabled(True)
         else:
             self.range_manual_1.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.range_1.setEnabled(False)
+
     def desbloquear_range_automatic_1(self):
+
         if self.range_automatic_1.isChecked():
             self.range_automatic_1.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
         else:
             self.range_automatic_1.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
+
     def desbloquear_range_manual_2(self):
+    
         if self.range_manual_2.isChecked():
             self.range_manual_2.setStyleSheet("background-color: a(0);color: rgb(0, 255,0);")
             self.range_2.setEnabled(True)
         else:
             self.range_manual_2.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.range_2.setEnabled(False)
+    
     def desbloquear_range_automatic_2(self):
+    
         if self.range_automatic_2.isChecked():
             self.range_automatic_2.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
         else:
             self.range_automatic_2.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
+    
     def desbloquear_seeStatus_1(self):
+    
         if self.seeStatus_1.isChecked():
             self.seeStatus_1.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);font: 12pt 'Sans Serif';")
             self.status_1.setEnabled(True)
@@ -1055,13 +1234,17 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.seeStatus_1.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);font: 12pt 'Sans Serif';")
             self.status_heater_1 = False
             self.status_1.verticalScrollBar().setValue(self.status_1.verticalScrollBar().maximum())
+    
     def desbloquear_seeStatus_2(self):
+    
         if self.seeStatus_2.isChecked():
             self.seeStatus_2.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
             self.status_2.setEnabled(True)
         else:
             self.seeStatus_2.setStyleSheet("background-color: a(0);rgb(88, 160, 255);")
+    
     def desbloquear_sensores(self,num,col):
+    
         if self.plot_checkbox[num].isChecked():
             self.plot_checkbox[num].setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
             self.color_button[col].setEnabled(True)
@@ -1077,23 +1260,41 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                                                 color: rgb(88, 160, 255);")
             self.color_button[col].setEnabled(False)
             self.color_button[col].setStyleSheet("background-color: a(0);")
+    
     def desbloquear_sensores_CA(self):
+    
         self.desbloquear_sensores(0,10)
+    
     def desbloquear_sensores_CB(self):
+    
         self.desbloquear_sensores(1,11)
+    
     def desbloquear_sensores_C5(self):
+    
         self.desbloquear_sensores(6,8)
+    
     def desbloquear_sensores_C6(self):
+    
         self.desbloquear_sensores(7,9)
+    
     def desbloquear_sensores_D1(self):
+    
         self.desbloquear_sensores(2,4)
+    
     def desbloquear_sensores_D2(self):
+    
         self.desbloquear_sensores(3,5)
+    
     def desbloquear_sensores_D3(self):
+    
         self.desbloquear_sensores(4,6)
+    
     def desbloquear_sensores_D4(self):
+    
         self.desbloquear_sensores(5,7)
+    
     def desbloquear_sensores_ramp(self,num,col):
+    
         if self.sensor_ramp[num].isChecked():
             if self.grafica1.isChecked():
                 self.block(self.sensor_ramp[num])
@@ -1107,29 +1308,50 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             self.color_button[col].setEnabled(False)
             self.color_button[col].setStyleSheet("background-color: a(0);")
+    
     def desbloquear_sensores_ramp_CA(self):
+    
         self.desbloquear_sensores_ramp(0,10)
+    
     def desbloquear_sensores_ramp_CB(self):
+    
         self.desbloquear_sensores_ramp(1,11)
+    
     def desbloquear_sensores_ramp_C5(self):
+    
         self.desbloquear_sensores_ramp(6,8)
+    
     def desbloquear_sensores_ramp_C6(self):
+    
         self.desbloquear_sensores_ramp(7,9)
+    
     def desbloquear_sensores_ramp_D1(self):
+    
         self.desbloquear_sensores_ramp(2,4)
+    
     def desbloquear_sensores_ramp_D2(self):
+    
         self.desbloquear_sensores_ramp(3,5)
+    
     def desbloquear_sensores_ramp_D3(self):
+    
         self.desbloquear_sensores_ramp(4,6)
+    
     def desbloquear_sensores_ramp_D4(self):
+    
         self.desbloquear_sensores_ramp(5,7)
+    
     def block(self,ramp):
+    
         for a in self.sensor_ramp:
             if a==ramp:
                 pass
             else:
                 a.setChecked(False)
+            pg.QtGui.QApplication.processEvents()
+    
     def desbloquear_heaters(self,col,num):
+    
         Names = ['H1','H2','S1','S2']
         if self.plot_checkbox[num].isChecked():
             self.plot_checkbox[num].setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
@@ -1141,31 +1363,98 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.plot_checkbox[num].setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
             self.color_button[col].setEnabled(False)
             self.color_button[col].setStyleSheet("background-color: a(0);")
+    
     def desbloquear_heater1(self):
+    
         self.desbloquear_heaters(0,9)
+    
     def desbloquear_heater2(self):
+    
         self.desbloquear_heaters(1,11)
+    
     def desbloquear_SetPoint1(self):
+    
         self.desbloquear_heaters(2,8)
+    
     def desbloquear_SetPoint2(self):
+    
         self.desbloquear_heaters(3,10)
+    
+    '''
+    Estas funciones se encargan de las gráficas
+    '''
+
+    def rampa_matplotlib(self):
+        '''
+        Esta función crea la rampa de Matplotlib 
+        '''
+        try:
+            if self.num_ramp == 0:
+                self.mpl_ramp = []
+                self.mpl_ramp.append(Plot_ramp())
+                self.mpl_ramp[0].show()
+            else:
+                self.mpl_ramp.append(Plot_ramp())
+                self.mpl_ramp[self.num_ramp].show()
+            self.num_ramp += 1
+        except:
+            pass
+   
+    def rampa(self):
+        '''
+        Esta funcion guarda el tipo de rampa y de que sensores 
+        se realiza dicha rampa
+        '''
+        Flag = 0
+        self.curvas_ramp=[0,0,0,0,0,0,0,0]
+        for i in range(8):
+            if self.sensor_ramp[i].isChecked():
+                self.curvas_ramp[i] = 1
+                Flag = 1
+                self.ramp_sensor = self.ctn[i]
+            pg.QtGui.QApplication.processEvents()
+        if Flag == 1: 
+            if self.grafica2.isChecked():
+                if self.ramp_stat:
+                    self.ramp_stat = False
+                    self.ramp_live.close()
+                self.rampa_matplotlib()
+            else:
+                self.ramp_count = 0
+                self.ramp_value = []
+                if self.ramp_stat:
+                    self.ramp_live.close()
+                    self.ramp_live = Rampa_live(self)
+                    self.ramp_live.show()
+                else:
+                    self.ramp_stat = True
+                    self.ramp_live = Rampa_live(self)
+                    self.ramp_live.show()
+    
     def graficar(self):
+        '''
+        Esta función se encarga de leer los sensores a graficar,
+        el tipo de grafica y el tiempo
+        Se grafica el archivo introducido en "PLot file"
+        '''
         self.curvas = [0,0,0,0,0,0,0,0,0,0,0,0,0]
         if self.Todos.isChecked():
-                for i in range(9):
-                    self.curvas[i]=1
-
+                for i in range(8):
+                    self.curvas[self.ctn[i]+1]=1
+                    pg.QtGui.QApplication.processEvents()
         else:
             i = 0
             while i < 8:
                 if self.plot_checkbox[i].isChecked():
                     self.curvas[i+1] = 1
                 i += 1
+                pg.QtGui.QApplication.processEvents()
         i = 7
         while i < 12:
             if self.plot_checkbox[i].isChecked():
                 self.curvas[i+1] = 1
-            i +=1
+            i += 1
+            pg.QtGui.QApplication.processEvents()
         if self.radioButton.isChecked():
             horas = self.hh.value()
             minutos = self.mm.value()
@@ -1181,20 +1470,35 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             self.actual = False
             self.matplotlib()
+    
     def matplotlib(self):
+        '''
+        Esta función gráfica los datos con Matplotlib
+        '''
         try:
-            if self.num_matplotlib==0:
-                self.mpl=[]
+            if self.num_matplotlib == 0:
+                self.mpl = []
                 self.mpl.append(Plot_matplotlib())
                 self.mpl[0].show()
             else:
                 self.mpl.append(Plot_matplotlib())
                 self.mpl[self.num_matplotlib].show()
             self.num_matplotlib += 1
+
         except:
             pass
+
+#------------------------------------------------------------------
+#Estas clases se encarga de ver y cambiar la configuración del 
+#Lakeshore Controller 335 y Lakeshore MOnitor 218 respectivamente.
+#------------------------------------------------------------------
+
 class Tercera(QtWidgets.QDialog,Ui_Tercera):
+    '''
+    Lakeshore Controller M335
+    '''
     def __init__(self, *args, **kwargs):
+       
         try:
             QtWidgets.QDialog.__init__(self, *args, **kwargs)
             self.setupUi(self)
@@ -1226,10 +1530,12 @@ class Tercera(QtWidgets.QDialog,Ui_Tercera):
             self.average.setValue(int(window.textDict_335.ConfigDict['Average']))
             self.samplinperiod.setValue(float(window.textDict_335.ConfigDict['SamplingPeriod']))
             self.timeOut.setValue(float(window.textDict_335.ConfigDict['TimeOut']))
-
+        
         except KeyboardInterrupt as KBI:
             pass
+    
     def desbloquear_sensor1(self):
+
         if self.sensor1_on.isChecked():
             self.sensor1.setEnabled(True)
             self.sensor1_on.setStyleSheet("background-color: a(0);")
@@ -1237,7 +1543,9 @@ class Tercera(QtWidgets.QDialog,Ui_Tercera):
             self.sensor1.setEnabled(False)
             self.sensor1_on.setStyleSheet("background-color: a(0);\
                                                 color: rgb(0, 255, 155);")
+    
     def desbloquear_sensor2(self):
+
         if self.sensor2_on.isChecked():
             self.sensor2.setEnabled(True)
             self.sensor2_on.setStyleSheet("background-color: a(0);")
@@ -1245,14 +1553,16 @@ class Tercera(QtWidgets.QDialog,Ui_Tercera):
             self.sensor2.setEnabled(False)
             self.sensor2_on.setStyleSheet("background-color: a(0);\
                                                 color: rgb(0, 255, 155);")
+    
     def accept(self):
+
         if window.action_flag:
             flag = False
             if not self.name.text() or self.name.text().isspace():
                 self.box = QtWidgets.QMessageBox()
                 reply = self.box.question(self,
                                         'Error',
-                                        "Valor inválido Name",
+                                        "Name: Value incorrect",
                                         self.box.Ok , self.box.Ok)
                 pg.QtGui.QApplication.processEvents()
                 flag == True
@@ -1268,7 +1578,7 @@ class Tercera(QtWidgets.QDialog,Ui_Tercera):
                 self.box = QtWidgets.QMessageBox()
                 reply = self.box.question(self,
                                         'Error',
-                                        "Valor inválido Name Average",
+                                        "Name Average: value incorrect",
                                         self.box.Ok , self.box.Ok)
                 pg.QtGui.QApplication.processEvents()
                 flag = True
@@ -1276,7 +1586,7 @@ class Tercera(QtWidgets.QDialog,Ui_Tercera):
                 self.box = QtWidgets.QMessageBox()
                 reply = self.box.question(self,
                                         'Error',
-                                        "Valor inválido Model",
+                                        "Model: value incorrect",
                                         self.box.Ok , self.box.Ok)
                 pg.QtGui.QApplication.processEvents()
                 flag = True
@@ -1284,7 +1594,7 @@ class Tercera(QtWidgets.QDialog,Ui_Tercera):
                 self.box = QtWidgets.QMessageBox()
                 reply = self.box.question(self,
                                         'Error',
-                                        "Valor inválido Port",
+                                        "Port: value incorrect",
                                         self.box.Ok , self.box.Ok)
                 pg.QtGui.QApplication.processEvents()
                 flag = True
@@ -1292,7 +1602,7 @@ class Tercera(QtWidgets.QDialog,Ui_Tercera):
                 self.box = QtWidgets.QMessageBox()
                 reply = self.box.question(self,
                                         'Error',
-                                        "Valor inválido TypeSensor 1",
+                                        "TypeSensor 1: value incorrect",
                                         self.box.Ok , self.box.Ok)
                 pg.QtGui.QApplication.processEvents()
                 flag = True
@@ -1300,7 +1610,7 @@ class Tercera(QtWidgets.QDialog,Ui_Tercera):
                 self.box = QtWidgets.QMessageBox()
                 reply = self.box.question(self,
                                         'Error',
-                                        "Valor inválido TypeSensors 2",
+                                        "TypeSensors 2: value incorrect",
                                         self.box.Ok , self.box.Ok)
                 pg.QtGui.QApplication.processEvents()
                 flag = True
@@ -1310,7 +1620,7 @@ class Tercera(QtWidgets.QDialog,Ui_Tercera):
                 self.box = QtWidgets.QMessageBox()
                 reply = self.box.question(self,
                                             'Settings',
-                                            "Are you sure you want to change the settings?",
+                                            "Do you want changed the settings?",
                                             self.box.Yes | self.box.No, self.box.No)
                 pg.QtGui.QApplication.processEvents()
                 if reply == self.box.Yes:
@@ -1342,28 +1652,401 @@ class Tercera(QtWidgets.QDialog,Ui_Tercera):
                     window.charge_modulos()
         else:
             self.close()
-class Rampa_live(QtWidgets.QDialog,Ui_ramp):
+
+class Segunda(QtWidgets.QDialog,Ui_Segunda):
+    '''
+    Lakeshore Monitor 218
+    '''
     def __init__(self, *args, **kwargs):
+       
         try:
             QtWidgets.QDialog.__init__(self, *args, **kwargs)
             self.setupUi(self)
-            self.setWindowTitle("Ramp Monitor")
-            layout = QtGui.QGridLayout(self.widget)
-            self.widget.setLayout(layout)
-            for i in range(len(window.curvas_ramp)):
-                if window.curvas_ramp[i] == 1:
-                    self.ramp_live = Dashboard(window.names_sensor[window.ctn[i]], "K/min", 0, 5)
-                    break
-            layout.addWidget(self.ramp_live)
-            pg.QtGui.QApplication.processEvents()
+            self.timeOut.setRange(0.1,99.9)
+            self.timeOut.setDecimals(1)
+            self.savedata.setRange(10,1000)
+            self.samplinperiod.setDecimals(1)
+            self.samplinperiod.setRange(0,100)
+            self.average.setRange(10,1000)
+            self.curves = [self.curve1, self.curve2, self.curve3, self.curve4,\
+                self.curve5, self.curve6, self.curve7, self.curve8]
+            self.sensors = [self.sensor1, self.sensor2, self.sensor3, self.sensor4,\
+                self.sensor5, self.sensor6, self.sensor7, self.sensor8]
+            self.sensors_on = [self.sensor1_on,self.sensor2_on,self.sensor3_on,self.sensor4_on,\
+                            self.sensor5_on,self.sensor6_on,self.sensor7_on,self.sensor8_on]
+            self.desbloquear = [self.desbloquear_sensor1,self.desbloquear_sensor2,\
+                                self.desbloquear_sensor3,self.desbloquear_sensor4,\
+                                self.desbloquear_sensor5,self.desbloquear_sensor6,\
+                                self.desbloquear_sensor7,self.desbloquear_sensor8]
+            for a in self.curves:
+                a.setRange(0,28)
+                pg.QtGui.QApplication.processEvents()
+            self.setWindowTitle("218 TemperatureMonitor")
+            self.name.setText(window.textDict_218.ConfigDict['Name'])
+            self.nameaverage.setText(window.textDict_218.ConfigDict['NameAverage'])
+            self.model.setText(window.textDict_218.ConfigDict['Model'])
+            i , a = 0 , 0
+            while i < 8:
+                self.sensors_on[i].toggled.connect(self.desbloquear[i])
+                if window.textDict_218.ConfigDict['Sensor Status '+str(i+1)]=='1':
+                    self.sensors[i].setText(window.textDict_218.ConfigDict['Sensor Type'][a])
+                    self.sensors_on[i].setChecked(True)
+                    self.curves[i].setValue(int(window.textDict_218.ConfigDict['CP'+str(i+1)]))
+                    a += 1
+                else:
+                    self.sensors_on[i].setChecked(False)
+                i += 1
+                pg.QtGui.QApplication.processEvents()
+            self.port.setText(window.textDict_218.ConfigDict['Port'])
+            self.savedata.setValue(int(window.textDict_218.ConfigDict['SaveData']))
+            self.average.setValue(int(window.textDict_218.ConfigDict['Average']))
+            self.samplinperiod.setValue(float(window.textDict_218.ConfigDict['SamplingPeriod']))
+            self.timeOut.setValue(float(window.textDict_218.ConfigDict['TimeOut']))
+       
         except KeyboardInterrupt as KBI:
             pass
-    def charges(self,num):
-        self.ramp_live.charge(num)
-    def closeEvent(self, event):
-        window.ramp_stat = False
-class Plot_File(QtWidgets.QDialog,Ui_plot_file):
+    
+    def desbloquear_sensor1(self):
+    
+        self.desbloquear_sensors(0)
+    
+    def desbloquear_sensor2(self):
+    
+        self.desbloquear_sensors(1)
+    
+    def desbloquear_sensor3(self):
+    
+        self.desbloquear_sensors(2)
+    
+    def desbloquear_sensor4(self):
+    
+        self.desbloquear_sensors(3)
+    
+    def desbloquear_sensor5(self):
+    
+        self.desbloquear_sensors(4)
+    
+    def desbloquear_sensor6(self):
+    
+        self.desbloquear_sensors(5)
+    
+    def desbloquear_sensor7(self):
+      
+        self.desbloquear_sensors(6)
+    
+    def desbloquear_sensor8(self):
+    
+        self.desbloquear_sensors(7)
+    
+    def desbloquear_sensors(self,num):
+
+        if self.sensors_on[num].isChecked():
+            self.sensors[num].setEnabled(True)
+            self.curves[num].setEnabled(True)
+            self.sensors_on[num].setStyleSheet("background-color: a(0);")
+        else:
+            self.sensors[num].setEnabled(False)
+            self.curves[num].setEnabled(False)
+            self.sensors_on[num].setStyleSheet("background-color: a(0);\
+                color:rgb(0,255,255);")
+    
+    def accept(self): 
+
+        if window.action_flag:
+            i = 0
+            flag = False
+            while i < 8 :
+                if self.sensors_on[i].isChecked():
+                    if 9 < self.curves[i].value() < 21:
+                        self.box = QtWidgets.QMessageBox()
+                        reply = self.box.question(self,
+                                                'Error',
+                                                "Invalid Curve Sensor "+str(i+1)+" value",
+                                                self.box.Ok , self.box.Ok)
+                        flag = True
+                        break
+                    elif not self.sensors[i].text() or self.sensors[i].text().isspace():
+                        self.box = QtWidgets.QMessageBox()
+                        reply = self.box.question(self,
+                                                'Error',
+                                                "Invalid TypeSensor "+str(i+1),
+                                                self.box.Ok , self.box.Ok)
+                        flag = True 
+                        break
+                i += 1
+                pg.QtGui.QApplication.processEvents()
+            if flag:
+                pass
+            elif not self.name.text() or self.name.text().isspace():
+                self.box = QtWidgets.QMessageBox()
+                reply = self.box.question(self,
+                                        'Error',
+                                        "Name: value invalid",
+                                        self.box.Ok , self.box.Ok)
+                pg.QtGui.QApplication.processEvents()
+                flag = True 
+            elif self.name.text() == self.nameaverage.text():
+                self.box = QtWidgets.QMessageBox()
+                reply = self.box.question(self,
+                                        'Error',
+                                        "Name is same Name Average",
+                                        self.box.Ok , self.box.Ok)
+                pg.QtGui.QApplication.processEvents()
+                flag = True 
+            elif not self.nameaverage.text() or self.nameaverage.text().isspace():
+                self.box = QtWidgets.QMessageBox()
+                reply = self.box.question(self,
+                                        'Error',
+                                        "Name Average: value invalid",
+                                        self.box.Ok , self.box.Ok)
+                pg.QtGui.QApplication.processEvents()
+                flag = True 
+            elif not self.model.text() or self.model.text().isspace():
+                self.box = QtWidgets.QMessageBox()
+                reply = self.box.question(self,
+                                        'Error',
+                                        "Model: value invalid",
+                                        self.box.Ok , self.box.Ok)
+                pg.QtGui.QApplication.processEvents()
+                flag = True 
+            elif not self.port.text() or self.port.text().isspace():
+                self.box = QtWidgets.QMessageBox()
+                reply = self.box.question(self,
+                                        'Error',
+                                        "Port: value invalid",
+                                        self.box.Ok , self.box.Ok)
+                pg.QtGui.QApplication.processEvents()
+                flag = True 
+            if flag:
+                pass
+            else:
+                self.box = QtWidgets.QMessageBox()
+                reply = self.box.question(self,
+                                            'Settings',
+                                            "Do you want changed the settings?",
+                                            self.box.Yes | self.box.No, self.box.No)
+                pg.QtGui.QApplication.processEvents()
+                if reply == self.box.Yes:
+                    os.system('cd && cd ' + window.patch+' && chmod 777 file_218.cfg')
+                    Change(window.filename_218,self.model.text(),'Model',window.textDict_218.ConfigDict) 
+                    Change(window.filename_218,self.name.text(),'Name',window.textDict_218.ConfigDict)
+                    Change(window.filename_218,self.nameaverage.text(),'NameAverage',window.textDict_218.ConfigDict)
+                    Change(window.filename_218,str(self.savedata.value()),'SaveData',window.textDict_218.ConfigDict)
+                    Change(window.filename_218,str(self.timeOut.value()),'TimeOut',window.textDict_218.ConfigDict)
+                    Change(window.filename_218,self.port.text(),'Port',window.textDict_218.ConfigDict)
+                    Change(window.filename_218,str(self.average.value()),'Average',window.textDict_218.ConfigDict)
+                    Change(window.filename_218,str(self.samplinperiod.value()),'SamplingPeriod',window.textDict_218.ConfigDict)
+                    sensor_type_last = Concatenador(window.textDict_218.ConfigDict,'Sensor Type')
+                    sensors_last = Concatenador(window.textDict_218.ConfigDict,'Sensors')
+                    channels_last = Concatenador(window.textDict_218.ConfigDict,'Channels')
+                    sensor_type_actual, sensors_actual, channels_actual = '','',''
+                    i = 0
+                    while i < 8:
+                        if self.sensors_on[i].isChecked():
+                            sensor_type_actual += self.sensors[i].text() + ','
+                            sensors_actual += 'Sensor '+ str(i+1) + ','
+                            channels_actual += str(i+1) + ','
+                            Change(window.filename_218,str(1),'Sensor Status '+str(i+1),window.textDict_218.ConfigDict)
+                            Change(window.filename_218,str(self.curves[i].value()),'CP'+str(i+1),window.textDict_218.ConfigDict)
+                        else:
+                            Change(window.filename_218,str(0),'Sensor Status '+str(i+1),window.textDict_218.ConfigDict)
+                            Change(window.filename_218,str(0),'CP'+str(i+1),window.textDict_218.ConfigDict)
+                        i += 1
+                        pg.QtGui.QApplication.processEvents()
+                    Change_v2(window.filename_218,sensor_type_actual,sensor_type_last,'Sensor Type')
+                    Change_v2(window.filename_218,sensors_actual,sensors_last,'Sensors')
+                    Change_v2(window.filename_218,channels_actual,channels_last,'Channels')
+                    self.close()
+                    window.charge_modulos()              
+        else:
+            self.close()
+
+#-----------------------------------------------------------------
+#Estas clases se encargan de hacer un ajuste lineal a los
+#diferentes conjuntos de datos
+#-----------------------------------------------------------------
+
+class D218_Data(QtWidgets.QDialog,Ui_fit_218):
+    '''
+    Esta clase trabaj con los datos del 218
+    '''
     def __init__(self, *args, **kwargs):
+      
+        try:
+            QtWidgets.QDialog.__init__(self, *args, **kwargs)
+            self.patch_last = window.patch
+            self.setupUi(self)
+            self.setWindowTitle("Fit Data Temperature Monitor 218")
+            self.select.clicked.connect(self.buscarArchivo)
+            self.fit.clicked.connect(self.fit_file)
+            self.fit.setEnabled(False)
+        
+        except KeyboardInterrupt as KBI:
+            pass
+    
+    def buscarArchivo(self):
+
+        patch_file = QtWidgets.QFileDialog.getOpenFileName(self, 'Search file', self.patch_last, "Text Files (*.txt)")
+        if patch_file:
+            self.patch_last = patch_file[0]
+            self.file.setText(self.patch_last)
+            self.fit.setEnabled(True)
+        else:
+            self.fit.setEnabled(False)
+            self.file.setText(' ')
+
+    def fit_file(self):
+        
+        try:
+            myFile = self.patch_last
+            myNewFile = myFile[0:-4] + '_fit.txt'
+            a = 1
+            Line_dat = '#Archivo de ajuste de los sensores con una ecuación lineal '+\
+            'de la forma "m*sensor+b"\n#Sensor: [m,b]\n'
+            while True:
+                if os.path.isfile(myNewFile):
+                    myNewFile = myFile[0:-4] +'_fit_' + str(a) + '.txt'
+                    a += 1
+                else:
+                    break
+                pg.QtGui.QApplication.processEvents()
+            for line in open(myFile,'r'):
+                if line[0] == '#' or line[0]=='\n':
+                    newLine = line
+                    if line[0:14] == '#Type of file:':
+                        newLine=line.strip('\n')+' '+'Fit'+'\n'
+                else:
+                    line = line.split('\t')
+                    newLine = line[0]
+                    for i in range(6):
+                        if not (float(window.textDict_fit.ConfigDict[window.names_sensor_color[i+2]][0]) == 0 and\
+                                float(window.textDict_fit.ConfigDict[window.names_sensor_color[i+2]][1]) == 0):
+                            newLine += '\t'+str("{0:.2f}".format(float(line[i+1])*\
+                                float(window.textDict_fit.ConfigDict[window.names_sensor_color[i+2]][0])+\
+                                float(window.textDict_fit.ConfigDict[window.names_sensor_color[i+2]][1])))
+                    newLine += '\n'
+                file=open(myNewFile,'a')  
+                file.write(newLine)
+                pg.QtGui.QApplication.processEvents()
+            for i in range(6):
+                if not (float(window.textDict_fit.ConfigDict[window.names_sensor_color[i+2]][0]) == 0 and\
+                        float(window.textDict_fit.ConfigDict[window.names_sensor_color[i+2]][1]) == 0):
+                    Line_dat += Concatenador(window.textDict_fit.ConfigDict,window.names_sensor_color[i+2])\
+                        .strip(',') + '\n'
+                pg.QtGui.QApplication.processEvents()
+            file = open(myNewFile[0:-4]+ '.cfg','a')
+            file.write(Line_dat)
+            os.system('chmod =r '+ myNewFile[0:-4] + '.cfg')
+            self.box = QtWidgets.QMessageBox()
+            self.box.question(self,
+                                        'Fit',
+                                        "The fit was successful",
+                                        self.box.Ok , self.box.Ok)
+            pg.QtGui.QApplication.processEvents()
+       
+        except:
+            self.box = QtWidgets.QMessageBox()
+            self.box.question(self,
+                                        'Error',
+                                        "Error fit",
+                                        self.box.Ok , self.box.Ok)
+            pg.QtGui.QApplication.processEvents()
+
+class D335_Data(QtWidgets.QDialog,Ui_fit_335):
+    '''
+    Esta clase trabaja con los datos del 335
+    '''
+    def __init__(self, *args, **kwargs):
+
+        try:
+            QtWidgets.QDialog.__init__(self, *args, **kwargs)
+            self.setupUi(self)
+            self.patch_last = window.patch
+            self.setWindowTitle("Fit Data Temperature Control 335")
+            self.select.clicked.connect(self.buscarArchivo)
+            self.fit.clicked.connect(self.fit_file)
+            self.fit.setEnabled(False)
+
+        except KeyboardInterrupt as KBI:
+            pass
+    
+    def buscarArchivo(self):
+
+        patch_file = QtWidgets.QFileDialog.getOpenFileName(self, 'Search file', self.patch_last, "Text Files (*.txt)")
+        if patch_file:
+            self.patch_last = patch_file[0]
+            self.file.setText(self.patch_last)
+            self.fit.setEnabled(True)
+        else:
+            self.fit.setEnabled(False)
+            self.file.setText(' ')
+   
+    def fit_file(self):
+        
+        try:
+            myFile = self.patch_last
+            myNewFile = myFile[0:-4] + '_fit.txt'
+            Line_dat = '#Archivo de ajuste de los sensores con una ecuación lineal ' +\
+                'de la forma "m*sensor+b"\n#Sensor: [m,b]\n'
+            a = 1
+            while True:
+                if os.path.isfile(myNewFile):
+                    myNewFile = myFile[0:-4]+'_fit_' + str(a) + '.txt'
+                    a += 1
+                else:
+                    break
+                pg.QtGui.QApplication.processEvents()
+            for line in open(myFile,'r'):
+                if line[0] == '#' or line[0]=='\n':
+                    newLine=line
+                    if line[0:14] == '#Type of file:':
+                        newLine=line.strip('\n')+' '+'Fit'+'\n'
+                else:
+                    line = line.split('\t')
+                    newLine = line[0] 
+                    for i in  range(2):
+                        if not (float(window.textDict_fit.ConfigDict[window.names_sensor_color[i]][0]) == 0 and\
+                                float(window.textDict_fit.ConfigDict[window.names_sensor_color[i]][1]) == 0):
+                            newLine+='\t'+str("{0:.2f}".format(float(line[i+1])*\
+                                float(window.textDict_fit.ConfigDict[window.names_sensor_color[i]][0])+\
+                                float(window.textDict_fit.ConfigDict[window.names_sensor_color[i]][1])))
+                    newLine += '\n'
+                pg.QtGui.QApplication.processEvents()
+                file = open(myNewFile,'a')  
+                file.write(newLine)
+                pg.QtGui.QApplication.processEvents()
+            for i in range(2):
+                if not (float(window.textDict_fit.ConfigDict[window.names_sensor_color[i]][0]) == 0 and\
+                        float(window.textDict_fit.ConfigDict[window.names_sensor_color[i]][1]) == 0):
+                    Line_dat += Concatenador(window.textDict_fit.ConfigDict,window.names_sensor_color[i])\
+                        .strip(',') + '\n'
+                pg.QtGui.QApplication.processEvents()
+            file = open(myNewFile[0:-4] + '.cfg','a')
+            file.write(Line_dat)
+            os.system('chmod =r '+ myNewFile[0:-4] + '.cfg')
+            self.box = QtWidgets.QMessageBox()
+            reply = self.box.question(self,
+                'Fit',
+                "The fit was successful",
+                self.box.Ok , self.box.Ok)
+            pg.QtGui.QApplication.processEvents()
+        
+        except:
+            self.box = QtWidgets.QMessageBox()
+            reply = self.box.question(self,
+                'Error',
+                "Error fit",
+                self.box.Ok , self.box.Ok)
+            pg.QtGui.QApplication.processEvents()
+
+#-----------------------------------------------------------------
+#Esta clase se encarga de cambiar el archivo a plotear
+#-----------------------------------------------------------------
+
+class Plot_File(QtWidgets.QDialog,Ui_plot_file):
+    
+    def __init__(self, *args, **kwargs):
+        
         try:
             QtWidgets.QDialog.__init__(self, *args, **kwargs)
             self.setupUi(self)
@@ -1373,9 +2056,13 @@ class Plot_File(QtWidgets.QDialog,Ui_plot_file):
             while i < 3:
                 self.objets_dialog[i].setText(window.file_plot_names[i])
                 i += 1
+                pg.QtGui.QApplication.processEvents()
+        
         except KeyboardInterrupt as KBI:
             pass
+
     def accept(self):
+
         i, flag = 0, True
         while i < 3:
                 if not self.objets_dialog[i] or self.objets_dialog[i].text().isspace():
@@ -1388,16 +2075,24 @@ class Plot_File(QtWidgets.QDialog,Ui_plot_file):
                     flag = False
                     break
                 i += 1
+                pg.QtGui.QApplication.processEvents()
         if flag:
             window.file_plot_names = [self.control.text(),self.monitor.text(),self.title.text()]
             self.box = QtWidgets.QMessageBox()
             reply = self.box.question(self,
-                                    'Change Plot File',
-                                    "Successful",
-                                    self.box.Ok , self.box.Ok)
+                'Change Plot File',
+                "Successful",
+                self.box.Ok , self.box.Ok)
             pg.QtGui.QApplication.processEvents()
+
+#-----------------------------------------------------------------
+#Esta clase se encarga de ver y cambiar los valores del ajuste
+#-----------------------------------------------------------------
+
 class Fit_of_data(QtWidgets.QDialog,Ui_fit):
+    
     def __init__(self, *args, **kwargs):
+
         try:
             QtWidgets.QDialog.__init__(self, *args, **kwargs)
             self.setupUi(self)
@@ -1437,25 +2132,45 @@ class Fit_of_data(QtWidgets.QDialog,Ui_fit):
             while i < 8:
                 self.sensor[i].toggled.connect(self.sensor_des[i])
                 i += 1
+                pg.QtGui.QApplication.processEvents()
+        
         except KeyboardInterrupt as KBI:
             pass
+
     def CA_des(self):
+
         self.desbloquear(0)
+    
     def CB_des(self):
+    
         self.desbloquear(1)
+    
     def D1_des(self):
+    
         self.desbloquear(2)
+    
     def D2_des(self):
+    
         self.desbloquear(3)
+    
     def D3_des(self):
+    
         self.desbloquear(4)
+    
     def D4_des(self):
+    
         self.desbloquear(5)
+    
     def C5_des(self):
+    
         self.desbloquear(6)
+    
     def C6_des(self):
+    
         self.desbloquear(7)
+    
     def desbloquear(self,num):
+    
         if self.sensor[num].isChecked():
             self.sensor_fit_I[num].setEnabled(True)
             self.sensor_fit_M[num].setEnabled(True)
@@ -1466,11 +2181,13 @@ class Fit_of_data(QtWidgets.QDialog,Ui_fit):
             self.sensor_fit_M[num].setEnabled(False)
             self.sensor[num].setStyleSheet("background-color: a(0);\
                 color: rgb(85, 0, 127);")
+
     def accept(self):
+
         self.box = QtWidgets.QMessageBox()
         reply = self.box.question(self,
                                     'Settings',
-                                    "Are you sure you want to change the settings?",
+                                    "Do you want changed the settings?",
                                     self.box.Yes | self.box.No, self.box.No)
         pg.QtGui.QApplication.processEvents()
         if reply == self.box.Yes:
@@ -1484,164 +2201,77 @@ class Fit_of_data(QtWidgets.QDialog,Ui_fit):
                     window.textDict_fit.ConfigDict[window.names_sensor_color[i]][1] =  0
                 i += 1
             self.close()
-class D218_Data(QtWidgets.QDialog,Ui_fit_218):
-    def __init__(self, *args, **kwargs):
-        try:
-            QtWidgets.QDialog.__init__(self, *args, **kwargs)
-            self.patch_last = window.patch
-            self.setupUi(self)
-            self.setWindowTitle("Fit Data Temperature Monitor 218")
-            self.select.clicked.connect(self.buscarArchivo)
-            self.fit.clicked.connect(self.fit_file)
-            self.fit.setEnabled(False)
-        except KeyboardInterrupt as KBI:
-            pass
-    def buscarArchivo(self):
-        patch_file = QtWidgets.QFileDialog.getOpenFileName(self, 'Search file', self.patch_last, "Text Files (*.txt)")
-        if patch_file:
-            self.patch_last = patch_file[0]
-            self.file.setText(self.patch_last)
-            self.fit.setEnabled(True)
-        else:
-            self.fit.setEnabled(False)
-            self.file.setText(' ')
-    def fit_file(self):
-        try:
-            myFile = self.patch_last
-            myNewFile = myFile[0:-4] + '_fit.txt'
-            a = 1
-            Line_dat = '#Archivo de ajuste de los sensores con una ecuación lineal '+\
-            'de la forma "m*sensor+b"\n#Sensor: [m,b]\n'
-            while True:
-                if os.path.isfile(myNewFile):
-                    myNewFile = myFile[0:-4] +'_fit_' + str(a) + '.txt'
-                    a += 1
-                else:
-                    break
-            for line in open(myFile,'r'):
-                if line[0] == '#' or line[0]=='\n':
-                    newLine = line
-                    if line[0:14] == '#Type of file:':
-                        newLine=line.strip('\n')+' '+'Fit'+'\n'
-                else:
-                    line = line.split('\t')
-                    newLine = line[0]
-                    for i in range(6):
-                        if not (float(window.textDict_fit.ConfigDict[window.names_sensor_color[i+2]][0]) == 0 and\
-                                float(window.textDict_fit.ConfigDict[window.names_sensor_color[i+2]][1]) == 0):
-                            newLine += '\t'+str("{0:.2f}".format(float(line[i+1])*\
-                                float(window.textDict_fit.ConfigDict[window.names_sensor_color[i+2]][0])+\
-                                float(window.textDict_fit.ConfigDict[window.names_sensor_color[i+2]][1])))
-                    newLine += '\n'
-                file=open(myNewFile,'a')  
-                file.write(newLine)
-                pg.QtGui.QApplication.processEvents()
-            for i in range(6):
-                if not (float(window.textDict_fit.ConfigDict[window.names_sensor_color[i+2]][0]) == 0 and\
-                        float(window.textDict_fit.ConfigDict[window.names_sensor_color[i+2]][1]) == 0):
-                    Line_dat += Concatenador(window.textDict_fit.ConfigDict,window.names_sensor_color[i+2])\
-                        .strip(',') + '\n'
-            file = open(myNewFile[0:-4]+ '.cfg','a')
-            file.write(Line_dat)
-            os.system('chmod =r '+ myNewFile[0:-4] + '.cfg')
-            self.box = QtWidgets.QMessageBox()
-            self.box.question(self,
-                                        'Fit',
-                                        "The fit was successful",
-                                        self.box.Ok , self.box.Ok)
-            pg.QtGui.QApplication.processEvents()
-        except:
-            self.box = QtWidgets.QMessageBox()
-            self.box.question(self,
-                                        'Error',
-                                        "Error fit",
-                                        self.box.Ok , self.box.Ok)
-            pg.QtGui.QApplication.processEvents()
-class D335_Data(QtWidgets.QDialog,Ui_fit_335):
-    def __init__(self, *args, **kwargs):
-        try:
-            QtWidgets.QDialog.__init__(self, *args, **kwargs)
-            self.setupUi(self)
-            self.patch_last = window.patch
-            self.setWindowTitle("Fit Data Temperature Control 335")
-            self.select.clicked.connect(self.buscarArchivo)
-            self.fit.clicked.connect(self.fit_file)
-            self.fit.setEnabled(False)
-        except KeyboardInterrupt as KBI:
-            pass
-    def buscarArchivo(self):
-        patch_file = QtWidgets.QFileDialog.getOpenFileName(self, 'Search file', self.patch_last, "Text Files (*.txt)")
-        if patch_file:
-            self.patch_last = patch_file[0]
-            self.file.setText(self.patch_last)
-            self.fit.setEnabled(True)
-        else:
-            self.fit.setEnabled(False)
-            self.file.setText(' ')
-    def fit_file(self):
-       # try:
-            myFile = self.patch_last
-            myNewFile = myFile[0:-4] + '_fit.txt'
-            Line_dat = '#Archivo de ajuste de los sensores con una ecuación lineal ' +\
-                'de la forma "m*sensor+b"\n#Sensor: [m,b]\n'
-            a = 1
-            while True:
-                if os.path.isfile(myNewFile):
-                    myNewFile=myFile[0:-4]+'_fit_' + str(a) + '.txt'
-                    a += 1
-                else:
-                    break
-            for line in open(myFile,'r'):
-                if line[0] == '#' or line[0]=='\n':
-                    newLine=line
-                    if line[0:14] == '#Type of file:':
-                        newLine=line.strip('\n')+' '+'Fit'+'\n'
-                else:
-                    line = line.split('\t')
-                    newLine = line[0] 
-                    for i in  range(2):
-                        if not (float(window.textDict_fit.ConfigDict[window.names_sensor_color[i]][0]) == 0 and\
-                                float(window.textDict_fit.ConfigDict[window.names_sensor_color[i]][1]) == 0):
-                            newLine+='\t'+str("{0:.2f}".format(float(line[i+1])*\
-                                float(window.textDict_fit.ConfigDict[window.names_sensor_color[i]][0])+\
-                                float(window.textDict_fit.ConfigDict[window.names_sensor_color[i]][1])))
-                    newLine += '\n'
-                pg.QtGui.QApplication.processEvents()
-                file = open(myNewFile,'a')  
-                file.write(newLine)
-            for i in range(2):
-                if not (float(window.textDict_fit.ConfigDict[window.names_sensor_color[i]][0]) == 0 and\
-                        float(window.textDict_fit.ConfigDict[window.names_sensor_color[i]][1]) == 0):
-                    Line_dat += Concatenador(window.textDict_fit.ConfigDict,window.names_sensor_color[i])\
-                        .strip(',') + '\n'
-            file = open(myNewFile[0:-4] + '.cfg','a')
-            file.write(Line_dat)
-            os.system('chmod =r '+ myNewFile[0:-4] + '.cfg')
-            self.box = QtWidgets.QMessageBox()
-            reply = self.box.question(self,
-                                        'Fit',
-                                        "The fit was successful",
-                                        self.box.Ok , self.box.Ok)
-            pg.QtGui.QApplication.processEvents()
-            '''
-        except:
-            self.box = QtWidgets.QMessageBox()
-            reply = self.box.question(self,
-                                        'Error',
-                                        "Error fit",
-                                        self.box.Ok , self.box.Ok)
-            pg.QtGui.QApplication.processEvents()
-            '''
+
+#-----------------------------------------------------------------
+#Estas clases se encargan de desplegar los dailogos de ayuda/info
+#-----------------------------------------------------------------
+
 class Help_218(QtWidgets.QDialog,Ui_help_218):
+    '''
+    Esta clase despliega la ayuda del 218
+    '''
     def __init__(self, *args, **kwargs):
+
         try:
             QtWidgets.QDialog.__init__(self, *args, **kwargs)
             self.setupUi(self)
             self.setWindowTitle("Help Temperature Monitor 218")
+
         except KeyboardInterrupt as KBI:
             pass
-class Terminal_settings(QtWidgets.QDialog,Ui_Terminal):
+
+class Help_335(QtWidgets.QDialog,Ui_help_335):
+    '''
+    Esta clase despliega la yuda del 335
+    '''
     def __init__(self, *args, **kwargs):
+
+        try:
+            QtWidgets.QDialog.__init__(self, *args, **kwargs)
+            self.setupUi(self)
+            self.setWindowTitle("Help Temperature Monitor 335")
+
+        except KeyboardInterrupt as KBI:
+            pass
+
+class Dialog(QtWidgets.QDialog,Ui_Dialog):
+    '''
+    ESta clase despliega la info de Temperature
+    '''
+    def __init__(self, *args, **kwargs):
+       
+        try:
+            QtWidgets.QDialog.__init__(self, *args, **kwargs)
+            self.setupUi(self)
+            self.setWindowTitle("About Temperature")
+
+        except KeyboardInterrupt as KBI:
+            pass
+
+class Help_Temperature(QtWidgets.QDialog,Ui_help_218):
+    '''
+    Esta clase despliega la ayuda de Temperature
+    '''
+    def __init__(self, *args, **kwargs):
+
+        try:
+            QtWidgets.QDialog.__init__(self, *args, **kwargs)
+            self.setupUi(self)
+            self.setWindowTitle("Help Temperature 4.0")
+        
+        except KeyboardInterrupt as KBI:
+            pass
+
+#-----------------------------------------------------------------
+#Estas clases se encargan de la terminal
+#-----------------------------------------------------------------
+
+class Terminal_settings(QtWidgets.QDialog,Ui_Terminal):
+    '''
+    Esta clase se encarga de cambiar la configuración de la terminal
+    '''
+    def __init__(self, *args, **kwargs):
+
         try:
             QtWidgets.QDialog.__init__(self, *args, **kwargs)
             self.setupUi(self)
@@ -1651,13 +2281,16 @@ class Terminal_settings(QtWidgets.QDialog,Ui_Terminal):
             self.textEdit.setPlainText(line_html)
             self.setWindowTitle("Settings Terminal")
             self.passwo.setEchoMode(QtWidgets.QLineEdit.Password)
+
         except KeyboardInterrupt as KBI:
             pass
+
     def accept(self):
+
             self.box = QtWidgets.QMessageBox()
             reply = self.box.question(self,
                                     'Settings',
-                                    "Are you sure you want to change the settings?",
+                                    "Do you want changed the settings?",
                                     self.box.Yes | self.box.No, self.box.No)
             pg.QtGui.QApplication.processEvents()
             if reply == self.box.Yes:
@@ -1668,7 +2301,7 @@ class Terminal_settings(QtWidgets.QDialog,Ui_Terminal):
                     os.system('echo %s|sudo -S %s' % (password, command))
                     with open(patch, "w") as f:
                         f.write(self.textEdit.toPlainText())
-                    command = 'sudo chmod 644 ' + patch
+                    command = 'sudo chmod =r ' + patch
                     os.system('cd && ' + 'echo %s|sudo -S %s' % (password, command))
                     os.system("xrdb " + patch )
                     self.box = QtWidgets.QMessageBox()
@@ -1688,203 +2321,13 @@ class Terminal_settings(QtWidgets.QDialog,Ui_Terminal):
                                             "Password Incorrect",
                                             self.box.Ok , self.box.Ok)
                     pg.QtGui.QApplication.processEvents()
-class Help_335(QtWidgets.QDialog,Ui_help_335):
-    def __init__(self, *args, **kwargs):
-        try:
-            QtWidgets.QDialog.__init__(self, *args, **kwargs)
-            self.setupUi(self)
-            self.setWindowTitle("Help Temperature Monitor 335")
-        except KeyboardInterrupt as KBI:
-            pass
-class Dialog(QtWidgets.QDialog,Ui_Dialog):
-    def __init__(self, *args, **kwargs):
-        try:
-            QtWidgets.QDialog.__init__(self, *args, **kwargs)
-            self.setupUi(self)
-            self.setWindowTitle("About Temperature")
-        except KeyboardInterrupt as KBI:
-            pass
-class Segunda(QtWidgets.QDialog,Ui_Segunda):
-    def __init__(self, *args, **kwargs):
-        try:
-            QtWidgets.QDialog.__init__(self, *args, **kwargs)
-            self.setupUi(self)
-            self.timeOut.setRange(0.1,99.9)
-            self.timeOut.setDecimals(1)
-            self.savedata.setRange(10,1000)
-            self.samplinperiod.setDecimals(1)
-            self.samplinperiod.setRange(0,100)
-            self.average.setRange(10,1000)
-            self.curves = [self.curve1, self.curve2, self.curve3, self.curve4,\
-                self.curve5, self.curve6, self.curve7, self.curve8]
-            self.sensors = [self.sensor1, self.sensor2, self.sensor3, self.sensor4,\
-                self.sensor5, self.sensor6, self.sensor7, self.sensor8]
-            self.sensors_on = [self.sensor1_on,self.sensor2_on,self.sensor3_on,self.sensor4_on,\
-                            self.sensor5_on,self.sensor6_on,self.sensor7_on,self.sensor8_on]
-            self.desbloquear = [self.desbloquear_sensor1,self.desbloquear_sensor2,\
-                                self.desbloquear_sensor3,self.desbloquear_sensor4,\
-                                self.desbloquear_sensor5,self.desbloquear_sensor6,\
-                                self.desbloquear_sensor7,self.desbloquear_sensor8]
-            for a in self.curves:
-                a.setRange(0,28)
-            self.setWindowTitle("218 TemperatureMonitor")
-            self.name.setText(window.textDict_218.ConfigDict['Name'])
-            self.nameaverage.setText(window.textDict_218.ConfigDict['NameAverage'])
-            self.model.setText(window.textDict_218.ConfigDict['Model'])
-            i , a = 0 , 0
-            while i < 8:
-                self.sensors_on[i].toggled.connect(self.desbloquear[i])
-                if window.textDict_218.ConfigDict['Sensor Status '+str(i+1)]=='1':
-                    self.sensors[i].setText(window.textDict_218.ConfigDict['Sensor Type'][a])
-                    self.sensors_on[i].setChecked(True)
-                    self.curves[i].setValue(int(window.textDict_218.ConfigDict['CP'+str(i+1)]))
-                    a += 1
-                else:
-                    self.sensors_on[i].setChecked(False)
-                i += 1
-            self.port.setText(window.textDict_218.ConfigDict['Port'])
-            self.savedata.setValue(int(window.textDict_218.ConfigDict['SaveData']))
-            self.average.setValue(int(window.textDict_218.ConfigDict['Average']))
-            self.samplinperiod.setValue(float(window.textDict_218.ConfigDict['SamplingPeriod']))
-            self.timeOut.setValue(float(window.textDict_218.ConfigDict['TimeOut']))
-        except KeyboardInterrupt as KBI:
-            pass
-    def desbloquear_sensor1(self):
-        self.desbloquear_sensors(0)
-    def desbloquear_sensor2(self):
-        self.desbloquear_sensors(1)
-    def desbloquear_sensor3(self):
-        self.desbloquear_sensors(2)
-    def desbloquear_sensor4(self):
-        self.desbloquear_sensors(3)
-    def desbloquear_sensor5(self):
-        self.desbloquear_sensors(4)
-    def desbloquear_sensor6(self):
-        self.desbloquear_sensors(5)
-    def desbloquear_sensor7(self):
-        self.desbloquear_sensors(6)
-    def desbloquear_sensor8(self):
-        self.desbloquear_sensors(7)
-    def desbloquear_sensors(self,num):
-        if self.sensors_on[num].isChecked():
-            self.sensors[num].setEnabled(True)
-            self.curves[num].setEnabled(True)
-            self.sensors_on[num].setStyleSheet("background-color: a(0);")
-        else:
-            self.sensors[num].setEnabled(False)
-            self.curves[num].setEnabled(False)
-            self.sensors_on[num].setStyleSheet("background-color: a(0);\
-                color:rgb(0,255,255);")
-    def accept(self): 
-        if window.action_flag:
-            i = 0
-            flag = False
-            while i < 8 :
-                if self.sensors_on[i].isChecked():
-                    if 9 < self.curves[i].value() < 21:
-                        self.box = QtWidgets.QMessageBox()
-                        reply = self.box.question(self,
-                                                'Error',
-                                                "Invalid Curve Sensor "+str(i+1)+" value",
-                                                self.box.Ok , self.box.Ok)
-                        flag = True
-                        break
-                    elif not self.sensors[i].text() or self.sensors[i].text().isspace():
-                        self.box = QtWidgets.QMessageBox()
-                        reply = self.box.question(self,
-                                                'Error',
-                                                "Valor inválido TypeSensor "+str(i+1),
-                                                self.box.Ok , self.box.Ok)
-                        flag = True 
-                        break
-                i += 1
-                pg.QtGui.QApplication.processEvents()
-            if flag:
-                pass
-            elif not self.name.text() or self.name.text().isspace():
-                self.box = QtWidgets.QMessageBox()
-                reply = self.box.question(self,
-                                        'Error',
-                                        "Valor inválido Name",
-                                        self.box.Ok , self.box.Ok)
-                pg.QtGui.QApplication.processEvents()
-                flag = True 
-            elif self.name.text() == self.nameaverage.text():
-                self.box = QtWidgets.QMessageBox()
-                reply = self.box.question(self,
-                                        'Error',
-                                        "Name is same Name Average",
-                                        self.box.Ok , self.box.Ok)
-                pg.QtGui.QApplication.processEvents()
-                flag = True 
-            elif not self.nameaverage.text() or self.nameaverage.text().isspace():
-                self.box = QtWidgets.QMessageBox()
-                reply = self.box.question(self,
-                                        'Error',
-                                        "Valor inválido Name Average",
-                                        self.box.Ok , self.box.Ok)
-                pg.QtGui.QApplication.processEvents()
-                flag = True 
-            elif not self.model.text() or self.model.text().isspace():
-                self.box = QtWidgets.QMessageBox()
-                reply = self.box.question(self,
-                                        'Error',
-                                        "Valor inválido Model",
-                                        self.box.Ok , self.box.Ok)
-                pg.QtGui.QApplication.processEvents()
-                flag = True 
-            elif not self.port.text() or self.port.text().isspace():
-                self.box = QtWidgets.QMessageBox()
-                reply = self.box.question(self,
-                                        'Error',
-                                        "Valor inválido Port",
-                                        self.box.Ok , self.box.Ok)
-                pg.QtGui.QApplication.processEvents()
-                flag = True 
-            if flag:
-                pass
-            else:
-                self.box = QtWidgets.QMessageBox()
-                reply = self.box.question(self,
-                                            'Settings',
-                                            "Are you sure you want to change the settings?",
-                                            self.box.Yes | self.box.No, self.box.No)
-                pg.QtGui.QApplication.processEvents()
-                if reply == self.box.Yes:
-                    os.system('cd && cd ' + window.patch+' && chmod 777 file_218.cfg')
-                    Change(window.filename_218,self.model.text(),'Model',window.textDict_218.ConfigDict) 
-                    Change(window.filename_218,self.name.text(),'Name',window.textDict_218.ConfigDict)
-                    Change(window.filename_218,self.nameaverage.text(),'NameAverage',window.textDict_218.ConfigDict)
-                    Change(window.filename_218,str(self.savedata.value()),'SaveData',window.textDict_218.ConfigDict)
-                    Change(window.filename_218,str(self.timeOut.value()),'TimeOut',window.textDict_218.ConfigDict)
-                    Change(window.filename_218,self.port.text(),'Port',window.textDict_218.ConfigDict)
-                    Change(window.filename_218,str(self.average.value()),'Average',window.textDict_218.ConfigDict)
-                    Change(window.filename_218,str(self.samplinperiod.value()),'SamplingPeriod',window.textDict_218.ConfigDict)
-                    sensor_type_last = Concatenador(window.textDict_218.ConfigDict,'Sensor Type')
-                    sensors_last = Concatenador(window.textDict_218.ConfigDict,'Sensors')
-                    channels_last = Concatenador(window.textDict_218.ConfigDict,'Channels')
-                    sensor_type_actual, sensors_actual, channels_actual = '','',''
-                    i = 0
-                    while i < 8:
-                        if self.sensors_on[i].isChecked():
-                            sensor_type_actual += self.sensors[i].text() + ','
-                            sensors_actual += 'Sensor '+ str(i+1) + ','
-                            channels_actual += str(i+1) + ','
-                            Change(window.filename_218,str(1),'Sensor Status '+str(i+1),window.textDict_218.ConfigDict)
-                            Change(window.filename_218,str(self.curves[i].value()),'CP'+str(i+1),window.textDict_218.ConfigDict)
-                        else:
-                            Change(window.filename_218,str(0),'Sensor Status '+str(i+1),window.textDict_218.ConfigDict)
-                            Change(window.filename_218,str(0),'CP'+str(i+1),window.textDict_218.ConfigDict)
-                        i += 1
-                    Change_v2(window.filename_218,sensor_type_actual,sensor_type_last,'Sensor Type')
-                    Change_v2(window.filename_218,sensors_actual,sensors_last,'Sensors')
-                    Change_v2(window.filename_218,channels_actual,channels_last,'Channels')
-                    self.close()
-                    window.charge_modulos()              
-        else:
-            self.close()
+
 class Terminal(QtWidgets.QWidget):
+    '''
+    Esta clase se encarga de desplegar la terminal
+    '''
     def __init__(self, parent=None):
+
         try:
             super(Terminal, self).__init__(parent)
             self.process = QtCore.QProcess(self)
@@ -1894,10 +2337,20 @@ class Terminal(QtWidgets.QWidget):
             self.process.start('urxvt',['-embed', str(int(self.winId()))])
             self.setFixedSize(1300, 273)
             pg.QtGui.QApplication.processEvents()
+
         except KeyboardInterrupt as KBI:
             pass
+
+#-----------------------------------------------------------------
+#Estas clases se encargan del ploteo de los datos
+#-----------------------------------------------------------------
+
 class Dashboard(QtWidgets.QWidget):
+    '''
+    Esta clase encarga de desplegar el widget de rampa en vivo
+    '''
     def __init__(self, title, unit, min, max, parent=None):
+
         QtWidgets.QWidget.__init__(self, parent)
         self.min = min
         self.max = max
@@ -1909,13 +2362,21 @@ class Dashboard(QtWidgets.QWidget):
         self.gradient.setColorAt(0.3, QtCore.Qt.yellow)
         self.gradient.setColorAt(0.5, QtCore.Qt.green)
         self.unit = unit
+
     def charge(self, value):
+        '''
+        Esta función carga un nuevo valor
+        '''
         self.value = abs(value)
         if self.value < 0.0049:
             self.value = 0
         self.ramp_angle = 100.0 * (self.value-self.min)/(self.max-self.min)
         self.update()
+
     def paintEvent(self, event):
+        '''
+        Esta función pinta en la rampa en vivo
+        '''
         pos_1 = QtCore.QPoint(0, -70)
         pos_2 = QtCore.QPoint(0, -90)
         extRect = QtCore.QRectF(-90,-90,180,180)
@@ -1928,13 +2389,11 @@ class Dashboard(QtWidgets.QWidget):
         line.lineTo(pos_2)
         line.arcTo(extRect, 90, -1 * angle)
         line.arcTo(intRect, 90 - angle, angle)
-
         label = QtGui.QPainter(self)
         label.setRenderHint(QtGui.QPainter.Antialiasing)
         label.translate(self.width() / 2, self.height() / 2)
         side = min(self.width(), self.height())
         label.scale(side / 200.0, side / 200.0)
-
         label.save()
         label.rotate(-135)
         label.setBrush(self.gradient)
@@ -1943,24 +2402,26 @@ class Dashboard(QtWidgets.QWidget):
         label.restore()
         label.save()
         label.translate(QtCore.QPointF(0, -50))
-
         Font = QtGui.QFont(self.font().family(), 18)
         label.setFont(Font)
         label.drawText(unitRect, QtCore.Qt.AlignCenter, "{}".format(self.unit))
         label.restore()
-
         label.setFont(Font)
         label.drawText(unitRect, QtCore.Qt.AlignCenter, "{}".format(self.title))
         speedWidth = QtGui.QFontMetrics(Font).width(labelvalue)
-
         leftPos = -1 * speedWidth - 20
         topPos = 10
         Font = QtGui.QFont(self.font().family(), 55)
         label.setPen(QtGui.QColor(QtCore.Qt.black))
         label.setFont(Font)
         label.drawText(leftPos, topPos, labelvalue)
+
 class Live_plot(object):
+    '''
+    Esta clase se encarga del plot en vivo.
+    '''
     def __init__(self):
+
         self.win = pg.GraphicsWindow(title='Data')
         self.p = self.win.addPlot(title='Sensores')
         self.p.setLabel('left', 'Temperature ',units= 'K')
@@ -1987,7 +2448,6 @@ class Live_plot(object):
                     b.append(c)
                     pg.QtGui.QApplication.processEvents()
                 i_cnt += 1
-                pg.QtGui.QApplication.processEvents()
         except:
             pass
         i_cnt = 0
@@ -1998,7 +2458,7 @@ class Live_plot(object):
                         self.d[i],self.t[i] = self.Curvas_add(self.d[i],self.t[i],\
                             b[window.ctn[i]][1][inte]*window.fit_number[i][0] + window.fit_number[i][1]\
                             ,b[window.ctn[i]][0][inte])
-                    pg.QtGui.QApplication.processEvents()
+                        pg.QtGui.QApplication.processEvents()
         b = []
         for name in [window.Data_335,window.Data_218]:
             a = name.Plot_inter_header(window.file_plot_names[i_cnt])
@@ -2018,29 +2478,36 @@ class Live_plot(object):
                     self.c[i]=self.p.plot(pen=window.color[i],name=self.names_curves_heater[i-8])
                 pg.QtGui.QApplication.processEvents()
         self.p.setRange(yRange=[50, 300])
+
     def add(self, x):
-            for i in range(8):
-                if window.curvas[0] == 1:
-                    self.d[i],self.t[i] = self.Curvas_add(self.d[i],self.t[i],\
-                        float(x[window.ctn[i]][2])*window.fit_number[i][0]\
-                        +window.fit_number[i][1],x[window.ctn[i]][1])
-            if window.curvas[9] == 1:
-                self.d[8],self.t[8] = self.Curvas_add(self.d[8],self.t[8],window.SP_1,x[7][1])
-
-            if window.curvas[10] == 1:
-                HTR_1 = float(window.Data_335.Read_335('SETP?','1'))
-                self.d[9],self.t[9] = self.Curvas_add(self.d[9],self.t[9],HTR_1,x[7][1])
-                time.sleep(0.05)
-
-            if window.curvas[11] == 1:
-                self.d[10],self.t[10] = self.Curvas_add(self.d[10],self.t[10],window.SP_2,x[7][1])
-
-            if window.curvas[12] == 1:
-                HTR_2 = float(window.Data_335.Read_335('SETP?','2'))
-                self.d[11],self.t[11] = self.Curvas_add(self.d[11],self.t[11],HTR_2,x[7][1])
-                time.sleep(0.05)
+        '''
+        Esta funcion agrega datos a los array
+        '''
+        for i in range(8):
+            if window.curvas[0] == 1:
+                self.d[i],self.t[i] = self.Curvas_add(self.d[i],self.t[i],\
+                    float(x[window.ctn[i]][2])*window.fit_number[i][0]\
+                    +window.fit_number[i][1],x[window.ctn[i]][1])
             pg.QtGui.QApplication.processEvents()
-    def Curvas_add(self, Datos_curvas, Tiempo_curvas,datos,tiempos):  
+        if window.curvas[9] == 1:
+            self.d[8],self.t[8] = self.Curvas_add(self.d[8],self.t[8],window.SP_1,x[7][1])
+        if window.curvas[10] == 1:
+            HTR_1 = float(window.Data_335.Read_335('SETP?','1'))
+            self.d[9],self.t[9] = self.Curvas_add(self.d[9],self.t[9],HTR_1,x[7][1])
+            time.sleep(0.05)
+        if window.curvas[11] == 1:
+            self.d[10],self.t[10] = self.Curvas_add(self.d[10],self.t[10],window.SP_2,x[7][1])
+        if window.curvas[12] == 1:
+            HTR_2 = float(window.Data_335.Read_335('SETP?','2'))
+            self.d[11],self.t[11] = self.Curvas_add(self.d[11],self.t[11],HTR_2,x[7][1])
+            time.sleep(0.05)
+        pg.QtGui.QApplication.processEvents()
+
+    def Curvas_add(self, Datos_curvas, Tiempo_curvas,datos,tiempos): 
+        '''
+        Esta función desprecia los datos en función del tiempo que hay 
+        entre los datos extremos.
+        ''' 
         Datos_curvas.append(datos)
         Tiempo_curvas.append(tiempos)
         for i in range(len(Tiempo_curvas)):
@@ -2049,25 +2516,47 @@ class Live_plot(object):
             else:
                 break
             pg.QtGui.QApplication.processEvents()
+
         return Datos_curvas,Tiempo_curvas
+
     def Quitar_datos(self, Arreglo_curvas,Arreglo_tiempo):
+        '''
+        Esta función se encraga de quitar los datos.
+        '''
         Arreglo_curvas = Arreglo_curvas[-(len(Arreglo_curvas)-1):]
         Arreglo_tiempo = Arreglo_tiempo[-(len(Arreglo_tiempo)-1):]
+
         return Arreglo_curvas,Arreglo_tiempo
+
     def update(self):
-            for i in range(8):
-                if window.curvas[i+1] == 1:
-                    self.c[i].setData(self.t[i],self.d[i])
-            for i in [8,9,10,11]:
-                if window.curvas[i+1] == 1:
-                    self.c[i].setData(self.t[i],self.d[i])
+        '''
+        Esta función se encarga de actualizar la gráfica
+        '''
+        for i in range(8):
+            if window.curvas[i+1] == 1:
+               self.c[i].setData(self.t[i],self.d[i])
+            pg.QtGui.QApplication.processEvents()
+        for i in [8,9,10,11]:
+            if window.curvas[i+1] == 1:
+               self.c[i].setData(self.t[i],self.d[i])
+            pg.QtGui.QApplication.processEvents()
+
     def close(self):
+        '''
+        Esta función se encarga de cerrar completamente la gráfica
+        '''
         try:
             self.win.close()
+
         except Exception as e:
             pass
+
 class Plot_matplotlib(FigureCanvas):
+    '''
+    Esta función plotea los datos sin actualización
+    '''
     def __init__(self):
+
         from matplotlib.figure import Figure
         from matplotlib.backends.backend_qt5agg \
             import NavigationToolbar2QT as NavigationToolbar
@@ -2081,15 +2570,16 @@ class Plot_matplotlib(FigureCanvas):
             a = name.Plot_inter(window.file_plot_names[i_cnt])
             for c in a:
                 b.append(c)
+                pg.QtGui.QApplication.processEvents()
             i_cnt += 1
         for i in range(8):
             if window.curvas[i+1]==1:
                 self.ejes.plot(b[window.ctn[i]][0], b[window.ctn[i]][1],\
                     label=window.names_sensor[window.ctn[i]],color=window.color[i]/255)
+            pg.QtGui.QApplication.processEvents()
         self.ejes.title.set_text(window.file_plot_names[2])
         self.ejes.set_xlabel("t [s]")
         self.ejes.set_ylabel("T [K]")
-        self.ejes.set_facecolor((0, 0, 0))
         self.ejes.grid(),self.ejes.legend()
         FigureCanvas.__init__(self,self.figura_2)
         self.canvas = FigureCanvas(self.figura)
@@ -2099,8 +2589,14 @@ class Plot_matplotlib(FigureCanvas):
         self.vbox.addWidget(self.toolbar)
         self.vbox.addWidget(self.canvas)
         self.setLayout(self.vbox)
+
 class Plot_ramp(FigureCanvas):
+    '''
+    ESta función plotea la gráfica de las rampas de los datos
+    que se encuentran en el archivo seleccionado
+    '''
     def __init__(self):
+
         from matplotlib.figure import Figure
         from matplotlib.backends.backend_qt5agg \
             import NavigationToolbar2QT as NavigationToolbar
@@ -2114,6 +2610,7 @@ class Plot_ramp(FigureCanvas):
             a = name.Plot_inter(window.file_plot_names[i_cnt])
             for c in a:
                 b.append(c)
+                pg.QtGui.QApplication.processEvents()
             i_cnt += 1
         for i in range(8):
             if window.curvas_ramp[i]==1:
@@ -2121,6 +2618,7 @@ class Plot_ramp(FigureCanvas):
                 self.ejes.plot(b[window.ctn[i]][0], b[window.ctn[i]][1],label \
                     = 'Ramp ' + window.names_sensor[window.ctn[i]],\
                     color=window.color[window.ctn[i]]/255)
+                pg.QtGui.QApplication.processEvents()
         self.ejes.title.set_text("Plot Ramp of Data")
         self.ejes.set_xlabel("t [s]")
         self.ejes.set_ylabel("Ramp [K/min]")
@@ -2133,7 +2631,11 @@ class Plot_ramp(FigureCanvas):
         self.vbox.addWidget(self.toolbar)
         self.vbox.addWidget(self.canvas)
         self.setLayout(self.vbox)
+
     def deriv_h4_no_uniforme(self,f,x):
+        '''
+        Esta función calcula la rampa
+        '''
         f_prima = [0]*len(f)  #definimos la longitud de la funcion f
         for i in range(2,len(f)-2): #tomamos un intervalo despreciando el primero, segundo, penúltimo y último término
             hi_2,hi_1,hi1, hi2 = x[i]-x[i-2],x[i]-x[i-1],x[i+1]-x[i],x[i+2]-x[i] # definimos las h utilizadas
@@ -2150,23 +2652,58 @@ class Plot_ramp(FigureCanvas):
                        +(hi_1**2*f[i+2]-hi2**2*f[i-1])/((hi_1+hi2)*(b)**2)\
                        +(hi_2**2*f[i+1]-hi1**2*f[i-2])/((hi_2+hi1)*(a)**2))
             pg.QtGui.QApplication.processEvents()
+
         return f_prima
 
-#----------------------------------------------------------
+class Rampa_live(QtWidgets.QDialog,Ui_ramp):
+    '''
+    Esta función abre el widget de rampa en vivo
+    '''
+    def __init__(self, *args, **kwargs):
+
+        try:
+            QtWidgets.QDialog.__init__(self, *args, **kwargs)
+            self.setupUi(self)
+            self.setWindowTitle("Ramp Monitor")
+            layout = QtGui.QGridLayout(self.widget)
+            self.widget.setLayout(layout)
+            for i in range(len(window.curvas_ramp)):
+                if window.curvas_ramp[i] == 1:
+                    self.ramp_live = Dashboard(window.names_sensor[window.ctn[i]], "K/min", 0, 5)
+                    break
+                pg.QtGui.QApplication.processEvents()
+            layout.addWidget(self.ramp_live)
+            pg.QtGui.QApplication.processEvents()
+
+        except KeyboardInterrupt as KBI:
+            pass
+    
+    def charges(self,num):
+        '''
+        Esta función carga un nuevo dato
+        '''
+        self.ramp_live.charge(num)
+
+    def closeEvent(self, event):
+        
+        window.ramp_stat = False
+
+#-----------------------------------------------------------------
 #Esta función remueve las listas vacías con caracteres ''
-#----------------------------------------------------------
+#-----------------------------------------------------------------
 
 def FilterEmptyStrings(Data):
+
     DataF = list(filter(None,Data))
     return DataF
 
-#----------------------------------------------------------
-#Esta función se encarga de Remover el Header de los
-#de texto para recuperar la cadena con los datos de las
-#mediciones.
-#----------------------------------------------------------
+#-----------------------------------------------------------------
+#Esta función se encarga de Remover el Header de los de texto para
+#recuperar la cadena con los datos de las mediciones.
+#-----------------------------------------------------------------
 
 def RemoveHeaderFunction(root,name):
+
     StringData = ''
     for line in open(root + name):
             if line[0] == "#" :
@@ -2180,11 +2717,12 @@ def RemoveHeaderFunction(root,name):
 
     return StringData
 
-#----------------------------------------------------------
+#-----------------------------------------------------------------
 #Esta función escribe datos en el archivo de texto de salida
-#----------------------------------------------------------
+#-----------------------------------------------------------------
 
 def WriteToFile(root,name,Text):
+
     try:
         File = open(root + name, 'a', encoding='utf-8')
         File.writelines(Text)
@@ -2195,9 +2733,9 @@ def WriteToFile(root,name,Text):
             '-------------------------------------------------------------------------\n'
         window.Update_label()
 
-#----------------------------------------------------------
+#-----------------------------------------------------------------
 #Esta función adjunta datos a archivos pickle
-#----------------------------------------------------------
+#-----------------------------------------------------------------
 
 def AppendToPickleFile(root,name,Data):
 
@@ -2205,12 +2743,13 @@ def AppendToPickleFile(root,name,Data):
     pickle.dump(Data,FilePickle)
     FilePickle.close()
 
-#----------------------------------------------------------
+#-----------------------------------------------------------------
 #Esta función crea un archivo de texto donde se guardarán
 #los datos obtenidos de las mediciones.
-#----------------------------------------------------------
+#-----------------------------------------------------------------
 
 def FileHeader(root,name,textDict,MeasureType):
+
     HeaderText = "#--------------------------------------------------------------------\n"
     HeaderText += "#Temperature Measurments using a {} {} {}\n".format(textDict['Brand'],\
                     textDict['Device'],textDict['Model'])
@@ -2221,24 +2760,29 @@ def FileHeader(root,name,textDict,MeasureType):
 
     for Num, String in enumerate(TipoSensores):
         HeaderText += ListaSensores[Num] + ' -- ' + String + '  '
+        pg.QtGui.QApplication.processEvents()
 
     HeaderText += "\n#Date: {:%d-%m-%Y %H:%M:%S}\n".format(datetime.datetime.now())
     HeaderText += "#--------------------------------------------------------------------\n"
     HeaderText = WriteToFile(root,name,HeaderText)
+
     return HeaderText
 
-#----------------------------------------------------------
+#-----------------------------------------------------------------
 #Esta función escribe los valores de la primera columna
-#----------------------------------------------------------
+#-----------------------------------------------------------------
 
 def ColumnText(ListaSensores):
+    
     try:
         ColumnText = "\n#    Time\t"
 
         for String in ListaSensores:
             ColumnText += String + "\t"
+            pg.QtGui.QApplication.processEvents()
 
         ColumnText += "\n"
+
     except:
         window.label_scroll += 'ERROR: El encabezado no pudo ser escrito.\n\
             -------------------------------------------------------------------------\n'
@@ -2246,17 +2790,17 @@ def ColumnText(ListaSensores):
 
     return ColumnText
 
-#----------------------------------------------------------
+#-----------------------------------------------------------------
 #Esta función escribe los valores de la primera columna
-#----------------------------------------------------------
+#-----------------------------------------------------------------
 
 def ColumnNames(root,name,ColumnNames):
 
     ColumnNames = WriteToFile(root,name,ColumnNames)
 
-#----------------------------------------------------------
+#-----------------------------------------------------------------
 #Esta función guarda los datos obtenidos de las mediciones
-#----------------------------------------------------------
+#-----------------------------------------------------------------
 
 def SaveData(root,name,nameAvg,Data,DataSerie,DataAverage,DataAverageText):
 
@@ -2267,11 +2811,12 @@ def SaveData(root,name,nameAvg,Data,DataSerie,DataAverage,DataAverageText):
     AppendToPickleFile(root,namepck[0]+'.pck',Data)
     AppendToPickleFile(root,nameAvgpck[0]+'.pck',DataAverage)
 
-#----------------------------------------------------------
+#-----------------------------------------------------------------
 #Esta función grafica los datos obtenidos de las mediciones
-#----------------------------------------------------------
+#-----------------------------------------------------------------
 
 def PlotData_Interface(Data):
+
     PlotData = Data.split('\n')
     PlotData = FilterEmptyStrings(PlotData)
     Tiempo = []
@@ -2283,22 +2828,24 @@ def PlotData_Interface(Data):
         TemperaturasVect = []
         for Num2 in range(1,len(VectAux)):
             TemperaturasVect.append(float(VectAux[Num2]))
-
+            pg.QtGui.QApplication.processEvents()
         Temperaturas.append(TemperaturasVect)
-
+        pg.QtGui.QApplication.processEvents()
     for Num in range(len(TemperaturasVect)):
         TempCol = []
         for Num2 in range(len(Temperaturas)):
             TempCol.append(Temperaturas[Num2][Num])
-
+            pg.QtGui.QApplication.processEvents()
         Data_plot.append([Tiempo, TempCol])
+
     return Data_plot
 
-#----------------------------------------------------------
+#-----------------------------------------------------------------
 #Esta función se encarga de leer los datos del monitor
-#----------------------------------------------------------
+#-----------------------------------------------------------------
 
 def GetDataFunction(port,Channels,InitialTime):
+
     datos,tiempo,ReadTime,ps,flag,= [] ,[], [],0,1
     for Channel in Channels:
 
@@ -2320,7 +2867,6 @@ def GetDataFunction(port,Channels,InitialTime):
         elif (len(BinData) == 65):
             datos = StrData.rstrip('\r\n').split(',')
             break
-            pg.QtGui.QApplication.processEvents()
 
         ps += 1
         flag = 1
@@ -2334,11 +2880,13 @@ def GetDataFunction(port,Channels,InitialTime):
 
     datosFormatted += '\n'
     pg.QtGui.QApplication.processEvents()
+
     return datos, ReadTime, datosFormatted
 
-#----------------------------------------------------------
-#Esta función se encarga de hacer el promedio de cierto número de datos
-#----------------------------------------------------------
+#-----------------------------------------------------------------
+#Esta función se encarga de hacer el promedio de cierto número de 
+#datos
+#-----------------------------------------------------------------
 
 def AverageFunction(Data,AverageStr,Sensors):
 
@@ -2352,7 +2900,6 @@ def AverageFunction(Data,AverageStr,Sensors):
         AvgData.append([0] * LenSens)
         pg.QtGui.QApplication.processEvents()
     try:
-
         for Num2 in range(LenSens):
             for Num in range(DataLen-AverageInt,DataLen):
                 AvgData[Num2+1][0] += Data[Num][Num2][1]
@@ -2370,7 +2917,6 @@ def AverageFunction(Data,AverageStr,Sensors):
             pg.QtGui.QApplication.processEvents()
         AvgDataStr += '\n'
         pg.QtGui.QApplication.processEvents()
-
     except:
         window.label_scroll += 'ERROR: "Average" of the configuration file must be an integer.\n\
             -------------------------------------------------------------------------\n'
@@ -2379,34 +2925,42 @@ def AverageFunction(Data,AverageStr,Sensors):
 
     return AvgData, AvgDataStr
 
-#----------------------------------------------------------
+#-----------------------------------------------------------------
 #Esta función se encarga de imprimir los datos
-#----------------------------------------------------------
+#-----------------------------------------------------------------
 
 def StrFunction(Data,Address):
+
     try:
         subprocess.Popen(['gedit', Address])
+
     except:
         window.label_scroll += 'El editor de texto "gedit" no se encuentra en sus sistema. \n\
                 Instalelo para habilitar esta función\n\
                 -------------------------------------------------------------------------\n'
         
-#----------------------------------------------------------
-#
-#----------------------------------------------------------
+#-----------------------------------------------------------------
+#Esta función concatena un elemento de un diccionario y sus 
+#correspondientes valores
+#-----------------------------------------------------------------
 
 def Concatenador(valor,name):
+
     i = 0
     a = name + ':'
     while i < len(valor[name]):
         a += str(valor[name][i]) + ','
         i += 1
+        pg.QtGui.QApplication.processEvents()
+
     return a
-#--------------------------------------------------------
-#
-#--------------------------------------------------------
+
+#---------------------------------------------------------------
+#Estas funciones buscan y cambian lineas de los Diccionarios
+#---------------------------------------------------------------
 
 def Change_v2(file,new,last,name):
+
         with open(file, "r") as f:
             lines = (line.rstrip() for line in f)
             altered_lines = [name+':'+new[0:-1] + '\n' if line == last[0:-1] \
@@ -2415,6 +2969,7 @@ def Change_v2(file,new,last,name):
             f.write('\n'.join(altered_lines) + '\n')
 
 def Change(file,new,name,textDict):
+
         with open(file, "r") as f:
             lines = (line.rstrip() for line in f)
             altered_lines = [name+':' + new + '\n' if line==name+':'+str(textDict[name]) \
@@ -2422,14 +2977,15 @@ def Change(file,new,name,textDict):
         with open(file, "w") as f:
             f.write('\n'.join(altered_lines) + '\n')
 
-#----------------------------------------------------------
+#-----------------------------------------------------------------
 #Esta clase contendrá toda la información de las mediciones
 #y los procedimientos para guardarlos y procesarlos.
-#----------------------------------------------------------
+#-----------------------------------------------------------------
 
 class TempClass:
 
     def __init__(self,textDict,TimeStamp=0,patch=''):
+
         self.textDict = textDict #Diccionario que incluye información sobre la medición que se realizará
         self.root = patch + '/'#Raiz del archivo en el que se guardarán los datos
         self.name = textDict['Name'] #Nombre del archivo en el que se guardarán los datos
@@ -2437,7 +2993,8 @@ class TempClass:
         self.Sensors = textDict['Sensors'].split(',') #Esta variable guarda el nombre de los sensores que se usan
         self.textDict['Sensors'] = self.Sensors
         self.textDict['Sensor Type'] = textDict['Sensor Type'].split(',')
-        self.Average = float(textDict['Average']) #Esta variable guarda como cadena cúantas muestras se estaŕan promediando
+        #Esta variable guarda como cadena cúantas muestras se estaŕan promediando
+        self.Average = float(textDict['Average']) 
         self.textDict['Average'] = self.Average
         self.SamplingPeriod = float(textDict['SamplingPeriod'])
         self.FileAddress = self.root + self.name #Dirección completa del archivo
@@ -2449,7 +3006,9 @@ class TempClass:
         self.Brand = self.textDict['Brand']
         self.Device = self.textDict['Device']
         self.Data = [] #En esta variable se almacenan TODOS los datos de la medición como listas de tuplas
-        self.DataSerie = '' #En esta variable se almacenan N datos de la medición en formato cadena para despúes vaciarlos al archivo de texto
+        #En esta variable se almacenan N datos de la medición en formato cadena para despúes vaciarlos 
+        #al archivo de texto
+        self.DataSerie = '' 
         self.DataAverage = [] #En esta variable se almacena el promedio de M lecturas
         self.DataAverageText = '' #En esta variable se guardan los datos del promedio en formato cadena
 
@@ -2461,6 +3020,7 @@ class TempClass:
         self.DataSerieOld = ''
 
     def Start(self):
+
         self.Header = FileHeader(self.root,self.name,self.textDict,'Complete Data')
         self.HeaderAvg = FileHeader(self.root,self.nameAvg,self.textDict,'Averaged')
         self.ColumnText = ColumnText(self.Sensors)
@@ -2474,9 +3034,11 @@ class TempClass:
             + '-------------------------------------------------------------------------\n'
 
     def __str__(self): #Función completamente implementada
+
         StrFunction(self.Data,self.FileAddress)
 
     def Save(self):
+
         SaveData(self.root,self.name,self.nameAvg,self.Data,self.DataSerie,self.DataAverage,self.DataAverageText)
         self.Data = []
         self.DataSerie = ''
@@ -2485,29 +3047,21 @@ class TempClass:
         self.DataAverageText = ''
         self.Cont = 0
 
-    def Plot(self,Data):
-        pid = os.fork()
-        #pid = 0
-
-        time.sleep(0.05)
-        if pid == 0:
-            if self.ConfigPlot == 0:
-                PlotData(Data)
-            elif self.ConfigPlot == 1:
-                self.RemoveHeader()
-                PlotData(self.DataRecovered)
-            sys.exit()
-
     def Plot_inter(self,file_name):
+
         self.RemoveHeader(file_name)
         var = PlotData_Interface(self.DataRecovered)
+
         return var
 
     def Plot_inter_header(self,file_name):
+
         var = PlotData_Interface(self.DataSerie)
+
         return var
 
     def GetData(self):
+
         ListTupla = []
         if self.InitTime == 0:
             self.InitTime = time.time()
@@ -2524,7 +3078,6 @@ class TempClass:
             Bs *= len(As)
             pg.QtGui.QApplication.processEvents()
 
-
         for Num in range(len(As)):
             try:
                 ListTupla.append([self.textDict['Sensor Type'][Num],Bs[Num],As[Num]])
@@ -2533,7 +3086,6 @@ class TempClass:
                 ListTupla.append([Num + 1,Bs[Num],As[Num]])
                 pg.QtGui.QApplication.processEvents()
             pg.QtGui.QApplication.processEvents()
-
 
         self.Data.append(ListTupla)
         self.Cont += 1
@@ -2544,21 +3096,26 @@ class TempClass:
         pg.QtGui.QApplication.processEvents()
 
     def Update_335(self,Orden,Heater,Data,Otro=None):
+
         if Otro == None:
             Command = Orden+ ''+Heater+','+Data + '\r\n'
         else:
             Command = Orden+ ''+Heater+','+Data+Otro+'\r\n'
         self.port.write(Command.encode())
+
         return 0
 
     def Read_335(self,Orden,Heater):
+
         Command = Orden+' '+Heater+'\r\n'
         self.port.write(Command.encode())
         datos = self.port.read(69)
         datos = datos.decode().strip('\r\n')
+        
         return datos
 
     def AverageCalc(self):
+        
         As, Bs = AverageFunction(self.Data,self.Average,self.Sensors)
         self.DataAverage.append(As)
         self.DataAverageText += Bs
@@ -2569,17 +3126,11 @@ class TempClass:
         pg.QtGui.QApplication.processEvents()
 
     def RemoveHeader(self,file_name):
+
         self.DataRecovered = RemoveHeaderFunction(self.root,file_name)
 
-    def ConfigurePlotMethod(self):
-        ValidChar = False
-        ConfigureKey = YesOrNo(ValidChar)
-        if ConfigureKey == 'y':
-            self.ConfigPlot = 1
-        elif ConfigureKey == 'n':
-            self.ConfigPlot == 0
-
     def PrintValue(self):
+
         a = ''
         if self.Data==[]:
             a += '-------------------------------------------------------------------------\n'
@@ -2590,18 +3141,19 @@ class TempClass:
             for Vect in self.Data[-1]:
                 a +='              ' + Vect[0]+'         '+str(round(Vect[1],2))+ '         ' +Vect[2]+'\n'
             a += '-------------------------------------------------------------------------\n'
+        
         return a
 
     def Last_data(self):
+
         Return = []
         if self.Data==[]:
             pass
         else:
             for Vect in self.Data[-1]:
                 Return.append(Vect)
-        return Return
 
- 
+        return Return
 
 #----------------------------------------------------------
 #Esta clase contiene toda la información y métodos para
@@ -2639,10 +3191,12 @@ class ConfigModule:
         self.Port.write(str2port.encode())
         datos=self.Port.read(79)
         datos=datos.decode()
+
         return datos
 
     #Define channel sensor status On/Off
     def setSensOn(self):
+
         Ch=1
         out={}
         for key in self.ConfigDict.keys():
@@ -2653,13 +3207,16 @@ class ConfigModule:
                     str2port='INPUT '+str(Ch)+','+str(self.ConfigDict.get(key))+'\r\n'
                     self.Port.write(str2port.encode())
                     time.sleep(.1)
+                    pg.QtGui.QApplication.processEvents()
                     #read status
                     str2port='INPUT? '+str(Ch)+'\r\n'
                     self.Port.write(str2port.encode())
                     out.setdefault('Sens '+str(Ch),self.Port.read(79).decode().strip()+'\n')
                     time.sleep(.1)
+                    pg.QtGui.QApplication.processEvents()
                     Ch=Ch+1
                 continue
+            pg.QtGui.QApplication.processEvents()
             continue
         window.label_scroll +='                                    Status\n'  #Print On/Iff Settings
         window.label_scroll+='-------------------------------------------------------------------------\n'
@@ -2670,9 +3227,11 @@ class ConfigModule:
             if i == 4:
                 window.label_scroll += '\n'
                 i = 0
+            pg.QtGui.QApplication.processEvents()
         window.label_scroll+='-------------------------------------------------------------------------\n'
 
     def setCurves(self):
+
         Ch=1
         out={}
         for key in self.ConfigDict:
@@ -2682,14 +3241,17 @@ class ConfigModule:
                     str2port='INCRV '+str(Ch)+','+ str(self.ConfigDict.get(key))+'\r\n'
                     self.Port.write(str2port.encode())
                     time.sleep(.1)
+                    pg.QtGui.QApplication.processEvents()
                     #read curve value
                     str2port='INCRV? '+str(Ch)+'\r\n'
                     self.Port.write(str2port.encode())
                     out.setdefault(key,self.Port.read(79).decode().strip())
                     time.sleep(.1)
+                    pg.QtGui.QApplication.processEvents()
                     Ch=Ch+1
                 continue
             continue
+            pg.QtGui.QApplication.processEvents()
         window.label_scroll += '                                    Curves\n' #Print Curve Settings
         window.label_scroll+='-------------------------------------------------------------------------\n'
         i = 0
@@ -2699,28 +3261,37 @@ class ConfigModule:
             if i == 4:
                 window.label_scroll += '\n'
                 i=0
+            pg.QtGui.QApplication.processEvents()
         window.label_scroll+='-------------------------------------------------------------------------\n'
 
     def ConfigPort(self):
+
         return serial.Serial(self.ConfigDict['Port'], self.ConfigDict['BaudRate'], serial.SEVENBITS,\
             serial.PARITY_ODD, serial.STOPBITS_ONE, float(self.ConfigDict['TimeOut']))
 
-#----------------------------------------------------------
-#Main code --- MAIN
-#----------------------------------------------------------
-
+#---------------------------------------------------------------
+#Esta función inicializa al programa
+#---------------------------------------------------------------
 
 def launch():
+
     try:
         global window
         app = QtWidgets.QApplication(['Temperature'])
         window = MainWindow()
         window.show()
         sys.exit(app.exec_())
+
     except KeyboardInterrupt as KBI:
         pass
+
+#----------------------------------------------------------
+#Main code --- MAIN
+#----------------------------------------------------------
+
 if not os.path.isfile('/usr/share/applications/Temperature.desktop'):
     os.system('echo '+os.path.realpath(__file__).strip('Temperature.py') + 'Icon.png')
     sys.exit()
+
 if __name__ == "__main__":
       launch()

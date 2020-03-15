@@ -1,10 +1,14 @@
 For install Interfaz-MonitorTemperature:
 
-It's necesary python>=3.6:
+It's necesary python>=3.6, run:
 
 1. Run: 
 
-        git clone https://github.com/Julian-RC/Inter-Mon-Temp.git && cd Inter-MonTemp
+        git clone https://github.com/Julian-RC/Inter-Mon-Temp.git
+	
+2. Run:
+
+		cd Inter-Mon-Temp
 
 2. Run:
 
@@ -20,14 +24,6 @@ It's necesary python>=3.6:
 For open Interfaz-MonitorTemperature run:
 
         Temperature
-
------------------------------------------------------------------------------------------------
-
-For update run:
-
-        git pull
-
-and repeat instalation.	
 
 -----------------------------------------------------------------------------------------------
 
