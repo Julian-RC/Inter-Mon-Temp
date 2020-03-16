@@ -13,7 +13,7 @@ from MonTemp.ramp_ui import Ui_ramp
 from MonTemp.terminal_ui import Ui_Terminal
 from PyQt5 import QtWidgets,QtGui,QtCore
 import pyqtgraph as pg
-from numpy import append,array
+from numpy import append, array
 from matplotlib.backends.backend_qt5agg \
   import FigureCanvasQTAgg as FigureCanvas
 
@@ -66,10 +66,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 a[b] = a[b].split(',')
         self.color=[0]*(len(self.textDict_color.ConfigDict)+1)
         for a in self.textDict_color.ConfigDict:
-            self.color[self.color[len(self.textDict_color.ConfigDict)]]=array([int(self.textDict_color.ConfigDict[a][0]),\
+            self.color[self.color[len(self.textDict_color.ConfigDict)]] = array([\
+                                int(self.textDict_color.ConfigDict[a][0]),\
                                 int(self.textDict_color.ConfigDict[a][1]),\
                                 int(self.textDict_color.ConfigDict[a][2])])
             self.color[len(self.textDict_color.ConfigDict)] += 1
+        self.color[len(self.textDict_color.ConfigDict)] = 0
         self.fit_number = [0]*(len(self.textDict_fit.ConfigDict)+1)
         for a in self.textDict_fit.ConfigDict:
             self.fit_number[self.fit_number[len(self.textDict_fit.ConfigDict)]]=\
@@ -258,7 +260,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         color = QtWidgets.QColorDialog.getColor(QtGui.QColor(int(color_rgb[0]),int(color_rgb[1]),int(color_rgb[2])))
         if color.isValid():
             color_rgb = color.getRgb()
-            self.textDict_color.ConfigDict[name_dat]=[str(color_rgb[0]),str(color_rgb[1]),str(color_rgb[2])]
+            self.textDict_color.ConfigDict[name_dat] = [str(color_rgb[0]),str(color_rgb[1]),str(color_rgb[2])]
             self.color_button[num].setStyleSheet("background-color: rgb("+str(color_rgb[0])+','+str(color_rgb[1])+','\
                                         +str(color_rgb[2])+");border: 1px solid black;")
         for a in self.textDict_color.ConfigDict:
