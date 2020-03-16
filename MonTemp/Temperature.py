@@ -223,7 +223,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                             f.write(self.label_scroll)
                             f.close()
                             os.system('cd && cd ' + self.patch+' && chmod =r Temperature.bt')
-                    t
+                    
                     try:
                         for i in range(len(self.mpl)):
                             self.mpl[i].close()
@@ -742,8 +742,15 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.setCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         config_filename = self.patch_cfg + "/file_218.cfg"
         config_filename2 = self.patch_cfg + "/file_335.cfg"
-        os.system('cp ' + config_filename + ' ' + self.patch2)
-        os.system('cp ' + config_filename2 + ' ' + self.patch2)
+
+        try:
+            os.system('cp ' + config_filename + ' ' + self.patch2)
+            os.system('cp ' + config_filename2 + ' ' + self.patch2)
+        
+        except Exception as e:
+            self.label_scroll = '                    Format of the adress is Incorrect\n'\
+                + '-------------------------------------------------------------------------\n'
+            self.Update_label()
 
         try:           
             self.textDict_218 = ConfigModule(self.filename_218,1,1)
@@ -767,6 +774,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.label_scroll = '               Push "Start" for begin adquisition\n'\
                 + '-------------------------------------------------------------------------\n'
             self.Update_label()
+            self.Time.setStyleSheet("color:rgb(255,255,255);border: 0px solid black;background-color: a( 0);")
+            self.Type.setStyleSheet("color:rgb(255,255,255);border: 0px solid black;background-color: a( 0);")
             self.ramp_la.setStyleSheet("color:rgb(255,255,255);")
             self.graph_sensor.setStyleSheet("color:rgb(255,255,255);")
             self.color_sensor.setStyleSheet("color:rgb(255,255,255);")
@@ -781,18 +790,21 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 for b in a.ConfigDict['Sensor Type']:
                     self.names_sensor.append(b)
                     pg.QtGui.QApplication.processEvents()
-                    
             i = 0
             while i < 8:
-                self.plot_checkbox[i].setText(QtCore.QCoreApplication.translate\
-                    ("MainWindow", self.names_sensor[self.ctn[i]]))
+                if self.ctn[i] == 17:
+                    self.plot_checkbox[i].setText(QtCore.QCoreApplication.translate\
+                        ("MainWindow", ' '))
+                else:
+                    self.plot_checkbox[i].setText(QtCore.QCoreApplication.translate\
+                        ("MainWindow", self.names_sensor[self.ctn[i]]))
                 i += 1
-                pg.QtGui.QApplication.processEvents()
-
+                pg.QtGui.QApplication.processEvents()        
+                
         except Exception as e: 
-            self.label_scroll += '                                    Error' + \
+            self.label_scroll += '                                    Error\n' + \
                                 '-------------------------------------------------------------------------\n' + \
-                                '\n     -Run "sudo chmod 777 /dev/ttyUSB*"\n      -Check connections\n' + \
+                                '      -Run "sudo chmod 777 /dev/ttyUSB*"\n      -Check connections\n' + \
                                 '      -Change settings\n'\
                                 '-------------------------------------------------------------------------\n'
             self.Update_label()
@@ -810,6 +822,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.Todos.setEnabled(False)
             self.Todos.setChecked(False)
             self.Todos.setStyleSheet("background-color: a(0);")
+            self.conflict_sensors_quit()
             i = 0
             while i < 8:
                 self.plot_checkbox[i].setEnabled(False)
@@ -819,15 +832,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.sensor_ramp[i].setChecked(False)
                 i += 1
                 pg.QtGui.QApplication.processEvents()
-            self.Time.setStyleSheet(" ")
-            self.Type.setStyleSheet(" ")
+            self.Time.setStyleSheet("border: 0px solid black;")
+            self.Type.setStyleSheet("border: 0px solid black; ")
             self.ramp_la.setStyleSheet(" ")
             self.graph_sensor.setStyleSheet(" ")
             self.color_sensor.setStyleSheet(" ")
             self.pushButton.setEnabled(False)
             self.ramp.setEnabled(False)
             self.Action_button(1)
-            self.conflict_sensors_quit()
             self.patch = self.patch2
             self.patch_cfg = self.patch
             self.linePatch.setText(self.patch)
@@ -838,10 +850,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 for b in a.ConfigDict['Sensor Type']:
                     self.names_sensor.append(b)
                     pg.QtGui.QApplication.processEvents()
-            i = 0
+            i = 0         
             while i < 8:
-                self.plot_checkbox[i].setText(QtCore.QCoreApplication.translate\
-                    ("MainWindow", self.names_sensor[self.ctn[i]]))
+                if self.ctn[i] == 17:
+                    self.plot_checkbox[i].setText(QtCore.QCoreApplication.translate\
+                        ("MainWindow", ' '))
+                else:
+                    self.plot_checkbox[i].setText(QtCore.QCoreApplication.translate\
+                        ("MainWindow", self.names_sensor[self.ctn[i]]))
                 i += 1
                 pg.QtGui.QApplication.processEvents()
         self.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
@@ -874,6 +890,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.ctn[i] = b
                 b += 1
             else:
+                self.ctn[i] = 17
                 self.sensor_ramp[i].setEnabled(False)
                 self.plot_checkbox[i].setChecked(False)
                 self.plot_checkbox[i].setStyleSheet("background-color: a(0);")
@@ -937,8 +954,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                             pg.QtGui.QApplication.processEvents()
                     i = 0
                     while i < 8:
-                        self.plot_checkbox[i].setText(QtCore.QCoreApplication.translate\
-                            ("MainWindow", self.names_sensor[self.ctn[i]]))
+                        if self.ctn[i] == 17:
+                            self.plot_checkbox[i].setText(QtCore.QCoreApplication.translate\
+                                ("MainWindow", ' '))
+                        else:
+                            self.plot_checkbox[i].setText(QtCore.QCoreApplication.translate\
+                                ("MainWindow", self.names_sensor[self.ctn[i]]))
                         i += 1
                         pg.QtGui.QApplication.processEvents()
                 else:
