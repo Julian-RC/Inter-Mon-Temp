@@ -611,8 +611,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                         for a in self.ramp_value:
                             rampa += a
                         self.ramp_live.charges(float(rampa/len(self.ramp_value)))
-                        self.ramp_count = 0
-                        self.ramp_value = []
+                        self.ramp_count = 2
+                        self.ramp_value = self.ramp_value[1:2]
                     elif self.ramp_count == 0:
                         self.ramp_count += 1
                     else:
@@ -1650,12 +1650,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         Se grafica el archivo introducido en "Plot file"
         '''
         self.curvas = [0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-            i = 0
+        i = 0
         while i < 10:
             if self.plot_checkbox[i].isChecked():
                 self.curvas[i] = 1
-                i += 1
-                pg.QtGui.QApplication.processEvents()
+            i += 1
+            pg.QtGui.QApplication.processEvents()
         i = 10
         while i < 14:
             if self.plot_checkbox[i].isChecked():
@@ -1866,7 +1866,7 @@ class Segunda(QtWidgets.QDialog,Ui_Segunda):
     '''
     def __init__(self, *args, **kwargs):
        
-       # try:
+        try:
             QtWidgets.QDialog.__init__(self, *args, **kwargs)
             self.setupUi(self)
             self.timeOut.setRange(0.1,99.9)
@@ -1911,8 +1911,8 @@ class Segunda(QtWidgets.QDialog,Ui_Segunda):
             self.samplinperiod.setValue(float(window.textDict_218.ConfigDict['SamplingPeriod']))
             self.timeOut.setValue(float(window.textDict_218.ConfigDict['TimeOut']))
        
-       # except KeyboardInterrupt as KBI:
-        #    pass
+        except KeyboardInterrupt as KBI:
+            pass
     
     def desbloquear_sensor1(self):
     
