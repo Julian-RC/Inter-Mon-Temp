@@ -737,6 +737,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.label_scroll += '                        Acquisition has stopped\n'\
             + '                          '+'{:%d-%m-%Y %H:%M:%S}'.format(datetime.datetime.now())+'\n'\
             + '-------------------------------------------------------------------------\n'
+        self.Update_label()
         Ran_1 = int(self.Data_335.Read_335('RANGE?','1'))
         time.sleep(0.05)
         Ran_2 = int(self.Data_335.Read_335('RANGE?','2'))
@@ -838,14 +839,15 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         config_filename = self.patch_cfg + "/file_218.cfg"
         config_filename2 = self.patch_cfg + "/file_335.cfg"
 
-        try:
+        if not (os.path.isfile(config_filename) and os.path.isfile(config_filename)): 
+            p = os.path.realpath(__file__).strip('Temperature.py')
+            os.system('cp ' + p + 'file_218.cfg ' + self.patch2)
+            os.system('cp ' + p + 'file_335.cfg ' + self.patch2)
+        elif (os.path.isfile(self.patch2 + '/file_218.cfg') and os.path.isfile(self.patch2 + '/file_218.cfg')): 
+            pass
+        else:
             os.system('cp ' + config_filename + ' ' + self.patch2)
             os.system('cp ' + config_filename2 + ' ' + self.patch2)
-        
-        except Exception as e:
-            self.label_scroll = '                    Format of the adress is Incorrect\n'\
-                + '-------------------------------------------------------------------------\n'
-            self.Update_label()
 
         try:           
             self.textDict_218 = ConfigModule(self.filename_218,1,1)
@@ -866,7 +868,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.conflict_sensors_quit()
             self.Todos.setEnabled(True)
             self.Todos.setChecked(True)
-            self.label_scroll = '               Push "Start" for begin adquisition\n'\
+            self.label_scroll += '               Push "Start" for begin adquisition\n'\
                 + '-------------------------------------------------------------------------\n'
             self.Update_label()
             self.Time.setStyleSheet("color:rgb(255,255,255);border: 0px solid black;background-color: a( 0);")
@@ -955,6 +957,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                         ("MainWindow", self.names_sensor[self.ctn[i]]))
                 i += 1
                 pg.QtGui.QApplication.processEvents()
+            self.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
         self.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
 
     def conflict_sensors_quit(self):
@@ -999,74 +1002,88 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.label_scroll+='                           Wait a moment Please\n'
         self.label_scroll+='-------------------------------------------------------------------------\n'
         self.Update_label()
-        self.buscarDirectorio_2()
+        self.buscarDirectorio_2()   
         if self.patch2:
-            self.filename_218 = self.patch2 + '/file_218.cfg'
-            self.filename_335 = self.patch2 + '/file_335.cfg'
-            if os.path.isfile( self.patch2 +'/file_218.cfg') and\
-                os.path.isfile( self.patch2 +'/file_335.cfg') :
-                self.textDict_218 = ConfigModule(self.filename_218,0,0)
-                self.textDict_335 = ConfigModule(self.filename_335,0,0)
-                if os.path.isfile( self.patch2 +'/'+self.textDict_218.ConfigDict['Name']) and\
-                    os.path.isfile( self.patch2 +'/'+self.textDict_218.ConfigDict['NameAverage']) and\
-                    os.path.isfile( self.patch2 +'/'+self.textDict_335.ConfigDict['Name']) and\
-                    os.path.isfile( self.patch2 +'/'+self.textDict_335.ConfigDict['NameAverage']) :
-                    self.label_scroll += '                         The folder contains data\n'
-                    self.label_scroll+='-------------------------------------------------------------------------\n'
-                    self.Action_button(0)
-                    self.Data_218 = TempClass(self.textDict_218.ConfigDict,patch=self.patch2)
-                    self.Data_335 = TempClass(self.textDict_335.ConfigDict,self.Data_218.InitTime,patch=self.patch2)
-                    self.Update_label()
-                    self.ramp.setEnabled(True)
-                    self.start.setEnabled(False)
-                    self.SeeData.setEnabled(True)
-                    self.Time.setStyleSheet("color:rgb(255,255,255);border: 0px solid black;background-color: a( 0);")
-                    self.grafica2.setEnabled(True)
-                    self.grafica2.setChecked(True)
-                    self.grafica2.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
-                    self.Type.setStyleSheet("color:rgb(255,255,255);border: 0px solid black;background-color: a( 0);")
-                    self.radioButton_2.setEnabled(True)
-                    self.radioButton_2.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
-                    self.color_sensor.setStyleSheet("color:rgb(255,255,255);")
-                    self.pushButton.setEnabled(True)
-                    self.conflict_sensors_quit()
-                    self.Todos.setEnabled(True)
-                    self.Todos.setChecked(True)
-                    i = 0
-                    while i < len(self.sensor_ramp):
-                        self.sensor_ramp[i].setEnabled(True)
-                        i += 1
-                        pg.QtGui.QApplication.processEvents()
-                    self.ramp_la.setStyleSheet("color:rgb(255,255,255);")
-                    self.graph_sensor.setStyleSheet("color:rgb(255,255,255);")
-                    self.patch = self.patch2
-                    self.patch_cfg = self.patch + '/'
-                    self.linePatch.setText(self.patch)
-                    self.names_sensor = []
-                    for a in [self.textDict_335,self.textDict_218]:
-                        for b in a.ConfigDict['Sensor Type']:
-                            self.names_sensor.append(b)
-                            pg.QtGui.QApplication.processEvents()
-                    i = 0
-                    while i < 8:
-                        if self.ctn[i] == 17:
-                            self.plot_checkbox[i].setText(QtCore.QCoreApplication.translate\
-                                ("MainWindow", ' '))
-                        else:
-                            self.plot_checkbox[i].setText(QtCore.QCoreApplication.translate\
-                                ("MainWindow", self.names_sensor[self.ctn[i]]))
-                        i += 1
-                        pg.QtGui.QApplication.processEvents()
-                else:
-                    self.label_scroll+='                               Data no found\n'
-                    self.label_scroll+='-------------------------------------------------------------------------\n'
-                    self.Update_label()
-                    self.Action_button(0)
+            Flag = False
+            for i in range(len(self.patch2)):
+                if self.patch2[i] == ' ':
+                    self.box = QtWidgets.QMessageBox()
+                    self.box.question(self,
+                    'ERROR',
+                    "Format Incorrect",
+                    self.box.Yes | self.box.Yes, self.box.Yes)
+                    self.patch2 = self.patch
+                    Flag = True
+                    break
+            if Flag:
+                self.buscarDirectorio()    
             else:
-                    self.label_scroll+='                               Selected folder\n'
-                    self.label_scroll+='-------------------------------------------------------------------------\n'
-                    self.Update_label()
-                    self.charge_modulos()
+                self.filename_218 = self.patch2 + '/file_218.cfg'
+                self.filename_335 = self.patch2 + '/file_335.cfg'
+                if os.path.isfile( self.patch2 +'/file_218.cfg') and\
+                    os.path.isfile( self.patch2 +'/file_335.cfg') :
+                    self.textDict_218 = ConfigModule(self.filename_218,0,0)
+                    self.textDict_335 = ConfigModule(self.filename_335,0,0)
+                    if os.path.isfile( self.patch2 +'/'+self.textDict_218.ConfigDict['Name']) and\
+                        os.path.isfile( self.patch2 +'/'+self.textDict_218.ConfigDict['NameAverage']) and\
+                        os.path.isfile( self.patch2 +'/'+self.textDict_335.ConfigDict['Name']) and\
+                        os.path.isfile( self.patch2 +'/'+self.textDict_335.ConfigDict['NameAverage']) :
+                        self.label_scroll += '                         The folder contains data\n'
+                        self.label_scroll+='-------------------------------------------------------------------------\n'
+                        self.Action_button(0)
+                        self.Data_218 = TempClass(self.textDict_218.ConfigDict,patch=self.patch2)
+                        self.Data_335 = TempClass(self.textDict_335.ConfigDict,self.Data_218.InitTime,patch=self.patch2)
+                        self.Update_label()
+                        self.ramp.setEnabled(True)
+                        self.start.setEnabled(False)
+                        self.SeeData.setEnabled(True)
+                        self.Time.setStyleSheet("color:rgb(255,255,255);border: 0px solid black;background-color: a( 0);")
+                        self.grafica2.setEnabled(True)
+                        self.grafica2.setChecked(True)
+                        self.grafica2.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
+                        self.Type.setStyleSheet("color:rgb(255,255,255);border: 0px solid black;background-color: a( 0);")
+                        self.radioButton_2.setEnabled(True)
+                        self.radioButton_2.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
+                        self.color_sensor.setStyleSheet("color:rgb(255,255,255);")
+                        self.pushButton.setEnabled(True)
+                        self.conflict_sensors_quit()
+                        self.Todos.setEnabled(True)
+                        self.Todos.setChecked(True)
+                        i = 0
+                        while i < len(self.sensor_ramp):
+                            self.sensor_ramp[i].setEnabled(True)
+                            i += 1
+                            pg.QtGui.QApplication.processEvents()
+                        self.ramp_la.setStyleSheet("color:rgb(255,255,255);")
+                        self.graph_sensor.setStyleSheet("color:rgb(255,255,255);")
+                        self.patch = self.patch2
+                        self.patch_cfg = self.patch + '/'
+                        self.linePatch.setText(self.patch)
+                        self.names_sensor = []
+                        for a in [self.textDict_335,self.textDict_218]:
+                            for b in a.ConfigDict['Sensor Type']:
+                                self.names_sensor.append(b)
+                                pg.QtGui.QApplication.processEvents()
+                        i = 0
+                        while i < 8:
+                            if self.ctn[i] == 17:
+                                self.plot_checkbox[i].setText(QtCore.QCoreApplication.translate\
+                                    ("MainWindow", ' '))
+                            else:
+                                self.plot_checkbox[i].setText(QtCore.QCoreApplication.translate\
+                                    ("MainWindow", self.names_sensor[self.ctn[i]]))
+                            i += 1
+                            pg.QtGui.QApplication.processEvents()
+                    else:
+                        self.label_scroll+='                               Data no found\n'
+                        self.label_scroll+='-------------------------------------------------------------------------\n'
+                        self.Update_label()
+                        self.Action_button(0)
+                else:
+                        self.label_scroll+='                               Selected folder\n'
+                        self.label_scroll+='-------------------------------------------------------------------------\n'
+                        self.Update_label()
+                        self.charge_modulos()
         else:
             self.label_scroll+='                               No selected folder\n'
             self.label_scroll+='-------------------------------------------------------------------------\n'
@@ -1619,8 +1636,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.ramp_value = []
                 if self.ramp_stat:
                     self.ramp_live.close()
-                    self.ramp_live = Rampa_live(self)
-                    self.ramp_live.show()
+                    self.ramp_stat = False
+                    self.rampa()
                 else:
                     self.ramp_stat = True
                     self.ramp_live = Rampa_live(self)
@@ -1630,22 +1647,16 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         '''
         Esta función se encarga de leer los sensores a graficar,
         el tipo de grafica y el tiempo
-        Se grafica el archivo introducido en "PLot file"
+        Se grafica el archivo introducido en "Plot file"
         '''
         self.curvas = [0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-        if self.Todos.isChecked():
-            for i in range(10):
-                if not self.ctn[i]==17:
-                    self.curvas[self.ctn[i]]=1
-                    pg.QtGui.QApplication.processEvents()
-        else:
             i = 0
-            while i < 10:
-                if self.plot_checkbox[i].isChecked():
-                    self.curvas[i] = 1
+        while i < 10:
+            if self.plot_checkbox[i].isChecked():
+                self.curvas[i] = 1
                 i += 1
                 pg.QtGui.QApplication.processEvents()
-        i = 7
+        i = 10
         while i < 14:
             if self.plot_checkbox[i].isChecked():
                 self.curvas[i] = 1
@@ -2643,6 +2654,7 @@ class Live_plot(object):
 
         self.win = pg.GraphicsWindow(title='Data')
         self.p = self.win.addPlot(title='Sensores')
+        self.p.addLegend()
         self.p.setLabel('left', 'Temperature ',units= 'K')
         self.p.setLabel('bottom', 'Time ',units='s')
         self.p.showGrid(x=False,y=True,alpha=0.3)
@@ -2697,6 +2709,7 @@ class Live_plot(object):
                     self.c[i]=self.p.plot(pen=window.color[i],name=self.names_curves_heater[i-8])
                 pg.QtGui.QApplication.processEvents()
         self.p.setRange(yRange=[50, 300])
+        
 
     def add(self, x):
         '''
@@ -3353,7 +3366,8 @@ class TempClass:
         a = ''
         if self.Data==[]:
             a += '-------------------------------------------------------------------------\n'
-            a += 'Currently, buffer is empty of temperature data. \n         Please try again in a moment.\n'
+            a += '     Currently, buffer is empty of temperature data. \n   \
+                        Please try again in a moment.\n'
             a += '-------------------------------------------------------------------------\n'
         else:
             a += '-------------------------------------------------------------------------\n'
