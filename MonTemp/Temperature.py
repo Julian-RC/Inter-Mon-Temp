@@ -36,23 +36,27 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.ramp_stat, self.Start, self.close_plot, self.status_heater_1, self.heater_1_estatus, self.cfg, self.bt,\
             self.patch2, self.ramp_count, self.RANGE_1, self.num_matplotlib, self.num_ramp, self.patch,\
             self.names_sensor_color, self.sensor_ramp_desbloquear, self.dialogs, self.sensor_ramp, \
-            self.plot_desbloquear, self.names_sensor, self.plot_checkbox, self.color_button, self.color_change \
+            self.plot_desbloquear, self.names_sensor, self.plot_checkbox, self.color_button, self.color_change, \
+            self.status_heater_2, self.heater_2_estatus, self.RANGE_2, self.ctn\
             = False, False, False, False, True, False, False, '/home', 0, False, 0, 0, \
-            os.path.realpath(__file__).strip('Temperature.py'), ['CA','CB','D1','D2','D3','D4','C5','C6'],\
+            os.path.realpath(__file__).strip('Temperature.py'), ['CA','CB','D1','D2','D3','D4','C5','C6','S7','S8'],\
             [self.desbloquear_sensores_ramp_CA, self.desbloquear_sensores_ramp_CB, self.desbloquear_sensores_ramp_D1,\
             self.desbloquear_sensores_ramp_D2, self.desbloquear_sensores_ramp_D3, self.desbloquear_sensores_ramp_D4,\
-            self.desbloquear_sensores_ramp_C5, self.desbloquear_sensores_ramp_C6], [], [self.ramp_CA, self.ramp_CB,\
-            self.ramp_D1, self.ramp_D2, self.ramp_D3, self.ramp_D4, self.ramp_C5, self.ramp_C6], \
+            self.desbloquear_sensores_ramp_C5, self.desbloquear_sensores_ramp_C6, self.desbloquear_sensores_ramp_S7,\
+            self.desbloquear_sensores_ramp_S8], [], [self.ramp_CA, self.ramp_CB,self.ramp_D1, self.ramp_D2, self.ramp_D3,\
+            self.ramp_D4, self.ramp_C5, self.ramp_C6, self.ramp_S7, self.ramp_S8], \
             [self.desbloquear_sensores_CA, self.desbloquear_sensores_CB, self.desbloquear_sensores_D1, \
             self.desbloquear_sensores_D2, self.desbloquear_sensores_D3, self.desbloquear_sensores_D4,\
-            self.desbloquear_sensores_C5, self.desbloquear_sensores_C6, self.desbloquear_SetPoint1, \
-            self.desbloquear_heater1, self.desbloquear_SetPoint2, self.desbloquear_heater2], [], [self.CA, self.CB, \
-            self.D1, self.D2, self.D3, self.D4, self.C5, self.C6, self.SetPoint1, self.heater1, self.SetPoint2, \
-            self.heater2], [self.color_H1, self.color_H2, self.color_S1, self.color_S2, self.color_D1, self.color_D2, \
-            self.color_D3, self.color_D4, self.color_C5, self.color_C6, self.color_CA, self.color_CB], \
+            self.desbloquear_sensores_C5, self.desbloquear_sensores_C6, self.desbloquear_sensores_S7,\
+            self.desbloquear_sensores_S8, self.desbloquear_SetPoint1, self.desbloquear_heater1, \
+            self.desbloquear_SetPoint2, self.desbloquear_heater2], [], [self.CA, self.CB, self.D1, self.D2, self.D3, self.D4,\
+            self.C5, self.C6, self.S7, self.S8, self.SetPoint1, self.heater1, self.SetPoint2, self.heater2], \
+            [self.color_H1, self.color_H2, self.color_S1, self.color_S2, self.color_D1, self.color_D2, \
+            self.color_D3, self.color_D4, self.color_C5, self.color_C6, self.color_S7, self.color_S8, self.color_CA, self.color_CB], \
             [self.change_color_H1, self.change_color_H2, self.change_color_S1, self.change_color_S2, \
-            self.change_color_D1, self.change_color_D2, self.change_color_D3, self.change_color_D4, \
-            self.change_color_C5, self.change_color_C6, self.change_color_CA, self.change_color_CB]
+            self.change_color_D1, self.change_color_D2, self.change_color_D3, self.change_color_D4, self.change_color_C5, \
+            self.change_color_C6, self.change_color_S7, self.change_color_S8, self.change_color_CA, self.change_color_CB],\
+            False, False, False, [0,1,2,3,4,5,6,7,17,17]
         self.patch_cfg = self.patch +'cfg' 
         self.filename_218, self.filename_335, filename_color, self.filename_fit = \
             self.patch_cfg + "/file_218.cfg", self.patch_cfg + "/file_335.cfg", self.patch_cfg + "/color.cfg", \
@@ -85,7 +89,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         #Aquí se introducen las funciones desbloquear que se encargan de cambiar el estado del MainWindow
         #en función de los radioButton seleccionados
         i = 0
-        while i < 8:
+        while i < 10:
             self.sensor_ramp[i].toggled.connect(self.sensor_ramp_desbloquear[i])
             i += 1
         self.radioButton.toggled.connect(self.desbloquear_radioButton)
@@ -116,14 +120,17 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionFit_of_data.triggered.connect(self.show_Fit_of_data)
         self.actionPlot_File.triggered.connect(self.show_Plot_File)
         self.actionTerminal.triggered.connect(self.show_Terminal)
-        self.actionAbout_Temperature.triggered.connect(self.show_Temperature)
+        self.actionAbout_Temperature.triggered.connect(self.show_help_Temperature)
         #Aquí se introducen los formatos de los QSpinBox
         self.ramp_1.setDecimals(1)
         self.ramp_2.setDecimals(1)
         self.ramp_1.setRange(0,5)
         self.ramp_2.setRange(0,5)
         self.ss.setRange(0,59)
+        self.ss.setSpecialValueText('ss')
         self.mm.setRange(0,59)
+        self.mm.setSpecialValueText('mm')
+        self.hh.setSpecialValueText('hh')
         self.setPoint_num_1.setRange(50,300)
         self.setPoint_num_2.setRange(50,300)
         #Aquí se enlaza cada pushbutton con su función al realizar al ser presionado
@@ -139,7 +146,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.stop.clicked.connect(self.stop_adquisition)
         self.ramp.clicked.connect(self.rampa)
         i = 0
-        while i < 12:
+        while i < len(self.color_button): 
             self.color_button[i].clicked.connect(self.color_change[i])
             i += 1
         #Aquí se agrega la terminal
@@ -204,8 +211,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                         if self.actual:
                                     self.plot_pyqt.close()
                                     self.actual = False
-                        #self.off_heater_1()
-                        #self.off_heater_2()
                     else:
                         event.ignore()
                 if not self.Start:
@@ -290,11 +295,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     
     def change_color_CA(self):
     
-        self.change_color('CA',10)
+        self.change_color('CA',12)
     
     def change_color_CB(self):
     
-        self.change_color('CB',11)
+        self.change_color('CB',13)
     
     def change_color_D1(self):
     
@@ -319,6 +324,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def change_color_C6(self):
     
         self.change_color('C6',9)
+    
+    def change_color_S7(self):
+    
+        self.change_color('S7',10)
+    
+    def change_color_S8(self):
+    
+        self.change_color('S8',11)
     
     '''
     Estas funciones se encargan de visualizar datos
@@ -356,7 +369,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def off_heater_1(self):
         '''
-        Esta funcion detiene al Heater en el punto donde se encuentra
+        Esta funcion detiene al Heater 1 en el punto donde se encuentra
         '''    
         self.On_335_1()
         time.sleep(0.05)
@@ -369,7 +382,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def Update_1(self):
         '''
-        Esta función lee y actualiza el estado del Heater
+        Esta función lee y actualiza el estado del Heater 1
         '''
         Ramp_1 = str(self.ramp_1.value())
         self.Data_335.Update_335('RAMP','1','1,'+Ramp_1)
@@ -403,7 +416,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def On_335_1(self):
         '''
-        Esta función lee y completa los datos del Heater en pantalla
+        Esta función lee y completa los datos del Heater 1 en pantalla
         '''
         Ramp_1 = str(self.Data_335.Read_335('RAMP?','1')[2:7])
         self.ramp_1.setValue(float(Ramp_1))
@@ -413,7 +426,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def heater1_auto(self,Ran_1,Ramp_1):
         '''
-        Esta funcion controla el Rango del heater en un intervalo <20 >70
+        Esta funcion controla el Rango del heater 1 en un intervalo <20 >70
         '''
         if Ran_1 == 0:
             self.Data_335.Update_335('RANGE','1','1')
@@ -430,33 +443,26 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.Data_335.Update_335('RANGE','1','2')
 
     '''
-    Estas funciones trabajan con el Heater 2 (no estan completas)
+    Estas funciones trabajan con el Heater 2 (no estan probadas)
     '''
 
     def off_heater_2(self):
         '''
-        Esta funcion detiene al Heater en el punto donde se encuentra
+        Esta funcion detiene al Heater 2 en el punto donde se encuentra
         '''    
-        self.On_335_2()
+        self.On_335_1()
         time.sleep(0.05)
-        self.Update_2()
-
-    def On_335_2(self):
-        '''
-        Esta función lee y completa los datos del Heater en pantalla
-        '''
-        Ramp_2 = str(self.Data_335.Read_335('RAMP?','2')[2:7])
-        self.ramp_2.setValue(float(Ramp_2))
-        SetP_2 = self.Data_335.Read_335('SETP?','2')
+        Ramp_2 = str(self.ramp_2.value())
+        self.Data_335.Update_335('RAMP','2','1,' +Ramp_2)
+        time.sleep(0.05)
+        SetP_2 = str(self.setPoint_num_2.value())
         self.SP_2 = float(SetP_2)
-        self.setPoint_num_2.setValue(self.SP_2) 
+        self.Data_335.Update_335('SETP','2',SetP_2)
 
     def Update_2(self):
         '''
-        Esta función lee y actualiza el estado del Heater
+        Esta función lee y actualiza el estado del Heater 2
         '''
-        self.Data_335.Update_335('RANGE','2','1')
-        time.sleep(0.05)
         Ramp_2 = str(self.ramp_2.value())
         self.Data_335.Update_335('RAMP','2','1,'+Ramp_2)
         time.sleep(0.05)
@@ -466,11 +472,56 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if self.range_manual_2.isChecked():
             time.sleep(0.05)
             self.RANGE_2 = False
-            Range = str(self.range_2.currentIndex()+1)
+            Range = str(self.range_2.currentIndex())
             self.Data_335.Update_335('RANGE','2',Range)
+            if Range == '1':
+                Range_print='Low'
+            elif Range == '2':
+                Range_print='Med'
+            elif Range == '3':
+                Range_print='High'
+            elif Range == '0' :
+                Range_print='Off'
         else:
             self.RANGE_2 = True
-    
+            Range_print = 'Auto'
+
+        self.label_scroll += '                            Update Heater 2\n                          '+\
+                        '{:%d-%m-%Y %H:%M:%S}'.format(datetime.datetime.now())+'\n'+\
+                        '-------------------------------------------------------------------------\n'
+        self.label_scroll += 'Ramp= '+Ramp_2+' k/min SetPoint= '+SetP_2+' k  Range= '+ Range_print +\
+                        '\n-------------------------------------------------------------------------\n'
+        self.Update_label()
+
+    def On_335_2(self):
+        '''
+        Esta función lee y completa los datos del Heater en pantalla
+        '''
+        Ramp_2 = str(self.Data_335.Read_335('RAMP?','2')[2:7])
+        self.ramp_2.setValue(float(Ramp_2))
+        SetP_2 = str(self.Data_335.Read_335('SETP?','2'))
+        self.SP_2 = float(SetP_2)
+        self.setPoint_num_1.setValue(self.SP_2)
+
+    def heater2_auto(self,Ran_2,Ramp_2):
+        '''
+        Esta funcion controla el Rango del heater 2 en un intervalo <20 >70
+        '''
+        if Ran_2 == 0:
+            self.Data_335.Update_335('RANGE','2','1')
+        elif Ran_2 == 1:
+            if Ramp_2 > 70:
+                self.Data_335.Update_335('RANGE','2','2')
+        elif Ran_2 == 2:
+            if Ramp_2 < 20:
+                self.Data_335.Update_335('RANGE','2','1')
+            elif Ramp_2 > 70:
+                self.Data_335.Update_335('RANGE','2','3')
+        elif Ran_2 == 3:
+            if Ramp_2 < 20:
+                self.Data_335.Update_335('RANGE','2','2')
+
+
     '''
     Estas funciones estan realcionadas con el inicio y fin de la
     adquision de datos
@@ -503,8 +554,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.directorio.setEnabled(False)
         self.heater_1.setStyleSheet('background-color: a(0);color: rgb(88, 160, 255);font:15pt"Sans Serif"')
         self.heater_1.setEnabled(True)
-        #self.heater_2.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
-        #self.heater_2.setEnabled(True)
+        self.heater_2.setStyleSheet('background-color: a(0);color: rgb(88, 160, 255);font:15pt"Sans Serif"')
+        self.heater_2.setEnabled(True)
         self.lastdata.setEnabled(True)
         while self.Start:
 
@@ -606,6 +657,35 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 time.sleep(0.05)
                 self.heater1_auto(Ran_1,Ramp_1)
                 time.sleep(0.05)
+            if self.status_heater_2:
+                Ramp_2 = float(self.Data_335.Read_335('HTR?','2'))
+                time.sleep(0.05)
+                self.label_heater_2 +=str(Ramp_2)+'%'
+                SetP_2 = str(self.Data_335.Read_335('SETP?','2'))
+                time.sleep(0.05)
+                self.label_heater_2 +='   '+str(SetP_2)+'K'
+                Ran_2 = int(self.Data_335.Read_335('RANGE?','2'))
+                time.sleep(0.05)
+                Range = ''
+                if Ran_2 == 0:
+                    Range = 'Off'
+                elif Ran_2 == 1:
+                    Range = 'Low'
+                elif Ran_2 == 2:
+                    Range = 'Med'
+                elif Ran_2 == 3:
+                    Range = 'High'
+                self.label_heater_2 += '   '+Range+'\n'
+                self.label_heater_2 += '--------------------------------------\n'
+                self.status_2.setWidget(QtWidgets.QLabel(self.label_heater_2))
+                self.status_2.verticalScrollBar().setValue(self.status_2.verticalScrollBar().maximum())
+            if self.RANGE_2:
+                Ramp_2 = float(self.Data_335.Read_335('HTR?','2'))
+                time.sleep(0.05)
+                Ran_2 = int(self.Data_335.Read_335('RANGE?','2'))
+                time.sleep(0.05)
+                self.heater2_auto(Ran_2,Ramp_2)
+                time.sleep(0.05)
 
     def stop_adquisition(self):
         '''
@@ -627,6 +707,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def stop_adquisition_yes(self):
         self.Start = False
         self.RANGE_1 = False
+        self.RANGE_2 = False
         for a in [self.Data_218,self.Data_335]:
             a.Save()
         if self.actual:
@@ -638,11 +719,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.grafica1.setStyleSheet("background-color: a(0);")
         self.start.setEnabled(True)
         self.stop.setEnabled(False)
-        #self.linePatch.setEnabled(True)
         self.directorio.setEnabled(True)
         self.heater_1.setChecked(False)
         self.heater_1.setEnabled(False)
         self.heater_1.setStyleSheet("background-color: a(0);font: 15pt 'Sans Serif';")
+        self.heater_2.setStyleSheet("background-color: a(0);font: 15pt 'Sans Serif';")
         self.heater_2.setEnabled(False)
         self.range_automatic_1.setChecked(True)
         self.range_manual_1.setChecked(False)
@@ -652,11 +733,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.seeStatus_2.setChecked(False)
         self.heater_2.setChecked(False)
         self.off_heater_1()
-        #self.off_heater_2()
+        self.off_heater_2()
         self.label_scroll += '                        Acquisition has stopped\n'\
             + '                          '+'{:%d-%m-%Y %H:%M:%S}'.format(datetime.datetime.now())+'\n'\
             + '-------------------------------------------------------------------------\n'
         Ran_1 = int(self.Data_335.Read_335('RANGE?','1'))
+        time.sleep(0.05)
+        Ran_2 = int(self.Data_335.Read_335('RANGE?','2'))
         time.sleep(0.05)
         if not Ran_1 == 0:
             self.box = QtWidgets.QMessageBox()
@@ -669,6 +752,17 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.label_scroll += '                             Heater 1 off\n'\
             + '                          '+'{:%d-%m-%Y %H:%M:%S}'.format(datetime.datetime.now())+'\n'\
             + '-------------------------------------------------------------------------\n'
+        if not Ran_2 == 0:
+            self.box = QtWidgets.QMessageBox()
+            reply = self.box.question(self,
+                     'Heater 2',
+                     "Do you want turned off of heater 2?",
+                      self.box.Yes | self.box.No, self.box.No)
+            if reply == self.box.Yes:
+                self.Data_335.Update_335('RANGE','2','0')
+                self.label_scroll += '                             Heater 2 off\n'\
+            + '                          '+'{:%d-%m-%Y %H:%M:%S}'.format(datetime.datetime.now())+'\n'\
+            + '-------------------------------------------------------------------------\n'
         self.Update_label()
     
     '''
@@ -676,6 +770,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     '''
 
     def show_dialog(self):
+
         self.dialogs.append(Dialog(self)) 
         self.dialogs[-1].show()
 
@@ -724,7 +819,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.dialogs.append(Terminal_settings(self)) 
         self.dialogs[-1].show()
     
-    def show_Temperature(self):
+    def show_help_Temperature(self):
 
         self.dialogs.append(Help_Temperature(self)) 
         self.dialogs[-1].show()        
@@ -791,10 +886,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.names_sensor.append(b)
                     pg.QtGui.QApplication.processEvents()
             i = 0
-            while i < 8:
+            while i < 10:
                 if self.ctn[i] == 17:
                     self.plot_checkbox[i].setText(QtCore.QCoreApplication.translate\
-                        ("MainWindow", ' '))
+                        ("MainWindow", 'None'))
                 else:
                     self.plot_checkbox[i].setText(QtCore.QCoreApplication.translate\
                         ("MainWindow", self.names_sensor[self.ctn[i]]))
@@ -824,7 +919,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.Todos.setStyleSheet("background-color: a(0);")
             self.conflict_sensors_quit()
             i = 0
-            while i < 8:
+            while i < 10:
                 self.plot_checkbox[i].setEnabled(False)
                 self.plot_checkbox[i].setChecked(False)
                 self.plot_checkbox[i].setStyleSheet("background-color: a(0);")
@@ -851,10 +946,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.names_sensor.append(b)
                     pg.QtGui.QApplication.processEvents()
             i = 0         
-            while i < 8:
+            while i < 10:
                 if self.ctn[i] == 17:
                     self.plot_checkbox[i].setText(QtCore.QCoreApplication.translate\
-                        ("MainWindow", ' '))
+                        ("MainWindow", 'None'))
                 else:
                     self.plot_checkbox[i].setText(QtCore.QCoreApplication.translate\
                         ("MainWindow", self.names_sensor[self.ctn[i]]))
@@ -867,7 +962,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         Esta funcion se encarga de resolver los conflictos al quitar sensores de 
         la configuración
         '''
-        self.confict_enable = [0,0,0,0,0,0,0,0]
+        self.confict_enable = [0,0,0,0,0,0,0,0,0,0]
         if len(self.textDict_335.ConfigDict['Channels'])==2:
             self.confict_enable[0],self.confict_enable[1] = 1,1
         elif self.textDict_335.ConfigDict['Channels'][0]=='A':
@@ -881,7 +976,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             i += 1
             pg.QtGui.QApplication.processEvents()
         i, b = 0, 0
-        self.ctn = [0,0,0,0,0,0,0,0]
+        self.ctn = [0,0,0,0,0,0,0,0,0,0]
         while i < len(self.confict_enable):
             if self.confict_enable[i] == 1:
                 self.sensor_ramp[i].setEnabled(True)
@@ -983,7 +1078,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         pg.QtGui.QApplication.processEvents()
 
     '''
-    Estas funciones abren los dialogos de la barra de herramientas
+    Estas funciones se encargan de cambiar el estado de widgets en función de
+    los widgets presionados .
     '''
 
     def desbloquear_grafica2(self):
@@ -1115,7 +1211,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.heater1.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
 
             except:
-                self.label_scroll += '                     Error al cargar Heater 1'
+                self.label_scroll += '                     Error al cargar Heater 1\n'\
+                    + '-------------------------------------------------------------------------\n'
                 self.heater_1.setStyleSheet("background-color: a(0);color: rgb(0,255, 0);font: 15pt 'Sans Serif';")
                 self.Update_label()
                 self.label_13.setStyleSheet("background-color: a(0);")
@@ -1170,7 +1267,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.color_heater.setStyleSheet(" ")
             self.SetPoint1.setStyleSheet("background-color: a(0);")
             self.heater1.setStyleSheet("background-color: a(0);")
-            #self.off_heater_1()
 
     def desbloquear_heater_2(self):
 
@@ -1178,36 +1274,96 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
             try:
                 self.On_335_2()
+                self.heater_2.setStyleSheet("background-color: a(0);color: rgb(255, 240, 23);font: 15pt 'Sans Serif';")
+                self.label_8.setStyleSheet("background-color: a(0);color: rgb(255, 255, 255);")
+                self.label_14.setStyleSheet("background-color: a(0);color: rgb(255, 255, 255);")
+                self.setPoint_num_2.setEnabled(True)
+                self.label_11.setStyleSheet("background-color: a(0);color: rgb(255, 255, 255);")
+                self.label_2.setStyleSheet("background-color: a(0);color: rgb(255, 255, 255);")
+                self.ramp_2.setEnabled(True)
+                self.label_12.setStyleSheet("background-color: a(0);color: rgb(255, 255, 255);")
+                self.range_automatic_2.setEnabled(True)
+                self.range_automatic_2.setStyleSheet("background-color: a(0);color: rgb(0, 255, 0);")
+                self.range_manual_2.setEnabled(True)
+                self.range_manual_2.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
+                self.seeStatus_2.setEnabled(True)
+                self.seeStatus_2.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);font: 12pt 'Sans Serif';")
+                self.update_2.setEnabled(True)
+                self.Off_2.setEnabled(True)
+                if self.grafica2.isChecked():
+                    self.SetPoint2.setEnabled(False)
+                    self.heater2.setEnabled(False)
+                    self.SetPoint2.setChecked(False)
+                    self.heater2.setChecked(False)
+                    self.graph_heater_la.setStyleSheet(" ")
+                    self.color_heater.setStyleSheet(" ")
+                    self.SetPoint2.setStyleSheet("background-color: a(0);")
+                    self.heater2.setStyleSheet("background-color: a(0);")
+                else:
+                    self.SetPoint2.setEnabled(True)
+                    self.heater2.setEnabled(True)
+                    self.graph_heater_la.setStyleSheet("color:rgb(255,255,255);")
+                    self.color_heater.setStyleSheet("color:rgb(255,255,255);")
+                    self.SetPoint2.setStyleSheet("background-color: a(0);color:rgb(88, 160, 255);")
+                    self.heater2.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);")
 
             except:
-                self.label_scroll += '                                   Error al cargar Heater 2'
+                self.label_scroll += '                     Error al cargar Heater 2\n'\
+                    + '-------------------------------------------------------------------------\n'
+                self.heater_2.setStyleSheet("background-color: a(0);color: rgb(0,255, 0);font: 15pt 'Sans Serif';")
                 self.Update_label()
-            self.setPoint_num_2.setEnabled(True)
-            self.ramp_2.setEnabled(True)
-            self.range_automatic_2.setEnabled(True)
-            self.range_manual_2.setEnabled(True)
-            self.seeStatus_2.setEnabled(True)
-            self.update_2.setEnabled(True)
-            self.Off_2.setEnabled(True)
-            if self.grafica2.isChecked():
+                self.label_14.setStyleSheet("background-color: a(0);")
+                self.label_8.setStyleSheet("background-color: a(0);")
+                self.setPoint_num_2.setEnabled(False)
+                self.label_11.setStyleSheet("background-color: a(0);")
+                self.label_2.setStyleSheet("background-color: a(0);")
+                self.ramp_2.setEnabled(False)
+                self.label_12.setStyleSheet("background-color: a(0);")
+                self.range_automatic_2.setChecked(True)
+                self.range_automatic_2.setEnabled(False)
+                self.range_automatic_2.setStyleSheet("background-color: a(0);")
+                self.range_manual_2.setEnabled(False)
+                self.range_manual_2.setStyleSheet("background-color: a(0);")
+                self.seeStatus_2.setEnabled(False)
+                self.seeStatus_2.setStyleSheet("background-color: a(0);font: 12pt 'Sans Serif';")
+                self.seeStatus_2.setChecked(False)
+                self.update_2.setEnabled(False)
+                self.Off_2.setEnabled(False)
                 self.SetPoint2.setEnabled(False)
                 self.heater2.setEnabled(False)
                 self.SetPoint2.setChecked(False)
                 self.heater2.setChecked(False)
-            else:
-                self.SetPoint2.setEnabled(True)
-                self.heater2.setEnabled(True)
-
+                self.graph_heater_la.setStyleSheet(" ")
+                self.color_heater.setStyleSheet(" ")
+                self.SetPoint2.setStyleSheet("background-color: a(0);")
+                self.heater2.setStyleSheet("background-color: a(0);")
         else:
+            self.heater_2.setStyleSheet("background-color: a(0);color: rgb(88, 160, 255);font: 15pt 'Sans Serif';")
+            self.label_14.setStyleSheet("background-color: a(0);")
+            self.label_8.setStyleSheet("background-color: a(0);")
             self.setPoint_num_2.setEnabled(False)
+            self.label_11.setStyleSheet("background-color: a(0);")
+            self.label_2.setStyleSheet("background-color: a(0);")
             self.ramp_2.setEnabled(False)
+            self.label_12.setStyleSheet("background-color: a(0);")
+            self.range_automatic_2.setChecked(True)
             self.range_automatic_2.setEnabled(False)
+            self.range_automatic_2.setStyleSheet("background-color: a(0);")
             self.range_manual_2.setEnabled(False)
+            self.range_manual_2.setStyleSheet("background-color: a(0);")
             self.seeStatus_2.setEnabled(False)
+            self.seeStatus_2.setChecked(False)
+            self.seeStatus_2.setStyleSheet("background-color: a(0);font: 12pt 'Sans Serif';")
             self.update_2.setEnabled(False)
             self.Off_2.setEnabled(False)
             self.SetPoint2.setEnabled(False)
             self.heater2.setEnabled(False)
+            self.SetPoint2.setChecked(False)
+            self.heater2.setChecked(False)
+            self.graph_heater_la.setStyleSheet(" ")
+            self.color_heater.setStyleSheet(" ")
+            self.SetPoint2.setStyleSheet("background-color: a(0);")
+            self.heater2.setStyleSheet("background-color: a(0);")
 
     def desbloquear_range_manual_1(self):
 
@@ -1286,11 +1442,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     
     def desbloquear_sensores_CA(self):
     
-        self.desbloquear_sensores(0,10)
+        self.desbloquear_sensores(0,12)
     
     def desbloquear_sensores_CB(self):
     
-        self.desbloquear_sensores(1,11)
+        self.desbloquear_sensores(1,13)
     
     def desbloquear_sensores_C5(self):
     
@@ -1299,6 +1455,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def desbloquear_sensores_C6(self):
     
         self.desbloquear_sensores(7,9)
+
+    def desbloquear_sensores_S7(self):
+    
+        self.desbloquear_sensores(8,10)
+    
+    def desbloquear_sensores_S8(self):
+
+        self.desbloquear_sensores(9,11)
     
     def desbloquear_sensores_D1(self):
     
@@ -1334,11 +1498,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     
     def desbloquear_sensores_ramp_CA(self):
     
-        self.desbloquear_sensores_ramp(0,10)
+        self.desbloquear_sensores_ramp(0,12)
     
     def desbloquear_sensores_ramp_CB(self):
     
-        self.desbloquear_sensores_ramp(1,11)
+        self.desbloquear_sensores_ramp(1,13)
     
     def desbloquear_sensores_ramp_C5(self):
     
@@ -1348,6 +1512,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     
         self.desbloquear_sensores_ramp(7,9)
     
+    def desbloquear_sensores_ramp_S7(self):
+    
+        self.desbloquear_sensores_ramp(8,10)
+
+    def desbloquear_sensores_ramp_S8(self):
+    
+        self.desbloquear_sensores_ramp(9,11)
+
     def desbloquear_sensores_ramp_D1(self):
     
         self.desbloquear_sensores_ramp(2,4)
@@ -1389,19 +1561,19 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     
     def desbloquear_heater1(self):
     
-        self.desbloquear_heaters(0,9)
+        self.desbloquear_heaters(0,11)
     
     def desbloquear_heater2(self):
     
-        self.desbloquear_heaters(1,11)
+        self.desbloquear_heaters(1,13)
     
     def desbloquear_SetPoint1(self):
     
-        self.desbloquear_heaters(2,8)
+        self.desbloquear_heaters(2,10)
     
     def desbloquear_SetPoint2(self):
     
-        self.desbloquear_heaters(3,10)
+        self.desbloquear_heaters(3,12)
     
     '''
     Estas funciones se encargan de las gráficas
@@ -1429,8 +1601,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         se realiza dicha rampa
         '''
         Flag = 0
-        self.curvas_ramp=[0,0,0,0,0,0,0,0]
-        for i in range(8):
+        self.curvas_ramp=[0,0,0,0,0,0,0,0,0,0]
+        for i in range(10):
             if self.sensor_ramp[i].isChecked():
                 self.curvas_ramp[i] = 1
                 Flag = 1
@@ -1460,22 +1632,23 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         el tipo de grafica y el tiempo
         Se grafica el archivo introducido en "PLot file"
         '''
-        self.curvas = [0,0,0,0,0,0,0,0,0,0,0,0,0]
+        self.curvas = [0,0,0,0,0,0,0,0,0,0,0,0,0,0]
         if self.Todos.isChecked():
-                for i in range(8):
-                    self.curvas[self.ctn[i]+1]=1
+            for i in range(10):
+                if not self.ctn[i]==17:
+                    self.curvas[self.ctn[i]]=1
                     pg.QtGui.QApplication.processEvents()
         else:
             i = 0
-            while i < 8:
+            while i < 10:
                 if self.plot_checkbox[i].isChecked():
-                    self.curvas[i+1] = 1
+                    self.curvas[i] = 1
                 i += 1
                 pg.QtGui.QApplication.processEvents()
         i = 7
-        while i < 12:
+        while i < 14:
             if self.plot_checkbox[i].isChecked():
-                self.curvas[i+1] = 1
+                self.curvas[i] = 1
             i += 1
             pg.QtGui.QApplication.processEvents()
         if self.radioButton.isChecked():
@@ -1682,7 +1855,7 @@ class Segunda(QtWidgets.QDialog,Ui_Segunda):
     '''
     def __init__(self, *args, **kwargs):
        
-        try:
+       # try:
             QtWidgets.QDialog.__init__(self, *args, **kwargs)
             self.setupUi(self)
             self.timeOut.setRange(0.1,99.9)
@@ -1718,6 +1891,7 @@ class Segunda(QtWidgets.QDialog,Ui_Segunda):
                     a += 1
                 else:
                     self.sensors_on[i].setChecked(False)
+                    self.sensors[i].setText('None')
                 i += 1
                 pg.QtGui.QApplication.processEvents()
             self.port.setText(window.textDict_218.ConfigDict['Port'])
@@ -1726,8 +1900,8 @@ class Segunda(QtWidgets.QDialog,Ui_Segunda):
             self.samplinperiod.setValue(float(window.textDict_218.ConfigDict['SamplingPeriod']))
             self.timeOut.setValue(float(window.textDict_218.ConfigDict['TimeOut']))
        
-        except KeyboardInterrupt as KBI:
-            pass
+       # except KeyboardInterrupt as KBI:
+        #    pass
     
     def desbloquear_sensor1(self):
     
@@ -1951,7 +2125,7 @@ class D218_Data(QtWidgets.QDialog,Ui_fit_218):
                 file=open(myNewFile,'a')  
                 file.write(newLine)
                 pg.QtGui.QApplication.processEvents()
-            for i in range(6):
+            for i in range(8):
                 if not (float(window.textDict_fit.ConfigDict[window.names_sensor_color[i+2]][0]) == 0 and\
                         float(window.textDict_fit.ConfigDict[window.names_sensor_color[i+2]][1]) == 0):
                     Line_dat += Concatenador(window.textDict_fit.ConfigDict,window.names_sensor_color[i+2])\
@@ -2120,14 +2294,14 @@ class Fit_of_data(QtWidgets.QDialog,Ui_fit):
             QtWidgets.QDialog.__init__(self, *args, **kwargs)
             self.setupUi(self)
             self.setWindowTitle("Fit of Data")
-            self.sensor_fit_M = [self.CA_M,self.CB_M,self.D1_M,self.D2_M,\
-                                self.D3_M,self.D4_M,self.C5_M,self.C6_M]
-            self.sensor_fit_I = [self.CA_I,self.CB_I,self.D1_I,self.D2_I,\
-                                self.D3_I,self.D4_I,self.C5_I,self.C6_I]
+            self.sensor_fit_M = [self.CA_M,self.CB_M,self.D1_M,self.D2_M,self.D3_M,\
+                self.D4_M,self.C5_M,self.C6_M,self.S7_M,self.S8_M]
+            self.sensor_fit_I = [self.CA_I,self.CB_I,self.D1_I,self.D2_I,self.D3_I,\
+                self.D4_I,self.C5_I,self.C6_I,self.S7_I,self.S8_I]
             self.sensor = [self.CA,self.CB,self.D1,self.D2,self.D3,self.D4,\
-                            self.C5,self.C6]
+                self.C5,self.C6,self.S7,self.S8]
             i = 0
-            while i < 8:
+            while i < 10:
                 self.sensor_fit_M[i].setDecimals(4)
                 self.sensor_fit_I[i].setDecimals(4)
                 self.sensor_fit_M[i].setRange(-100,100)
@@ -2136,23 +2310,29 @@ class Fit_of_data(QtWidgets.QDialog,Ui_fit):
                     window.textDict_fit.ConfigDict[window.names_sensor_color[i]][0]))
                 self.sensor_fit_I[i].setValue(float(\
                     window.textDict_fit.ConfigDict[window.names_sensor_color[i]][1]))
-                if float(window.textDict_fit.ConfigDict[window.names_sensor_color[i]][0]) == 0:
-                    if float(window.textDict_fit.ConfigDict[window.names_sensor_color[i]][1]) == 0:
-                        self.sensor_fit_I[i].setEnabled(False)
-                        self.sensor_fit_M[i].setEnabled(False)
-                        self.sensor[i].setStyleSheet("background-color: a(0);\
-                            color: rgb(85, 0, 127);")
-                self.sensor_fit_I[i].setEnabled(True)
-                self.sensor_fit_M[i].setEnabled(True)
-                self.sensor[i].setStyleSheet(\
-                    "background-color: a(0);color: rgb(255, 170, 255);;")
-                self.sensor[i].setChecked(True)
+                if float(window.textDict_fit.ConfigDict[window.names_sensor_color[i]][0]) == 0 and\
+                     float(window.textDict_fit.ConfigDict[window.names_sensor_color[i]][1]) == 0:
+                    self.sensor_fit_I[i].setEnabled(False)
+                    self.sensor_fit_M[i].setEnabled(False)
+                    self.sensor[i].setStyleSheet("background-color: a(0);\
+                        color: rgb(85, 0, 127);")
+                    self.sensor[i].setChecked(False)
+                    self.sensor[i].setText(QtCore.QCoreApplication.translate\
+                        ("Fit_of_data", 'None'))
+                else:
+                    self.sensor_fit_I[i].setEnabled(True)
+                    self.sensor_fit_M[i].setEnabled(True)
+                    self.sensor[i].setStyleSheet(\
+                        "background-color: a(0);color: rgb(255, 170, 255);") 
+                    self.sensor[i].setChecked(True)
+                    self.sensor[i].setText(QtCore.QCoreApplication.translate\
+                        ("Fit_of_data", window.names_sensor[window.ctn[i]]))
                 i += 1
                 pg.QtGui.QApplication.processEvents()
             self.sensor_des = [self.CA_des,self.CB_des,self.D1_des,self.D2_des,\
-                                self.D3_des,self.D4_des,self.C5_des,self.C6_des]
+                self.D3_des,self.D4_des,self.C5_des,self.C6_des,self.S7_des,self.S8_des]
             i = 0
-            while i < 8:
+            while i < 10:
                 self.sensor[i].toggled.connect(self.sensor_des[i])
                 i += 1
                 pg.QtGui.QApplication.processEvents()
@@ -2192,18 +2372,34 @@ class Fit_of_data(QtWidgets.QDialog,Ui_fit):
     
         self.desbloquear(7)
     
+    def S7_des(self):
+    
+        self.desbloquear(8)
+
+    def S8_des(self):
+    
+        self.desbloquear(9)
+
     def desbloquear(self,num):
     
         if self.sensor[num].isChecked():
             self.sensor_fit_I[num].setEnabled(True)
             self.sensor_fit_M[num].setEnabled(True)
             self.sensor[num].setStyleSheet(\
-                "background-color: a(0);color: rgb(255, 170, 255);;")
+                "background-color: a(0);color: rgb(255, 170, 255);")
+            try:
+                self.sensor[num].setText(QtCore.QCoreApplication.translate\
+                            ("Fit_of_data", window.names_sensor[window.ctn[num]]))
+            except:
+                self.sensor[num].setText(QtCore.QCoreApplication.translate\
+                        ("Fit_of_data", 'None'))
         else:
             self.sensor_fit_I[num].setEnabled(False)
             self.sensor_fit_M[num].setEnabled(False)
             self.sensor[num].setStyleSheet("background-color: a(0);\
                 color: rgb(85, 0, 127);")
+            self.sensor[num].setText(QtCore.QCoreApplication.translate\
+                        ("Fit_of_data", 'None'))
 
     def accept(self):
 
@@ -2215,7 +2411,7 @@ class Fit_of_data(QtWidgets.QDialog,Ui_fit):
         pg.QtGui.QApplication.processEvents()
         if reply == self.box.Yes:
             i = 0
-            while i < 8:
+            while i < 10:
                 if self.sensor[i].isChecked():
                     window.textDict_fit.ConfigDict[window.names_sensor_color[i]][0] =  self.sensor_fit_M[i].value()
                     window.textDict_fit.ConfigDict[window.names_sensor_color[i]][1] =  self.sensor_fit_I[i].value()
@@ -2226,7 +2422,7 @@ class Fit_of_data(QtWidgets.QDialog,Ui_fit):
             self.close()
 
 #-----------------------------------------------------------------
-#Estas clases se encargan de desplegar los dailogos de ayuda/info
+#Estas clases se encargan de desplegar los dialogos de ayuda/info
 #-----------------------------------------------------------------
 
 class Help_218(QtWidgets.QDialog,Ui_help_218):
@@ -2455,12 +2651,12 @@ class Live_plot(object):
         for a in ['SetPoint 1','Heater 1','SetPoint 2','Heater 2']:
             self.names_curves_heater.append(a)
             pg.QtGui.QApplication.processEvents()
-        self.c=[[],[],[],[],[],[],[],[],[],[],[],[]]
-        self.d=[[],[],[],[],[],[],[],[],[],[],[],[]]
-        self.t=[[],[],[],[],[],[],[],[],[],[],[],[]]
+        self.c=[[],[],[],[],[],[],[],[],[],[],[],[],[],[]]
+        self.d=[[],[],[],[],[],[],[],[],[],[],[],[],[],[]]
+        self.t=[[],[],[],[],[],[],[],[],[],[],[],[],[],[]]
         b = []
-        for i in range(8):
-            if window.curvas[1+i] == 1:
+        for i in range(10):
+            if window.curvas[i] == 1:
                 self.c[i]=self.p.plot(pen=window.color[i],name=self.names_curves[window.ctn[i]])
                 pg.QtGui.QApplication.processEvents()
         try:
@@ -2475,8 +2671,8 @@ class Live_plot(object):
             pass
         i_cnt = 0
         if len(b)>0:
-            for i in range(8):
-                if window.curvas[i+1] ==1:
+            for i in range(10):
+                if window.curvas[i] ==1:
                     for inte in range(len(b[window.ctn[i]][0])):
                         self.d[i],self.t[i] = self.Curvas_add(self.d[i],self.t[i],\
                             b[window.ctn[i]][1][inte]*window.fit_number[i][0] + window.fit_number[i][1]\
@@ -2490,14 +2686,14 @@ class Live_plot(object):
                 pg.QtGui.QApplication.processEvents()
             i_cnt += 1
             pg.QtGui.QApplication.processEvents()
-        for i in range(8):
-            if window.curvas[i+1] ==1:
+        for i in range(10):
+            if window.curvas[i] ==1:
                 for inte in range(len(b[window.ctn[i]][0])):
                     self.d[i],self.t[i] = self.Curvas_add(self.d[i],self.t[i], b[window.ctn[i]][1][inte]\
                         *window.fit_number[i][0] + window.fit_number[i][1], b[window.ctn[i]][0][inte])
                     pg.QtGui.QApplication.processEvents()
-        for i in [8,9,10,11]:
-                if window.curvas[1+i] == 1:
+        for i in [10,11,12,13]:
+                if window.curvas[1] == 1:
                     self.c[i]=self.p.plot(pen=window.color[i],name=self.names_curves_heater[i-8])
                 pg.QtGui.QApplication.processEvents()
         self.p.setRange(yRange=[50, 300])
@@ -2506,23 +2702,23 @@ class Live_plot(object):
         '''
         Esta funcion agrega datos a los array
         '''
-        for i in range(8):
-            if window.curvas[0] == 1:
+        for i in range(10):
+            if window.curvas[i] == 1:
                 self.d[i],self.t[i] = self.Curvas_add(self.d[i],self.t[i],\
                     float(x[window.ctn[i]][2])*window.fit_number[i][0]\
                     +window.fit_number[i][1],x[window.ctn[i]][1])
             pg.QtGui.QApplication.processEvents()
-        if window.curvas[9] == 1:
-            self.d[8],self.t[8] = self.Curvas_add(self.d[8],self.t[8],window.SP_1,x[7][1])
         if window.curvas[10] == 1:
-            HTR_1 = float(window.Data_335.Read_335('SETP?','1'))
-            self.d[9],self.t[9] = self.Curvas_add(self.d[9],self.t[9],HTR_1,x[7][1])
-            time.sleep(0.05)
+            self.d[10],self.t[10] = self.Curvas_add(self.d[10],self.t[10],window.SP_1,x[7][1])
         if window.curvas[11] == 1:
-            self.d[10],self.t[10] = self.Curvas_add(self.d[10],self.t[10],window.SP_2,x[7][1])
+            HTR_1 = float(window.Data_335.Read_335('SETP?','1'))
+            self.d[11],self.t[11] = self.Curvas_add(self.d[11],self.t[11],HTR_1,x[7][1])
+            time.sleep(0.05)
         if window.curvas[12] == 1:
+            self.d[12],self.t[12] = self.Curvas_add(self.d[12],self.t[12],window.SP_2,x[7][1])
+        if window.curvas[13] == 1:
             HTR_2 = float(window.Data_335.Read_335('SETP?','2'))
-            self.d[11],self.t[11] = self.Curvas_add(self.d[11],self.t[11],HTR_2,x[7][1])
+            self.d[13],self.t[13] = self.Curvas_add(self.d[13],self.t[13],HTR_2,x[7][1])
             time.sleep(0.05)
         pg.QtGui.QApplication.processEvents()
 
@@ -2555,12 +2751,12 @@ class Live_plot(object):
         '''
         Esta función se encarga de actualizar la gráfica
         '''
-        for i in range(8):
-            if window.curvas[i+1] == 1:
+        for i in range(10):
+            if window.curvas[i] == 1:
                self.c[i].setData(self.t[i],self.d[i])
             pg.QtGui.QApplication.processEvents()
-        for i in [8,9,10,11]:
-            if window.curvas[i+1] == 1:
+        for i in [10,11,12,13]:
+            if window.curvas[i] == 1:
                self.c[i].setData(self.t[i],self.d[i])
             pg.QtGui.QApplication.processEvents()
 
@@ -2595,8 +2791,8 @@ class Plot_matplotlib(FigureCanvas):
                 b.append(c)
                 pg.QtGui.QApplication.processEvents()
             i_cnt += 1
-        for i in range(8):
-            if window.curvas[i+1]==1:
+        for i in range(10):
+            if window.curvas[i]==1:
                 self.ejes.plot(b[window.ctn[i]][0], b[window.ctn[i]][1],\
                     label=window.names_sensor[window.ctn[i]],color=window.color[i]/255)
             pg.QtGui.QApplication.processEvents()
@@ -2635,7 +2831,7 @@ class Plot_ramp(FigureCanvas):
                 b.append(c)
                 pg.QtGui.QApplication.processEvents()
             i_cnt += 1
-        for i in range(8):
+        for i in range(10):
             if window.curvas_ramp[i]==1:
                 b[window.ctn[i]][1] = array(self.deriv_h4_no_uniforme(b[window.ctn[i]][1],b[window.ctn[i]][0]))*60
                 self.ejes.plot(b[window.ctn[i]][0], b[window.ctn[i]][1],label \
