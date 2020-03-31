@@ -3,6 +3,5 @@ pyqtgraph
 numpy
 setuptools
 pyserial
-#pyqtwebengine==5.12.1
 matplotlib
 datetime

@@ -8,7 +8,6 @@ setup(name='Interfaz MonitorTemperature',
       author='Laboratorio-Criogenia',
       packages=find_packages(),
       install_requires=[
-            #"pyqtwebengine",
             "PyQt5",
             "pyqtgraph",
             "numpy",
@@ -17,11 +16,11 @@ setup(name='Interfaz MonitorTemperature',
             "datetime"
           ],
       data_files=['MonTemp/cfg/file_218.cfg','MonTemp/cfg/file_335.cfg',\
-                  'MonTemp/Temperature.png','MonTemp/cfg/terminal.cfg',\
+                  'MonTemp/Icon.png','MonTemp/cfg/terminal.cfg',\
                   'MonTemp/cfg/color.cfg','MonTemp/cfg/sensores_fit.cfg'],
       entry_points={
             'console_scripts': [
-            'Temperature=MonTemp.prueba1:launch',
+            'Temperature=MonTemp.Temperature:launch',
           ],
         },
       include_package_data=True,
